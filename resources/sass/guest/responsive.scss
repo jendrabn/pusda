@@ -1,0 +1,58 @@
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+    header {
+        .navbar {
+            background-color: #444D58;
+
+            .navbar-brand {
+                .logo {
+                    height: 60px !important;
+                }
+            }
+        }
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+    header {
+        .navbar {
+            padding: 0;
+
+            .nav-item {
+                .nav-link {
+                    padding: 16px 18px 15px 18px !important;
+
+                    &:hover,
+                    &.active {
+                        position: relative;
+
+                        &::after {
+                            content: '';
+                            width: 100%;
+                            position: absolute;
+                            height: 3px;
+                            background-color: #f1f1f1;
+                            bottom: 0;
+                            left: 0;
+
+                        }
+                    }
+                }
+            }
+
+            .navbar-collapse {
+                margin: 0 !important;
+            }
+        }
+    }
+}
+
+// X-Large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {}
+
+// XX-Large devices (larger desktops, 1400px and up)
+@media (min-width: 1400px) {}
