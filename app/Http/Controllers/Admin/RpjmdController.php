@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
@@ -102,13 +103,14 @@ class RpjmdController extends Controller
             $push->save();
             $n++;
         }
-
+        event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianRpjmd->uraian}</i>  RPJMD"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
     }
 
-    public function destroy(UraianRpjmd $uraianRpjmd)
+    public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
+        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraianRpjmd->uraian}</i>  RPJMD"));
         return back()->with('alert-success', 'Isi uraian berhasil dihapus');
     }
 
@@ -123,7 +125,7 @@ class RpjmdController extends Controller
         ]);
 
         $fiturRpjmd->update($validated);
-
+        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fiturRpjmd}</i>  RPJMD"));
         return back()->with('alert-success', 'Fitur berhasil diupdate');
     }
 
@@ -141,21 +143,22 @@ class RpjmdController extends Controller
             'tabel_rpjmd_id' => $tabelRpjmd->id,
             'file_name' =>  $fileName
         ]);
-
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelRpjmd->menu_name}</i>  RPJMD"));
         return back()->with('alert-success', 'File pendukung berhasil diupdate');
     }
 
-    public function destroyFile(FileRpjmd $fileRpjmd)
+    public function destroyFile(Request $request, FileRpjmd $fileRpjmd)
     {
         Storage::delete('public/file_pusda/' . $fileRpjmd->file_name);
         $fileRpjmd->delete();
-
+        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$fileRpjmd->file_name}</i>  RPJMD"));
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
-    public function downloadFile(FileRpjmd $fileRpjmd)
+    public function downloadFile(Request $request, FileRpjmd $fileRpjmd)
     {
         return Storage::download('public/file_pusda/' . $fileRpjmd->file_name);
+        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$fileRpjmd->file_name}</i>  RPJMD"));
     }
 
     public function updateSumberData(Request $request, UraianRpjmd $uraianRpjmd)
@@ -164,7 +167,7 @@ class RpjmdController extends Controller
 
         $uraianRpjmd->skpd_id = $request->sumber_data;
         $uraianRpjmd->save();
-
+        event(new UserLogged($request->user(), "Merubah sumber data pada uraian  <i>{$uraianRpjmd->uraian}</i>  RPJMD"));
         return back()->with('alert-success', 'Sumber data isi uraian berhasil diupdate');
     }
 }

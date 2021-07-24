@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\TreeView;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\Skpd;
 use App\Models\TabelRpjmd;
@@ -28,7 +29,7 @@ class RpjmdController extends Controller
         $validated['skpd_id'] = Auth::user()->skpd->id;
 
         TabelRpjmd::create($validated);
-
+        event(new UserLogged($request->user(), "Menambah data baru pada menu treeview RPJMD"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -50,16 +51,17 @@ class RpjmdController extends Controller
         ]);
 
         $tabelRpjmd->update($validated);
-
+        $tabelRpjmd->menu_name = $request->menu_name;
+        event(new UserLogged($request->user(), "Mengubah data pada treeview <i>{$tabelRpjmd->menu_name}</i> RPJMD"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $tabelRpjmd->delete();
         $tabelRpjmd->childs()->delete();
-
+        event(new UserLogged($request->user(), "Menghapus data treeeview <i>{$tabelRpjmd->menu_name}</i>  pada RPJMD"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

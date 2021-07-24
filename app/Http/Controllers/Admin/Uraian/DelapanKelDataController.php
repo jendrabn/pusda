@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
@@ -40,7 +41,7 @@ class DelapanKelDataController extends Controller
         ]);
 
         Uraian8KelData::create($validated);
-
+        event(new UserLogged($request->user(), "Menambah data baru pada uraian 8 Kelompok Data"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -63,14 +64,15 @@ class DelapanKelDataController extends Controller
         ]);
 
         $uraian8KelData->update($validated);
-
+        $uraian8KelData->uraian = $request->uraian;
+        event(new UserLogged($request->user(), "Mengubah data pada uraian <i>{$uraian8KelData->uraian}</i> 8 Kelompok Data"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy(Uraian8KelData $uraian8KelData)
+    public function destroy(Request $request, Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-
+        event(new UserLogged($request->user(), "Menghapus data uraian <i>{$uraian8KelData->uraian}</i>  pada 8 Kelompok Data"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

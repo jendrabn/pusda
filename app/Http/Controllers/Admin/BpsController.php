@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileBps;
 use App\Models\FiturBps;
@@ -89,13 +90,14 @@ class BpsController extends Controller
             $push->save();
             $n++;
         }
-
+        event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianBps->uraian}</i>  BPS"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
     }
 
-    public function destroy(UraianBps $uraianBps)
+    public function destroy(Request $request, UraianBps $uraianBps)
     {
         $uraianBps->delete();
+        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraianBps->uraian}</i>  BPS"));
         return back()->with('alert-success', 'Isi uraian berhasil dihapus');
     }
 
@@ -110,7 +112,7 @@ class BpsController extends Controller
         ]);
 
         $fiturBps->update($validated);
-
+        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fiturBps}</i>  BPS"));
         return back()->with('alert-success', 'Fitur berhasil diupdate');
     }
 
@@ -129,20 +131,21 @@ class BpsController extends Controller
             'tabel_bps_id' => $tabelBps->id,
             'file_name' =>  $fileName
         ]);
-
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelBps->menu_name}</i>  BPS"));
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 
-    public function destroyFile(FileBps $fileBps)
+    public function destroyFile(Request $request, FileBps $fileBps)
     {
         Storage::delete('public/file_pusda/' . $fileBps->file_name);
         $fileBps->delete();
-
+        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$fileBps->file_name}</i>  BPS"));
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
-    public function downloadFile(FileBps $fileBps)
+    public function downloadFile(Request $request, FileBps $fileBps)
     {
+        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$fileBps->file_name}</i>  BPS"));
         return Storage::download('public/file_pusda/' . $fileBps->file_name);
     }
 }

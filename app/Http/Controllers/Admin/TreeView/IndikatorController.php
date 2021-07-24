@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\TreeView;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\TabelIndikator;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class IndikatorController extends Controller
         ]);
 
         TabelIndikator::create($validated);
-
+        event(new UserLogged($request->user(), "Menambah data baru pada menu treeview Indikator"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -46,15 +47,17 @@ class IndikatorController extends Controller
         ]);
 
         $tabelIndikator->update($validated);
+        $tabelIndikator->menu_name = $request->menu_name;
+        event(new UserLogged($request->user(), "Mengubah data pada treeview <i>{$tabelIndikator->menu_name}</i> Indikator"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tabelIndikator = TabelIndikator::findOrFail($id);
         $tabelIndikator->delete();
         $tabelIndikator->childs()->delete();
-
+        event(new UserLogged($request->user(), "Menghapus data treeeview <i>{$tabelIndikator->menu_name}</i>  pada Indikator"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

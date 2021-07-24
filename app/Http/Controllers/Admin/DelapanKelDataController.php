@@ -130,7 +130,7 @@ class DelapanKelDataController extends Controller
         ]);
 
         $fitur8KelData->update($validated);
-
+        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fitur8KelData}</i>  8 Kelompok Data"));
         return back()->with('alert-success', 'Fitur berhasil diupdate');
     }
 
@@ -148,20 +148,21 @@ class DelapanKelDataController extends Controller
             'tabel_8keldata_id' => $tabel8KelData->id,
             'file_name' =>  $fileName
         ]);
-
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabel8KelData->menu_name}</i>  8 Kelompok Data"));
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 
-    public function destroyFile(File8KelData $file8KelData)
+    public function destroyFile(Request $request, File8KelData $file8KelData)
     {
         Storage::delete('public/file_pusda/' . $file8KelData->file_name);
         $file8KelData->delete();
-
+        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$file8KelData->file_name}</i>  8 Kelompok Data"));
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
-    public function downloadFile(File8KelData $file8KelData)
+    public function downloadFile(Request $request, File8KelData $file8KelData)
     {
+        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$file8KelData->file_name}</i>  8 Kelompok Data"));
         return Storage::download('public/file_pusda/' . $file8KelData->file_name);
     }
 
@@ -170,7 +171,7 @@ class DelapanKelDataController extends Controller
         $request->validate(['sumber_data' => ['required', 'exists:skpd,id']]);
         $uraian8KelData->skpd_id = $request->sumber_data;
         $uraian8KelData->save();
-
+        event(new UserLogged($request->user(), "Merubah sumber data pada uraian  <i>{$uraian8KelData->uraian}</i>  8 Kelompok Data"));
         return back()->with('alert-success', 'Sumber data isi uraian berhasil diupdate');
     }
 }
