@@ -15,7 +15,6 @@
   <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="{{ asset('assets/icons/logo-situbondo.png') }}">
   <title>@yield('title', 'Home') &mdash; Pusat Data Kabupaten Situbondo</title>
   <link rel="stylesheet" href="{{ asset('assets/module/jstree/dist/themes/default/style.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/module/DataTables/datatables.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
 
@@ -61,7 +60,6 @@
   @yield('outer')
   <script src="{{ asset('assets/js/app.js') }}"></script>
   <script src="{{ asset('assets/module/jstree/dist/jstree.min.js') }}"></script>
-  <script src="{{ asset('assets/module/DataTables/datatables.min.js') }}"></script>
   <script>
     $(function() {
       $('#dataTable').DataTable({

@@ -17,7 +17,6 @@
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/module/jstree/dist/themes/default/style.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/module/DataTables/datatables.min.css') }}">
   <style>
     #dataTable_length select {
       min-width: 65px;
@@ -63,7 +62,6 @@
 
   <script src="{{ asset('assets/js/app.js') }}"></script>
   <script src="{{ asset('assets/module/jstree/dist/jstree.min.js') }}"></script>
-  <script src="{{ asset('assets/module/DataTables/datatables.min.js') }}"></script>
   <script>
     $('#dataTable').DataTable({
       lengthMenu: [
