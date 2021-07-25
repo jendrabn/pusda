@@ -56,11 +56,8 @@ class IndikatorController extends Controller
         $request->validate([
             'uraian' => ['required', 'string'],
             'satuan' => ['required', 'string'],
-            't1' => ['required', 'numeric'],
-            't2' => ['required', 'numeric'],
-            't3' => ['required', 'numeric'],
-            't4' => ['required', 'numeric'],
-            't5' => ['required', 'numeric'],
+            'tahun' => ['required', 'numeric'],
+            'isi' => ['required', 'numeric'],
         ]);
 
         $uraianIndikator = UraianIndikator::findOrFail($request->uraian_id);
@@ -69,26 +66,13 @@ class IndikatorController extends Controller
         $uraianIndikator->save();
 
         $isiIndikator = IsiIndikator::where('uraian_indikator_id', $request->uraian_id)
-            ->take(5)
-            ->get()
-            ->sortBy('tahun');
+            ->where('tahun',$request->tahun)
+            ->get();
 
-        $n = 1;
         foreach ($isiIndikator as $value) {
             $push = IsiIndikator::findOrFail($value->id);
-            if ($n == 1) {
-                $push->isi = $request->t1;
-            } else if ($n == 2) {
-                $push->isi = $request->t2;
-            } else if ($n == 3) {
-                $push->isi = $request->t3;
-            } else if ($n == 4) {
-                $push->isi = $request->t4;
-            } else {
-                $push->isi = $request->t5;
-            }
+            $push->isi = $request->isi;
             $push->save();
-            $n++;
         }
         event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianIndikator->uraian}</i>  Indikator"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
