@@ -22,6 +22,7 @@
         @include('partials.alerts')
         <div class="card">
           <div class="card-body">
+
             <ul class="nav nav-tabs" id="tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table"
@@ -39,6 +40,10 @@
             <div class="tab-content tab-bordered" id="tab-content">
               <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="tabel-tab">
                 <div class="d-flex justify-content-end align-items-center">
+                  <button class="btn btn-success btn-icon icon-left mr-2" type="button" data-toggle="modal"
+                    data-target="#modalTahun">
+                    <i class="fas fa-calendar-alt"></i> Pengaturan Tahun
+                  </button>
                   @include('admin.isiuraian.partials.button-export', ['resource_name' => 'delapankeldata', 'table_id' =>
                   $tabel8KelData->id])
                 </div>
@@ -197,6 +202,10 @@
     </div>
 
     @include('admin.isiuraian.partials.hidden-form')
+    <form action="" method="post" id="deleteYearForm" hidden>
+      @csrf
+      @method('DELETE')
+    </form>
   </section>
 @endsection
 
@@ -211,6 +220,71 @@
   @include('admin.isiuraian.partials.modal-upload-file', ['action' => route('admin.delapankeldata.files.store',
   $tabel8KelData->id)
   ])
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="modalTahun" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Pengaturan Tahun</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formTambahTahun" action="{{ route('admin.delapankeldata.store_tahun', $tabel8KelData->id) }}"
+            method="POST">
+            @csrf
+            <div class="form-group mb-3">
+              <label for="tahun">Tambah Tahun</label>
+              <select name="tahun[]" id="tahun" class="form-control" multiple="multiple">
+                @php
+                  $yearOptions = array_filter(range(2015, 2030), function ($year) use ($years) {
+                      return !in_array($year, $years->toArray());
+                  });
+                @endphp
+                @foreach ($yearOptions as $year)
+                  <option value="{{ $year }}">{{ $year }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-block" type="submit">Simpan</button>
+            </div>
+          </form>
+
+          <div class="table-responsive">
+            <table class="table table-sm table-light table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Tahun</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($years as $i => $year)
+                  <tr>
+                    <td>{{ ++$i }}</td>
+                    <td>{{ $year }}</td>
+                    <th>
+                      <button data-url="{{ route('admin.delapankeldata.destroy_tahun', [$tabel8KelData->id, $year]) }}"
+                        class="btn btn-icon btn-sm btn-danger hapus-tahun m-1">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </th>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @push('scripts')
@@ -218,6 +292,69 @@
   <script>
     $(function() {
       initIsiUraianPage('delapankeldata');
+
+      $('#tahun').select2();
+
+      $('#formTambahTahun').on('submit', function(e) {
+        e.preventDefault();
+
+        $('#modalTahun').modal('hide')
+        Swal.fire({
+          title: 'Mohon tunggu sebentar...',
+          didOpen: () => {
+            Swal.showLoading()
+            $.ajax({
+              url: $('#formTambahTahun').attr('action'),
+              type: 'post',
+              dataType: 'json',
+              data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                tahun: $('select#tahun').val()
+              },
+              success: function(data) {
+                if (data.success) {
+                  Swal.fire({
+                    title: data.message,
+                    icon: 'success',
+                    timer: 1000
+                  })
+                  window.location.reload();
+                }
+              },
+              error: function(error) {
+                Swal.fire({
+                  title: 'Gagal menambahkan tahun',
+                  text: error.responseJSON.message || error.statusText,
+                  icon: 'error',
+                  showConfirmButton: true,
+                })
+              }
+            });
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+        })
+      });
+
+      $('.hapus-tahun').on('click', function(e) {
+        const url = $(this).data('url');
+        const form = $('#deleteYearForm');
+        form.prop('action', url);
+        console.log(url);
+        Swal.fire({
+          title: 'Apakah Anda Yakin?',
+          text: 'Semua isi uraian pada tahun tersebut juga akan dihapus!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Batal',
+          confirmButtonText: 'Hapus'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            form.submit();
+          }
+        })
+      });
     });
   </script>
 @endpush

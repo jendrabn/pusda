@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-edit" role="dialog" data-backdrop="static">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit</h5>
@@ -46,7 +46,7 @@
             <div class="form-group row {{ $index === count($years) - 1 ? 'mb-0' : '' }}">
               <label class="col-sm-2 col-form-label text-md-right">{{ $year }} <code>*</code></label>
               <div class="col-sm-10">
-                <input type="text" name="t{{ ++$index }}" class="form-control">
+                <input type="text" name="tahun_{{ $year }}" class="form-control">
               </div>
             </div>
           @endforeach

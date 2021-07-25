@@ -76,27 +76,32 @@ class Uraian8KelData extends Model
     {
         $uraian8KelData = self::where('tabel_8keldata_id', $id)->get();
 
-        if ($uraian8KelData->isNotEmpty()) {
-            $date = date('Y');
-            $i = $date - 4;
-            $uraian8KelData->each(function ($item) use ($i, $date) {
-                if (!is_null($item->parent_id)) {
-                    for ($dateList = $i; $dateList <= $date;) {
-                        $isi8KelData = Isi8KelData::where('uraian_8keldata_id', $item->id)
-                            ->where('tahun', $dateList)
-                            ->first();
-                        if ($isi8KelData === null) {
-                            Isi8KelData::create([
-                                'uraian_8keldata_id' => $item->id,
-                                'tahun' => $dateList,
-                                'isi' => 0
-                            ]);
-                        }
-                        $dateList++;
+        $years = Isi8KelData::query()
+            ->join('uraian_8keldata', 'isi_8keldata.uraian_8keldata_id', '=', 'uraian_8keldata.id')
+            ->join('tabel_8keldata', 'uraian_8keldata.tabel_8keldata_id', '=', 'tabel_8keldata.id')
+            ->where('tabel_8keldata.id', '=', $id)
+            ->groupBy('tahun')
+            ->select('tahun')
+            ->get();
+
+        $years = $years->map(function ($year) {
+            return $year->tahun;
+        });
+
+        $uraian8KelData->each(function ($uraian) use ($years) {
+            if (!is_null($uraian->parent_id)) {
+                foreach ($years as $year) {
+                    $isi = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->where('tahun', $year)->first();
+                    if (is_null($isi)) {
+                        Isi8KelData::create([
+                            'uraian_8keldata_id' => $uraian->id,
+                            'tahun' => $year,
+                            'isi' => 0
+                        ]);
                     }
                 }
-            });
-        }
+            }
+        });
 
         $uraian8KelData = self::where('tabel_8keldata_id', $id)->whereNull('parent_id')->get();
         return $uraian8KelData;

@@ -5,7 +5,7 @@
    <ul class="dropdown-menu">
      @foreach (\App\Models\SkpdCategory::all() as $skpd_category)
        <li class="nav-item"><a class="nav-link"
-           href="{{ route('admin.delapankeldata.category', $skpd_category->name) }}">{{ $skpd_category->name }}</a>
+           href="{{ route('admin.delapankeldata.index', $skpd_category->name) }}">{{ $skpd_category->name }}</a>
        </li>
      @endforeach
      <li class="nav-item"><a class="nav-link" href="{{ route('admin.delapankeldata.index') }}">8 Kel. Data</a></li>

@@ -3,14 +3,14 @@
     <span>Dashboard</span></a>
 </li>
 <li class="menu-header">Data Utama</li>
-<li class="dropdown {{ request()->is('admin/delapankeldata/category/*') ? 'active' : '' }}">
+<li class="dropdown {{ request()->is('admin/delapankeldata/*') ? 'active' : '' }}">
   <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book"></i>
     <span>8 Kelompok Data</span></a>
   <ul class="dropdown-menu">
     @foreach (\App\Models\SkpdCategory::all() as $skpd_category)
-      <li class="{{ request()->path() === 'admin/delapankeldata/category/' . $skpd_category->name ? 'active' : '' }}">
+      <li class="{{ request()->path() === 'admin/delapankeldata/' . $skpd_category->name ? 'active' : '' }}">
         <a class="nav-link"
-          href="{{ route('admin.delapankeldata.category', [$skpd_category->name]) }}">{{ $skpd_category->name }}</a>
+          href="{{ route('admin.delapankeldata.index', [$skpd_category->name]) }}">{{ $skpd_category->name }}</a>
       </li>
     @endforeach
     <li class=""><a class="nav-link" href="{{ route('admin.delapankeldata.index') }}">8 Kel. Data</a></li>

@@ -48,15 +48,23 @@ integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="ano
     modal.find('input[name=uraian_id]').val(uraian_id);
     modal.find('input[name=uraian_parent_id]').val(uraian_parent_id);
     if (ketersedian_data) {
-      modal.find('select[name=ketersediaan_data]').val(ketersedian_data);
+      $val = ketersedian_data;
+      if ($val === true) {
+        $val = 1;
+      }
+      if ($val === false) {
+        $val = 0;
+      }
+      modal.find('select[name=ketersediaan_data]').val($val);
     }
+
     isi.sort((a, b) => a.tahun - b.tahun);
-    isi.forEach((value, index) => modal.find(`input[name=t${++index}]`).val(
+    isi.forEach((value, index) => modal.find(`input[name=tahun_${value.tahun}]`).val(
       value.isi));
   }
 
   function handleUpdateSumberData(resourceName) {
-    $('select.sumber-data').on('change', function(event) {
+    $('#isi-uraian-table').on('change', 'select.sumber-data', function(event) {
       const id = $(this).data('id');
       const form = $('#form-update-sumber-data');
       form.prop('action', `/admin/${resourceName}/sumber_data/${id}`);

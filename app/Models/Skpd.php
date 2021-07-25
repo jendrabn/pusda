@@ -47,6 +47,11 @@ class Skpd extends Model
         return $this->hasMany(UraianRpjmd::class, 'skpd_id');
     }
 
+    public function uraian8KelData()
+    {
+        return $this->hasMany(Uraian8KelData::class, 'skpd_id');
+    }
+
     public function skpdCategory()
     {
         return $this->belongsTo(SkpdCategory::class, 'skpd_category_id');

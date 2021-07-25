@@ -32,7 +32,7 @@
                {{ $uraian->isi8KelData()->where('tahun', $y)->first()->isi ?? 0 }}
              </th>
            @endforeach
-           <th>{{ $uraian->sumberData->nama ?? '' }}</th>
+           <th>{{ $uraian->skpd->nama ?? '' }}</th>
          </tr>
        @endforeach
      @endforeach

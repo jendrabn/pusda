@@ -18,14 +18,20 @@ class Isi8KelData extends Model
         return $this->belongsTo(Uraian8KelData::class, 'uraian_8keldata_id');
     }
 
-    public static function getYears($limit = 5)
+    public static function getYears($tabel8KelDataId)
     {
-        $years = self::orderByDesc('tahun')
+        $years = Isi8KelData::query()
+            ->join('uraian_8keldata', 'isi_8keldata.uraian_8keldata_id', '=', 'uraian_8keldata.id')
+            ->join('tabel_8keldata', 'uraian_8keldata.tabel_8keldata_id', '=', 'tabel_8keldata.id')
+            ->where('tabel_8keldata.id', '=', $tabel8KelDataId)
             ->groupBy('tahun')
-            ->take($limit)
-            ->get('tahun')
-            ->sortBy('tahun');
-        $years = $years->map(fn ($item) => $item->tahun)->values();
+            ->select('tahun')
+            ->orderBy('tahun')
+            ->get();
+        $years = $years->map(function ($year) {
+            return $year->tahun;
+        });
+
         return $years;
     }
 }

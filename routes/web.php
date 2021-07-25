@@ -145,8 +145,9 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::name('delapankeldata.')->prefix('delapankeldata')->group(function () {
-            Route::get('/category/{skpd_category}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'category'])->name('category');
-            Route::get('/{tabel8KelData?}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'index'])->name('index');
+            Route::get('/{skpd_category?}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'index'])->name('index');
+            Route::get('/skpd/{skpd}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'skpd'])->name('skpd');
+            Route::get('/input/{tabel8KelData}/{skpd?}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'input'])->name('input');
             Route::get('/{uraian8KelData}/edit', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'edit'])->name('edit');
             Route::put('/', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'update'])->name('update');
             Route::delete('/{uraian8KelData}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'destroy'])->name('destroy');
@@ -155,6 +156,8 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/files/{file8KelData}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'destroyFile'])->name('files.destroy');
             Route::get('/files/download/{file8KelData}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'downloadFile'])->name('files.download');
             Route::put('/sumber_data/{uraian8KelData}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'updateSumberData']);
+            Route::post('/tahun/{tabel8KelData}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'storeTahun'])->name('store_tahun');
+            Route::delete('/tahun/{tabel8KelData}/{tahun}', [App\Http\Controllers\Admin\DelapanKelDataController::class, 'destroyTahun'])->name('destroy_tahun');
         });
 
         Route::name('indikator.')->prefix('indikator')->group(function () {

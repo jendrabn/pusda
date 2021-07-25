@@ -13,7 +13,6 @@
   <meta name="theme-color" content="#445566">
   <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/icons/logo-situbondo.png') }}">
   <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="{{ asset('assets/icons/logo-situbondo.png') }}">
-
   <title>@yield('title', 'Home') &mdash; Pusat Data Kabupaten Situbondo</title>
   <link rel="stylesheet" href="{{ asset('assets/module/jstree/dist/themes/default/style.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/module/DataTables/datatables.min.css') }}">

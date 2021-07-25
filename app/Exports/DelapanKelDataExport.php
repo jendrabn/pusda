@@ -28,7 +28,7 @@ class DelapanKelDataExport implements FromView, ShouldAutoSize
         $uraian8KelData = Uraian8KelData::getUraianByTableId($this->id);
         $fitur8Keldata = Fitur8KelData::getFiturByTableId($this->id);
         $files = File8KelData::where('tabel_8keldata_id',  $this->id)->get();
-        $years = Isi8KelData::getYears();
+        $years = Isi8KelData::getYears($this->id);
 
         return view('exports.8keldata', compact('uraian8KelData', 'fitur8Keldata', 'files', 'years'));
     }

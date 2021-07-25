@@ -16,31 +16,50 @@ use Illuminate\Support\Facades\Storage;
 
 class DelapanKelDataController extends Controller
 {
-    public function category(Request $request, $categoryName)
+    public function index($skpdCategory = null)
     {
-        $skpdCategory = SkpdCategory::where('name', $categoryName)->firstOrFail();
-        $skpd =  $skpdCategory->skpd()->get();
-        return view('admin.isiuraian.8keldata.category', compact('skpd', 'skpdCategory'));
-    }
-
-    public function index(Request $request, Tabel8KelData $tabel8KelData = null)
-    {
-        $categories = Tabel8KelData::all();
-
-        $skpdCategory = SkpdCategory::where('name', $request->input('category'))->first();
-        $skpdIds =  $skpdCategory ? $skpdCategory->skpd()->get('id') : null;
-
-        if (is_null($tabel8KelData)) {
-            return view('admin.isiuraian.8keldata.index', compact('categories', 'skpdIds'));
+        if ($skpdCategory) {
+            $skpdCategory = SkpdCategory::where('name', $skpdCategory)->firstOrFail();
+            $skpd = $skpdCategory->skpd;
+            return view('admin.isiuraian.8keldata.category', compact('skpd', 'skpdCategory'));
         }
 
-        $uraian8KelData = Uraian8KelData::getUraianByTableId($tabel8KelData->id);
-        $fitur8KelData = Fitur8KelData::getFiturByTableId($tabel8KelData->id);
-        $files = File8KelData::where('tabel_8keldata_id', $tabel8KelData->id)->get();
-        $years = Isi8KelData::getYears();
+        $categories = Tabel8KelData::all();
+        return view('admin.isiuraian.8keldata.index', compact('categories'));
+    }
+
+    public function input(Request $request, Tabel8KelData $tabel8KelData, Skpd $skpd = null)
+    {
+        $tabel8KelDataIds = null;
+        $tabel8KelDataId = $tabel8KelData->id;
+
+        if ($skpd) {
+            $tabel8KelDataIds = $skpd->uraian8KelData()
+                ->select('tabel_8keldata_id')
+                ->groupBy('tabel_8keldata_id')
+                ->get();
+        }
+
+        $categories = Tabel8KelData::all();
+        $uraian8KelData = Uraian8KelData::getUraianByTableId($tabel8KelDataId);
+        $fitur8KelData = Fitur8KelData::getFiturByTableId($tabel8KelDataId);
+        $files = File8KelData::where('tabel_8keldata_id', $tabel8KelDataId)->get();
+        $years = Isi8KelData::getYears($tabel8KelDataId);
         $allSkpd = Skpd::all()->pluck('singkatan', 'id');
 
-        return view('admin.isiuraian.8keldata.create', compact('categories', 'tabel8KelData', 'uraian8KelData',  'fitur8KelData', 'files', 'years', 'allSkpd', 'skpdIds'));
+        return view('admin.isiuraian.8keldata.input', compact('categories', 'skpd', 'tabel8KelData', 'uraian8KelData',  'fitur8KelData', 'files', 'years', 'allSkpd', 'tabel8KelDataIds'));
+    }
+
+    public function skpd(Skpd $skpd)
+    {
+        $tabel8KelDataIds = $skpd->uraian8KelData()
+            ->select('tabel_8keldata_id')
+            ->groupBy('tabel_8keldata_id')
+            ->get();
+
+        $categories = Tabel8KelData::all();
+
+        return view('admin.isiuraian.8keldata.index', compact('categories', 'tabel8KelDataIds', 'skpd'));
     }
 
     public function edit(Request $request, Uraian8KelData $uraian8KelData)
@@ -50,7 +69,6 @@ class DelapanKelDataController extends Controller
         $isi8KelData = $uraian8KelData->isi8KelData()
             ->orderByDesc('tahun')
             ->groupBy('tahun')
-            ->take(5)
             ->get(['tahun', 'isi']);
 
         $response = [
@@ -68,44 +86,44 @@ class DelapanKelDataController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $uraian8KelData = Uraian8KelData::findOrFail($request->uraian_id);
+
+        $years = $uraian8KelData->isi8KelData()
+            ->select('tahun')
+            ->get()
+            ->map(fn ($year) => $year->tahun);
+
+        $rules = [
             'uraian' => ['required', 'string'],
             'satuan' => ['required', 'string'],
             'ketersediaan_data' => ['required', 'integer'],
-            't1' => ['required', 'numeric'],
-            't2' => ['required', 'numeric'],
-            't3' => ['required', 'numeric'],
-            't4' => ['required', 'numeric'],
-            't5' => ['required', 'numeric'],
+        ];
+
+        $customMessages = [];
+
+        foreach ($years as $year) {
+            $key = 'tahun_' . $year;
+            $rules[$key] = ['required', 'numeric'];
+            $customMessages[$key . '.required'] = "Data tahun {$year} wajib diisi";
+            $customMessages[$key . '.numeric'] = "Data tahun {$year} harus berupa angka";
+        }
+
+        $this->validate($request, $rules, $customMessages);
+
+        $uraian8KelData->update([
+            'uraian' => $request->uraian,
+            'satuan' =>  $request->satuan,
+            'ketersediaan_data' => $request->ketersediaan_data
         ]);
 
-        $uraian8KelData = Uraian8KelData::findOrFail($request->uraian_id);
-        $uraian8KelData->uraian = $request->uraian;
-        $uraian8KelData->satuan = $request->satuan;
-        $uraian8KelData->ketersediaan_data = $request->ketersediaan_data;
-        $uraian8KelData->save();
-
         $isi8KelData = Isi8KelData::where('uraian_8keldata_id', $request->uraian_id)
-            ->take(5)
             ->get()
             ->sortBy('tahun');
 
-        $n = 1;
         foreach ($isi8KelData as $value) {
-            $push = Isi8KelData::findOrFail($value->id);
-            if ($n == 1) {
-                $push->isi = $request->t1;
-            } else if ($n == 2) {
-                $push->isi = $request->t2;
-            } else if ($n == 3) {
-                $push->isi = $request->t3;
-            } else if ($n == 4) {
-                $push->isi = $request->t4;
-            } else {
-                $push->isi = $request->t5;
-            }
-            $push->save();
-            $n++;
+            $isi = Isi8KelData::find($value->id);
+            $isi->isi = $request->get('tahun_' . $isi->tahun);
+            $isi->save();
         }
 
         event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraian8KelData->uraian}</i>  8 Kelompok Data"));
@@ -172,5 +190,42 @@ class DelapanKelDataController extends Controller
         $uraian8KelData->save();
 
         return back()->with('alert-success', 'Sumber data isi uraian berhasil diupdate');
+    }
+
+    public function storeTahun(Request $request, Tabel8KelData $tabel8KelData)
+    {
+        abort_if(!$request->ajax(), 404);
+
+        $request->validate(['tahun' => ['required', 'array']]);
+
+        $tabel8KelData->uraian8KelData->each(function ($uraian) use ($request) {
+            foreach ($request->tahun as $tahun) {
+                if (!is_null($uraian->parent_id)) {
+                    $isi8KelData = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->where('tahun', $tahun)->first();
+                    if (is_null($isi8KelData)) {
+                        Isi8KelData::create([
+                            'uraian_8keldata_id' => $uraian->id,
+                            'tahun' => $tahun,
+                            'isi' => 0
+                        ]);
+                    }
+                }
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menambahkan tahun'
+        ], 201);
+    }
+
+    public function destroyTahun(Tabel8KelData $tabel8KelData, $year)
+    {
+        $uraian8KelData = $tabel8KelData->uraian8KelData;
+        $uraian8KelData->each(function ($uraian) use ($year) {
+            $uraian->isi8KelData()->where('tahun', $year)->delete();
+        });
+
+        return back()->with('alert-success', 'Berhasil menghapus tahun');
     }
 }
