@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
@@ -37,6 +38,7 @@ class IndikatorController extends Controller
         ]);
 
         UraianIndikator::create($validated);
+        event(new UserLogged($request->user(), "Menambah data baru pada uraian Indikator"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -63,12 +65,15 @@ class IndikatorController extends Controller
         ]);
 
         $uraianIndikator->update($validated);
+        $uraianIndikator->uraian = $request->uraian;
+        event(new UserLogged($request->user(), "Mengubah data pada uraian <i>{$uraianIndikator->uraian}</i> Indikator"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy(UraianIndikator $uraianIndikator)
+    public function destroy(Request $request, UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
+        event(new UserLogged($request->user(), "Menghapus data uraian <i>{$uraianIndikator->uraian}</i>  pada Indikator"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Log Users 
         Route::get('/userlog', [\App\Http\Controllers\Admin\LogUserController::class, 'index'])->name('userlog.index');
-        Route::delete('/userlog/{userLog}', [\App\Http\Controllers\Admin\LogUserController::class, 'destroy'])->name('userlog.destroy');
+        Route::delete('/userlog/delete/{id}', [\App\Http\Controllers\Admin\LogUserController::class, 'destroy'])->name('userlog.destroy');
         Route::delete('/userlog', [\App\Http\Controllers\Admin\LogUserController::class, 'destroyAll'])->name('userlog.destroyall');
 
         // Menu Data Pengunjung

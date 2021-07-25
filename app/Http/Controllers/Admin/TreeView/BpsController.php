@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\TreeView;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\TabelBps;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class BpsController extends Controller
         ]);
 
         TabelBps::create($validated);
-
+        event(new UserLogged($request->user(), "Menambah data baru pada menu treeview BPS"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -44,16 +45,17 @@ class BpsController extends Controller
         ]);
 
         $tabelBps->update($validated);
-
+        $tabelBps->menu_name = $request->menu_name;
+        event(new UserLogged($request->user(), "Mengubah data pada treeview <i>{$tabelBps->menu_name}</i> BPS"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tabelBps = TabelBps::findOrFail($id);
         $tabelBps->delete();
         $tabelBps->childs()->delete();
-
+        event(new UserLogged($request->user(), "Menghapus data treeeview <i>{$tabelBps->menu_name}</i>  pada BPS"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

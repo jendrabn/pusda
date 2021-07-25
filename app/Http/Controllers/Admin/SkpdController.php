@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
@@ -25,6 +26,7 @@ class SkpdController extends Controller
         ]);
 
         Skpd::create($validated);
+        event(new UserLogged($request->user(), "Menambah data SKPD baru"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -43,12 +45,15 @@ class SkpdController extends Controller
         ]);
 
         $skpd->update($validated);
+        $skpd->singkatan = $request->singkatan;
+        event(new UserLogged($request->user(), "Mengubah data SKPD  <i>{$skpd->singkatan}</i>  "));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy(Skpd $skpd)
+    public function destroy(Request $request, Skpd $skpd)
     {
         $skpd->delete();
+        event(new UserLogged($request->user(), "Menghapus data SKPD"));
         return back()->with('alert-success', 'Berhasil menghapus data SKPD');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelRpjmd;
@@ -41,6 +42,7 @@ class RpjmdController extends Controller
         ]);
 
         UraianRpjmd::create($validated);
+        event(new UserLogged($request->user(), "Menambah data baru pada uraian RPJMD"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -68,12 +70,15 @@ class RpjmdController extends Controller
 
 
         $uraianRpjmd->update($validated);
+        $uraianRpjmd->uraian = $request->uraian;
+        event(new UserLogged($request->user(), "Mengubah data pada uraian <i>{$uraianRpjmd->uraian}</i> RPJMD"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy(UraianRpjmd $uraianRpjmd)
+    public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
+        event(new UserLogged($request->user(), "Menghapus data uraian <i>{$uraianRpjmd->uraian}</i>  pada RPJMD"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

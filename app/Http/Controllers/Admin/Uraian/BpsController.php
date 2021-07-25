@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
@@ -38,7 +39,7 @@ class BpsController extends Controller
         ]);
 
         UraianBps::create($validated);
-
+        event(new UserLogged($request->user(), "Menambah data baru pada uraian BPS"));
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -61,12 +62,15 @@ class BpsController extends Controller
         ]);
 
         $uraianBps->update($validated);
+        $uraianBps->uraian = $request->uraian;
+        event(new UserLogged($request->user(), "Mengubah data pada uraian <i>{$uraianBps->uraian}</i> BPS"));
         return back()->with('alert-success', 'Data berhasil diupdate');
     }
 
-    public function destroy(UraianBps $uraianBps)
+    public function destroy(Request $request, UraianBps $uraianBps)
     {
         $uraianBps->delete();
+        event(new UserLogged($request->user(), "Menghapus data uraian <i>{$uraianBps->uraian}</i>  pada BPS"));
         return back()->with('alert-success', 'Data berhasil dihapus');
     }
 }

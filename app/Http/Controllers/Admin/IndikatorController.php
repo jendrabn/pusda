@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileIndikator;
 use App\Models\FiturIndikator;
@@ -89,13 +90,14 @@ class IndikatorController extends Controller
             $push->save();
             $n++;
         }
-
+        event(new UserLogged($request->user(), "Mengubah uraian  {$uraianIndikator->uraian}  Indikator"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
     }
 
-    public function destroy(UraianIndikator $uraianIndikator)
+    public function destroy(Request $request, UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
+        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraianIndikator->uraian}</i>  Indikator"));
         return back()->with('alert-success', 'Isi uraian berhasil dihapus');
     }
 
@@ -110,7 +112,7 @@ class IndikatorController extends Controller
         ]);
 
         $fiturIndikator->update($validated);
-
+        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fiturIndikator}</i>  Indikator"));
         return back()->with('alert-success', 'Fitur berhasil diupdate');
     }
 
@@ -128,20 +130,21 @@ class IndikatorController extends Controller
             'tabel_indikator_id' => $tabelIndikator->id,
             'file_name' =>  $fileName
         ]);
-
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelIndikator->menu_name}</i>  Indikator"));
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 
-    public function destroyFile(FileIndikator $fileIndikator)
+    public function destroyFile(Request $request, FileIndikator $fileIndikator)
     {
         Storage::delete('public/file_pusda/' . $fileIndikator->file_name);
         $fileIndikator->delete();
-
+        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$fileIndikator->file_name}</i>  Indikator"));
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
-    public function downloadFile(FileIndikator $fileIndikator)
+    public function downloadFile(Request $request, FileIndikator $fileIndikator)
     {
         return Storage::download('public/file_pusda/' . $fileIndikator->file_name);
+        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$fileIndikator->file_name}</i>  Indikator"));
     }
 }
