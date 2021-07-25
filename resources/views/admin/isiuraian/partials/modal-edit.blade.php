@@ -41,23 +41,15 @@
               </div>
             @endif
           @endisset
-          <div class="form-group row">
-              <label class="col-sm-2 col-form-label text-md-right">Tahun <code>*</code></label>
+
+          @foreach ($years as $index => $year)
+            <div class="form-group row {{ $index === count($years) - 1 ? 'mb-0' : '' }}">
+              <label class="col-sm-2 col-form-label text-md-right">{{ $year }} <code>*</code></label>
               <div class="col-sm-10">
-                <select name="tahun" class="form-control">
-                  @foreach ($years as $index => $year)
-                    <option value="none" selected disabled hidden>--Silahkan Pilih--</option>
-                    <option value="{{$year}}">{{$year}}</option>
-                  @endforeach
-                </select>
+                <input type="text" name="t{{ ++$index }}" class="form-control">
               </div>
             </div>
-          <div class="form-group row">
-              <label class="col-sm-2 col-form-label text-md-right">isi <code>*</code></label>
-              <div class="col-sm-10">
-                <input type="text" name="isi" class="form-control">
-              </div>
-            </div>
+          @endforeach
         </form>
       </div>
       <div class="modal-footer d-flex justify-content-between">

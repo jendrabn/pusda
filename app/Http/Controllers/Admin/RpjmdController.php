@@ -71,8 +71,11 @@ class RpjmdController extends Controller
             'uraian' => ['required', 'string'],
             'satuan' => ['required', 'string'],
             'ketersediaan_data' => ['required', 'integer'],
-            'tahun' => ['required', 'numeric'],
-            'isi' => ['required', 'numeric'],
+            't1' => ['required', 'numeric'],
+            't2' => ['required', 'numeric'],
+            't3' => ['required', 'numeric'],
+            't4' => ['required', 'numeric'],
+            't5' => ['required', 'numeric'],
         ]);
 
         $uraianRpjmd = UraianRpjmd::findOrFail($request->uraian_id);
@@ -81,14 +84,24 @@ class RpjmdController extends Controller
         $uraianRpjmd->ketersediaan_data = $request->ketersediaan_data;
         $uraianRpjmd->save();
 
-        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $request->uraian_id)
-            ->where('tahun', $request->tahun)
-            ->get();
+        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $request->uraian_id)->take(5)->get()->sortBy('tahun');
 
+        $n = 1;
         foreach ($isiRpjmd as $value) {
             $push = IsiRpjmd::findOrFail($value->id);
-            $push->isi = $request->isi;
+            if ($n == 1) {
+                $push->isi = $request->t1;
+            } else if ($n == 2) {
+                $push->isi = $request->t2;
+            } else if ($n == 3) {
+                $push->isi = $request->t3;
+            } else if ($n == 4) {
+                $push->isi = $request->t4;
+            } else {
+                $push->isi = $request->t5;
+            }
             $push->save();
+            $n++;
         }
         event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianRpjmd->uraian}</i>  RPJMD"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
