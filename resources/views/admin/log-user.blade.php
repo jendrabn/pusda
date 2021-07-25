@@ -29,29 +29,13 @@
             <thead>
               <tr>
                 <th class="text-center">No</th>
-                <th>Nama</th>
+                <th>Name</th>
                 <th>SKPD</th>
                 <th>Tipe</th>
                 <th>Waktu</th>
                 <th class="text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              @foreach ($userLogs as $index => $log)
-                <tr>
-                  <td class="text-center">{{ ++$index }}</td>
-                  <td>{{ $log->user->name }} <span class="text-danger">[{{ $log->user->role }}]</span> </td>
-                  <td>{{ $log->user->skpd->singkatan }}</td>
-                  <td>{!! $log->type !!}</td>
-                  <td>{{ $log->created_at->diffForHumans() }}</td>
-                  <td class="text-center">
-                    <button data-url="{{ route('admin.userlog.destroy', $log->id) }}"
-                      class="btn btn-icon btn-sm btn-danger m-1 btn-delete"><i class="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
           </table>
         </div>
       </div>
@@ -65,13 +49,48 @@
 @endsection
 
 @push('scripts')
-  <script>
-    $(function() {
-      $('#dataTable').on('click', 'tbody .btn-delete', function() {
-        $('#form-delete').prop('action', $(this).data('url'))
-        $('#form-delete').submit()
-      })
 
+  <script>
+    $(document).ready(function() {
+      isi()
+    })
+    function isi() {
+      $('#dataTable').DataTable({
+        serverside : true,
+        responsive : true,
+        "bDestroy": true,
+        ajax : {
+          url : "{{route('admin.userlog.index')}}"
+        },
+        columns:[
+          {
+            "data" : null, "sortable": false,
+            render : function (data, type, row, meta){
+              return meta.row + meta.settings._iDisplayStart + 1
+            }
+          },
+          {data: 'name', name:'name'},
+          {data: 'SKPD', name:'SKPD'},
+          {data: 'type', name:'type'},
+          {data: 'created_at', name:'created_at'},
+          {data: 'aksi', name: 'aksi'}
+          ]
+      })
+    }
+    $(document).on('click', '.btn-delete', function () {
+     
+    var id = $(this).attr('id');
+     $.ajax({
+       type: 'DELETE',
+      url: "{{ url('admin/userlog/delete' ) }}"+'/'+ id,
+      data: {"_token": '{{csrf_token()}}' },
+         success: function () {
+             $('#dataTable').DataTable().ajax.reload()
+         }
+     });
+ });
+
+    $(function() {
       $('#btn-deleteall').click(function() {
         Swal.fire({
           title: 'Hapus semua log user login ?',

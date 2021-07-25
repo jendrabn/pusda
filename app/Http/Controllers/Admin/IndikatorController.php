@@ -90,7 +90,7 @@ class IndikatorController extends Controller
             $push->save();
             $n++;
         }
-        event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianIndikator->uraian}</i>  Indikator"));
+        event(new UserLogged($request->user(), "Mengubah uraian  {$uraianIndikator->uraian}  Indikator"));
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
     }
 
