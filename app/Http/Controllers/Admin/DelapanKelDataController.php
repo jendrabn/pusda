@@ -126,14 +126,17 @@ class DelapanKelDataController extends Controller
             $isi->save();
         }
 
-        event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraian8KelData->uraian}</i>  8 Kelompok Data"));
+        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel 8 kelompok data'));
+
         return back()->with('alert-success', 'Isi uraian berhasil diupdate');
     }
 
     public function destroy(Request $request, Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraian8KelData->uraian}</i>  8 Kelompok Data"));
+
+        event(new UserLogged($request->user(), 'Menghapus uraian tabel 8 Kelompok Data'));
+
         return back()->with('alert-success', 'Isi uraian berhasil dihapus');
     }
 
@@ -148,7 +151,9 @@ class DelapanKelDataController extends Controller
         ]);
 
         $fitur8KelData->update($validated);
-        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fitur8KelData}</i>  8 Kelompok Data"));
+
+        event(new UserLogged($request->user(), 'Mengubah fitur tabel 8 kelompok data'));
+
         return back()->with('alert-success', 'Fitur berhasil diupdate');
     }
 
@@ -166,7 +171,9 @@ class DelapanKelDataController extends Controller
             'tabel_8keldata_id' => $tabel8KelData->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabel8KelData->menu_name}</i>  8 Kelompok Data"));
+
+        event(new UserLogged($request->user(), 'Menambah file pendukung tabel 8 kelompok data'));
+
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 
@@ -174,13 +181,16 @@ class DelapanKelDataController extends Controller
     {
         Storage::delete('public/file_pusda/' . $file8KelData->file_name);
         $file8KelData->delete();
-        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$file8KelData->file_name}</i>  8 Kelompok Data"));
+
+        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel 8 kelompok data'));
+
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
     public function downloadFile(Request $request, File8KelData $file8KelData)
     {
-        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$file8KelData->file_name}</i>  8 Kelompok Data"));
+        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel 8 Kelompok Data'));
+
         return Storage::download('public/file_pusda/' . $file8KelData->file_name);
     }
 
@@ -189,7 +199,9 @@ class DelapanKelDataController extends Controller
         $request->validate(['sumber_data' => ['required', 'exists:skpd,id']]);
         $uraian8KelData->skpd_id = $request->sumber_data;
         $uraian8KelData->save();
-        event(new UserLogged($request->user(), "Merubah sumber data pada uraian  <i>{$uraian8KelData->uraian}</i>  8 Kelompok Data"));
+
+        event(new UserLogged($request->user(), 'Mengubah sumber data uraian tabel 8 kelompok data'));
+
         return back()->with('alert-success', 'Sumber data isi uraian berhasil diupdate');
     }
 
@@ -214,18 +226,22 @@ class DelapanKelDataController extends Controller
             }
         });
 
+        event(new UserLogged($request->user(), 'Menambah tahun tabel 8 kelompok data'));
+
         return response()->json([
             'success' => true,
             'message' => 'Berhasil menambahkan tahun'
         ], 201);
     }
 
-    public function destroyTahun(Tabel8KelData $tabel8KelData, $year)
+    public function destroyTahun(Request $request, Tabel8KelData $tabel8KelData, $year)
     {
         $uraian8KelData = $tabel8KelData->uraian8KelData;
         $uraian8KelData->each(function ($uraian) use ($year) {
             $uraian->isi8KelData()->where('tahun', $year)->delete();
         });
+
+        event(new UserLogged($request->user(), 'Menghapus tahun tabel 8 kelompok data'));
 
         return back()->with('alert-success', 'Berhasil menghapus tahun');
     }

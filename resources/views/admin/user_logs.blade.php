@@ -20,23 +20,12 @@
         <h4>Log User</h4>
         <div class="card-header-action">
           <button class="btn btn-icon icon-left btn-danger" id="btn-deleteall"><i class="fas fa-trash-alt"></i> Hapus
-            Semua Data</button>
+            Semua Log</button>
         </div>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-bordered" id="dataTable">
-            <thead>
-              <tr>
-                <th class="text-center">No</th>
-                <th>Name</th>
-                <th>SKPD</th>
-                <th>Tipe</th>
-                <th>Waktu</th>
-                <th class="text-center">Aksi</th>
-              </tr>
-            </thead>
-          </table>
+          {{ $dataTable->table(['class' => 'table table-striped table-bordered w-100']) }}
         </div>
       </div>
     </div>
@@ -49,52 +38,14 @@
 @endsection
 
 @push('scripts')
-
+  <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+  {{ $dataTable->scripts() }}
   <script>
-    $(document).ready(function() {
-      isi()
-    })
-    function isi() {
-      $('#dataTable').DataTable({
-        serverside : true,
-        responsive : true,
-        "bDestroy": true,
-        ajax : {
-          url : "{{route('admin.userlog.index')}}"
-        },
-        columns:[
-          {
-            "data" : null, "sortable": false,
-            render : function (data, type, row, meta){
-              return meta.row + meta.settings._iDisplayStart + 1
-            }
-          },
-          {data: 'name', name:'name'},
-          {data: 'SKPD', name:'SKPD'},
-          {data: 'type', name:'type'},
-          {data: 'created_at', name:'created_at'},
-          {data: 'aksi', name: 'aksi'}
-          ]
-      })
-    }
-    $(document).on('click', '.btn-delete', function () {
-     
-    var id = $(this).attr('id');
-     $.ajax({
-       type: 'DELETE',
-      url: "{{ url('admin/userlog/delete' ) }}"+'/'+ id,
-      data: {"_token": '{{csrf_token()}}' },
-         success: function () {
-             $('#dataTable').DataTable().ajax.reload()
-         }
-     });
- });
-
     $(function() {
       $('#btn-deleteall').click(function() {
         Swal.fire({
-          title: 'Hapus semua log user login ?',
-          text: "Data yang dihapus tidak bisa dikembalikan!",
+          title: 'Hapus semua log user?',
+          text: 'Data yang sudah dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

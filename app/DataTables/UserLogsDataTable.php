@@ -2,7 +2,9 @@
 
 namespace App\DataTables;
 
+use App\Models\User;
 use App\Models\UserLog;
+use Illuminate\Support\Carbon;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -21,7 +23,11 @@ class UserLogsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'userlogs.action');
+            ->editColumn('created_at', function ($log) {
+                return $log->created_at ? with(new Carbon($log->created_at))->diffForHumans() : '';
+            })
+            ->addIndexColumn()
+            ->rawColumns([]);
     }
 
     /**
@@ -32,7 +38,7 @@ class UserLogsDataTable extends DataTable
      */
     public function query(UserLog $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->latest('created_at')->with(['user']);
     }
 
     /**
@@ -43,18 +49,10 @@ class UserLogsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('userlogs-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('userlogs')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(1);
     }
 
     /**
@@ -65,15 +63,11 @@ class UserLogsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::computed('DT_RowIndex', '#'),
+            Column::make('nama')->data('user.name')->name('user.name')->orderable(false),
+            Column::make('level')->data('user.role')->orderable(false)->searchable(false),
+            Column::make('type')->title('Tipe'),
+            Column::make('created_at')->title('Waktu'),
         ];
     }
 
