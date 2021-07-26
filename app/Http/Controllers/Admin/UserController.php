@@ -39,9 +39,11 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $validated['password'] =  Hash::make($request->password);
-        User::create($validated);
-        event(new UserLogged($request->user(), "Menambah User Baru"));
-        return redirect()->route('admin.users.index')->with('status', 'Berhasil menambahkan user');
+        $user = User::create($validated);
+
+        event(new UserLogged($request->user(), 'Menambahkan user baru dengan nama ' . $user->name));
+
+        return redirect()->route('admin.users.index')->with('status', 'Berhasil menambahkan user baru');
     }
 
     public function edit(User $user)
@@ -63,14 +65,19 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        event(new UserLogged($request->user(), "Mengubah data User "));
-        return back()->with('alert-success', 'User berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah data user ' . $user->name));
+
+        return back()->with('alert-success', 'Data user berhasil diupdate');
     }
 
     public function destroy(Request $request, User $user)
     {
+        $name = $user->name;
         $user = $user->delete();
-        event(new UserLogged($request->user(), "Menghapus data User "));
+
+        event(new UserLogged($request->user(), 'Menghapus user ' . $name));
+
         return back()->with('alert-success', 'User berhasil dihapus');
     }
 }

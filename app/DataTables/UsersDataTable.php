@@ -3,15 +3,13 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use App\Models\UserLog;
-use Illuminate\Support\Carbon;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UserLogsDataTable extends DataTable
+class UsersDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,22 +21,18 @@ class UserLogsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('created_at', function ($log) {
-                return $log->created_at ? with(new Carbon($log->created_at))->diffForHumans() : '';
-            })
-            ->addIndexColumn()
-            ->rawColumns([]);
+            ->addColumn('action', 'users.action');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\UserLog $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(UserLog $model)
+    public function query(User $model)
     {
-        return $model->newQuery()->latest('created_at')->with(['user']);
+        return $model->newQuery();
     }
 
     /**
@@ -49,10 +43,18 @@ class UserLogsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('userlogs')
-            ->columns($this->getColumns())
-            ->minifiedAjax()
-            ->orderBy(1);
+                    ->setTableId('users-table')
+                    ->columns($this->getColumns())
+                    ->minifiedAjax()
+                    ->dom('Bfrtip')
+                    ->orderBy(1)
+                    ->buttons(
+                        Button::make('create'),
+                        Button::make('export'),
+                        Button::make('print'),
+                        Button::make('reset'),
+                        Button::make('reload')
+                    );
     }
 
     /**
@@ -63,11 +65,15 @@ class UserLogsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#'),
-            Column::make('nama')->data('user.name')->name('user.name')->orderable(false),
-            Column::make('level')->data('user.role')->orderable(false)->searchable(false),
-            Column::make('type')->title('Tipe'),
-            Column::make('created_at')->title('Waktu')->orderable(false)->searchable(false),
+            Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
+            Column::make('id'),
+            Column::make('add your columns'),
+            Column::make('created_at'),
+            Column::make('updated_at'),
         ];
     }
 
@@ -78,6 +84,6 @@ class UserLogsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'UserLogs_' . date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

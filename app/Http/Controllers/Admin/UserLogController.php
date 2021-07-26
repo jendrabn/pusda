@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\UserLogsDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\UserLog;
+use Illuminate\Http\Request;
 
-class LogUserController extends Controller
+class UserLogController extends Controller
 {
     public function index(UserLogsDataTable $dataTable)
     {

@@ -56,50 +56,19 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover" id="dataTable">
-            <thead>
-              <tr>
-                <th class="text-center">No</th>
-                <th>Alamat IP</th>
-                <th>Sistem Operasi</th>
-                <th>Waktu</th>
-                <th class="text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($visitors as $index => $visitor)
-                <tr>
-                  <td class="text-center">{{ ++$index }}</td>
-                  <td>{{ $visitor->ip }}</td>
-                  <td>{{ $visitor->os }}</td>
-                  <td>{{ $visitor->created_at }}</td>
-                  <td class="text-center">
-                    <button data-url="{{ route('admin.visitor.destroy', $visitor->id) }}"
-                      class="btn btn-icon btn-sm btn-danger m-1 btn-delete"><i class="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+          {{ $dataTable->table(['class' => 'table table-striped table-bordered w-100']) }}
         </div>
       </div>
     </div>
   </div>
-
-  <form action="" id="form-delete" method="POST" hidden>@csrf @method('DELETE')</form>
   <form action="" id="form-deleteall" method="POST" hidden>@csrf @method('DELETE')</form>
 @endsection
 
 @push('scripts')
-
+  <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+  {{ $dataTable->scripts() }}
   <script>
     $(function() {
-      $('.btn-delete').click(function() {
-        $('#form-delete').prop('action', $(this).data('url'))
-        $('#form-delete').submit()
-      })
-
       $('#btn-deleteall').click(function() {
         Swal.fire({
           title: 'Hapus semua data Pengunjung ?',

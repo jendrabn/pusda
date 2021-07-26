@@ -2,8 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\User;
-use App\Models\UserLog;
+use App\Models\Statistic;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -11,7 +10,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UserLogsDataTable extends DataTable
+class StatisticsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,22 +22,21 @@ class UserLogsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('created_at', function ($log) {
-                return $log->created_at ? with(new Carbon($log->created_at))->diffForHumans() : '';
+            ->editColumn('created_at', function ($statistic) {
+                return $statistic->created_at ? with(new Carbon($statistic->created_at))->diffForHumans() : '';
             })
-            ->addIndexColumn()
-            ->rawColumns([]);
+            ->addIndexColumn();
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\UserLog $model
+     * @param \App\Models\Statistic $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(UserLog $model)
+    public function query(Statistic $model)
     {
-        return $model->newQuery()->latest('created_at')->with(['user']);
+        return $model->newQuery()->latest('created_at');
     }
 
     /**
@@ -49,7 +47,7 @@ class UserLogsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('userlogs')
+            ->setTableId('statistics-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1);
@@ -64,9 +62,9 @@ class UserLogsDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('nama')->data('user.name')->name('user.name')->orderable(false),
-            Column::make('level')->data('user.role')->orderable(false)->searchable(false),
-            Column::make('type')->title('Tipe'),
+            Column::make('ip')->title('Alamat IP'),
+            Column::make('os')->title('Sistem Operasi'),
+            Column::make('browser')->title('Browser'),
             Column::make('created_at')->title('Waktu')->orderable(false)->searchable(false),
         ];
     }
@@ -78,6 +76,6 @@ class UserLogsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'UserLogs_' . date('YmdHis');
+        return 'Statistics_' . date('YmdHis');
     }
 }

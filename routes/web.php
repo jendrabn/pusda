@@ -92,8 +92,8 @@ Route::middleware(['auth'])->group(function () {
         // Route::resource('skpd_category', App\Http\Controllers\Admin\SkpdCategoryController::class)->except(['create', 'show', 'edit']);
 
         // Log Users 
-        Route::get('/userlog', [\App\Http\Controllers\Admin\LogUserController::class, 'index'])->name('userlog.index');
-        Route::delete('/userlog', [\App\Http\Controllers\Admin\LogUserController::class, 'destroyAll'])->name('userlog.destroyall');
+        Route::get('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'index'])->name('userlog.index');
+        Route::delete('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'destroyAll'])->name('userlog.destroyall');
 
         // Menu Data Pengunjung
         Route::delete('/visitor/{visitor}', [\App\Http\Controllers\Admin\VisitorController::class, 'destroy'])->name('visitor.destroy');

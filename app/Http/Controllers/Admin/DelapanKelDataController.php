@@ -172,7 +172,7 @@ class DelapanKelDataController extends Controller
             'file_name' =>  $fileName
         ]);
 
-        event(new UserLogged($request->user(), 'Menambah file pendukung tabel 8 kelompok data'));
+        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel 8 kelompok data'));
 
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
@@ -226,7 +226,7 @@ class DelapanKelDataController extends Controller
             }
         });
 
-        event(new UserLogged($request->user(), 'Menambah tahun tabel 8 kelompok data'));
+        event(new UserLogged($request->user(), 'Menambahkan tahun tabel 8 kelompok data'));
 
         return response()->json([
             'success' => true,

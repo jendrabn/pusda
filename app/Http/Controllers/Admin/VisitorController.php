@@ -2,26 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\StatisticsDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Models\Statistic;
 
 
 class VisitorController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(StatisticsDataTable $dataTable)
     {
-        $visitors = Statistic::latest()->get();
-        $statistic = new Statistic();
-        return view('admin.visitor', compact('visitors', 'statistic'));
-    }
-
-    public function destroy(Statistic $visitor)
-    {
-        $visitor->delete();
-        return back()->with('status', 'Data Pengunjung berhasil dihapus');
+        return $dataTable->render('admin.visitor', ['statistic' => new Statistic()]);
     }
 
     public function destroyAll()
