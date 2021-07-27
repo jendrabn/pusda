@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\StatisticsDataTable;
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\Statistic;
-
+use Illuminate\Http\Request;
 
 class VisitorController extends Controller
 {
@@ -15,9 +16,12 @@ class VisitorController extends Controller
         return $dataTable->render('admin.visitor', ['statistic' => new Statistic()]);
     }
 
-    public function destroyAll()
+    public function destroyAll(Request $request)
     {
         Statistic::truncate();
-        return back()->with('status', 'Semua log user login berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus semua statistik pengunjung'));
+
+        return back()->with('status', 'Semua statistik pengunjung berhasil dihapus');
     }
 }

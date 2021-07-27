@@ -76,12 +76,18 @@ class Uraian8KelData extends Model
     {
         $uraian8KelData = self::where('tabel_8keldata_id', $id)->get();
 
-        $years = Isi8KelData::query()
-            ->join('uraian_8keldata', 'isi_8keldata.uraian_8keldata_id', '=', 'uraian_8keldata.id')
-            ->join('tabel_8keldata', 'uraian_8keldata.tabel_8keldata_id', '=', 'tabel_8keldata.id')
-            ->where('tabel_8keldata.id', '=', $id)
+        // $years = Isi8KelData::query()
+        //     ->join('uraian_8keldata', 'isi_8keldata.uraian_8keldata_id', '=', 'uraian_8keldata.id')
+        //     ->join('tabel_8keldata', 'uraian_8keldata.tabel_8keldata_id', '=', 'tabel_8keldata.id')
+        //     ->where('tabel_8keldata.id', '=', $id)
+        //     ->groupBy('tahun')
+        //     ->select('tahun')
+        //     ->get();
+        $years = Isi8KelData::select('tahun')->whereHas('uraian8KelData', function ($query) use ($id) {
+            $query->where('tabel_8keldata_id', '=', $id);
+        })
             ->groupBy('tahun')
-            ->select('tahun')
+            ->orderBy('tahun')
             ->get();
 
         $years = $years->map(function ($year) {

@@ -70,41 +70,42 @@
 
 @section('outer')
   <div class="modal fade" tabindex="-1" role="dialog" id="modal-create">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Tambah SKPD</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="{{ route('admin.skpd.store') }}">
-            @csrf
+    <div class="modal-dialog" role="document">
+      <form action="{{ route('admin.skpd.store') }}" method="POST">
+        @csrf
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tambah SKPD</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
             <div class="form-group">
-              <label>Nama</label>
-              <input type="text" class="form-control" name="nama" value="{{ request()->old('name') }}">
+              <label for="input-nama">Nama</label>
+              <input type="text" class="form-control" id="input-nama" name="nama" value="{{ request()->old('name') }}">
             </div>
             <div class="form-group">
-              <label>Singkatan</label>
-              <input type="text" class="form-control" name="singkatan" value="{{ request()->old('name') }}">
+              <label for="input-singkatan">Singkatan</label>
+              <input type="text" class="form-control" name="singkatan" name="input-singkatan"
+                value="{{ request()->old('name') }}">
             </div>
-            <div class="form-group">
-              <label>Kategori</label>
-              <select name="skpd_category_id" class="form-control">
+            <div class="form-group mb-0">
+              <label for="input-kategori">Kategori</label>
+              <select name="skpd_category_id" class="form-control" id="input-kategori">
                 <option value="none" disabled selected hidden>--Pilih Kategori--</option>
-                @foreach ($categories as $category)
-                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @foreach ($categories as $id => $name)
+                  <option value="{{ $id }}">{{ $name }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group text-right mb-0">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-          </form>
+          </div>
+          <div class="modal-footer bg-whitesmoke br">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 @endsection
@@ -115,7 +116,7 @@
       $('.btn-delete').click(function() {
         Swal.fire({
           title: 'Hapus Data SKPD ?',
-          text: "Data yang dihapus tidak bisa dikembalikan!",
+          text: 'Data yang sudah dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

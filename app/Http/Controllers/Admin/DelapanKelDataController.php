@@ -135,7 +135,7 @@ class DelapanKelDataController extends Controller
     {
         $uraian8KelData->delete();
 
-        event(new UserLogged($request->user(), 'Menghapus uraian tabel 8 Kelompok Data'));
+        event(new UserLogged($request->user(), 'Menghapus uraian tabel 8 kelompok data'));
 
         return back()->with('alert-success', 'Isi uraian berhasil dihapus');
     }

@@ -43,7 +43,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $count8KelData }}</h2>
+                <h2 class="number">{{ $info['total_8keldata'] }}</h2>
                 <div class="icon"><i class="fas fa-book text-info"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA 8 KEL. DATA</p>
@@ -62,7 +62,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $countIndikator }}</h2>
+                <h2 class="number">{{ $info['total_indikator'] }}</h2>
                 <div class="icon"><i class="fas fa-layer-group text-danger"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA INDIKATOR</p>
@@ -81,7 +81,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $countRpjmd }}</h2>
+                <h2 class="number">{{ $info['total_rpjmd'] }}</h2>
                 <div class="icon"><i class="fas fa-briefcase text-warning"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA RPJMD</p>
@@ -100,7 +100,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $countBps }}</h2>
+                <h2 class="number">{{ $info['total_bps'] }}</h2>
                 <div class="icon"><i class="fas fa-th-large text-success"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA BPS</p>
@@ -110,6 +110,50 @@
                     aria-valuemin="0" aria-valuemax="100">75%</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Aktivitas Terbaru</h4>
+            <div class="card-header-action">
+              <a href="{{ route('admin.userlog.index') }}" class="btn btn-danger">Lihat Selengkapnya <i
+                  class="fas fa-chevron-right"></i></a>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive table-invoice">
+              <table class="table table-striped">
+                <tr>
+                  <th>#</th>
+                  <th>Nama</th>
+                  <th>Level</th>
+                  <th>Tipe</th>
+                  <th>Waktu</th>
+                </tr>
+                @foreach ($userLogs as $index => $log)
+                  <tr>
+                    <td>{{ ++$index }}</td>
+                    <td class="font-weight-600">{{ $log->user->name }}</td>
+                    <td>
+                      @if ($log->user->level === 1)
+                        <div class="badge badge-info">{{ $log->user->role }}</div>
+                      @endif
+                      @if ($log->user->level === 2)
+                        <div class="badge badge-warning">{{ $log->user->role }}</div>
+                      @endif
+                    </td>
+                    <td>{{ $log->type }}</td>
+                    <td>
+                      {{ $log->created_at->diffForHumans() }}
+                    </td>
+                  </tr>
+                @endforeach
+              </table>
             </div>
           </div>
         </div>

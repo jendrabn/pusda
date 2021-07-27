@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\UserLogsDataTable;
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
@@ -14,9 +15,12 @@ class UserLogController extends Controller
         return $dataTable->render('admin.user_logs');
     }
 
-    public function destroyAll()
+    public function destroyAll(Request $request)
     {
         UserLog::truncate();
-        return back()->with('alert-success', 'Semua data berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus semua log users'));
+
+        return back()->with('alert-success', 'Semua log users berhasil dihapus');
     }
 }

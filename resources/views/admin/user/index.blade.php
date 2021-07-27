@@ -51,7 +51,7 @@
                       <i class="fas fa-eye"></i>
                     </a>
                     <button data-url="{{ route('admin.users.destroy', $user->id) }}"
-                      class="btn btn-icon btn-sm btn-danger m-1 btn-delete">
+                      class="btn btn-icon btn-sm btn-danger mx-0 btn-delete">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                     <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-icon btn-sm btn-warning m-1">

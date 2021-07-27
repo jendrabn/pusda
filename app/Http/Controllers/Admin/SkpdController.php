@@ -13,7 +13,8 @@ class SkpdController extends Controller
     public function index()
     {
         $skpd = Skpd::latest()->get();
-        $categories = SkpdCategory::all();
+        $categories = SkpdCategory::all()->pluck('name', 'id');
+
         return view('admin.skpd.index', compact('skpd', 'categories'));
     }
 
@@ -25,14 +26,17 @@ class SkpdController extends Controller
             'skpd_category_id' => ['required', 'numeric', 'exists:skpd_categories,id']
         ]);
 
-        Skpd::create($validated);
-        event(new UserLogged($request->user(), "Menambah data SKPD baru"));
-        return back()->with('alert-success', 'Berhasil menambahkan data');
+        $skpd = Skpd::create($validated);
+
+        event(new UserLogged($request->user(), 'Menambahkan SKPD baru dengan nama ' . $skpd->nama));
+
+        return back()->with('alert-success', 'Berhasil menambahkan SKPD baru');
     }
 
     public function edit(Skpd $skpd)
     {
-        $categories = SkpdCategory::all();
+        $categories = SkpdCategory::all()->pluck('name', 'id');
+
         return view('admin.skpd.edit', compact('skpd', 'categories'));
     }
 
@@ -45,15 +49,19 @@ class SkpdController extends Controller
         ]);
 
         $skpd->update($validated);
-        $skpd->singkatan = $request->singkatan;
-        event(new UserLogged($request->user(), "Mengubah data SKPD  <i>{$skpd->singkatan}</i>  "));
-        return back()->with('alert-success', 'Data berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah data SKPD'));
+
+        return back()->with('alert-success', 'SKPD berhasil diupdate');
     }
 
     public function destroy(Request $request, Skpd $skpd)
     {
+        $name = $skpd->nama;
         $skpd->delete();
-        event(new UserLogged($request->user(), "Menghapus data SKPD"));
+
+        event(new UserLogged($request->user(), 'Menghapus SKPD ' . $name));
+
         return back()->with('alert-success', 'Berhasil menghapus data SKPD');
     }
 }

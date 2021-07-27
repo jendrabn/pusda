@@ -46,10 +46,9 @@
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
                   <select name="skpd_category_id" id="" class="form-control" tabindex="1">
-                    @foreach ($categories as $category)
-                      <option {{ $category->id === $skpd->skpd_category_id ? 'selected' : '' }}
-                        value="{{ $category->id }}">
-                        {{ $category->name }}</option>
+                    @foreach ($categories as $id => $name)
+                      <option {{ $id === $skpd->skpd_category_id ? 'selected' : '' }} value="{{ $id }}">
+                        {{ $name }}</option>
                     @endforeach
                   </select>
                 </div>
