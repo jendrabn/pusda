@@ -23,13 +23,6 @@
       min-width: 65px;
     }
 
-    .table td {
-      padding: 3px 5px;
-      height: 50px;
-      vertical-align: middle;
-      color: #333333;
-    }
-
   </style>
   @stack('styles')
 </head>

@@ -18,10 +18,15 @@ class VisitorController extends Controller
 
     public function destroyAll(Request $request)
     {
+        abort_if(!$request->ajax(), 404);
+
         Statistic::truncate();
 
         event(new UserLogged($request->user(), 'Menghapus semua statistik pengunjung'));
 
-        return back()->with('status', 'Semua statistik pengunjung berhasil dihapus');
+        return response()->json([
+            'success' => true,
+            'message' => 'Semua statistik pengunjung berhasil dihapus'
+        ], 200);
     }
 }

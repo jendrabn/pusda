@@ -36,7 +36,7 @@ class StatisticsDataTable extends DataTable
      */
     public function query(Statistic $model)
     {
-        return $model->newQuery()->latest('created_at');
+        return $model->newQuery();
     }
 
     /**

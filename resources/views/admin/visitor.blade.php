@@ -50,7 +50,8 @@
       <div class="card-header">
         <h4>Pengunjung</h4>
         <div class="card-header-action">
-          <button class="btn btn-icon icon-left btn-danger" id="btn-deleteall"><i class="fas fa-trash-alt"></i> Hapus
+          <button data-url="{{ route('admin.visitor.destroyall') }}" class="btn btn-icon icon-left btn-danger"
+            id="btn-delete"><i class="fas fa-trash-alt"></i> Hapus
             Semua Data</button>
         </div>
       </div>
@@ -61,7 +62,6 @@
       </div>
     </div>
   </div>
-  <form action="" id="form-deleteall" method="POST" hidden>@csrf @method('DELETE')</form>
 @endsection
 
 @push('scripts')
@@ -69,22 +69,38 @@
   {{ $dataTable->scripts() }}
   <script>
     $(function() {
-      $('#btn-deleteall').click(function() {
+      const statisticsTable = window.LaravelDataTables['statistics-table'];
+
+      $('button#btn-delete').on('click', function(e) {
         Swal.fire({
-          title: 'Hapus semua data Pengunjung ?',
-          text: "Data yang dihapus tidak bisa dikembalikan!",
+          title: 'Apakah kamu yakin?',
+          text: 'Semua data pengunjung yang sudah dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+          confirmButtonColor: '#fc544b',
+          cancelButtonColor: '#3490dc',
           confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal',
+          cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
-            $('#form-deleteall').submit()
+            $.ajax({
+              url: $(this).data('url'),
+              type: 'DELETE',
+              dataType: 'json',
+              data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+              },
+              success: function(data) {
+                statisticsTable.ajax.reload();
+                Swal.fire('Dihapus!', data.message, 'success');
+              },
+              error: function(error) {
+                Swal.fire('Gagal!', error.statusText, 'error');
+              }
+            });
           }
-        })
-      })
-    })
+        });
+      });
+    });
   </script>
 @endpush

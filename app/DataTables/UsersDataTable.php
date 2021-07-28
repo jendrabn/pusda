@@ -3,15 +3,13 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use App\Models\UserLog;
-use Illuminate\Support\Carbon;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class UserLogsDataTable extends DataTable
+class UsersDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,22 +21,19 @@ class UserLogsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('created_at', function ($log) {
-                return $log->created_at ? with(new Carbon($log->created_at))->diffForHumans() : '';
-            })
             ->addIndexColumn()
-            ->rawColumns([]);
+            ->addColumn('action', 'admin.user.action');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\UserLog $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(UserLog $model)
+    public function query(User $model)
     {
-        return $model->newQuery()->with(['user']);
+        return $model->newQuery()->with(['skpd']);
     }
 
     /**
@@ -49,7 +44,7 @@ class UserLogsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('userlogs-table')
+            ->setTableId('users-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->orderBy(1);
@@ -63,28 +58,29 @@ class UserLogsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#'),
-            Column::make('name')
-                ->data('user.name')
-                ->name('user.name')
+            Column::computed('DT_RowIndex', '#')->addClass('align-middle'),
+            Column::make('skpd')
+                ->data('skpd.singkatan')
+                ->name('skpd.singkatan')
+                ->title('SKPD')
                 ->orderable(false)
+                ->addClass('align-middle'),
+            Column::make('name')
                 ->title('Nama Lengkap')
-                ->addClass('font-weight-bold'),
-            Column::make('name')
-                ->data('user.username')
-                ->name('user.username')
-                ->title('Username')
-                ->orderable(false),
-            Column::make('user')
-                ->data('user.role')
+                ->addClass('align-middle font-weight-bold'),
+            Column::make('username')->addClass('align-middle'),
+            Column::make('email')->addClass('align-middle'),
+            Column::make('role')
                 ->title('Level')
+                ->searchable(false)
                 ->orderable(false)
-                ->searchable(false),
-            Column::make('type')->title('Tipe'),
-            Column::make('created_at')
-                ->title('Waktu')
-                ->orderable(false)
-                ->searchable(false),
+                ->addClass('align-middle'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->addClass('text-center align-middle')
+                ->title('Aksi'),
+            Column::make('created_at')->hidden()
         ];
     }
 
@@ -95,6 +91,6 @@ class UserLogsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'UserLogs_' . date('YmdHis');
+        return 'Users_' . date('YmdHis');
     }
 }

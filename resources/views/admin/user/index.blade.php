@@ -24,73 +24,50 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover" id="dataTable">
-            <thead>
-              <tr>
-                <th class="text-center">No</th>
-                <th>Nama SKPD</th>
-                <th>Nama</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Level</th>
-                <th class="text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($users as $index => $user)
-                <tr>
-                  <td class="text-center">{{ ++$index }}</td>
-                  <td>{{ $user->skpd->nama }}</td>
-                  <td>{{ $user->name }}</td>
-                  <td>{{ $user->username }}</td>
-                  <td>{{ $user->email }}</td>
-                  <td>{{ $user->role }}</td>
-                  <td class="text-center">
-                    <a href="{{ route('admin.users.show', $user->id) }}"
-                      class="btn btn-icon btn-sm btn-info m-1 btn-detail">
-                      <i class="fas fa-eye"></i>
-                    </a>
-                    <button data-url="{{ route('admin.users.destroy', $user->id) }}"
-                      class="btn btn-icon btn-sm btn-danger mx-0 btn-delete">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-icon btn-sm btn-warning m-1">
-                      <i class="fas fa-pencil-alt"></i>
-                    </a>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+          {{ $dataTable->table(['class' => 'table table-striped table-bordered w-100']) }}
         </div>
       </div>
     </div>
   </div>
-
-  <form action="" id="form-delete" method="POST" hidden>@csrf @method('DELETE')</form>
 @endsection
 
 @push('scripts')
+  <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+  {{ $dataTable->scripts() }}
   <script>
     $(function() {
+      const usersTable = window.LaravelDataTables['users-table'];
 
-      $('.btn-delete').click(function() {
+      $('#users-table tbody').on('click', '.btn-delete', function(e) {
         Swal.fire({
-          title: 'Hapus User ?',
-          text: "Data yang dihapus tidak bisa dikembalikan!",
+          title: 'Apakah kamu yakin?',
+          text: 'Pengguna yang sudah dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+          confirmButtonColor: '#fc544b',
+          cancelButtonColor: '#3490dc',
           confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal',
+          cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
-            $('#form-delete').prop('action', $(this).data('url'))
-            $('#form-delete').submit()
+            $.ajax({
+              url: $(this).data('url'),
+              type: 'DELETE',
+              dataType: 'json',
+              data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+              },
+              success: function(data) {
+                usersTable.ajax.reload();
+                Swal.fire('Dihapus!', data.message, 'success');
+              },
+              error: function(error) {
+                Swal.fire('Gagal!', error.statusText, 'error');
+              }
+            });
           }
-        })
-      })
+        });
+      });
     })
   </script>
 @endpush

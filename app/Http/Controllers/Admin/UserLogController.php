@@ -17,10 +17,15 @@ class UserLogController extends Controller
 
     public function destroyAll(Request $request)
     {
+        abort_if(!$request->ajax(), 404);
+
         UserLog::truncate();
 
-        event(new UserLogged($request->user(), 'Menghapus semua log users'));
+        event(new UserLogged($request->user(), 'Menghapus semua user logs'));
 
-        return back()->with('alert-success', 'Semua log users berhasil dihapus');
+        return response()->json([
+            'success' => true,
+            'message' => 'Semua user logs berhasil dihapus'
+        ], 200);
     }
 }

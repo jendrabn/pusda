@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\UsersDataTable;
 use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,11 +16,9 @@ use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(UsersDataTable $dataTable)
     {
-        $users = User::latest()->get();
-
-        return view('admin.user.index', compact('users'));
+        return $dataTable->render('admin.user.index');
     }
 
     public function show(User $user)
@@ -72,11 +71,16 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user)
     {
+        abort_if(!$request->ajax(), 404);
+
         $name = $user->name;
         $user = $user->delete();
 
         event(new UserLogged($request->user(), 'Menghapus user ' . $name));
 
-        return back()->with('alert-success', 'User berhasil dihapus');
+        return response()->json([
+            'success' => true,
+            'message' => 'User bernama ' . $name . ' berhasil dihapus'
+        ], 200);
     }
 }
