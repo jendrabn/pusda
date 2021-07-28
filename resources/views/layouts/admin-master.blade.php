@@ -56,10 +56,9 @@
   <script>
     $(function() {
       $('#dataTable').DataTable({
-        lengthMenu: [
-          [10, 25, 50, -1],
-          [10, 25, 50, "All"]
-        ]
+        language: {
+          url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json'
+        }
       });
 
       $('.select2').select2();

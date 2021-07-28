@@ -49,8 +49,14 @@ class UserLogsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
+            ->parameters([
+                'language' => [
+                    'url' => url('https://cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json')
+                ],
+            ])
             ->setTableId('userlogs-table')
             ->columns($this->getColumns())
+            ->languageEmptyTable('Data user logs belum tersedia')
             ->minifiedAjax()
             ->orderBy(1);
     }

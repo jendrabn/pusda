@@ -36,7 +36,7 @@ class BpsController extends Controller
             $format = 'xlsx';
         }
 
-        $fileName = "BPS-{$tabelBps->menu_name}.{$format}";
+        $fileName = "BPS-{$tabelBps->nama_menu}.{$format}";
         return Excel::download(new BpsExport($id), $fileName);
     }
 
@@ -80,7 +80,7 @@ class BpsController extends Controller
         }
 
         return response()->json([
-            "nama" => $tabel->menu_name,
+            "nama" => $tabel->nama_menu,
             "label" => [$ket1, $ket2, $ket3, $ket4, $ket5],
             "data" => [$d1, $d2, $d3, $d4, $d5]
         ]);

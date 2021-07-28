@@ -13,6 +13,7 @@ class IndikatorController extends Controller
     public function index()
     {
         $categories = TabelIndikator::all();
+
         return view('admin.treeview.indikator', compact('categories'));
     }
 
@@ -20,44 +21,48 @@ class IndikatorController extends Controller
     {
         $validated = $this->validate($request, [
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_indikator,id'],
-            'menu_name' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string', 'max:100']
         ]);
 
         TabelIndikator::create($validated);
-        event(new UserLogged($request->user(), "Menambah data baru pada menu treeview Indikator"));
-        return back()->with('alert-success', 'Berhasil menambahkan data');
+
+        event(new UserLogged($request->user(), 'Menambahkan menu treeview indikator'));
+
+        return back()->with('alert-success', 'Berhasil menambahkan menu treeview indikator');
     }
 
     public function edit($id)
     {
         $tabelIndikator = TabelIndikator::findOrFail($id);
+
         $categories = TabelIndikator::all();
 
-        return view('admin.treeview.indikator-edit', compact('categories', 'tabelIndikator'));
+        return view('admin.treeview.indikator_edit', compact('categories', 'tabelIndikator'));
     }
 
     public function update(Request $request, $id)
     {
-
         $tabelIndikator = TabelIndikator::findOrFail($id);
 
         $validated = $this->validate($request, [
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-            'menu_name' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string', 'max:100']
         ]);
 
         $tabelIndikator->update($validated);
-        $tabelIndikator->menu_name = $request->menu_name;
-        event(new UserLogged($request->user(), "Mengubah data pada treeview <i>{$tabelIndikator->menu_name}</i> Indikator"));
-        return back()->with('alert-success', 'Data berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah menu treeview indikator'));
+
+        return back()->with('alert-success', 'Menu treeview indikator berhasil diupdate');
     }
 
     public function destroy(Request $request, $id)
     {
         $tabelIndikator = TabelIndikator::findOrFail($id);
         $tabelIndikator->delete();
-        $tabelIndikator->childs()->delete();
-        event(new UserLogged($request->user(), "Menghapus data treeeview <i>{$tabelIndikator->menu_name}</i>  pada Indikator"));
-        return back()->with('alert-success', 'Data berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus menu treeeview indikator'));
+
+        return back()->with('alert-success', 'Menu treeview indikator berhasil dihapus');
     }
 }

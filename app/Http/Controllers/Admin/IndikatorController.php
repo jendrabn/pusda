@@ -130,7 +130,7 @@ class IndikatorController extends Controller
             'tabel_indikator_id' => $tabelIndikator->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelIndikator->menu_name}</i>  Indikator"));
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelIndikator->nama_menu}</i>  Indikator"));
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 

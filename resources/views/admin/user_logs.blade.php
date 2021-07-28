@@ -10,10 +10,15 @@
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
       <div class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">User</a></div>
-      <div class="breadcrumb-item"> Log User</div>
+      <div class="breadcrumb-item">Log User</div>
     </div>
   </div>
   <div class="section-body">
+    <h2 class="section-title">Log User</h2>
+    <p class="section-lead">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique aspernatur possimus consequatur neque quam
+      ducimus?
+    </p>
     @include('partials.alerts')
     <div class="card">
       <div class="card-header">

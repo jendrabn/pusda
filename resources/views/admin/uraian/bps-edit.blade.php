@@ -23,7 +23,7 @@
     @include('partials.alerts')
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Edit Data Uraian Form "{{ $tabelBps->menu_name }}"</h4>
+        <h4 class="text-uppercase">Edit Data Uraian Form "{{ $tabelBps->nama_menu }}"</h4>
       </div>
       <div class="card-body">
         <form action="{{ route('admin.uraian.bps.update', $uraianBps->id) }}" method="POST">

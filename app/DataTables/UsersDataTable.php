@@ -44,6 +44,11 @@ class UsersDataTable extends DataTable
     public function html()
     {
         return $this->builder()
+            ->parameters([
+                'language' => [
+                    'url' => url('https://cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json')
+                ],
+            ])
             ->setTableId('users-table')
             ->columns($this->getColumns())
             ->minifiedAjax()

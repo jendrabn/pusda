@@ -1,4 +1,4 @@
-@extends('admin.treeview.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Menu Tree View 8 Kelompok Data
@@ -14,20 +14,25 @@
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Menu Tree View 8 Kel. Data</h2>
+    <p class="section-lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam explicabo maiores possimus,
+      voluptatem atque deleniti.</p>
+
     @include('partials.alerts')
+
     <div class="row">
       <div class="col-12 col-md-6 pr-md-2">
-        @include('admin.treeview.partials.menu-tree')
+        @include('admin.treeview.partials.menu_tree')
       </div>
       <div class="col-12 col-md-6 pl-md-2">
-        @include('admin.treeview.partials.add-treeview-menu', [
+        @include('admin.treeview.partials.form_add_menu', [
         'action' => route('admin.treeview.delapankeldata.store')])
       </div>
     </div>
 
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Data Menu Tree View</h4>
+        <h4>Data Menu Tree View</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -43,15 +48,17 @@
             <tbody>
               @foreach ($categories as $index => $category)
                 <tr>
-                  <td class="text-center" style="width: 2%;">{{ ++$index }}</td>
-                  <td>{{ $category->menu_name }}</td>
-                  <td>{{ $category->parent->menu_name ?? '' }}</td>
-                  <td style="min-width: 65px;" class="text-center">
+                  <td class="text-center">{{ ++$index }}</td>
+                  <td>{{ $category->nama_menu }}</td>
+                  <td>{{ $category->parent->nama_menu ?? '' }}</td>
+                  <td class=" text-center">
                     @if ($category->id > 1)
-                      <a href="{{ route('admin.treeview.delapankeldata.edit', $category->id) }}"
-                        class="btn btn-icon btn-sm btn-warning m-0"><i class="fas fa-pencil-alt"></i></a>
-                      <button data-url="{{ route('admin.treeview.delapankeldata.destroy', $category->id) }}"
-                        class="btn btn-icon btn-sm btn-danger m-0 btn-delete"><i class="fas fa-trash-alt"></i></button>
+                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                        <a href="{{ route('admin.treeview.delapankeldata.edit', [$category->id]) }}"
+                          class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                        <button data-url="{{ route('admin.treeview.delapankeldata.destroy', $category->id) }}"
+                          type="button" class="btn btn-danger btn-icon"><i class="fas fa-trash-alt"></i></button>
+                      </div>
                     @endif
                   </td>
                 </tr>
@@ -65,3 +72,7 @@
 
   <form action="" id="form-delete" method="POST" hidden>@csrf @method('DELETE')</form>
 @endsection
+
+@push('scripts')
+  @include('admin.treeview.partials.scripts')
+@endpush

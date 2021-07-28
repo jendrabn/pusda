@@ -131,7 +131,7 @@ class BpsController extends Controller
             'tabel_bps_id' => $tabelBps->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelBps->menu_name}</i>  BPS"));
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelBps->nama_menu}</i>  BPS"));
         return back()->with('alert-success', 'File pendukung berhasil diupload');
     }
 

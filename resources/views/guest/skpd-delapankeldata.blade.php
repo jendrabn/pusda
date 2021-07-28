@@ -14,12 +14,12 @@
         <ol>
           @foreach ($categories as $category)
             <li>
-              {{ $category->menu_name }}
+              {{ $category->nama_menu }}
               @if ($category->childs->count())
                 <ol style="list-style-type: lower-latin">
                   @foreach ($category->childs as $child)
                     <li>
-                      {{ $child->menu_name }}
+                      {{ $child->nama_menu }}
                       @if ($child->childs->count())
                         <ul>
                           @foreach ($child->childs as $child)
@@ -27,7 +27,7 @@
                               @if ($table->id == $child->id)
                                 <li @if (isset($tabel8KelData) && $tabel8KelData->id == $table->id) data-jstree='{ "selected" : true }' @endif>
                                   <a class="text-decoration-none"
-                                    href="{{ route('guest.delapankeldata.table', $child->id) }}">{{ $child->menu_name }}</a>
+                                    href="{{ route('guest.delapankeldata.table', $child->id) }}">{{ $child->nama_menu }}</a>
                                 </li>
                               @endif
                             @endforeach

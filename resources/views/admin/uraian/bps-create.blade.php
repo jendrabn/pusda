@@ -38,7 +38,7 @@
     {{-- FORM INPUT --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Tambah Data Uraian Form "{{ $tabelBps->menu_name }}"</h4>
+        <h4 class="text-uppercase">Tambah Data Uraian Form "{{ $tabelBps->nama_menu }}"</h4>
         <div class="card-header-action">
           <a data-collapse="#uraian-form-card-collapse" class="btn btn-icon btn-info" href="#"><i
               class="fas fa-minus"></i></a>

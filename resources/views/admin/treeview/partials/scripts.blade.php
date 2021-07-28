@@ -1,6 +1,3 @@
-@extends('layouts.admin-master')
-
-@push('scripts')
   <script>
     $(function() {
       const keyname = window.location.href;
@@ -74,4 +71,3 @@
 
     })
   </script>
-@endpush

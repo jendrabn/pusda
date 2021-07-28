@@ -1,22 +1,26 @@
 @extends('layouts.admin-master')
 
 @section('title')
-  Data User
+  User
 @endsection
 
 @section('content')
   <div class="section-header">
-    <h1>Data User</h1>
+    <h1>User</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item">Data User</div>
+      <div class="breadcrumb-item"> User</div>
     </div>
   </div>
   <div class="section-body">
+    <h2 class="section-title">User</h2>
+    <p class="section-lead">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium tempora, alias dolores atque veritatis omnis.
+    </p>
     @include('partials.alerts')
     <div class="card ">
       <div class="card-header">
-        <h4>Data User</h4>
+        <h4>User</h4>
         <div class="card-header-action">
           <a class="btn btn-icon icon-left btn-primary" href="{{ route('admin.users.create') }}"><i
               class="fas fa-plus"></i> Tambah User</a>

@@ -15,21 +15,21 @@
         <ul>
           @foreach ($category->childs as $child)
             <li>
-              {{ $child->menu_name }}
+              {{ $child->nama_menu }}
               @if ($child->childs->count())
                 <ul>
                   @foreach ($child->childs as $child)
-                    <li> {{ $child->menu_name }}
+                    <li> {{ $child->nama_menu }}
                       <ul>
                         @if ($child->childs->count())
                           @foreach ($child->childs as $child)
                             <li @if ((isset($tabel8KelData) && $tabel8KelData->id === $child->id) || (isset($tabelRpjmd) && $tabelRpjmd->id === $child->id) || (isset($tabelIndikator) && $tabelIndikator->id === $child->id) || (isset($tabelBps) && $tabelBps->id === $child->id)) data-jstree='{ "selected" : true }' @endif>
                               @if (isset($skpd) && $skpd)
                                 <a
-                                  href="{{ route('admin.uraian.' . request()->segment(3) . '.index', $child->id) }}">{{ $child->menu_name }}</a>
+                                  href="{{ route('admin.uraian.' . request()->segment(3) . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
                               @else
                                 <a
-                                  href="{{ route('admin.uraian.' . request()->segment(3) . '.index', $child->id) }}">{{ $child->menu_name }}</a>
+                                  href="{{ route('admin.uraian.' . request()->segment(3) . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
                               @endif
                             </li>
                           @endforeach

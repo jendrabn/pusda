@@ -5,11 +5,11 @@
            <ul>
              @foreach ($category->childs as $child)
                <li>
-                 {{ $child->menu_name }}
+                 {{ $child->nama_menu }}
                  <ul>
                    @foreach ($child->childs as $child)
                      <li>
-                       {{ $child->menu_name }}
+                       {{ $child->nama_menu }}
                        @if ($child->childs->count())
                          <ul>
                            @foreach ($child->childs as $child)
@@ -17,7 +17,7 @@
                                @if ($table->id == $child->id)
                                  <li @if (isset($tabel8KelData) && $tabel8KelData->id == $table->id) data-jstree='{ "selected" : true }' @endif>
                                    <a
-                                     href="{{ route('skpd.delapankeldata.index', $child->id) }}">{{ $child->menu_name }}</a>
+                                     href="{{ route('skpd.delapankeldata.index', $child->id) }}">{{ $child->nama_menu }}</a>
                                  </li>
                                @endif
                              @endforeach

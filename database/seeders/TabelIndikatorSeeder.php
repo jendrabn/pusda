@@ -21,7 +21,7 @@ class TabelIndikatorSeeder extends Seeder
             return [
                 'id' => $table['id_tabel_indikator'],
                 'parent_id' => $table['id_parent'] === '0' ? null : $table['id_parent'],
-                'menu_name' => $table['nama_menu']
+                'nama_menu' => $table['nama_menu']
             ];
         });
         $tables = $tables->filter(function ($table) use ($tables) {

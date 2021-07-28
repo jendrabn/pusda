@@ -12,18 +12,23 @@
     <h1>Detail User</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item active"> <a href="{{ route('admin.users.index') }}">Users</a></div>
+      <div class="breadcrumb-item active"> <a href="{{ route('admin.users.index') }}">User</a></div>
       <div class="breadcrumb-item">Detail</div>
     </div>
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Detail User</h2>
+    <p class="section-lead">
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque, obcaecati aut sapiente iste deserunt odit.
+    </p>
+
     <div class="row">
       <div class="col-lg-12">
         @include('partials.alerts')
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Detail User</h4>
+            <h4>Detail User</h4>
           </div>
           <div class="card-body">
             <div class="row">

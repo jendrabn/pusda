@@ -12,18 +12,22 @@
     <h1>Edit User</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item active"><a href="{{ route('admin.users.index') }}">Users</a></div>
+      <div class="breadcrumb-item active"><a href="{{ route('admin.users.index') }}">User</a></div>
       <div class="breadcrumb-item">Edit</div>
     </div>
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Edit User</h2>
+    <p class="section-lead">
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, distinctio sint. Impedit ut fugiat voluptas!
+    </p>
     <div class="row">
       <div class="col-lg-12">
         @include('partials.alerts')
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Edit User</h4>
+            <h4>Edit User</h4>
           </div>
           <div class="card-body">
             <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -77,7 +81,7 @@
                       class="col-sm-3 col-form-label d-flex align-items-center font-weight-bold text-uppercase">Nama
                       SKPD <code>*</code></label>
                     <div class="col-sm-9">
-                      <select class="form-control selectric" name="skpd_id" tabindex="5">
+                      <select class="form-control select2" name="skpd_id" tabindex="5">
                         <option value="none" disabled selected hidden>-- Pilih SKPD--</option>
                         @foreach ($skpd as $id => $nama)
                           <option {{ $user->skpd->id == $id ? 'selected' : '' }} value="{{ $id }}">

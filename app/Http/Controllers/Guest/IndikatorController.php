@@ -39,7 +39,7 @@ class IndikatorController extends Controller
             $format = 'xlsx';
         }
 
-        $fileName = "Indikator-{$tabelIndikator->menu_name}.{$format}";
+        $fileName = "Indikator-{$tabelIndikator->nama_menu}.{$format}";
 
         return Excel::download(new IndikatorExport($id), $fileName);
     }

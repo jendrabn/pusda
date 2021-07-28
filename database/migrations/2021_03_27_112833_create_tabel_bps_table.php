@@ -16,7 +16,7 @@ class CreateTabelBpsTable extends Migration
         Schema::create('tabel_bps', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('menu_name');
+            $table->string('nama_menu');
             $table->timestamps();
 
             $table->foreign('parent_id')->references('id')->on('tabel_bps')->onDelete('cascade');

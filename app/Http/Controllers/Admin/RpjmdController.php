@@ -143,7 +143,7 @@ class RpjmdController extends Controller
             'tabel_rpjmd_id' => $tabelRpjmd->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelRpjmd->menu_name}</i>  RPJMD"));
+        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelRpjmd->nama_menu}</i>  RPJMD"));
         return back()->with('alert-success', 'File pendukung berhasil diupdate');
     }
 

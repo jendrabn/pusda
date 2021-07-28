@@ -10,6 +10,11 @@
   </div>
 
   <div class="section-body">
+    <h2 class="section-title">Pengujung</h2>
+    <p class="section-lead">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error dignissimos reiciendis odit? Odit, reprehenderit
+      voluptatem.
+    </p>
     <div class="row">
       <div class="col-lg-3">
         <div class="card">

@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="text-uppercase">Tampilan Menu Tree View</h4>
+    <h4>Tampilan Menu Tree View</h4>
   </div>
   <div class="card-body overflow-auto">
     <div id="treeview">
@@ -21,15 +21,15 @@
               <ul>
                 @foreach ($category->childs as $child)
                   <li>
-                    {{ $child->menu_name }}
+                    {{ $child->nama_menu }}
                     @if ($child->childs->count())
                       <ul>
                         @foreach ($child->childs as $child)
-                          <li> {{ $child->menu_name }}
+                          <li> {{ $child->nama_menu }}
                             <ul>
                               @if ($child->childs->count())
                                 @foreach ($child->childs as $child)
-                                  <li> {{ $child->menu_name }}</li>
+                                  <li> {{ $child->nama_menu }}</li>
                                 @endforeach
                               @endif
                             </ul>

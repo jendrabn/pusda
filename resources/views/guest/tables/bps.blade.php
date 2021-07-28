@@ -8,7 +8,7 @@
   <div class="container">
     <div class="card">
       <div class="card-header bg-white card-header__lg">
-        <h4 class="card-header__title">Tabel Uraian "{{ $tabelBps->menu_name }}" BPS</h4>
+        <h4 class="card-header__title">Tabel Uraian "{{ $tabelBps->nama_menu }}" BPS</h4>
       </div>
       <div class="card-body">
         <div class="action">

@@ -1,4 +1,4 @@
-@extends('admin.treeview.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Edit Menu Tree View 8 Kel. Data
@@ -21,11 +21,15 @@
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Edit Menu Tree View 8 Kel. Data</h2>
+    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius dolorum illum deserunt amet
+      dignissimos repellat.</p>
+
     @include('partials.alerts')
 
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Edit Data Tree View</h4>
+        <h4>Edit Data Tree View</h4>
       </div>
       <div class="card-body">
         <form action="{{ route('admin.treeview.delapankeldata.update', $tabel8KelData->id) }}" method="POST">
@@ -39,7 +43,7 @@
                   @if ($category->id !== $tabel8KelData->id)
                     <option {{ $tabel8KelData->parent->id === $category->id ? 'selected' : '' }}
                       value="{{ $category->id }}">
-                      {{ $category->menu_name }}</option>
+                      {{ $category->nama_menu }}</option>
                   @endif
                 @endforeach
               </select>
@@ -48,14 +52,14 @@
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Menu <code>*</code></label>
             <div class="col-sm-12 col-md-7">
-              <input type="text" name="menu_name" class="form-control" value="{{ $tabel8KelData->menu_name }}">
+              <input type="text" name="nama_menu" class="form-control" value="{{ $tabel8KelData->nama_menu }}">
             </div>
           </div>
           <div class="form-group row mb-4">
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
             <div class="col-sm-12 col-md-7">
               <div class="d-flex justify-content-between align-items-center">
-                <span><code>*</code> Wajib Diisi</span>
+                <span><code>*</code> Wajib diisi</span>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
               </div>
             </div>

@@ -36,7 +36,7 @@ class DelapanKelDataController extends Controller
             $format = 'xlsx';
         }
 
-        $fileName = "8-Kelompok-Data-{$tabel8KelData->menu_name}.{$format}";
+        $fileName = "8-Kelompok-Data-{$tabel8KelData->nama_menu}.{$format}";
 
         return Excel::download(new DelapanKelDataExport($id), $fileName);
     }

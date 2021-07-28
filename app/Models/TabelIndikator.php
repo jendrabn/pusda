@@ -21,7 +21,7 @@ class TabelIndikator extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'parent_id', 'menu_name'];
+    protected $fillable = ['id', 'parent_id', 'nama_menu'];
 
     public function parent()
     {

@@ -1,34 +1,38 @@
-@extends('admin.treeview.master')
+@extends('layouts.admin-master')
 
 @section('title')
-  Edit Menu Tree View RPJMD
+  Edit Menu Tree View Indikator
 @endsection
 
 @section('content')
   <section class="section-header">
     <div class="section-header-back">
-      <a href="{{ route('admin.treeview.rpjmd.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+      <a href="{{ route('admin.treeview.indikator.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
     </div>
-    <h1>Edit Menu Tree View RPJMD</h1>
+    <h1>Edit Menu Tree View Indikator</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item"><a href="{{ route('admin.treeview.rpjmd.index') }}">Menu Tree View RPJMD</a>
+      <div class="breadcrumb-item"><a href="{{ route('admin.treeview.indikator.index') }}">Tree View Indikator</a>
       </div>
       <div class="breadcrumb-item">Edit</div>
     </div>
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Edit Menu Tree View Indikator</h2>
+    <p class="section-lead">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat, officia tempora aliquid
+      ipsum soluta distinctio!</p>
+
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-12">
-        @include('partials.alerts')
-
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Edit Data Tree View</h4>
+            <h4>Edit Data Tree View</h4>
           </div>
           <div class="card-body">
-            <form action="{{ route('admin.treeview.rpjmd.update', $tabelRpjmd->id) }}" method="POST">
+            <form action="{{ route('admin.treeview.indikator.update', $tabelIndikator->id) }}" method="POST">
               @csrf
               @method('PUT')
               <div class="form-group row mb-4">
@@ -36,10 +40,10 @@
                 <div class="col-sm-12 col-md-7">
                   <select name="parent_id" class="form-control select2">
                     @foreach ($categories as $category)
-                      @if ($category->id !== $tabelRpjmd->id)
-                        <option {{ $tabelRpjmd->parent->id === $category->id ? 'selected' : '' }}
+                      @if ($category->id !== $tabelIndikator->id)
+                        <option {{ $tabelIndikator->parent->id === $category->id ? 'selected' : '' }}
                           value="{{ $category->id }}">
-                          {{ $category->menu_name }}</option>
+                          {{ $category->nama_menu }}</option>
                       @endif
                     @endforeach
                   </select>
@@ -48,7 +52,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama Menu <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" name="menu_name" class="form-control" value="{{ $tabelRpjmd->menu_name }}">
+                  <input type="text" name="nama_menu" class="form-control" value="{{ $tabelIndikator->nama_menu }}">
                 </div>
               </div>
               <div class="form-group row mb-4">

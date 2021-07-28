@@ -39,7 +39,7 @@ class RpjmdController extends Controller
             $format = 'xlsx';
         }
 
-        $fileName = "RPJMD-{$tabelRpjmd->menu_name}.{$format}";
+        $fileName = "RPJMD-{$tabelRpjmd->nama_menu}.{$format}";
 
         return Excel::download(new RpjmdExport($id), $fileName);
     }

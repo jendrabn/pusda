@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\TreeView;
 
 use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
-use App\Models\Skpd;
 use App\Models\TabelRpjmd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,13 +22,15 @@ class RpjmdController extends Controller
     {
         $validated = $this->validate($request, [
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_rpjmd,id'],
-            'menu_name' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string', 'max:100']
         ]);
 
         $validated['skpd_id'] = Auth::user()->skpd->id;
 
         TabelRpjmd::create($validated);
-        event(new UserLogged($request->user(), "Menambah data baru pada menu treeview RPJMD"));
+
+        event(new UserLogged($request->user(), 'Menambahkan menu treeview RPJMD'));
+
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
 
@@ -38,7 +39,7 @@ class RpjmdController extends Controller
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $categories = TabelRpjmd::all();
 
-        return view('admin.treeview.rpjmd-edit', compact('categories', 'tabelRpjmd'));
+        return view('admin.treeview.rpjmd_edit', compact('categories', 'tabelRpjmd'));
     }
 
     public function update(Request $request, $id)
@@ -47,21 +48,23 @@ class RpjmdController extends Controller
 
         $validated = $this->validate($request, [
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_rpjmd,id'],
-            'menu_name' => ['required', 'string',  'max:100']
+            'nama_menu' => ['required', 'string',  'max:100']
         ]);
 
         $tabelRpjmd->update($validated);
-        $tabelRpjmd->menu_name = $request->menu_name;
-        event(new UserLogged($request->user(), "Mengubah data pada treeview <i>{$tabelRpjmd->menu_name}</i> RPJMD"));
-        return back()->with('alert-success', 'Data berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah menu treeview RPJMD'));
+
+        return back()->with('alert-success', 'Menu treeview RPJMD berhasil diupdate');
     }
 
     public function destroy(Request $request, $id)
     {
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $tabelRpjmd->delete();
-        $tabelRpjmd->childs()->delete();
-        event(new UserLogged($request->user(), "Menghapus data treeeview <i>{$tabelRpjmd->menu_name}</i>  pada RPJMD"));
-        return back()->with('alert-success', 'Data berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus menu treeview RPJMD'));
+
+        return back()->with('alert-success', 'Menu treeview RPJMD berhasil dihapus');
     }
 }

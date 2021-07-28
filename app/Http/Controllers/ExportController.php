@@ -17,25 +17,25 @@ class ExportController extends Controller
 {
     public function exportRpjmd(TabelRpjmd $tabelRpjmd)
     {
-        $fileName = "Tabel RPJMD {$tabelRpjmd->menu_name}.{$this->getFormat()}";
+        $fileName = "Tabel RPJMD {$tabelRpjmd->nama_menu}.{$this->getFormat()}";
         return Excel::download(new RpjmdExport($tabelRpjmd->id), $fileName);
     }
 
     public function exportBps(TabelBps $tabelBps)
     {
-        $fileName = "Tabel BPS {$tabelBps->menu_name}.{$this->getFormat()}";
+        $fileName = "Tabel BPS {$tabelBps->nama_menu}.{$this->getFormat()}";
         return Excel::download(new BpsExport($tabelBps->id), $fileName);
     }
 
     public function export8KelData(Tabel8KelData $tabel8KelData)
     {
-        $fileName = "Tabel 8 Kelompok Data {$tabel8KelData->menu_name}.{$this->getFormat()}";
+        $fileName = "Tabel 8 Kelompok Data {$tabel8KelData->nama_menu}.{$this->getFormat()}";
         return Excel::download(new DelapanKelDataExport($tabel8KelData->id), $fileName);
     }
 
     public function exportIndikator(TabelIndikator $tabelIndikator)
     {
-        $fileName = "Tabel Indikator {$tabelIndikator->menu_name}.{$this->getFormat()}";
+        $fileName = "Tabel Indikator {$tabelIndikator->nama_menu}.{$this->getFormat()}";
         return Excel::download(new IndikatorExport($tabelIndikator->id), $fileName);
     }
 

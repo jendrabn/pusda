@@ -8,7 +8,7 @@
   <div class="container">
     <div class="card">
       <div class="card-header bg-white card-header__lg">
-        <h4 class="card-header__title">Tabel Uraian "{{ $tabel8KelData->menu_name }}" 8 Kelompok Data</h4>
+        <h4 class="card-header__title">Tabel Uraian "{{ $tabel8KelData->nama_menu }}" 8 Kelompok Data</h4>
       </div>
       <div class="card-body">
         <div class="action">

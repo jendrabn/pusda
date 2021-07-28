@@ -17,7 +17,7 @@ class CreateTabel8KelDataTable extends Migration
             $table->id();
             $table->foreignId('skpd_id')->constrained('skpd')->onDelete('cascade');
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('menu_name');
+            $table->string('nama_menu');
             $table->timestamps();
 
             $table->foreign('parent_id')->references('id')->on('tabel_8keldata')->onDelete('cascade');

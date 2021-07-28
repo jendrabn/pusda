@@ -12,6 +12,7 @@ use App\Models\SkpdCategory;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DelapanKelDataController extends Controller

@@ -21,7 +21,7 @@ class TabelRpjmd extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'skpd_id', 'parent_id', 'menu_name'];
+    protected $fillable = ['id', 'skpd_id', 'parent_id', 'nama_menu'];
 
 
     public function parent()
