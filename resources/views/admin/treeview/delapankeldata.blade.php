@@ -57,7 +57,7 @@
                         <a href="{{ route('admin.treeview.delapankeldata.edit', [$category->id]) }}"
                           class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
                         <button data-url="{{ route('admin.treeview.delapankeldata.destroy', $category->id) }}"
-                          type="button" class="btn btn-danger btn-icon"><i class="fas fa-trash-alt"></i></button>
+                          type="button" class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
                       </div>
                     @endif
                   </td>

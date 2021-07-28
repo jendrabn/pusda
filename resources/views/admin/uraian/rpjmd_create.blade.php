@@ -1,25 +1,28 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
-  Uraian Form Menu BPS
+  Uraian Form Menu RPJMD
 @endsection
 
 @section('content')
   <section class="section-header">
-    <h1>Uraian Form Menu BPS</h1>
+    <h1>Uraian Form Menu RPJMD</h1>
     <div class="section-header-breadcrumb">
       <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item">Uraian Form Menu BPS</div>
+      <div class="breadcrumb-item">Uraian Form Menu RPJMD</div>
     </div>
   </section>
 
   <section class="section-body">
-    @include('partials.alerts')
+    <h2 class="section-title">Uraian Form Menu RPJMD</h2>
+    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Est obcaecati nihil atque ipsa minima
+      natus!</p>
 
+    @include('partials.alerts')
     {{-- TREEVIEW --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Pilih Menu Treeview</h4>
+        <h4>Pilih Menu Treeview</h4>
         <div class="card-header-action">
           <a data-collapse="#treeview-card-collapse" class="btn btn-icon btn-info" href="#"><i
               class="fas fa-minus"></i></a>
@@ -28,7 +31,7 @@
       <div class="collapse show" id="treeview-card-collapse">
         <div class="card-body overflow-auto">
           <div id="treeview" class="tree-demo">
-            @include('admin.uraian.partials.menu-tree')
+            @include('admin.uraian.partials.menu_tree')
           </div>
         </div>
       </div>
@@ -38,7 +41,7 @@
     {{-- FORM INPUT --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Tambah Data Uraian Form "{{ $tabelBps->nama_menu }}"</h4>
+        <h4>Tambah Data Uraian Form "{{ $tabelRpjmd->nama_menu }}"</h4>
         <div class="card-header-action">
           <a data-collapse="#uraian-form-card-collapse" class="btn btn-icon btn-info" href="#"><i
               class="fas fa-minus"></i></a>
@@ -46,9 +49,10 @@
       </div>
       <div class="collapse show" id="uraian-form-card-collapse">
         <div class="card-body">
-          <form action="{{ route('admin.uraian.bps.store') }}" method="POST">
+          <form action="{{ route('admin.uraian.rpjmd.store') }}" method="POST">
             @csrf
-            <input type="hidden" name="tabel_bps_id" value="{{ $tabelBps->id }}">
+            <input type="hidden" name="skpd_id" value="{{ $skpd->id }}">
+            <input type="hidden" name="tabel_rpjmd_id" value="{{ $tabelRpjmd->id }}">
             <div class="form-group row mb-4">
               <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori <code>*</code></label>
               <div class="col-sm-12 col-md-7">
@@ -90,7 +94,7 @@
     {{-- URAIAN --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Data Uraian Form</h4>
+        <h4>Data Uraian Form</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -105,27 +109,27 @@
             <tbody>
               @foreach ($uraian as $index => $item)
                 <tr>
-                  <td class="text-center" style="width: 2%">{{ ++$index }}</td>
+                  <td class="text-center">{{ ++$index }}</td>
                   <td>{{ $item->uraian }}</td>
-                  <td style="min-width: 65px;">
-                    <div class="buttons text-center">
-                      <button data-url="{{ route('admin.uraian.bps.destroy', $item->id) }}"
-                        class=" btn btn-icon btn-sm btn-danger m-0 btn-delete"><i class="fas fa-trash-alt"></i></button>
-                      <a href="{{ route('admin.uraian.bps.edit', [$tabelBps->id, $item->id]) }}"
-                        class="btn btn-icon btn-sm btn-warning m-0"><i class="fas fa-pencil-alt"></i></a>
+                  <td>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                      <a href="{{ route('admin.uraian.rpjmd.edit', [$tabelRpjmd->id, $item->id]) }}"
+                        class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                      <button data-url="{{ route('admin.uraian.rpjmd.destroy', $item->id) }}" type="button"
+                        class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
                     </div>
                   </td>
                 </tr>
                 @foreach ($item->childs as $index => $item)
                   <tr>
                     <td></td>
-                    <td>&nbsp;&nbsp;&nbsp;{{ $item->uraian }}</td>
-                    <td style="min-width: 65px">
-                      <div class="buttons text-center">
-                        <button data-url="{{ route('admin.uraian.bps.destroy', $item->id) }}"
-                          class=" btn btn-icon btn-sm btn-danger m-0 btn-delete"><i class="fas fa-trash-alt"></i></button>
-                        <a href="{{ route('admin.uraian.bps.edit', [$tabelBps->id, $item->id]) }}"
-                          class="btn btn-icon btn-sm btn-warning m-0"><i class="fas fa-pencil-alt"></i></a>
+                    <td style="text-indent: 1rem;">{{ $item->uraian }}</td>
+                    <td>
+                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                        <a href="{{ route('admin.uraian.rpjmd.edit', [$tabelRpjmd->id, $item->id]) }}"
+                          class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                        <button data-url="{{ route('admin.uraian.rpjmd.destroy', $item->id) }}" type="button"
+                          class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
                       </div>
                     </td>
                   </tr>
@@ -141,3 +145,7 @@
     <form id="form-delete" action="" method="POST" hidden>@csrf @method('DELETE')</form>
   </section>
 @endsection
+
+@push('scripts')
+  @include('admin.uraian.partials.scripts')
+@endpush

@@ -39,11 +39,6 @@
   <a class="nav-link" href="{{ route('admin.bps.index') }}"><i class="fas fa-th-large"></i>
     <span>BPS</span></a>
 </li>
-<li class="menu-header">Menu</li>
-<li class="{{ request()->routeIs('admin.users.index') || request()->is('admin/users/*') ? 'active' : '' }}">
-  <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users"></i>
-    <span>User</span></a>
-</li>
 <li
   class="dropdown {{ request()->is('admin/treeview/delapankeldata/*') || request()->routeIs('admin.treeview.delapankeldata.index') || request()->is('admin/treeview/rpjmd/*') || request()->routeIs('admin.treeview.rpjmd.index') || request()->is('admin/treeview/indikator/*') || request()->routeIs('admin.treeview.indikator.index') || request()->is('admin/treeview/bps/*') || request()->routeIs('admin.treeview.bps.index') || request()->is('admin/uraian/delapankeldata/*') || request()->routeIs('admin.uraian.delapankeldata.index') || request()->is('admin/uraian/rpjmd/*') || request()->routeIs('admin.uraian.rpjmd.index') || request()->is('admin/uraian/indikator/*') || request()->routeIs('admin.uraian.indikator.index') || request()->is('admin/uraian/bps/*') || request()->routeIs('admin.uraian.bps.index') ? 'active' : '' }}">
   <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-table"></i>
@@ -85,6 +80,11 @@
       <a class="nav-link" href="{{ route('admin.uraian.bps.index') }}">Form BPS</a>
     </li>
   </ul>
+</li>
+<li class="menu-header">Menu</li>
+<li class="{{ request()->routeIs('admin.users.index') || request()->is('admin/users/*') ? 'active' : '' }}">
+  <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users"></i>
+    <span>User</span></a>
 </li>
 <li class="{{ request()->routeIs('admin.userlog.index') ? 'active' : '' }}">
   <a class="nav-link" href="{{ route('admin.userlog.index') }}"><i class="fas fa-user-clock"></i>

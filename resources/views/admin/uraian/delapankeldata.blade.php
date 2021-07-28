@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Uraian Form Menu 8 Kel. Data
@@ -13,15 +13,23 @@
     </div>
   </section>
   <section class="section-body">
+    <h2 class="section-title">Uraian Form Menu 8 Kel. Data</h2>
+    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe iste perspiciatis quod illo
+      totam consequatur.</p>
+
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Pilih Menu Treeview</h4>
+        <h4>Pilih Menu Treeview</h4>
       </div>
       <div class="card-body overflow-auto">
         <div id="treeview">
-          @include('admin.uraian.partials.menu-tree')
+          @include('admin.uraian.partials.menu_tree')
         </div>
       </div>
     </div>
   </section>
 @endsection
+
+@push('scripts')
+  @include('admin.uraian.partials.scripts')
+@endpush

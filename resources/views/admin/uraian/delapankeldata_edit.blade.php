@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Edit Uraian Form Menu 8 Kel. Data
@@ -21,10 +21,14 @@
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Edit Uraian Form Menu 8 Kel. Data</h2>
+    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, quaerat ducimus ipsa error
+      aliquam ratione.</p>
+
     @include('partials.alerts')
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Edit Data Uraian Form "{{ $tabel8KelData->nama_menu }}"</h4>
+        <h4>Edit Data Uraian Form "{{ $tabel8KelData->nama_menu }}"</h4>
       </div>
       <div class="card-body">
         <form action="{{ route('admin.uraian.delapankeldata.update', $uraian8KelData->id) }}" method="POST">
@@ -55,7 +59,7 @@
             <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
             <div class="col-sm-12 col-md-7">
               <div class=" d-flex justify-content-between align-items-center">
-                <span><code>*</code> Wajib Diisi</span>
+                <span><code>*</code> Wajib diisi</span>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
               </div>
             </div>

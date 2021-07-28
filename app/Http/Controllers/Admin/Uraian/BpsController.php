@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Uraian;
 use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Skpd;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
 
@@ -14,20 +13,19 @@ class BpsController extends Controller
 
     public function index(TabelBps $tabelBps = null)
     {
-        if (empty($tabelBps)) {
-            $categories = TabelBps::all();
+        $categories = TabelBps::all();
 
-            return view('admin.uraian.bps', compact('categories'));
-        } else {
-            $categories = TabelBps::all();
+        if ($tabelBps) {
             $uraian = UraianBps::with('childs')
                 ->where('tabel_bps_id', $tabelBps->id)
                 ->whereNull('parent_id')
                 ->orderBy('id')
                 ->get();
 
-            return view('admin.uraian.bps-create', compact('categories', 'uraian', 'tabelBps'));
+            return view('admin.uraian.bps_create', compact('categories', 'uraian', 'tabelBps'));
         }
+
+        return view('admin.uraian.bps', compact('categories'));
     }
 
     public function store(Request $request)
@@ -39,17 +37,22 @@ class BpsController extends Controller
         ]);
 
         UraianBps::create($validated);
-        event(new UserLogged($request->user(), "Menambah data baru pada uraian BPS"));
-        return back()->with('alert-success', 'Berhasil menambahkan data');
+
+        event(new UserLogged($request->user(), 'Menambahkan form menu uraian BPS'));
+
+        return back()->with('alert-success', 'Berhasil menambahkan form menu uraian BPS');
     }
 
     public function edit(TabelBps $tabelBps, UraianBps $uraianBps)
     {
         $categories = TabelBps::all();
+        $uraian = UraianBps::with('childs')
+            ->where('tabel_Bps_id', $tabelBps->id)
+            ->whereNull('parent_id')
+            ->orderBy('id')
+            ->get();
 
-        $uraian = UraianBps::with('childs')->where('tabel_Bps_id', $tabelBps->id)->whereNull('parent_id')->orderBy('id')->get();
-
-        return view('admin.uraian.bps-edit', compact('categories', 'uraian', 'tabelBps', 'uraianBps'));
+        return view('admin.uraian.bps_edit', compact('categories', 'uraian', 'tabelBps', 'uraianBps'));
     }
 
     public function update(Request $request, UraianBps $uraianBps)
@@ -62,15 +65,18 @@ class BpsController extends Controller
         ]);
 
         $uraianBps->update($validated);
-        $uraianBps->uraian = $request->uraian;
-        event(new UserLogged($request->user(), "Mengubah data pada uraian <i>{$uraianBps->uraian}</i> BPS"));
-        return back()->with('alert-success', 'Data berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah form menu uraian BPS'));
+
+        return back()->with('alert-success', 'Form menu uraian BPS berhasil diupdate');
     }
 
     public function destroy(Request $request, UraianBps $uraianBps)
     {
         $uraianBps->delete();
-        event(new UserLogged($request->user(), "Menghapus data uraian <i>{$uraianBps->uraian}</i>  pada BPS"));
-        return back()->with('alert-success', 'Data berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus form menu uraian BPS'));
+
+        return back()->with('alert-success', 'Form menu uraian BPS berhasil dihapus');
     }
 }

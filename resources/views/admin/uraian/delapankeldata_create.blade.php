@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Uraian Form Menu 8 Kel. Data
@@ -14,12 +14,16 @@
   </section>
 
   <section class="section-body">
+    <h2 class="section-title">Uraian Form Menu 8 Kel. Data</h2>
+    <p class="section-lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore blanditiis iste illo non?
+      Suscipit, aliquam?</p>
+
     @include('partials.alerts')
 
     {{-- TREEVIEW --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Pilih Menu Treeview</h4>
+        <h4>Pilih Menu Treeview</h4>
         <div class="card-header-action">
           <a data-collapse="#treeview-card-collapse" class="btn btn-icon btn-info" href="#"><i
               class="fas fa-minus"></i></a>
@@ -28,7 +32,7 @@
       <div class="collapse show" id="treeview-card-collapse">
         <div class="card-body overflow-auto">
           <div id="treeview">
-            @include('admin.uraian.partials.menu-tree')
+            @include('admin.uraian.partials.menu_tree')
           </div>
         </div>
       </div>
@@ -38,7 +42,7 @@
     {{-- FORM INPUT --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Tambah Data Uraian Form "{{ $tabel8KelData->nama_menu }}"</h4>
+        <h4>Tambah Data Uraian Form "{{ $tabel8KelData->nama_menu }}"</h4>
         <div class="card-header-action">
           <a data-collapse="#uraian-form-card-collapse" class="btn btn-icon btn-info" href="#"><i
               class="fas fa-minus"></i></a>
@@ -92,7 +96,7 @@
     {{-- URAIAN --}}
     <div class="card">
       <div class="card-header">
-        <h4 class="text-uppercase">Data Uraian Form</h4>
+        <h4>Data Uraian Form</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -107,24 +111,28 @@
             <tbody>
               @foreach ($uraian as $index => $item)
                 <tr>
-                  <td class="text-center" style="width: 2%">{{ ++$index }}</td>
+                  <td class="text-center">{{ ++$index }}</td>
                   <td>{{ $item->uraian }}</td>
-                  <td style="min-width: 65px;" class="text-center">
-                    <button data-url="{{ route('admin.uraian.delapankeldata.destroy', $item->id) }}"
-                      class=" btn btn-icon btn-sm btn-danger m-0 btn-delete"><i class="fas fa-trash-alt"></i></button>
-                    <a href="{{ route('admin.uraian.delapankeldata.edit', [$tabel8KelData->id, $item->id]) }}"
-                      class="btn btn-icon btn-sm btn-warning m-0"><i class="fas fa-pencil-alt"></i></a>
+                  <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                      <a href="{{ route('admin.uraian.delapankeldata.edit', [$tabel8KelData->id, $item->id]) }}"
+                        class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                      <button data-url="{{ route('admin.uraian.delapankeldata.destroy', $item->id) }}" type="button"
+                        class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
+                    </div>
                   </td>
                 </tr>
                 @foreach ($item->childs as $index => $item)
                   <tr>
                     <td></td>
-                    <td>&nbsp;&nbsp;&nbsp;{{ $item->uraian }}</td>
-                    <td style="min-width: 65px" class="text-center">
-                      <button data-url="{{ route('admin.uraian.delapankeldata.destroy', $item->id) }}"
-                        class=" btn btn-icon btn-sm btn-danger m-0 btn-delete"><i class="fas fa-trash-alt"></i></button>
-                      <a href="{{ route('admin.uraian.delapankeldata.edit', [$tabel8KelData->id, $item->id]) }}"
-                        class="btn btn-icon btn-sm btn-warning m-0"><i class="fas fa-pencil-alt"></i></a>
+                    <td style="text-indent: 1rem;">{{ $item->uraian }}</td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                        <a href="{{ route('admin.uraian.delapankeldata.edit', [$tabel8KelData->id, $item->id]) }}"
+                          class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                        <button data-url="{{ route('admin.uraian.delapankeldata.destroy', $item->id) }}" type="button"
+                          class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
+                      </div>
                     </td>
                   </tr>
                 @endforeach
@@ -139,3 +147,7 @@
     <form id="form-delete" action="" method="POST" hidden>@csrf @method('DELETE')</form>
   </section>
 @endsection
+
+@push('scripts')
+  @include('admin.uraian.partials.scripts')
+@endpush

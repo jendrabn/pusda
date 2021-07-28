@@ -35,14 +35,14 @@
 
       $('#dataTable tbody').on('click', '.btn-delete', function() {
         Swal.fire({
-          title: 'Hapus Menu ?',
-          text: "Data yang dihapus tidak bisa dikembalikan!",
+          title: 'Apakah kamu yakin?',
+          text: 'Menu treeview, Form menu uraian & isi uraian yang dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+          confirmButtonColor: '#fc544b',
+          cancelButtonColor: '#3490dc',
           confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal',
+          cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
             $('#form-delete').prop('action', $(this).data('url'))
@@ -50,7 +50,6 @@
           }
         })
       })
-
 
       $('#treeview').jstree({
         core: {
@@ -68,6 +67,5 @@
         },
         plugins: ['types']
       });
-
     })
   </script>
