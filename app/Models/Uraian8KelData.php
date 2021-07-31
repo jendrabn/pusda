@@ -74,30 +74,14 @@ class Uraian8KelData extends Model
 
     public static function getUraianByTableId($id)
     {
-        $uraian8KelData = self::where('tabel_8keldata_id', $id)->get();
+        $uraian8KelData = self::with('isi8KelData')->where('tabel_8keldata_id', $id)->get();
 
-        // $years = Isi8KelData::query()
-        //     ->join('uraian_8keldata', 'isi_8keldata.uraian_8keldata_id', '=', 'uraian_8keldata.id')
-        //     ->join('tabel_8keldata', 'uraian_8keldata.tabel_8keldata_id', '=', 'tabel_8keldata.id')
-        //     ->where('tabel_8keldata.id', '=', $id)
-        //     ->groupBy('tahun')
-        //     ->select('tahun')
-        //     ->get();
-        $years = Isi8KelData::select('tahun')->whereHas('uraian8KelData', function ($query) use ($id) {
-            $query->where('tabel_8keldata_id', '=', $id);
-        })
-            ->groupBy('tahun')
-            ->orderBy('tahun')
-            ->get();
-
-        $years = $years->map(function ($year) {
-            return $year->tahun;
-        });
+        $years = Isi8KelData::getYears($id);
 
         $uraian8KelData->each(function ($uraian) use ($years) {
-            if (!is_null($uraian->parent_id)) {
+            if ($uraian->parent_id) {
                 foreach ($years as $year) {
-                    $isi = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->where('tahun', $year)->first();
+                    $isi = $uraian->isi8KelData->where('tahun', $year)->first();
                     if (is_null($isi)) {
                         Isi8KelData::create([
                             'uraian_8keldata_id' => $uraian->id,
@@ -109,7 +93,8 @@ class Uraian8KelData extends Model
             }
         });
 
-        $uraian8KelData = self::where('tabel_8keldata_id', $id)->whereNull('parent_id')->get();
+        $uraian8KelData = self::with('childs.isi8KelData')->where('tabel_8keldata_id', $id)->whereNull('parent_id')->get();
+
         return $uraian8KelData;
     }
 }

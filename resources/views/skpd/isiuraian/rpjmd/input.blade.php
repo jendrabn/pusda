@@ -1,7 +1,7 @@
-@extends('layouts.admin-master2')
+@extends('layouts.admin-master3')
 
 @section('title')
-  BPS
+  RPJMD
 @endsection
 
 @section('content')
@@ -10,37 +10,39 @@
       <div class="col-12 col-lg-3 pr-lg-2">
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Menu Tree View</h4>
+            <h4>Menu Tree View</h4>
           </div>
           <div class="card-body overflow-auto" id="jstree">
-            @include('admin.isiuraian.bps.menu-tree')
+            @include('skpd.isiuraian.rpjmd.menu_tree')
           </div>
         </div>
       </div>
 
       <div class="col-12 col-lg-9 pl-lg-2">
         @include('partials.alerts')
+
         <div class="card">
           <div class="card-body">
-            <ul class="nav nav-tabs" id="tab" role="tablist">
+            <ul class="nav nav-pills" id="tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table"
-                  aria-selected="true">Tabel BPS</a>
+                  aria-selected="true">Tabel RPJMD</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="fitur-tab" data-toggle="tab" href="#fitur" role="tab" aria-controls="fitur"
-                  aria-selected="false">Fitur BPS</a>
+                  aria-selected="false">Fitur RPJMD</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file"
-                  aria-selected="false">File Pendukung BPS</a>
+                  aria-controls="contact" aria-selected="false">File Pendukung RPJMD</a>
               </li>
             </ul>
-            <div class="tab-content tab-bordered" id="tab-content">
+            <div class="tab-content" id="tab-content">
+
               <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
                 <div class="d-flex justify-content-end align-items-center">
-                  @include('admin.isiuraian.partials.button-export', ['resource_name' => 'bps', 'table_id' =>
-                  $tabelBps->id])
+                  @include('admin.isiuraian.partials.button_export', ['resource_name' => 'rpjmd', 'table_id' =>
+                  $tabelRpjmd->id])
                 </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="isi-uraian-table">
@@ -51,6 +53,7 @@
                           Uraian
                         </th>
                         <th class="text-center">Satuan</th>
+                        <th class="text-center">Ketersedian Data</th>
                         @foreach ($years as $y)
                           <th class="text-center">
                             {{ $y }}
@@ -61,15 +64,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($uraianBps as $index => $uraian)
+                      @foreach ($uraianRpjmd as $index => $uraian)
                         <tr>
                           <td class="text-center">
                             @if (is_null($uraian->parent_id))
                               {{ ++$index }}
                             @endif
                           </td>
-                          <td><span class="text-danger font-weight-bold">{{ $uraian->uraian }}</span> </td>
-                          <td>{{ $uraian->satuan }}</td>
+                          <td><span class="text-danger font-weight-bold">{{ $uraian->uraian }}</span></td>
+                          <td> {{ $uraian->satuan }} </td>
+                          <td>{{ $uraian->ketersediaan_data_text }}</td>
                           @foreach ($years as $y)
                             <th></th>
                           @endforeach
@@ -80,23 +84,23 @@
                           <tr>
                             <td></td>
                             <td><span class="text-danger d-block" style="text-indent: 1rem;">{{ $child->uraian }}</span>
-                            </td>
                             <td>{{ $child->satuan }}</td>
+                            <td>{{ $child->ketersediaan_data_text }}</td>
                             @foreach ($years as $y)
                               <th class="text-center">
-                                {{ $child->isiBps->where('tahun', $y)->first()->isi }}
+                                {{ $child->isiRpjmd->where('tahun', $y)->first()->isi ?? 0 }}
                               </th>
                             @endforeach
                             <td class=" text-center">
                               <button data-id="{{ $child->id }}" class="btn btn-info btn-sm btn-grafik">Grafik</button>
                             </td>
                             <td class="text-center">
-                              <button data-id="{{ $child->id }}" class="btn btn-icon btn-sm btn-warning m-1 btn-edit">
-                                <i class="fas fa-pencil-alt"></i>
-                              </button>
-                              <button data-id="{{ $child->id }}" class="btn btn-icon btn-sm btn-danger m-1 btn-delete">
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-warning btn-edit"><i
+                                    class="fas fa-pencil-alt"></i></button>
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-danger btn-delete"><i
+                                    class="fas fa-trash-alt"></i></button>
+                              </div>
                             </td>
                           </tr>
                         @endforeach
@@ -106,34 +110,38 @@
                 </div>
               </div>
 
+
               <div class="tab-pane fade" id="fitur" role="tabpanel" aria-labelledby="fitur-tab">
-                <form action="{{ route('admin.bps.update_fitur', $fiturBps->id) }}" method="POST">
+                <form action="{{ route('skpd.rpjmd.update_fitur', $fiturRpjmd->id) }}" method="POST">
                   @csrf
                   @method('PUT')
                   <div class="form-group">
                     <label>Deskripsi:</label>
                     <textarea name="deskripsi" class="form-control h-100"
-                      rows="3">{{ $fiturBps->deskripsi }}</textarea>
+                      rows="3">{{ $fiturRpjmd->deskripsi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Analisis:</label>
-                    <textarea name="analisis" class="form-control h-100" rows="3">{{ $fiturBps->analisis }}</textarea>
+                    <textarea name="analisis" class="form-control h-100"
+                      rows="3">{{ $fiturRpjmd->analisis }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Permasalahan:</label>
                     <textarea name="permasalahan" class="form-control h-100"
-                      rows="3">{{ $fiturBps->permasalahan }}</textarea>
+                      rows="3">{{ $fiturRpjmd->permasalahan }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Solusi atau Langkah-langkah Tindak Lanjut:</label>
-                    <textarea name="solusi" class="form-control h-100" rows="3">{{ $fiturBps->solusi }}</textarea>
+                    <textarea name="solusi" class="form-control h-100" rows="3">{{ $fiturRpjmd->solusi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Saran / Rekomendasi ke Gubernur atau Pusat:</label>
-                    <textarea name="saran" class="form-control h-100" rows="3">{{ $fiturBps->saran }}</textarea>
+                    <textarea name="saran" class="form-control h-100" rows="3">{{ $fiturRpjmd->saran }}</textarea>
                   </div>
-                  <div class="form-group text-right"><button type="submit" class="btn btn-primary">Simpan
-                      Perubahan</button></div>
+                  <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">Simpan
+                      Perubahan</button>
+                  </div>
                 </form>
               </div>
 
@@ -159,13 +167,11 @@
                           <td class="text-center">{{ ++$index }}</td>
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
-                            <a href="{{ route('admin.bps.files.download', $file->id) }}"
-                              class="btn btn-icon btn-sm btn-info m-1 btn-download-file">
-                              <i class="fas fa-download"></i>
+                            <a href="{{ route('skpd.rpjmd.files.download', $file->id) }}"
+                              class="btn btn-icon btn-sm btn-info m-0 btn-download-file"><i class="fas fa-download"></i>
                             </a>
                             <button data-id="{{ $file->id }}"
-                              class="btn btn-icon btn-sm btn-danger m-1 btn-delete-file">
-                              <i class="fas fa-trash-alt"></i>
+                              class="btn btn-icon btn-sm btn-danger m-0 btn-delete-file"><i class="fas fa-trash-alt"></i>
                             </button>
                           </td>
                         </tr>
@@ -179,25 +185,27 @@
         </div>
       </div>
     </div>
-    @include('admin.isiuraian.partials.hidden-form')
   </section>
-@endsection
-
-@section('outer')
-  @include('admin.isiuraian.partials.modal-graphic')
-  @include('admin.isiuraian.partials.modal-edit', ['action' => route('admin.bps.update') ])
-  @include('admin.isiuraian.partials.modal-upload-file', ['action' => route('admin.bps.files.store', $tabelBps->id) ])
+  @include('skpd.isiuraian.partials.hidden_form')
 @endsection
 
 @push('scripts')
-  @include('admin.isiuraian.partials.scripts')
+  @include('skpd.isiuraian.partials.scripts')
   <script>
     $(function() {
-      initIsiUraianPage('bps');
+      initIsiUraianPage('rpjmd');
     });
   </script>
 @endpush
 
+
+@section('outer')
+  @include('skpd.isiuraian.partials.modal_graphic')
+  @include('skpd.isiuraian.partials.modal_edit', ['action' => route('skpd.rpjmd.update'), 'showKetersediaanData' =>
+  true])
+  @include('skpd.isiuraian.partials.modal_file_upload', ['action' => route('skpd.rpjmd.files.store', $tabelRpjmd->id) ])
+@endsection
+
 @push('styles')
-  @include('admin.isiuraian.partials.styles')
+  @include('skpd.isiuraian.partials.styles')
 @endpush

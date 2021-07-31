@@ -14,10 +14,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Uraian Form Menu 8 Kel. Data</h2>
-    <p class="section-lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore blanditiis iste illo non?
-      Suscipit, aliquam?</p>
-
     @include('partials.alerts')
 
     {{-- TREEVIEW --}}

@@ -41,7 +41,7 @@ class UserController extends Controller
 
         event(new UserLogged($request->user(), 'Menambahkan user baru dengan nama ' . $user->name));
 
-        return redirect()->route('admin.users.index')->with('status', 'Berhasil menambahkan user baru');
+        return redirect()->route('admin.users.index')->with('alert-success', 'Berhasil menambahkan user baru');
     }
 
     public function edit(User $user)

@@ -14,10 +14,9 @@ class DelapanKelDataController extends Controller
     public function index(Tabel8KelData $tabel8KelData = null)
     {
         $skpd =  Auth::user()->skpd;
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with(['childs.childs.childs'])->get();
 
         if ($tabel8KelData) {
-            $categories = Tabel8KelData::all();
             $uraian = Uraian8KelData::with('childs')
                 ->where('tabel_8keldata_id', $tabel8KelData->id)
                 ->whereNull('parent_id')

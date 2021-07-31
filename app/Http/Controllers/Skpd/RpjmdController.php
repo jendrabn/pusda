@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Skpd;
 
-use App\Exports\RpjmdExport;
+use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
@@ -13,37 +13,46 @@ use App\Models\UraianRpjmd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 
 class RpjmdController extends Controller
 {
     public function index(TabelRpjmd $tabelRpjmd = null)
     {
+        $categories = TabelRpjmd::with('childs.childs.childs')->get();
         $skpd = Auth::user()->skpd;
-        $categories = TabelRpjmd::all();
         $tabelRpjmdIds = UraianRpjmd::select('tabel_rpjmd_id as id')
             ->where('skpd_id', $skpd->id)
             ->groupBy('tabel_rpjmd_id')
             ->get();
 
-        if (is_null($tabelRpjmd)) {
-            return view('skpd.isiuraian.rpjmd.index', compact('skpd', 'tabelRpjmdIds', 'categories'));
-        }
+        return view('skpd.isiuraian.rpjmd.index', compact('skpd', 'tabelRpjmdIds', 'categories'));
+    }
 
-        $uraianRpjmd = UraianRpjmd::getUraianByTableId($tabelRpjmd->id);
-        $fiturRpjmd = FiturRpjmd::getFiturByTableId($tabelRpjmd->id);
-        $files = FileRpjmd::where('tabel_rpjmd_id', $tabelRpjmd->id)->get();
-        $years = IsiRpjmd::getYears();
+    public function input(TabelRpjmd $tabelRpjmd)
+    {
+        $tabelRpjmdId = $tabelRpjmd->id;
+        $skpd = Auth::user()->skpd;
+
+        $tabelRpjmdIds = UraianRpjmd::select('tabel_rpjmd_id as id')
+            ->where('skpd_id', $skpd->id)
+            ->groupBy('tabel_rpjmd_id')
+            ->get();
+
+        $categories = TabelRpjmd::with('childs.childs.childs')->get();
+        $uraianRpjmd = UraianRpjmd::getUraianByTableId($tabelRpjmdId);
+        $fiturRpjmd = FiturRpjmd::getFiturByTableId($tabelRpjmdId);
+        $files = $tabelRpjmd->fileRpjmd;
+        $years = IsiRpjmd::getYears($tabelRpjmdId);
         $allSkpd = Skpd::all()->pluck('singkatan', 'id');
 
-        return view('skpd.isiuraian.rpjmd.create', compact('tabelRpjmdIds', 'allSkpd', 'tabelRpjmd', 'skpd', 'categories', 'uraianRpjmd',  'fiturRpjmd', 'files', 'years'));
+        return view('skpd.isiuraian.rpjmd.input', compact('tabelRpjmdIds', 'allSkpd', 'tabelRpjmd', 'skpd', 'categories', 'uraianRpjmd',  'fiturRpjmd', 'files', 'years'));
     }
 
     public function edit(Request $request, UraianRpjmd $uraianRpjmd)
     {
         abort_if(!$request->ajax(), 404);
 
-        $isiRpjmd = $uraianRpjmd->isiRpjmd()->orderByDesc('tahun')->groupBy('tahun')->take(5)->get(['tahun', 'isi']);
+        $isiRpjmd = $uraianRpjmd->isiRpjmd()->orderByDesc('tahun')->groupBy('tahun')->get(['tahun', 'isi']);
 
         $response = [
             'uraian_id' => $uraianRpjmd->id,
@@ -59,43 +68,59 @@ class RpjmdController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'uraian' => ['required', 'string'],
-            'satuan' => ['required', 'string'],
-        ]);
 
         $uraianRpjmd = UraianRpjmd::findOrFail($request->uraian_id);
-        $uraianRpjmd->uraian = $request->uraian;
-        $uraianRpjmd->satuan = $request->satuan;
-        $uraianRpjmd->save();
 
-        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $request->uraian_id)->take(5)->get()->sortBy('tahun');
+        $years = $uraianRpjmd->isiRpjmd()
+            ->select('tahun')
+            ->get()
+            ->map(fn ($year) => $year->tahun);
 
-        $n = 1;
-        foreach ($isiRpjmd as  $value) {
-            $push = IsiRpjmd::findOrFail($value->id);
-            if ($n == 1) {
-                $push->isi = $request->t1;
-            } else if ($n == 2) {
-                $push->isi = $request->t2;
-            } else if ($n == 3) {
-                $push->isi = $request->t3;
-            } else if ($n == 4) {
-                $push->isi = $request->t4;
-            } else {
-                $push->isi = $request->t5;
-            }
-            $push->save();
-            $n++;
+        $rules = [
+            'uraian' => ['required', 'string'],
+            'satuan' => ['required', 'string'],
+            'ketersediaan_data' => ['required', 'integer'],
+        ];
+
+        $customMessages = [];
+
+        foreach ($years as $year) {
+            $key = 'tahun_' . $year;
+            $rules[$key] = ['required', 'numeric'];
+            $customMessages[$key . '.required'] = "Data tahun {$year} wajib diisi";
+            $customMessages[$key . '.numeric'] = "Data tahun {$year} harus berupa angka";
         }
 
-        return back()->with('alert-success', 'Isi uraian berhasil diupdate');
+        $this->validate($request, $rules, $customMessages);
+
+        $uraianRpjmd->update([
+            'uraian' => $request->uraian,
+            'satuan' =>  $request->satuan,
+            'ketersediaan_data' => $request->ketersediaan_data,
+        ]);
+
+        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $request->uraian_id)
+            ->get()
+            ->sortBy('tahun');
+
+        foreach ($isiRpjmd as $value) {
+            $isi = IsiRpjmd::find($value->id);
+            $isi->isi = $request->get('tahun_' . $isi->tahun);
+            $isi->save();
+        }
+
+        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel RPJMD'));
+
+        return back()->with('alert-success', 'Isi uraian tabel RPJMD berhasil diupdate');
     }
 
-    public function destroy(UraianRpjmd $uraianRpjmd)
+    public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
-        return back()->with('alert-success', 'Isi uraian berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus uraian tabel RPJMD'));
+
+        return back()->with('alert-success', 'Uraian tabel RPJMD berhasil dihapus');
     }
 
 
@@ -111,7 +136,9 @@ class RpjmdController extends Controller
 
         $fiturRpjmd->update($validated);
 
-        return back()->with('alert-success', 'Fitur berhasil diupdate');
+        event(new UserLogged($request->user(), 'Mengubah fitur tabel RPJMD'));
+
+        return back()->with('alert-success', 'Fitur tabel RPJMD berhasil diupdate');
     }
 
     public function storeFile(Request $request, TabelRpjmd $tabelRpjmd)
@@ -129,19 +156,25 @@ class RpjmdController extends Controller
             'file_name' =>  $fileName
         ]);
 
-        return back()->with('alert-success', 'File uploaded');
+        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel RPJMD'));
+
+        return back()->with('alert-success', 'File pendukung tabel RPJMD berhasil diupload');
     }
 
-    public function destroyFile(FileRpjmd $fileRpjmd)
+    public function destroyFile(Request $request, FileRpjmd $fileRpjmd)
     {
         Storage::delete('public/file_pusda/' . $fileRpjmd->file_name);
         $fileRpjmd->delete();
 
-        return back()->with('alert-success', 'File deleted');
+        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel RPJMD'));
+
+        return back()->with('alert-success', 'File pendukung tabel RPJMD berhasil dihapus');
     }
 
-    public function downloadFile(FileRpjmd $fileRpjmd)
+    public function downloadFile(Request $request, FileRpjmd $fileRpjmd)
     {
+        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel RPJMD'));
+
         return Storage::download('public/file_pusda/' . $fileRpjmd->file_name);
     }
 }

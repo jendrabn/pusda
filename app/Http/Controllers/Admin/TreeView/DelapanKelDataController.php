@@ -13,7 +13,7 @@ class DelapanKelDataController extends Controller
 
     public function index()
     {
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with(['parent', 'childs.childs.childs'])->get();
 
         return view('admin.treeview.delapankeldata', compact('categories'));
     }
@@ -37,8 +37,7 @@ class DelapanKelDataController extends Controller
     public function edit($id)
     {
         $tabel8KelData = Tabel8KelData::findOrFail($id);
-
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with('parent')->get();
 
         return view('admin.treeview.delapankeldata_edit', compact('categories', 'tabel8KelData'));
     }

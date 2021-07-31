@@ -12,7 +12,7 @@ class IndikatorController extends Controller
 
     public function index()
     {
-        $categories = TabelIndikator::all();
+        $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
 
         return view('admin.treeview.indikator', compact('categories'));
     }
@@ -34,8 +34,7 @@ class IndikatorController extends Controller
     public function edit($id)
     {
         $tabelIndikator = TabelIndikator::findOrFail($id);
-
-        $categories = TabelIndikator::all();
+        $categories = TabelIndikator::with('parent')->get();
 
         return view('admin.treeview.indikator_edit', compact('categories', 'tabelIndikator'));
     }

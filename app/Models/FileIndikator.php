@@ -9,18 +9,8 @@ class FileIndikator extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'file_indikator';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'tabel_indikator_id',
         'file_name'

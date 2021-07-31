@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Edit SKPD
@@ -19,9 +19,10 @@
   </section>
 
   <section class="section-body">
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card">
           <div class="card-header">
             <h4 class="text-uppercase">Edit SKPD</h4>
@@ -33,19 +34,20 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="nama" value="{{ $skpd->nama }}" tabindex=" 2">
+                  <input type="text" class="form-control" name="nama" value="{{ $skpd->nama }}" tabindex="1" autofocus>
                 </div>
               </div>
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Singkatan <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="singkatan" value="{{ $skpd->singkatan }}" tabindex=" 2">
+                  <input type="text" class="form-control" name="singkatan" value="{{ $skpd->singkatan }}" tabindex="2">
                 </div>
               </div>
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
-                  <select name="skpd_category_id" id="" class="form-control" tabindex="1">
+                  <select name="skpd_category_id" id="" class="form-control select2" tabindex="3">
+                    <option value="none" disabled hidden>--Pilih Kategori--</option>
                     @foreach ($categories as $id => $name)
                       <option {{ $id === $skpd->skpd_category_id ? 'selected' : '' }} value="{{ $id }}">
                         {{ $name }}</option>
@@ -58,7 +60,7 @@
                 <div class="col-sm-12 col-md-7">
                   <div class=" d-flex justify-content-between align-items-center">
                     <span><code>*</code> Wajib diisi</span>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary" tabindex="4">Simpan Perubahan</button>
                   </div>
                 </div>
               </div>

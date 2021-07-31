@@ -14,7 +14,7 @@ class DelapanKelDataController extends Controller
 {
     public function index()
     {
-        $categories = Tabel8KelData::where('parent_id', 1)->get();
+        $categories = Tabel8KelData::with('childs.childs.childs')->where('parent_id', 1)->get();
         return view('guest.delapankeldata', compact('categories'));
     }
 
@@ -23,22 +23,9 @@ class DelapanKelDataController extends Controller
         $tabel8KelData = Tabel8KelData::findOrFail($id);
         $uraian8KelData = Uraian8KelData::getUraianByTableId($id);
         $fitur8KelData = Fitur8KelData::getFiturByTableId($id);
-        $years = Isi8KelData::getYears();
+        $years = Isi8KelData::getYears($id);
 
         return view('guest.tables.delapankeldata', compact('tabel8KelData',  'uraian8KelData',  'fitur8KelData',  'years'));
-    }
-
-    public function export($id)
-    {
-        $tabel8KelData = Tabel8KelData::findOrFail($id);
-        $format = request()->input('format');
-        if (!in_array($format, ['xlsx', 'csv', 'xls'])) {
-            $format = 'xlsx';
-        }
-
-        $fileName = "8-Kelompok-Data-{$tabel8KelData->nama_menu}.{$format}";
-
-        return Excel::download(new DelapanKelDataExport($id), $fileName);
     }
 
     public function getUraianForChart($id)

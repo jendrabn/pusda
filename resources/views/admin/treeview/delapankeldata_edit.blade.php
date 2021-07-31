@@ -21,10 +21,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Menu Tree View 8 Kel. Data</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius dolorum illum deserunt amet
-      dignissimos repellat.</p>
-
     @include('partials.alerts')
 
     <div class="card">

@@ -12,20 +12,18 @@ use App\Models\SkpdCategory;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DelapanKelDataController extends Controller
 {
-    public function index($skpdCategory = null)
+    public function index(SkpdCategory $skpdCategory = null)
     {
         if ($skpdCategory) {
-            $skpdCategory = SkpdCategory::where('name', $skpdCategory)->firstOrFail();
-            $skpd = $skpdCategory->skpd;
-            return view('admin.isiuraian.8keldata.category', compact('skpd', 'skpdCategory'));
+            return view('admin.isiuraian.8keldata.category', compact('skpdCategory'));
         }
 
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with('childs.childs.childs')->get();
+
         return view('admin.isiuraian.8keldata.index', compact('categories'));
     }
 
@@ -41,10 +39,10 @@ class DelapanKelDataController extends Controller
                 ->get();
         }
 
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with('childs.childs.childs')->get();
         $uraian8KelData = Uraian8KelData::getUraianByTableId($tabel8KelDataId);
         $fitur8KelData = Fitur8KelData::getFiturByTableId($tabel8KelDataId);
-        $files = File8KelData::where('tabel_8keldata_id', $tabel8KelDataId)->get();
+        $files = $tabel8KelData->file8KelData;
         $years = Isi8KelData::getYears($tabel8KelDataId);
         $allSkpd = Skpd::all()->pluck('singkatan', 'id');
 
@@ -58,7 +56,7 @@ class DelapanKelDataController extends Controller
             ->groupBy('tabel_8keldata_id')
             ->get();
 
-        $categories = Tabel8KelData::all();
+        $categories = Tabel8KelData::with('childs.childs.childs')->get();
 
         return view('admin.isiuraian.8keldata.index', compact('categories', 'tabel8KelDataIds', 'skpd'));
     }
@@ -129,7 +127,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Mengubah isi uraian tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'Isi uraian berhasil diupdate');
+        return back()->with('alert-success', 'Isi uraian tabel 8 kelompok data berhasil diupdate');
     }
 
     public function destroy(Request $request, Uraian8KelData $uraian8KelData)
@@ -138,7 +136,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Menghapus uraian tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'Isi uraian berhasil dihapus');
+        return back()->with('alert-success', 'Uraian tabel 8 kelompok data berhasil dihapus');
     }
 
     public function updateFitur(Request $request, Fitur8KelData $fitur8KelData)
@@ -155,7 +153,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Mengubah fitur tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'Fitur berhasil diupdate');
+        return back()->with('alert-success', 'Fitur tabel 8 kelompok data berhasil diupdate');
     }
 
     public function storeFile(Request $request, Tabel8KelData $tabel8KelData)
@@ -175,7 +173,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'File pendukung berhasil diupload');
+        return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil diupload');
     }
 
     public function destroyFile(Request $request, File8KelData $file8KelData)
@@ -185,7 +183,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Menghapus file pendukung tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'File pendukung berhasil dihapus');
+        return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil dihapus');
     }
 
     public function downloadFile(Request $request, File8KelData $file8KelData)
@@ -203,7 +201,7 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Mengubah sumber data uraian tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'Sumber data isi uraian berhasil diupdate');
+        return back()->with('alert-success', 'Sumber data uraian tabel 8 kelompok data berhasil diupdate');
     }
 
     public function storeTahun(Request $request, Tabel8KelData $tabel8KelData)
@@ -214,7 +212,7 @@ class DelapanKelDataController extends Controller
 
         $tabel8KelData->uraian8KelData->each(function ($uraian) use ($request) {
             foreach ($request->tahun as $tahun) {
-                if (!is_null($uraian->parent_id)) {
+                if ($uraian->parent_id) {
                     $isi8KelData = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->where('tahun', $tahun)->first();
                     if (is_null($isi8KelData)) {
                         Isi8KelData::create([
@@ -231,7 +229,7 @@ class DelapanKelDataController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil menambahkan tahun'
+            'message' => 'Berhasil menambahkan tahun tabel 8 kelompok data'
         ], 201);
     }
 
@@ -244,6 +242,6 @@ class DelapanKelDataController extends Controller
 
         event(new UserLogged($request->user(), 'Menghapus tahun tabel 8 kelompok data'));
 
-        return back()->with('alert-success', 'Berhasil menghapus tahun');
+        return back()->with('alert-success', 'Berhasil menghapus tahun tabel 8 kelompok data');
     }
 }

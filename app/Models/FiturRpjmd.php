@@ -30,7 +30,7 @@ class FiturRpjmd extends Model
 		$fiturRpjmd = self::where('tabel_rpjmd_id', $id)->first();
 
 		if (is_null($fiturRpjmd)) {
-			$fiturRpjmd =  self::create([
+			$fiturRpjmd = self::create([
 				'tabel_rpjmd_id' => $id
 			]);
 		}

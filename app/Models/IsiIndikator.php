@@ -22,15 +22,18 @@ class IsiIndikator extends Model
         return $this->belongsTo(UraianIndikator::class, 'uraian_indikator_id');
     }
 
-    public static function getYears($limit = 5)
+    public static function getYears($tabelIndikatorId)
     {
-        $years = self::orderByDesc('tahun')
+        $years = self::select('tahun')->whereHas('uraianIndikator', function ($query) use ($tabelIndikatorId) {
+            $query->where('tabel_indikator_id', '=', $tabelIndikatorId);
+        })
             ->groupBy('tahun')
-            ->take($limit)
-            ->get('tahun')
-            ->sortBy('tahun');
+            ->orderBy('tahun')
+            ->get()
+            ->map(function ($year) {
+                return $year->tahun;
+            });
 
-        $years = $years->map(fn ($item) => $item->tahun)->values();
         return $years;
     }
 }

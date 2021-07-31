@@ -11,7 +11,7 @@ class BpsController extends Controller
 {
     public function index()
     {
-        $categories = TabelBps::all();
+        $categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
 
         return view('admin.treeview.bps', compact('categories'));
     }
@@ -33,8 +33,7 @@ class BpsController extends Controller
     public function edit($id)
     {
         $tabelBps = TabelBps::findOrFail($id);
-
-        $categories = TabelBps::all();
+        $categories = TabelBps::with('parent')->get();
 
         return view('admin.treeview.bps_edit', compact('categories', 'tabelBps'));
     }

@@ -13,7 +13,7 @@ class RpjmdController extends Controller
 
     public function index()
     {
-        $categories = TabelRpjmd::all();
+        $categories = TabelRpjmd::with(['parent', 'childs.childs.childs'])->get();
 
         return view('admin.treeview.rpjmd', compact('categories'));
     }
@@ -37,7 +37,7 @@ class RpjmdController extends Controller
     public function edit($id)
     {
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
-        $categories = TabelRpjmd::all();
+        $categories = TabelRpjmd::with('parent')->get();
 
         return view('admin.treeview.rpjmd_edit', compact('categories', 'tabelRpjmd'));
     }

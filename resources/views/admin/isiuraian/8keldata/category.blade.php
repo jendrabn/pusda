@@ -16,7 +16,7 @@
 
   <section class="section-body">
     <div class="row">
-      @foreach ($skpd as $skpd)
+      @foreach ($skpdCategory->skpd as $skpd)
         <div class="col-lg-6">
           <div class="card">
             <div class="card-body d-flex flex-column justify-content-center align-items-center">

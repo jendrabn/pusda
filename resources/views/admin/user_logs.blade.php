@@ -14,12 +14,8 @@
     </div>
   </div>
   <div class="section-body">
-    <h2 class="section-title">Log User</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique aspernatur possimus consequatur neque quam
-      ducimus?
-    </p>
     @include('partials.alerts')
+
     <div class="card">
       <div class="card-header">
         <h4>Log User</h4>

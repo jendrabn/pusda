@@ -25,7 +25,7 @@ class BpsExport implements FromView, ShouldAutoSize
         $uraianBps = UraianBps::getUraianByTableId($this->id);
         $fiturBps = FiturBps::getFiturByTableId($this->id);
         $files = FileBps::where('tabel_bps_id',  $this->id)->get();
-        $years = IsiBps::getYears();
+        $years = IsiBps::getYears($this->id);
 
         return view('exports.bps', compact('uraianBps', 'fiturBps', 'files', 'years'));
     }

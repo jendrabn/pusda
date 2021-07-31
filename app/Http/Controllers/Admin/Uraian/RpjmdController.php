@@ -15,7 +15,7 @@ class RpjmdController extends Controller
     public function index(TabelRpjmd $tabelRpjmd = null)
     {
         $skpd = Auth::user()->skpd;
-        $categories = TabelRpjmd::all();
+        $categories = TabelRpjmd::with(['childs.childs.childs'])->get();
 
         if ($tabelRpjmd) {
             $uraian = UraianRpjmd::with('childs')

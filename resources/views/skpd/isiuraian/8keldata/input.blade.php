@@ -10,10 +10,10 @@
       <div class="col-12 col-lg-3 pr-lg-2">
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Menu Tree View</h4>
+            <h4>Menu Tree View</h4>
           </div>
           <div class="card-body overflow-auto" id="jstree">
-            @include('skpd.isiuraian.8keldata.menu-tree')
+            @include('skpd.isiuraian.8keldata.menu_tree')
           </div>
         </div>
       </div>
@@ -22,7 +22,7 @@
         @include('partials.alerts')
         <div class="card">
           <div class="card-body">
-            <ul class="nav nav-tabs" id="tab" role="tablist">
+            <ul class="nav nav-pills" id="tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table"
                   aria-selected="true">Tabel 8 Kelompok Data</a>
@@ -36,10 +36,10 @@
                   aria-selected="false">File Pendukung 8 Kelompok Data</a>
               </li>
             </ul>
-            <div class="tab-content tab-bordered" id="tab-content">
+            <div class="tab-content" id="tab-content">
               <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="tabel-tab">
                 <div class="d-flex justify-content-end align-items-center">
-                  @include('skpd.isiuraian.partials.button-export', ['resource_name' => 'delapankeldata', 'table_id' =>
+                  @include('skpd.isiuraian.partials.button_export', ['resource_name' => 'delapankeldata', 'table_id' =>
                   $tabel8KelData->id])
                 </div>
                 <div class="table-responsive">
@@ -93,12 +93,12 @@
                             <td class="text-center"><button data-id="{{ $child->id }}"
                                 class="btn btn-info btn-sm btn-grafik">Grafik</button></td>
                             <td class="text-center">
-                              <button data-id="{{ $child->id }}"
-                                class="btn btn-icon btn-sm btn-warning m-1 btn-edit"><i class="fas fa-pencil-alt"></i>
-                              </button>
-                              <button data-id="{{ $child->id }}"
-                                class="btn btn-icon btn-sm btn-danger m-1 btn-delete"><i class="fas fa-trash-alt"></i>
-                              </button>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-warning btn-edit"><i
+                                    class="fas fa-pencil-alt"></i></button>
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-danger btn-delete"><i
+                                    class="fas fa-trash-alt"></i></button>
+                              </div>
                             </td>
                           </tr>
                         @endforeach
@@ -184,7 +184,7 @@
       </div>
     </div>
 
-    @include('skpd.isiuraian.partials.hidden-form')
+    @include('skpd.isiuraian.partials.hidden_form')
   </section>
 @endsection
 
@@ -193,11 +193,11 @@
 @endpush
 
 @section('outer')
-  @include('skpd.isiuraian.partials.modal-graphic')
-  @include('skpd.isiuraian.partials.modal-edit', ['action' =>
+  @include('skpd.isiuraian.partials.modal_graphic')
+  @include('skpd.isiuraian.partials.modal_edit', ['action' =>
   route('skpd.delapankeldata.update'),
   'showKetersediaanData' => true ])
-  @include('skpd.isiuraian.partials.modal-upload-file', ['action' =>
+  @include('skpd.isiuraian.partials.modal_file_upload', ['action' =>
   route('skpd.delapankeldata.files.store', $tabel8KelData->id)
   ])
 @endsection

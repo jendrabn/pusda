@@ -9,6 +9,6 @@ class PrintReportController extends Controller
 {
     public function index()
     {
-        return view('admin.print-report.index');
+        return view('admin.printreport.index');
     }
 }

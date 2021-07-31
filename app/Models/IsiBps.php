@@ -22,13 +22,18 @@ class IsiBps extends Model
         return $this->belongsTo(UraianBps::class, 'uraian_bps_id');
     }
 
-    public static function getYears()
+    public static function getYears($tabelBpsId)
     {
-        $years = self::orderByDesc('tahun')
+        $years = self::select('tahun')->whereHas('uraianBps', function ($query) use ($tabelBpsId) {
+            $query->where('tabel_bps_id', '=', $tabelBpsId);
+        })
             ->groupBy('tahun')
-            ->take(5)->get('tahun')
-            ->sortBy('tahun');
-        $years = $years->map(fn ($item) => $item->tahun)->values();
+            ->orderBy('tahun')
+            ->get()
+            ->map(function ($year) {
+                return $year->tahun;
+            });
+
         return $years;
     }
 }

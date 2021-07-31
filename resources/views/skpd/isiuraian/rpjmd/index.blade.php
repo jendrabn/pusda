@@ -8,10 +8,10 @@
   <section class="section-body">
     <div class="card">
       <div class="card-header">
-        <h4 class=" text-uppercase">Pilih Menu Tree View</h4>
+        <h4>Pilih Menu Tree View</h4>
       </div>
       <div class="card-body overflow-auto" id="treeview">
-        @include('skpd.isiuraian.rpjmd.menu-tree')
+        @include('skpd.isiuraian.rpjmd.menu_tree')
       </div>
     </div>
   </section>

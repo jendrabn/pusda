@@ -13,10 +13,6 @@
     </div>
   </section>
   <section class="section-body">
-    <h2 class="section-title">Uraian Form Menu 8 Kel. Data</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe iste perspiciatis quod illo
-      totam consequatur.</p>
-
     <div class="card">
       <div class="card-header">
         <h4>Pilih Menu Treeview</h4>

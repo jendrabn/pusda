@@ -7,14 +7,14 @@
 @section('content')
   <div class="section-header">
     <h1>Pengunjung</h1>
+    <div class="section-header-breadcrumb">
+      <div class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
+      <div class="breadcrumb-item">Pengunjung</div>
+    </div>
   </div>
-
   <div class="section-body">
-    <h2 class="section-title">Pengujung</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Error dignissimos reiciendis odit? Odit, reprehenderit
-      voluptatem.
-    </p>
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-lg-3">
         <div class="card">
@@ -50,7 +50,6 @@
       </div>
     </div>
 
-    @include('partials.alerts')
     <div class="card">
       <div class="card-header">
         <h4>Pengunjung</h4>

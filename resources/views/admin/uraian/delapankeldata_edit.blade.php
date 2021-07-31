@@ -21,11 +21,8 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Uraian Form Menu 8 Kel. Data</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, quaerat ducimus ipsa error
-      aliquam ratione.</p>
-
     @include('partials.alerts')
+
     <div class="card">
       <div class="card-header">
         <h4>Edit Data Uraian Form "{{ $tabel8KelData->nama_menu }}"</h4>

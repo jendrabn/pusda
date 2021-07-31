@@ -14,20 +14,24 @@ use Illuminate\Support\Facades\Storage;
 
 class BpsController extends Controller
 {
-    public function index(TabelBps $tabelBps = null)
+    public function index()
     {
-        $categories = TabelBps::all();
+        $categories = TabelBps::with('childs.childs.childs')->get();
 
-        if (is_null($tabelBps)) {
-            return view('admin.isiuraian.bps.index', compact('categories'));
-        }
+        return view('admin.isiuraian.bps.index', compact('categories'));
+    }
 
-        $uraianBps = UraianBps::getUraianByTableId($tabelBps->id);
-        $fiturBps = FiturBps::getFiturByTableId($tabelBps->id);
-        $files = FileBps::where('tabel_bps_id', $tabelBps->id)->get();
-        $years = IsiBps::getYears();
+    public function input(TabelBps $tabelBps)
+    {
+        $tabelBpsId = $tabelBps->id;
 
-        return view('admin.isiuraian.bps.create', compact('tabelBps', 'categories', 'uraianBps',  'fiturBps', 'files', 'years'));
+        $categories = TabelBps::with('childs.childs.childs')->get();
+        $uraianBps = UraianBps::getUraianByTableId($tabelBpsId);
+        $fiturBps = FiturBps::getFiturByTableId($tabelBpsId);
+        $files = $tabelBps->fileBps;
+        $years = IsiBps::getYears($tabelBpsId);
+
+        return view('admin.isiuraian.bps.input', compact('tabelBps', 'categories', 'uraianBps',  'fiturBps', 'files', 'years'));
     }
 
     public function edit(Request $request, UraianBps $uraianBps)
@@ -37,7 +41,6 @@ class BpsController extends Controller
         $isiBps = $uraianBps->isiBps()
             ->orderByDesc('tahun')
             ->groupBy('tahun')
-            ->take(5)
             ->get(['tahun', 'isi']);
 
         $response = [
@@ -53,52 +56,56 @@ class BpsController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $uraianBps = UraianBps::findOrFail($request->uraian_id);
+
+        $years = $uraianBps->isiBps()
+            ->select('tahun')
+            ->get()
+            ->map(fn ($year) => $year->tahun);
+
+        $rules = [
             'uraian' => ['required', 'string'],
             'satuan' => ['required', 'string'],
-            't1' => ['required', 'numeric'],
-            't2' => ['required', 'numeric'],
-            't3' => ['required', 'numeric'],
-            't4' => ['required', 'numeric'],
-            't5' => ['required', 'numeric'],
+        ];
+
+        $customMessages = [];
+
+        foreach ($years as $year) {
+            $key = 'tahun_' . $year;
+            $rules[$key] = ['required', 'numeric'];
+            $customMessages[$key . '.required'] = "Data tahun {$year} wajib diisi";
+            $customMessages[$key . '.numeric'] = "Data tahun {$year} harus berupa angka";
+        }
+
+        $this->validate($request, $rules, $customMessages);
+
+        $uraianBps->update([
+            'uraian' => $request->uraian,
+            'satuan' =>  $request->satuan,
         ]);
 
-        $uraianBps = UraianBps::findOrFail($request->uraian_id);
-        $uraianBps->uraian = $request->uraian;
-        $uraianBps->satuan = $request->satuan;
-        $uraianBps->save();
-
         $isiBps = IsiBps::where('uraian_bps_id', $request->uraian_id)
-            ->take(5)
             ->get()
             ->sortBy('tahun');
 
-        $n = 1;
         foreach ($isiBps as $value) {
-            $push = IsiBps::findOrFail($value->id);
-            if ($n == 1) {
-                $push->isi = $request->t1;
-            } else if ($n == 2) {
-                $push->isi = $request->t2;
-            } else if ($n == 3) {
-                $push->isi = $request->t3;
-            } else if ($n == 4) {
-                $push->isi = $request->t4;
-            } else {
-                $push->isi = $request->t5;
-            }
-            $push->save();
-            $n++;
+            $isi = IsiBps::find($value->id);
+            $isi->isi = $request->get('tahun_' . $isi->tahun);
+            $isi->save();
         }
-        event(new UserLogged($request->user(), "Mengubah uraian  <i>{$uraianBps->uraian}</i>  BPS"));
-        return back()->with('alert-success', 'Isi uraian berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel BPS'));
+
+        return back()->with('alert-success', 'Isi uraian tabel BPS berhasil diupdate');
     }
 
     public function destroy(Request $request, UraianBps $uraianBps)
     {
         $uraianBps->delete();
-        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraianBps->uraian}</i>  BPS"));
-        return back()->with('alert-success', 'Isi uraian berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus uraian tabel BPS'));
+
+        return back()->with('alert-success', 'Uraian tabel BPS berhasil dihapus');
     }
 
     public function updateFitur(Request $request, FiturBps $fiturBps)
@@ -112,8 +119,8 @@ class BpsController extends Controller
         ]);
 
         $fiturBps->update($validated);
-        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fiturBps}</i>  BPS"));
-        return back()->with('alert-success', 'Fitur berhasil diupdate');
+        event(new UserLogged($request->user(), 'Mengubah fitur tabel BPS'));
+        return back()->with('alert-success', 'Fitur tabel BPS berhasil diupdate');
     }
 
 
@@ -131,21 +138,67 @@ class BpsController extends Controller
             'tabel_bps_id' => $tabelBps->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelBps->nama_menu}</i>  BPS"));
-        return back()->with('alert-success', 'File pendukung berhasil diupload');
+
+        event(new UserLogged($request->user(), 'Menambah file pendukung tabel BPS'));
+
+        return back()->with('alert-success', 'File pendukung tabel BPS berhasil diupload');
     }
 
     public function destroyFile(Request $request, FileBps $fileBps)
     {
         Storage::delete('public/file_pusda/' . $fileBps->file_name);
         $fileBps->delete();
-        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$fileBps->file_name}</i>  BPS"));
-        return back()->with('alert-success', 'File pendukung berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel BPS'));
+
+        return back()->with('alert-success', 'File pendukung tabel BPS berhasil dihapus');
     }
 
     public function downloadFile(Request $request, FileBps $fileBps)
     {
-        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$fileBps->file_name}</i>  BPS"));
+        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel BPS'));
+
         return Storage::download('public/file_pusda/' . $fileBps->file_name);
+    }
+
+    public function storeTahun(Request $request, TabelBps $tabelBps)
+    {
+        abort_if(!$request->ajax(), 404);
+
+        $request->validate(['tahun' => ['required', 'array']]);
+
+        $tabelBps->uraianBps->each(function ($uraian) use ($request) {
+            foreach ($request->tahun as $tahun) {
+                if ($uraian->parent_id) {
+                    $isiBps = IsiBps::where('uraian_bps_id', $uraian->id)->where('tahun', $tahun)->first();
+                    if (is_null($isiBps)) {
+                        IsiBps::create([
+                            'uraian_bps_id' => $uraian->id,
+                            'tahun' => $tahun,
+                            'isi' => 0
+                        ]);
+                    }
+                }
+            }
+        });
+
+        event(new UserLogged($request->user(), 'Menambahkan tahun tabel BPS'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menambahkan tahun tabel BPS'
+        ], 201);
+    }
+
+    public function destroyTahun(Request $request, TabelBps $tabelBps, $year)
+    {
+        $uraianBps = $tabelBps->uraianBps;
+        $uraianBps->each(function ($uraian) use ($year) {
+            $uraian->isibps()->where('tahun', $year)->delete();
+        });
+
+        event(new UserLogged($request->user(), 'Menghapus tahun tabel BPS'));
+
+        return back()->with('alert-success', 'Berhasil menghapus tahun tabel BPS');
     }
 }

@@ -20,13 +20,10 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Uraian Form Menu Indikator</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum ullam nihil sequi maxime maiores
-      minus!</p>
+    @include('partials.alerts')
 
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card">
           <div class="card-header">
             <h4>Edit Data Uraian Form "{{ $tabelIndikator->nama_menu }}"</h4>

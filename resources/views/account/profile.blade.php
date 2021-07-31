@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Profil

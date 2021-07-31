@@ -20,11 +20,8 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Uraian Form Menu RPJMD</h2>
-    <p class="section-lead">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint cum quod inventore dolores
-      error. Officiis.</p>
-
     @include('partials.alerts')
+
     <div class="card">
       <div class="card-header">
         <h4>Edit Data Uraian Form "{{ $tabelRpjmd->nama_menu }}"</h4>

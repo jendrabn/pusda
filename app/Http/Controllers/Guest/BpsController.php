@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Guest;
 
-use App\Exports\BpsExport;
 use App\Http\Controllers\Controller;
 use App\Models\FiturBps;
 use App\Models\IsiBps;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
-use Maatwebsite\Excel\Facades\Excel;
 
 class BpsController extends Controller
 {
     public function index()
     {
-        $categories = TabelBps::where('parent_id', 1)->get();
+        $categories = TabelBps::with('childs.childs.childs')->where('parent_id', 1)->get();
         return view('guest.bps', compact('categories'));
     }
 
@@ -23,21 +21,9 @@ class BpsController extends Controller
         $tabelBps = TabelBps::findOrFail($id);
         $uraianBps = UraianBps::getUraianByTableId($id);
         $fiturBps = FiturBps::getFiturByTableId($id);
-        $years = IsiBps::getYears();
+        $years = IsiBps::getYears($id);
 
         return view('guest.tables.bps', compact('tabelBps', 'uraianBps',  'fiturBps',  'years'));
-    }
-
-    public function export($id)
-    {
-        $tabelBps = TabelBps::findOrFail($id);
-        $format = request()->input('format');
-        if (!in_array($format, ['xlsx', 'csv', 'xls'])) {
-            $format = 'xlsx';
-        }
-
-        $fileName = "BPS-{$tabelBps->nama_menu}.{$format}";
-        return Excel::download(new BpsExport($id), $fileName);
     }
 
     public function getUraianForChart($id)
@@ -47,7 +33,6 @@ class BpsController extends Controller
             ->isiBps()
             ->orderByDesc('tahun')
             ->groupBy('tahun')
-            ->take(5)
             ->get(['tahun', 'isi']);
 
         $response = [

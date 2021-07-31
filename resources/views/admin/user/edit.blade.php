@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Edit User
@@ -18,13 +18,10 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit User</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, distinctio sint. Impedit ut fugiat voluptas!
-    </p>
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card">
           <div class="card-header">
             <h4>Edit User</h4>
@@ -40,8 +37,8 @@
                       id="btn-change-avatar">
                       <i class="fas fa-camera"></i>
                     </button>
-                    <input type="file" hidden id="input-avatar" name="avatar">
-                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="img-fluid" tabindex="1">
+                    <input type="file" hidden id="input-avatar" name="avatar" tabindex="-1">
+                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="img-fluid">
                   </div>
                 </div>
                 <div class="col-lg-9">
@@ -52,7 +49,7 @@
                     </label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input-name" name="name" value="{{ $user->name }}"
-                        tabindex="2">
+                        tabindex="1">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -61,14 +58,14 @@
                       <code>*</code></label>
                     <div class="col-sm-9">
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="level" id="level-1" tabindex="3"
+                        <input class="form-check-input" type="radio" name="level" id="level-1" tabindex="2"
                           {{ $user->level == 1 ? 'checked' : '' }} value="1">
                         <label class="form-check-label" for="level-1">
                           Administrator
                         </label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="level" id="level-2" value="2" tabindex="4"
+                        <input class="form-check-input" type="radio" name="level" id="level-2" value="2" tabindex="3"
                           {{ $user->level == 2 ? 'checked' : '' }}>
                         <label class="form-check-label" for="level-2">
                           SKPD
@@ -81,7 +78,7 @@
                       class="col-sm-3 col-form-label d-flex align-items-center font-weight-bold text-uppercase">Nama
                       SKPD <code>*</code></label>
                     <div class="col-sm-9">
-                      <select class="form-control select2" name="skpd_id" tabindex="5">
+                      <select class="form-control select2" name="skpd_id" tabindex="4">
                         <option value="none" disabled selected hidden>-- Pilih SKPD--</option>
                         @foreach ($skpd as $id => $nama)
                           <option {{ $user->skpd->id == $id ? 'selected' : '' }} value="{{ $id }}">
@@ -96,7 +93,7 @@
                       <code>*</code></label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input-username" name="username"
-                        value="{{ $user->username }}" tabindex="6">
+                        value="{{ $user->username }}" tabindex="5">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -105,7 +102,7 @@
                       <code>*</code></label>
                     <div class="col-sm-9">
                       <input type="email" class="form-control" id="input-email" name="email" value="{{ $user->email }}"
-                        tabindex="7">
+                        tabindex="6">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -114,14 +111,14 @@
                       Hp</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="input-no-hp" name="no_hp" value="{{ $user->no_hp }}"
-                        tabindex="8">
+                        tabindex="7">
                     </div>
                   </div>
                   <div class="form-group row">
                     <label for="input-password"
                       class="col-sm-3 col-form-label d-flex align-items-center font-weight-bold text-uppercase">Password</label>
                     <div class="col-sm-9">
-                      <input type="password" class="form-control" id="input-password" name="password" tabindex="9">
+                      <input type="password" class="form-control" id="input-password" name="password" tabindex="8">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -129,7 +126,7 @@
                       class="col-sm-3 col-form-label d-flex align-items-center font-weight-bold text-uppercase">Alamat</label>
                     <div class="col-sm-9">
                       <textarea name="alamat" id="input-alamat" class="form-control h-100"
-                        tabindex="10">{{ $user->alamat }}</textarea>
+                        tabindex="9">{{ $user->alamat }}</textarea>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -137,9 +134,8 @@
                     <div class="col-sm-9">
                       <div class="d-flex justify-content-between">
                         <span><code>*</code> Wajib diisi</span>
-                        <button type="submit" class="btn btn-primary" tabindex="11">Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary" tabindex="10">Simpan Perubahan</button>
                       </div>
-
                     </div>
                   </div>
                 </div>

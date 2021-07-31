@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\SkpdsDataTable;
 use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,12 +11,13 @@ use App\Models\SkpdCategory;
 
 class SkpdController extends Controller
 {
-    public function index()
+    public function index(SkpdsDataTable $dataTable)
     {
+
         $skpd = Skpd::latest()->get();
         $categories = SkpdCategory::all()->pluck('name', 'id');
 
-        return view('admin.skpd.index', compact('skpd', 'categories'));
+        return $dataTable->render('admin.skpd.index', compact('skpd', 'categories'));
     }
 
     public function store(Request $request)

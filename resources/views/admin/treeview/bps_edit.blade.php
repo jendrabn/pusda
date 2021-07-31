@@ -18,10 +18,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Menu Tree View BPS</h2>
-    <p class="section-lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure maiores qui, corporis
-      laboriosam quibusdam sint!</p>
-
     @include('partials.alerts')
 
     <div class="card">

@@ -10,10 +10,10 @@
       <div class="col-12 col-lg-3 pr-lg-2">
         <div class="card">
           <div class="card-header">
-            <h4 class="text-uppercase">Menu Tree View</h4>
+            <h4>Menu Tree View</h4>
           </div>
           <div class="card-body overflow-auto" id="jstree">
-            @include('admin.isiuraian.indikator.menu-tree')
+            @include('admin.isiuraian.indikator.menu_tree')
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
         @include('partials.alerts')
         <div class="card">
           <div class="card-body">
-            <ul class="nav nav-tabs" id="tab" role="tablist">
+            <ul class="nav nav-pills" id="tab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table"
                   aria-selected="true">Tabel Indikator</a>
@@ -35,11 +35,15 @@
                   aria-selected="false">File Pendukung Indikator</a>
               </li>
             </ul>
-            <div class="tab-content tab-bordered" id="tab-content">
+            <div class="tab-content" id="tab-content">
 
               <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
                 <div class="d-flex justify-content-end align-items-center">
-                  @include('admin.isiuraian.partials.button-export', ['resource_name' => 'indikator', 'table_id' =>
+                  <button class="btn btn-success btn-icon icon-left mr-2" type="button" data-toggle="modal"
+                    data-target="#modal-add-year">
+                    <i class="fas fa-calendar-alt"></i> Pengaturan Tahun
+                  </button>
+                  @include('admin.isiuraian.partials.button_export', ['resource_name' => 'indikator', 'table_id' =>
                   $tabelIndikator->id])
                 </div>
                 <div class="table-responsive">
@@ -87,12 +91,12 @@
                             <td class=" text-center"><button data-id="{{ $child->id }}"
                                 class="btn btn-info btn-sm btn-grafik">Grafik</button></td>
                             <td class="text-center">
-                              <button data-id="{{ $child->id }}" class="btn btn-icon btn-sm btn-warning m-1 btn-edit">
-                                <i class="fas fa-pencil-alt"></i>
-                              </button>
-                              <button data-id="{{ $child->id }}" class="btn btn-icon btn-sm btn-danger m-1 btn-delete">
-                                <i class="fas fa-trash-alt"></i>
-                              </button>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-warning btn-edit"><i
+                                    class="fas fa-pencil-alt"></i></button>
+                                <button data-id="{{ $child->id }}" type="button" class="btn btn-danger btn-delete"><i
+                                    class="fas fa-trash-alt"></i></button>
+                              </div>
                             </td>
                           </tr>
                         @endforeach
@@ -181,14 +185,16 @@
       </div>
     </div>
   </section>
-  @include('admin.isiuraian.partials.hidden-form')
+  @include('admin.isiuraian.partials.hidden_form')
 @endsection
 
 @section('outer')
-  @include('admin.isiuraian.partials.modal-graphic')
-  @include('admin.isiuraian.partials.modal-edit', ['action' => route('admin.indikator.update') ])
-  @include('admin.isiuraian.partials.modal-upload-file', ['action' => route('admin.indikator.files.store',
+  @include('admin.isiuraian.partials.modal_graphic')
+  @include('admin.isiuraian.partials.modal_edit', ['action' => route('admin.indikator.update') ])
+  @include('admin.isiuraian.partials.modal_file_upload', ['action' => route('admin.indikator.files.store',
   $tabelIndikator->id) ])
+  @include('admin.isiuraian.partials.modal_add_year', ['resource_name' => 'indikator', 'tabel_id' =>
+  $tabelIndikator->id])
 @endsection
 
 @push('scripts')

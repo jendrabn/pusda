@@ -15,15 +15,15 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
 
-        $info = [
+        $info = (object) [
             'total_8keldata' => Uraian8KelData::count(),
             'total_rpjmd' =>  UraianRpjmd::count(),
             'total_indikator' => UraianIndikator::count(),
             'total_bps' =>  UraianBps::count()
         ];
 
-        $userLogs = UserLog::limit(5)->latest()->get();
-        
+        $userLogs = UserLog::with('user')->latest()->limit(5)->get();
+
         return view('admin.dashboard', compact('info', 'userLogs'));
     }
 }

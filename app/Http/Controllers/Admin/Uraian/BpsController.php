@@ -13,7 +13,7 @@ class BpsController extends Controller
 
     public function index(TabelBps $tabelBps = null)
     {
-        $categories = TabelBps::all();
+        $categories = TabelBps::with(['childs.childs.childs'])->get();
 
         if ($tabelBps) {
             $uraian = UraianBps::with('childs')

@@ -16,7 +16,7 @@
                              @foreach ($tabelRpjmdIds as $table)
                                @if ($table->id == $child->id)
                                  <li @if (isset($tabelRpjmd) && $tabelRpjmd->id == $table->id) data-jstree='{ "selected" : true }' @endif>
-                                   <a href="{{ route('skpd.rpjmd.index', $child->id) }}">{{ $child->nama_menu }}</a>
+                                   <a href="{{ route('skpd.rpjmd.input', $child->id) }}">{{ $child->nama_menu }}</a>
                                  </li>
                                @endif
                              @endforeach

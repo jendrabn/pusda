@@ -14,11 +14,8 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Uraian Form Menu RPJMD</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Est obcaecati nihil atque ipsa minima
-      natus!</p>
-
     @include('partials.alerts')
+
     {{-- TREEVIEW --}}
     <div class="card">
       <div class="card-header">

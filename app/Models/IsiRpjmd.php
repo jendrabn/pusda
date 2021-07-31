@@ -22,14 +22,18 @@ class IsiRpjmd extends Model
         return $this->belongsTo(UraianRpjmd::class, 'uraian_rpjmd_id');
     }
 
-    public static function getYears($limit = 5)
+    public static function getYears($tabelRpjmdId)
     {
-        $years = self::orderByDesc('tahun')
+        $years = self::select('tahun')->whereHas('uraianRpjmd', function ($query) use ($tabelRpjmdId) {
+            $query->where('tabel_rpjmd_id', '=', $tabelRpjmdId);
+        })
             ->groupBy('tahun')
-            ->take($limit)
-            ->get('tahun')
-            ->sortBy('tahun');
-        $years = $years->map(fn ($item) => $item->tahun)->values();
+            ->orderBy('tahun')
+            ->get()
+            ->map(function ($year) {
+                return $year->tahun;
+            });
+
         return $years;
     }
 }

@@ -14,10 +14,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Menu Tree View 8 Kel. Data</h2>
-    <p class="section-lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam explicabo maiores possimus,
-      voluptatem atque deleniti.</p>
-
     @include('partials.alerts')
 
     <div class="row">
@@ -53,11 +49,13 @@
                   <td>{{ $category->parent->nama_menu ?? '' }}</td>
                   <td class=" text-center">
                     @if ($category->id > 1)
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                        <a href="{{ route('admin.treeview.delapankeldata.edit', [$category->id]) }}"
-                          class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
+                      <div class="btn-group btn-group-sm">
+                        <a href="{{ route('admin.treeview.delapankeldata.edit', $category->id) }}"
+                          class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i>
+                        </a>
                         <button data-url="{{ route('admin.treeview.delapankeldata.destroy', $category->id) }}"
-                          type="button" class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i></button>
+                          type="button" class="btn btn-danger btn-icon btn-delete"><i class="fas fa-trash-alt"></i>
+                        </button>
                       </div>
                     @endif
                   </td>

@@ -1,6 +1,55 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"
 integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="anonymous"></script>
 <script>
+  function initIsiUraianPage(resourceName) {
+    $('#isi-uraian-table').DataTable({
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json'
+      },
+      searching: false,
+      paging: true,
+      ordering: false,
+      info: false,
+      lengthChange: true,
+      aLengthMenu: [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+    });
+
+    $('select#tahun').select2();
+
+    $('#modal-add-year').on('hidden.bs.modal', function(e) {
+      $('select#tahun').val(null).trigger('change');
+    });
+
+    $('#chart-download').on('click', function() {
+      const canvas = $('#chart-isi-uraian')[0];
+      const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      const link = document.createElement('a');
+      link.download = Date.now() + '.png';
+      link.href = image;
+      link.click()
+    });
+
+    $('#modal-file-upload').on('hidden.bs.modal', function(event) {
+      $(this).find('input[name=file_document]').val('');
+    });
+
+    $('#modal-edit .modal-footer button[type=submit]').on('click', function() {
+      $('#form-edit').submit();
+    });
+
+    initTreeView(true);
+    handleUpdateSumberData(resourceName);
+    handleShowModalEdit(resourceName);
+    handleDeleteFilePendukung(resourceName);
+    handleDeleteIsiUraian(resourceName);
+    handleShowModalGraphic(resourceName);
+    handleDeleteYear();
+    handleSubmitAddYear()
+  }
+
   function initTreeView(enableClickableLink = false, selector = '#jstree') {
     $(selector).jstree({
       core: {
@@ -183,41 +232,69 @@ integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="ano
     });
   }
 
-  function initIsiUraianPage(resourceName) {
-    $('#isi-uraian-table').DataTable({
-      searching: false,
-      paging: true,
-      ordering: false,
-      info: false,
-      lengthChange: true,
-      aLengthMenu: [
-        [10, 25, 50, 100, -1],
-        [10, 25, 50, 100, "All"]
-      ],
-    });
+  function handleSubmitAddYear() {
+    const modalAddYear = $('#modal-add-year');
 
-    $('#chart-download').on('click', function() {
-      const canvas = $('#chart-isi-uraian')[0];
-      const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-      const link = document.createElement('a');
-      link.download = Date.now() + '.png';
-      link.href = image;
-      link.click()
+    modalAddYear.find('form').on('submit', function(e) {
+      e.preventDefault();
+      modalAddYear.modal('hide')
+      Swal.fire({
+        title: 'Mohon tunggu sebentar...',
+        didOpen: () => {
+          Swal.showLoading()
+          $.ajax({
+            url: modalAddYear.find('form').attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: {
+              _token: $('meta[name="csrf-token"]').attr('content'),
+              tahun: $('select#tahun').val()
+            },
+            success: function(data) {
+              if (data.success) {
+                Swal.fire({
+                  title: data.message,
+                  icon: 'success',
+                  timer: 1000
+                })
+                window.location.reload();
+              }
+            },
+            error: function(error) {
+              Swal.fire({
+                title: 'Gagal menambahkan tahun',
+                text: error.responseJSON.message || error.statusText,
+                icon: 'error',
+                showConfirmButton: true,
+              })
+            }
+          });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      })
     });
+  }
 
-    $('#modal-file-upload').on('hidden.bs.modal', function(event) {
-      $(this).find('input[name=file_document]').val('');
+  function handleDeleteYear() {
+    $('button.hapus-tahun').on('click', function(e) {
+      const url = $(this).data('url');
+      const form = $('#form-delete-year');
+      form.prop('action', url);
+      console.log(url);
+      Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: 'Semua isi uraian pada tahun tersebut juga akan dihapus!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Batal',
+        confirmButtonText: 'Hapus'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        }
+      })
     });
-
-    $('#modal-edit .modal-footer button[type=submit]').on('click', function() {
-      $('#form-edit').submit();
-    });
-
-    initTreeView(true);
-    handleUpdateSumberData(resourceName);
-    handleShowModalEdit(resourceName);
-    handleDeleteFilePendukung(resourceName);
-    handleDeleteIsiUraian(resourceName);
-    handleShowModalGraphic(resourceName);
   }
 </script>

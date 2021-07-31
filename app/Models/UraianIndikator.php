@@ -47,31 +47,25 @@ class UraianIndikator extends Model
 
     public static function getUraianByTableId($id)
     {
-        $uraianIndikator = self::where('tabel_indikator_id', $id)->get();
+        $uraianIndikator = self::with('isiIndikator')->where('tabel_indikator_id', $id)->get();
 
-        if ($uraianIndikator->isNotEmpty()) {
-            $date = date('Y');
-            $i = $date - 4;
-            $uraianIndikator->each(function ($item) use ($i, $date) {
-                if (!is_null($item->parent_id)) {
-                    for ($dateList = $i; $dateList <= $date;) {
-                        $isiIndikator = IsiIndikator::where('uraian_indikator_id', $item->id)
-                            ->where('tahun', $dateList)
-                            ->first();
-                        if (is_null($isiIndikator)) {
-                            IsiIndikator::create([
-                                'uraian_indikator_id' => $item->id,
-                                'tahun' => $dateList,
-                                'isi' => 0
-                            ]);
-                        }
-                        $dateList++;
+        $years = IsiIndikator::getYears($id);
+
+        $uraianIndikator->each(function ($uraian) use ($years) {
+            foreach ($years as $year) {
+                if ($uraian->parent_id) {
+                    $isiIndikator = $uraian->isiIndikator->where('tahun', $year)->first();
+                    if (is_null($isiIndikator)) {
+                        IsiIndikator::create([
+                            'uraian_indikator_id' => $uraian->id,
+                            'tahun' => $year,
+                            'isi' => 0
+                        ]);
                     }
                 }
-            });
-        }
+            }
+        });
 
-        $uraianIndikator = self::where('tabel_indikator_id', $id)->whereNull('parent_id')->get();
-        return $uraianIndikator;
+        return self::with('childs.isiIndikator')->where('tabel_indikator_id', $id)->whereNull('parent_id')->get();
     }
 }

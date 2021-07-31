@@ -65,31 +65,25 @@ class UraianRpjmd extends Model
 
     public static function getUraianByTableId($id)
     {
+        $uraianRpjmd = self::with('isiRpjmd')->where('tabel_rpjmd_id', $id)->get();
 
-        $uraianRpjmd = self::where('tabel_rpjmd_id', $id)->get();
-        if ($uraianRpjmd->isNotEmpty()) {
-            $date = date('Y');
-            $i = $date - 4;
-            $uraianRpjmd->each(function ($item) use ($i, $date) {
-                if (!is_null($item->parent_id)) {
-                    for ($dateList = $i; $dateList <= $date;) {
-                        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $item->id)
-                            ->where('tahun', $dateList)
-                            ->first();
-                        if (is_null($isiRpjmd)) {
-                            IsiRpjmd::create([
-                                'uraian_rpjmd_id' => $item->id,
-                                'tahun' => $dateList,
-                                'isi' => 0
-                            ]);
-                        }
-                        $dateList++;
+        $years = IsiRpjmd::getYears($id);
+
+        $uraianRpjmd->each(function ($uraian) use ($years) {
+            if ($uraian->parent_id) {
+                foreach ($years as $year) {
+                    $isiRpjmd = $uraian->isiRpjmd->where('tahun', $year)->first();
+                    if (is_null($isiRpjmd)) {
+                        IsiRpjmd::create([
+                            'uraian_rpjmd_id' => $uraian->id,
+                            'tahun' => $year,
+                            'isi' => 0
+                        ]);
                     }
                 }
-            });
-        }
+            }
+        });
 
-        $uraianRpjmd = self::where('tabel_rpjmd_id', $id)->whereNull('parent_id')->get();
-        return $uraianRpjmd;
+        return self::with('childs.isiRpjmd')->where('tabel_rpjmd_id', $id)->whereNull('parent_id')->get();
     }
 }

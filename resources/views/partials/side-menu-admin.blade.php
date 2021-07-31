@@ -1,3 +1,7 @@
+@php
+$skpd_categories = \App\Models\SkpdCategory::all()->pluck('name', 'id');
+@endphp
+
 <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
   <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i>
     <span>Dashboard</span></a>
@@ -7,24 +11,21 @@
   <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-book"></i>
     <span>8 Kelompok Data</span></a>
   <ul class="dropdown-menu">
-    @foreach (\App\Models\SkpdCategory::all() as $skpd_category)
-      <li class="{{ request()->path() === 'admin/delapankeldata/' . $skpd_category->name ? 'active' : '' }}">
-        <a class="nav-link"
-          href="{{ route('admin.delapankeldata.index', [$skpd_category->name]) }}">{{ $skpd_category->name }}</a>
+    @foreach ($skpd_categories as $id => $name)
+      <li class="{{ request()->path() === 'admin/delapankeldata/' . $id ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.delapankeldata.index', $id) }}">{{ $name }}</a>
       </li>
     @endforeach
     <li class=""><a class="nav-link" href="{{ route('admin.delapankeldata.index') }}">8 Kel. Data</a></li>
   </ul>
 </li>
-
-<li class="dropdown {{ request()->is('admin/rpjmd/category/*') ? 'active' : '' }}">
+<li class="dropdown {{ request()->is('admin/rpjmd/*') ? 'active' : '' }}">
   <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-briefcase"></i>
     <span>RPJMD</span></a>
   <ul class="dropdown-menu">
-    @foreach (\App\Models\SkpdCategory::all() as $skpd_category)
-      <li class="{{ request()->path() === 'admin/rpjmd/category/' . $skpd_category->name ? 'active' : '' }}">
-        <a class="nav-link"
-          href="{{ route('admin.rpjmd.category', [$skpd_category->name]) }}">{{ $skpd_category->name }}</a>
+    @foreach ($skpd_categories as $id => $name)
+      <li class="{{ request()->path() === 'admin/rpjmd/' . $id ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.rpjmd.index', $id) }}">{{ $name }}</a>
       </li>
     @endforeach
     <li class=""><a class="nav-link" href="{{ route('admin.rpjmd.index') }}">RPJMD</a></li>

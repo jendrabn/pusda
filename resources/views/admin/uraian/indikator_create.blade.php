@@ -14,10 +14,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Uraian Form Menu Indikator</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, sapiente dignissimos voluptates
-      accusantium enim consequuntur?</p>
-
     @include('partials.alerts')
 
     {{-- TREEVIEW --}}

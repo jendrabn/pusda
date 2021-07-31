@@ -25,7 +25,7 @@ class RpjmdExport implements FromView
         $uraianRpjmd = UraianRpjmd::getUraianByTableId($this->id);
         $fiturRpjmd = FiturRpjmd::getFiturByTableId($this->id);
         $files = FileRpjmd::where('tabel_rpjmd_id',  $this->id)->get();
-        $years = IsiRpjmd::getYears();;
+        $years = IsiRpjmd::getYears($this->id);;
 
         return view('exports.rpjmd', compact('uraianRpjmd', 'fiturRpjmd', 'files', 'years'));
     }

@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Guest;
 
 use App\Exports\RpjmdExport;
 use App\Http\Controllers\Controller;
-use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
 use App\Models\IsiRpjmd;
-use App\Models\Skpd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RpjmdController extends Controller
 {
     public function index()
     {
-        $categories = TabelRpjmd::where('parent_id', 1)->get();
+        $categories = TabelRpjmd::with('childs.childs.childs')->where('parent_id', 1)->get();
         return view('guest.rpjmd', compact('categories'));
     }
     public function table($id)
@@ -26,22 +22,9 @@ class RpjmdController extends Controller
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $uraianRpjmd = UraianRpjmd::getUraianByTableId($id);
         $fiturRpjmd = FiturRpjmd::getFiturByTableId($id);
-        $years = IsiRpjmd::getYears();
+        $years = IsiRpjmd::getYears($id);
 
         return view('guest.tables.rpjmd', compact('tabelRpjmd', 'uraianRpjmd',  'fiturRpjmd',  'years'));
-    }
-
-    public function export($id)
-    {
-        $tabelRpjmd = TabelRpjmd::findOrFail($id);
-        $format = request()->input('format');
-        if (!in_array($format, ['xlsx', 'csv', 'xls'])) {
-            $format = 'xlsx';
-        }
-
-        $fileName = "RPJMD-{$tabelRpjmd->nama_menu}.{$format}";
-
-        return Excel::download(new RpjmdExport($id), $fileName);
     }
 
     public function getUraianForChart($id)
@@ -51,7 +34,6 @@ class RpjmdController extends Controller
             ->isiRpjmd()
             ->orderByDesc('tahun')
             ->groupBy('tahun')
-            ->take(5)
             ->get(['tahun', 'isi']);
 
         $response = [

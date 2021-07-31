@@ -1,4 +1,4 @@
-@extends('admin.uraian.master')
+@extends('layouts.admin-master')
 
 @section('title')
   Detail User
@@ -18,14 +18,10 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Detail User</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque, obcaecati aut sapiente iste deserunt odit.
-    </p>
+    @include('partials.alerts')
 
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card">
           <div class="card-header">
             <h4>Detail User</h4>

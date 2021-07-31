@@ -17,19 +17,6 @@
   <link rel="stylesheet" href="{{ asset('assets/module/jstree/dist/themes/default/style.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
-  <style>
-    #dataTable_length select {
-      min-width: 65px;
-    }
-
-    .table td {
-      padding: 3px 5px !important;
-      height: 50px !important;
-      vertical-align: middle !important;
-      color: #333333 !important;
-    }
-
-  </style>
   @stack('styles')
 </head>
 
@@ -69,8 +56,6 @@
         [10, 25, 50, "All"]
       ]
     });
-
-    $('.select2').select2();
   </script>
   @stack('scripts')
 </body>

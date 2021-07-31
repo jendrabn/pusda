@@ -11,7 +11,6 @@ class FiturIndikator extends Model
 
 	protected $table = 'fitur_indikator';
 
-
 	protected $fillable = [
 		'tabel_indikator_id',
 		'deskripsi',
@@ -25,7 +24,6 @@ class FiturIndikator extends Model
 	{
 		return $this->belongsTo(TabelIndikator::class, 'tabel_indikator_id');
 	}
-
 
 	public static function getFiturByTableId($id)
 	{

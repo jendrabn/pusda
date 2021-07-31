@@ -12,7 +12,7 @@ class IndikatorController extends Controller
 {
     public function index(TabelIndikator $tabelIndikator = null)
     {
-        $categories = TabelIndikator::all();
+        $categories = TabelIndikator::with(['childs.childs.childs'])->get();
 
         if ($tabelIndikator) {
             $uraian = UraianIndikator::with('childs')

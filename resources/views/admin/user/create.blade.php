@@ -18,14 +18,10 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Tambah User</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis iusto quam voluptatum. Similique, molestias
-      non?
-    </p>
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card">
           <div class="card-header">
             <h4>Tambah User</h4>
@@ -69,7 +65,7 @@
                 </div>
               </div>
               <div class="form-group row mb-4">
-                <label class="col-form-label text-uppercase text-md-right col-12 col-md-3 col-lg-3">Nama User
+                <label class="col-form-label text-uppercase text-md-right col-12 col-md-3 col-lg-3">Nama Lengkap
                   <code>*</code></label>
                 <div class="col-sm-12 col-md-7">
                   <input type="text" class="form-control" name="name" value="{{ request()->old('name') }}" tabindex="2">

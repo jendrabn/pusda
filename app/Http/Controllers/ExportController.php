@@ -10,7 +10,6 @@ use App\Models\Tabel8KelData;
 use App\Models\TabelBps;
 use App\Models\TabelIndikator;
 use App\Models\TabelRpjmd;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller

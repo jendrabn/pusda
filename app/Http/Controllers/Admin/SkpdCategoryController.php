@@ -12,7 +12,7 @@ class SkpdCategoryController extends Controller
     public function index()
     {
         $categories = SkpdCategory::all();
-        return view('admin.skpd-category', compact('categories'));
+        return view('admin.skpd_category', compact('categories'));
     }
 
     public function store(Request $request)

@@ -13,11 +13,8 @@
     </div>
   </div>
   <div class="section-body">
-    <h2 class="section-title">User</h2>
-    <p class="section-lead">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium tempora, alias dolores atque veritatis omnis.
-    </p>
     @include('partials.alerts')
+
     <div class="card ">
       <div class="card-header">
         <h4>User</h4>

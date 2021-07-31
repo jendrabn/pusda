@@ -43,7 +43,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $info['total_8keldata'] }}</h2>
+                <h2 class="number">{{ $info->total_8keldata }}</h2>
                 <div class="icon"><i class="fas fa-book text-info"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA 8 KEL. DATA</p>
@@ -62,7 +62,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $info['total_indikator'] }}</h2>
+                <h2 class="number">{{ $info->total_indikator }}</h2>
                 <div class="icon"><i class="fas fa-layer-group text-danger"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA INDIKATOR</p>
@@ -81,7 +81,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $info['total_rpjmd'] }}</h2>
+                <h2 class="number">{{ $info->total_rpjmd }}</h2>
                 <div class="icon"><i class="fas fa-briefcase text-warning"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA RPJMD</p>
@@ -100,7 +100,7 @@
           <div class="card-body p-3">
             <div class="stat">
               <div class="display">
-                <h2 class="number">{{ $info['total_bps'] }}</h2>
+                <h2 class="number">{{ $info->total_bps }}</h2>
                 <div class="icon"><i class="fas fa-th-large text-success"></i></div>
               </div>
               <p class="title mb-2">JUMLAH DATA BPS</p>
@@ -118,8 +118,6 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-
-
           <div class="card-header">
             <h4>Aktivitas Terbaru</h4>
             <div class="card-header-action">
@@ -166,18 +164,20 @@
 
 @push('scripts')
   <script>
-    $('.number').each(function() {
-      var $this = $(this);
-      jQuery({
-        Counter: 0
-      }).animate({
-        Counter: $this.text()
-      }, {
-        duration: 1000,
-        easing: 'swing',
-        step: function() {
-          $this.text(Math.ceil(this.Counter));
-        }
+    $(function() {
+      $('.number').each(function() {
+        var $this = $(this);
+        jQuery({
+          Counter: 0
+        }).animate({
+          Counter: $this.text()
+        }, {
+          duration: 1000,
+          easing: 'swing',
+          step: function() {
+            $this.text(Math.ceil(this.Counter));
+          }
+        });
       });
     });
   </script>

@@ -15,20 +15,24 @@ use Illuminate\Support\Facades\Storage;
 class IndikatorController extends Controller
 {
 
-    public function index(TabelIndikator $tabelIndikator = null)
+    public function index()
     {
-        $categories = TabelIndikator::all();
+        $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
 
-        if (is_null($tabelIndikator)) {
-            return view('admin.isiuraian.indikator.index', compact('categories'));
-        }
+        return view('admin.isiuraian.indikator.index', compact('categories'));
+    }
 
-        $uraianIndikator = UraianIndikator::getUraianByTableId($tabelIndikator->id);
-        $fiturIndikator = FiturIndikator::getFiturByTableId($tabelIndikator->id);
-        $files = FileIndikator::where('tabel_indikator_id', $tabelIndikator->id)->get();
-        $years = IsiIndikator::getYears();
 
-        return view('admin.isiuraian.indikator.create', compact('tabelIndikator', 'categories', 'uraianIndikator',  'fiturIndikator', 'files', 'years'));
+    public function input(TabelIndikator $tabelIndikator)
+    {
+        $tabelIndikatorId = $tabelIndikator->id;
+        $categories = TabelIndikator::with('childs.childs.childs')->get();
+        $uraianIndikator = UraianIndikator::getUraianByTableId($tabelIndikatorId);
+        $fiturIndikator = FiturIndikator::getFiturByTableId($tabelIndikatorId);
+        $files = $tabelIndikator->fiturIndikator;
+        $years = IsiIndikator::getYears($tabelIndikatorId);
+
+        return view('admin.isiuraian.indikator.input', compact('tabelIndikator', 'categories', 'uraianIndikator',  'fiturIndikator', 'files', 'years'));
     }
 
     public function edit(Request $request, UraianIndikator $uraianIndikator)
@@ -37,7 +41,7 @@ class IndikatorController extends Controller
 
         $isiIndikator = $uraianIndikator->isiIndikator()
             ->orderByDesc('tahun')
-            ->groupBy('tahun')->take(5)
+            ->groupBy('tahun')
             ->get(['tahun', 'isi']);
 
         $response = [
@@ -53,52 +57,56 @@ class IndikatorController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $uraianIndikator = UraianIndikator::findOrFail($request->uraian_id);
+
+        $years = $uraianIndikator->isiIndikator()
+            ->select('tahun')
+            ->get()
+            ->map(fn ($year) => $year->tahun);
+
+        $rules = [
             'uraian' => ['required', 'string'],
             'satuan' => ['required', 'string'],
-            't1' => ['required', 'numeric'],
-            't2' => ['required', 'numeric'],
-            't3' => ['required', 'numeric'],
-            't4' => ['required', 'numeric'],
-            't5' => ['required', 'numeric'],
+        ];
+
+        $customMessages = [];
+
+        foreach ($years as $year) {
+            $key = 'tahun_' . $year;
+            $rules[$key] = ['required', 'numeric'];
+            $customMessages[$key . '.required'] = "Data tahun {$year} wajib diisi";
+            $customMessages[$key . '.numeric'] = "Data tahun {$year} harus berupa angka";
+        }
+
+        $this->validate($request, $rules, $customMessages);
+
+        $uraianIndikator->update([
+            'uraian' => $request->uraian,
+            'satuan' =>  $request->satuan,
         ]);
 
-        $uraianIndikator = UraianIndikator::findOrFail($request->uraian_id);
-        $uraianIndikator->uraian = $request->uraian;
-        $uraianIndikator->satuan = $request->satuan;
-        $uraianIndikator->save();
-
         $isiIndikator = IsiIndikator::where('uraian_indikator_id', $request->uraian_id)
-            ->take(5)
             ->get()
             ->sortBy('tahun');
 
-        $n = 1;
         foreach ($isiIndikator as $value) {
-            $push = IsiIndikator::findOrFail($value->id);
-            if ($n == 1) {
-                $push->isi = $request->t1;
-            } else if ($n == 2) {
-                $push->isi = $request->t2;
-            } else if ($n == 3) {
-                $push->isi = $request->t3;
-            } else if ($n == 4) {
-                $push->isi = $request->t4;
-            } else {
-                $push->isi = $request->t5;
-            }
-            $push->save();
-            $n++;
+            $isi = IsiIndikator::find($value->id);
+            $isi->isi = $request->get('tahun_' . $isi->tahun);
+            $isi->save();
         }
-        event(new UserLogged($request->user(), "Mengubah uraian  {$uraianIndikator->uraian}  Indikator"));
-        return back()->with('alert-success', 'Isi uraian berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel indikator'));
+
+        return back()->with('alert-success', 'Isi uraian tabel indikator berhasil diupdate');
     }
 
     public function destroy(Request $request, UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
-        event(new UserLogged($request->user(), "Menghapus uraian  <i>{$uraianIndikator->uraian}</i>  Indikator"));
-        return back()->with('alert-success', 'Isi uraian berhasil dihapus');
+
+        event(new UserLogged($request->user(), 'Menghapus uraian tabel indikator'));
+
+        return back()->with('alert-success', 'Uraian tabel indikator berhasil dihapus');
     }
 
     public function updateFitur(Request $request, FiturIndikator $fiturIndikator)
@@ -112,8 +120,10 @@ class IndikatorController extends Controller
         ]);
 
         $fiturIndikator->update($validated);
-        event(new UserLogged($request->user(), "Mengubah fitur  <i>{$fiturIndikator}</i>  Indikator"));
-        return back()->with('alert-success', 'Fitur berhasil diupdate');
+
+        event(new UserLogged($request->user(), 'Mengubah fitur tabel indikator'));
+
+        return back()->with('alert-success', 'Fitur tabel indikator berhasil diupdate');
     }
 
     public function storeFile(Request $request, TabelIndikator $tabelIndikator)
@@ -130,21 +140,67 @@ class IndikatorController extends Controller
             'tabel_indikator_id' => $tabelIndikator->id,
             'file_name' =>  $fileName
         ]);
-        event(new UserLogged($request->user(), "Menambah file pendukung  <i>{$fileName}</i>  pada menu  <i>{$tabelIndikator->nama_menu}</i>  Indikator"));
-        return back()->with('alert-success', 'File pendukung berhasil diupload');
+
+        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel indikator'));
+
+        return back()->with('alert-success', 'File tabel indikator pendukung berhasil diupload');
     }
 
     public function destroyFile(Request $request, FileIndikator $fileIndikator)
     {
         Storage::delete('public/file_pusda/' . $fileIndikator->file_name);
         $fileIndikator->delete();
-        event(new UserLogged($request->user(), "Menghapus file pendukung  <i>{$fileIndikator->file_name}</i>  Indikator"));
+
+        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel indikator'));
+
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
     public function downloadFile(Request $request, FileIndikator $fileIndikator)
     {
         return Storage::download('public/file_pusda/' . $fileIndikator->file_name);
-        event(new UserLogged($request->user(), "Mendownload file pendukung  <i>{$fileIndikator->file_name}</i>  Indikator"));
+
+        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel indikator'));
+    }
+
+    public function storeTahun(Request $request, TabelIndikator $tabelIndikator)
+    {
+        abort_if(!$request->ajax(), 404);
+
+        $request->validate(['tahun' => ['required', 'array']]);
+
+        $tabelIndikator->uraianIndikator->each(function ($uraian) use ($request) {
+            foreach ($request->tahun as $tahun) {
+                if ($uraian->parent_id) {
+                    $isiIndikator = IsiIndikator::where('uraian_indikator_id', $uraian->id)->where('tahun', $tahun)->first();
+                    if (is_null($isiIndikator)) {
+                        IsiIndikator::create([
+                            'uraian_indikator_id' => $uraian->id,
+                            'tahun' => $tahun,
+                            'isi' => 0
+                        ]);
+                    }
+                }
+            }
+        });
+
+        event(new UserLogged($request->user(), 'Menambahkan tahun tabel indikator'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menambahkan tahun tabel indikator'
+        ], 201);
+    }
+
+    public function destroyTahun(Request $request, TabelIndikator $tabelIndikator, $year)
+    {
+        $uraianIndikator = $tabelIndikator->uraianIndikator;
+        $uraianIndikator->each(function ($uraian) use ($year) {
+            $uraian->isiIndikator()->where('tahun', $year)->delete();
+        });
+
+        event(new UserLogged($request->user(), 'Menghapus tahun tabel indikator'));
+
+        return back()->with('alert-success', 'Berhasil menghapus tahun tabel indikator');
     }
 }

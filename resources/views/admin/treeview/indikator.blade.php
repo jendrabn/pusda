@@ -14,10 +14,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Menu Tree View Indikator</h2>
-    <p class="section-lead">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis, odio minima ipsa
-      reprehenderit facilis quis.</p>
-
     @include('partials.alerts')
 
     <div class="row">

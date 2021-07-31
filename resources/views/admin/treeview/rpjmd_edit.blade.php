@@ -19,10 +19,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Menu Tree View RPJMD</h2>
-    <p class="section-lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim iure reiciendis eaque vitae,
-      unde quos.</p>
-
     @include('partials.alerts')
 
     <div class="row">

@@ -15,7 +15,7 @@
                             @foreach ($child->childs as $child)
                               <li @if (isset($tabelIndikator) && $tabelIndikator->id == $child->id) data-jstree='{ "selected" : true }' @endif>
                                 <a
-                                  href="{{ route('admin.indikator.index', $child->id) }}">{{ $child->nama_menu }}</a>
+                                  href="{{ route('admin.indikator.input', $child->id) }}">{{ $child->nama_menu }}</a>
                               </li>
                             @endforeach
                           @endif

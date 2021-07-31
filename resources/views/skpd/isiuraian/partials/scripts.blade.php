@@ -41,17 +41,25 @@ integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="ano
       uraian_id,
       uraian_parent_id,
       isi,
-      ketersediaan_data
+      ketersedian_data
     } = data;
     modal.find('input[name=uraian]').val(uraian);
     modal.find('input[name=satuan]').val(satuan);
     modal.find('input[name=uraian_id]').val(uraian_id);
     modal.find('input[name=uraian_parent_id]').val(uraian_parent_id);
-    if (ketersediaan_data) {
-      modal.find('select[name=ketersediaan_data]').val(ketersediaan_data);
+    if (ketersedian_data) {
+      $val = ketersedian_data;
+      if ($val === true) {
+        $val = 1;
+      }
+      if ($val === false) {
+        $val = 0;
+      }
+      modal.find('select[name=ketersediaan_data]').val($val);
     }
+
     isi.sort((a, b) => a.tahun - b.tahun);
-    isi.forEach((value, index) => modal.find(`input[name=t${++index}]`).val(
+    isi.forEach((value, index) => modal.find(`input[name=tahun_${value.tahun}]`).val(
       value.isi));
   }
 
@@ -73,6 +81,7 @@ integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="ano
         type: 'get',
         dataType: 'json',
         success: function(data) {
+          console.log(data);
           fillFormEdit(data);
         },
         error: function(error) {

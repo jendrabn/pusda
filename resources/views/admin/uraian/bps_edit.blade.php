@@ -20,10 +20,6 @@
   </section>
 
   <section class="section-body">
-    <h2 class="section-title">Edit Uraian Form Menu BPS</h2>
-    <p class="section-lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. In laborum asperiores odit harum
-      atque? Quo?</p>
-
     @include('partials.alerts')
 
     <div class="card">

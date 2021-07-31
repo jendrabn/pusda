@@ -14,7 +14,7 @@
                         @if ($child->childs->count())
                           @foreach ($child->childs as $child)
                             <li @if (isset($tabelBps) && $tabelBps->id == $child->id) data-jstree='{ "selected" : true }' @endif><a
-                                href="{{ route('admin.bps.index', $child->id) }}">{{ $child->nama_menu }}</a>
+                                href="{{ route('admin.bps.input', $child->id) }}">{{ $child->nama_menu }}</a>
                             </li>
                           @endforeach
                         @endif

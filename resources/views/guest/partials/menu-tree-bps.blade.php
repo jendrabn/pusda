@@ -13,7 +13,6 @@
                     <li>
                       <a class="text-decoration-none"
                         href="{{ route('guest.bps.table', $child->id) }}">{{ $child->nama_menu }}</a>
-
                       <div>
                         <canvas class="isi-uraian-chart" width="13" height="5" data-id="{{ $child->id }}"></canvas>
                       </div>

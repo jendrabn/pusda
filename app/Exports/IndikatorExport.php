@@ -25,7 +25,7 @@ class IndikatorExport implements FromView, ShouldAutoSize
         $uraianIndikator = UraianIndikator::getUraianByTableId($this->id);
         $fiturIndikator = FiturIndikator::getFiturByTableId($this->id);
         $files = FileIndikator::where('tabel_indikator_id',  $this->id)->get();
-        $years = IsiIndikator::getYears();
+        $years = IsiIndikator::getYears($this->id);
 
         return view('exports.indikator', compact('uraianIndikator', 'fiturIndikator', 'files', 'years'));
     }
