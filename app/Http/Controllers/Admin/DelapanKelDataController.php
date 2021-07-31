@@ -163,7 +163,8 @@ class DelapanKelDataController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $fileName = (File8KelData::latest()->first()->id ?? '') . $file->getClientOriginalName();
+        $latestFileId = File8KelData::latest()->first()->id ?? '';
+        $fileName =  $file->getClientOriginalName() . '_' . $latestFileId;
         $file->storeAs('file_pusda', $fileName, 'public');
 
         File8KelData::create([
@@ -178,7 +179,7 @@ class DelapanKelDataController extends Controller
 
     public function destroyFile(Request $request, File8KelData $file8KelData)
     {
-        Storage::delete('public/file_pusda/' . $file8KelData->file_name);
+        Storage::disk('public')->delete('file_pusda/' . $file8KelData->file_name);
         $file8KelData->delete();
 
         event(new UserLogged($request->user(), 'Menghapus file pendukung tabel 8 kelompok data'));
@@ -188,9 +189,14 @@ class DelapanKelDataController extends Controller
 
     public function downloadFile(Request $request, File8KelData $file8KelData)
     {
-        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel 8 Kelompok Data'));
+        $path = 'file_pusda/' . $file8KelData->file_name;
 
-        return Storage::download('public/file_pusda/' . $file8KelData->file_name);
+        if (Storage::disk('public')->exists($path)) {
+            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel 8 Kelompok Data'));
+            return Storage::disk('public')->download($path);
+        }
+
+        return back()->with('alert-danger', 'File pendukung tidak ditemukan atau sudah terhapus');
     }
 
     public function updateSumberData(Request $request, Uraian8KelData $uraian8KelData)

@@ -29,7 +29,7 @@ class IndikatorController extends Controller
         $categories = TabelIndikator::with('childs.childs.childs')->get();
         $uraianIndikator = UraianIndikator::getUraianByTableId($tabelIndikatorId);
         $fiturIndikator = FiturIndikator::getFiturByTableId($tabelIndikatorId);
-        $files = $tabelIndikator->fiturIndikator;
+        $files = $tabelIndikator->fileIndikator;
         $years = IsiIndikator::getYears($tabelIndikatorId);
 
         return view('admin.isiuraian.indikator.input', compact('tabelIndikator', 'categories', 'uraianIndikator',  'fiturIndikator', 'files', 'years'));
@@ -133,7 +133,8 @@ class IndikatorController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $fileName = (FileIndikator::latest()->first()->id ?? '') . $file->getClientOriginalName();
+        $latestFileId = FileIndikator::latest()->first()->id ?? '';
+        $fileName = $file->getClientOriginalName() . '_' . $latestFileId;
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileIndikator::create([
@@ -148,7 +149,7 @@ class IndikatorController extends Controller
 
     public function destroyFile(Request $request, FileIndikator $fileIndikator)
     {
-        Storage::delete('public/file_pusda/' . $fileIndikator->file_name);
+        Storage::disk('public')->delete('file_pusda/' . $fileIndikator->file_name);
         $fileIndikator->delete();
 
         event(new UserLogged($request->user(), 'Menghapus file pendukung tabel indikator'));
@@ -158,9 +159,14 @@ class IndikatorController extends Controller
 
     public function downloadFile(Request $request, FileIndikator $fileIndikator)
     {
-        return Storage::download('public/file_pusda/' . $fileIndikator->file_name);
+        $path = 'file_pusda/' . $fileIndikator->file_name;
 
-        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel indikator'));
+        if (Storage::disk('public')->exists($path)) {
+            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel indikator'));
+            return Storage::disk('public')->download($path);
+        }
+
+        return back()->with('alert-danger', 'File pendukung tidak ditemukan atau sudah terhapus');
     }
 
     public function storeTahun(Request $request, TabelIndikator $tabelIndikator)

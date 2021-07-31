@@ -131,7 +131,8 @@ class BpsController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $fileName = (FileBps::latest()->first()->id ?? '') . $file->getClientOriginalName();
+        $latestFileId = FileBps::latest()->first()->id ?? '';
+        $fileName =  $file->getClientOriginalName() . '_' . $latestFileId;
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileBps::create([
@@ -139,14 +140,14 @@ class BpsController extends Controller
             'file_name' =>  $fileName
         ]);
 
-        event(new UserLogged($request->user(), 'Menambah file pendukung tabel BPS'));
+        event(new UserLogged($request->user(), 'Mengupload file pendukung tabel BPS'));
 
         return back()->with('alert-success', 'File pendukung tabel BPS berhasil diupload');
     }
 
     public function destroyFile(Request $request, FileBps $fileBps)
     {
-        Storage::delete('public/file_pusda/' . $fileBps->file_name);
+        Storage::disk('public')->delete('file_pusda/' . $fileBps->file_name);
         $fileBps->delete();
 
         event(new UserLogged($request->user(), 'Menghapus file pendukung tabel BPS'));
@@ -156,9 +157,14 @@ class BpsController extends Controller
 
     public function downloadFile(Request $request, FileBps $fileBps)
     {
-        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel BPS'));
+        $path = 'file_pusda/' . $fileBps->file_name;
 
-        return Storage::download('public/file_pusda/' . $fileBps->file_name);
+        if (Storage::disk('public')->exists($path)) {
+            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel BPS'));
+            return Storage::disk('public')->download($path);
+        }
+
+        return back()->with('alert-danger', 'File pendukung tidak ditemukan atau sudah terhapus');
     }
 
     public function storeTahun(Request $request, TabelBps $tabelBps)

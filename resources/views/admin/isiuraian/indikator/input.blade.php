@@ -164,14 +164,14 @@
                           <td class="text-center">{{ ++$index }}</td>
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
-                            <a href="{{ route('admin.indikator.files.download', $file->id) }}"
-                              class="btn btn-icon btn-sm btn-info m-1 btn-download-file">
-                              <i class="fas fa-download"></i>
-                            </a>
-                            <button data-id="{{ $file->id }}"
-                              class="btn btn-icon btn-sm btn-danger m-1 btn-delete-file">
-                              <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                              <a href="{{ route('admin.indikator.files.download', $file->id) }}" class="btn btn-info">
+                                <i class="fas fa-download"></i>
+                              </a>
+                              <button data-id="{{ $file->id }}" type="button" class="btn btn-danger btn-delete-file">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       @endforeach

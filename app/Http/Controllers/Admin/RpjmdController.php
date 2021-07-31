@@ -162,7 +162,8 @@ class RpjmdController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $fileName = (FileRpjmd::latest()->first()->id ?? '') . $file->getClientOriginalName();
+        $latestFileId = FileRpjmd::latest()->first()->id ?? '';
+        $fileName = $file->getClientOriginalName() . '-' . $latestFileId;
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileRpjmd::create([
@@ -177,7 +178,7 @@ class RpjmdController extends Controller
 
     public function destroyFile(Request $request, FileRpjmd $fileRpjmd)
     {
-        Storage::delete('public/file_pusda/' . $fileRpjmd->file_name);
+        Storage::disk('public')->delete('file_pusda/' . $fileRpjmd->file_name);
         $fileRpjmd->delete();
 
         event(new UserLogged($request->user(), 'Menghapus file pendukung tabel RPJMD'));
@@ -187,9 +188,14 @@ class RpjmdController extends Controller
 
     public function downloadFile(Request $request, FileRpjmd $fileRpjmd)
     {
-        return Storage::download('public/file_pusda/' . $fileRpjmd->file_name);
+        $path = 'file_pusda/' . $fileRpjmd->file_name;
 
-        event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel RPJMD'));
+        if (Storage::disk('public')->exists($path)) {
+            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel RPJMD'));
+            return Storage::disk('public')->download($path);
+        }
+
+        return back()->with('alert-danger', 'File pendukung tidak ditemukan atau sudah terhapus');
     }
 
     public function updateSumberData(Request $request, UraianRpjmd $uraianRpjmd)
