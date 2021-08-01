@@ -50,6 +50,12 @@
     </div>
   </div>
 
+  <div class="scroll-top">
+    <button class="btn btn-dark" type="button" aria-label="Scroll to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+
   @yield('outer')
   <script src="{{ asset('assets/js/app.js') }}"></script>
   <script src="{{ asset('assets/module/jstree/dist/jstree.min.js') }}"></script>
