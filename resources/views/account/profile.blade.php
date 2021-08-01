@@ -14,9 +14,10 @@
   </section>
 
   <section class="section-body">
+    @include('partials.alerts')
+
     <div class="row">
       <div class="col-lg-12">
-        @include('partials.alerts')
         <div class="card card-primary">
           <div class="card-body mt-4">
             <form action="{{ route('update_profile', $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -29,7 +30,7 @@
                       id="btn-change-avatar">
                       <i class="fas fa-camera"></i>
                     </button>
-                    <input type="file" hidden id="input-avatar" name="avatar">
+                    <input type="file" hidden id="input-avatar" name="avatar" accept="image/*">
                     <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="img-fluid" tabindex="1">
                   </div>
                 </div>

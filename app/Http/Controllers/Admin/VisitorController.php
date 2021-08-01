@@ -21,8 +21,7 @@ class VisitorController extends Controller
         abort_if(!$request->ajax(), 404);
 
         Statistic::truncate();
-
-        event(new UserLogged($request->user(), 'Menghapus semua statistik pengunjung'));
+        save_user_log('Menghapus semua statistik pengunjung');
 
         return response()->json([
             'success' => true,

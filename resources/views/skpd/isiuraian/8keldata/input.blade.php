@@ -114,30 +114,27 @@
                     @method('PUT')
                     <div class="form-group">
                       <label>Deskripsi:</label>
-                      <textarea name="deskripsi" class="form-control h-100"
-                        rows="3">{{ $fitur8KelData->deskripsi }}</textarea>
+                      <textarea name="deskripsi" class="form-control">{{ $fitur8KelData->deskripsi }}</textarea>
                     </div>
                     <div class="form-group">
                       <label>Analisis:</label>
-                      <textarea name="analisis" class="form-control h-100"
-                        rows="3">{{ $fitur8KelData->analisis }}</textarea>
+                      <textarea name="analisis" class="form-control">{{ $fitur8KelData->analisis }}</textarea>
                     </div>
                     <div class="form-group">
                       <label>Permasalahan:</label>
-                      <textarea name="permasalahan" class="form-control h-100"
-                        rows="3">{{ $fitur8KelData->permasalahan }}</textarea>
+                      <textarea name="permasalahan" class="form-control">{{ $fitur8KelData->permasalahan }}</textarea>
                     </div>
                     <div class="form-group">
                       <label>Solusi atau Langkah-langkah Tindak Lanjut:</label>
-                      <textarea name="solusi" class="form-control h-100"
-                        rows="3">{{ $fitur8KelData->solusi }}</textarea>
+                      <textarea name="solusi" class="form-control">{{ $fitur8KelData->solusi }}</textarea>
                     </div>
                     <div class="form-group">
                       <label>Saran / Rekomendasi ke Gubernur atau Pusat:</label>
-                      <textarea name="saran" class="form-control h-100" rows="3">{{ $fitur8KelData->saran }}</textarea>
+                      <textarea name="saran" class="form-control">{{ $fitur8KelData->saran }}</textarea>
                     </div>
-                    <div class="form-group text-right"><button type="submit" class="btn btn-primary">Simpan
-                        Perubahan</button></div>
+                    <div class="form-group text-right">
+                      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -163,14 +160,15 @@
                           <td class="text-center">{{ ++$index }}</td>
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
-                            <a href="{{ route('skpd.delapankeldata.files.download', $file->id) }}"
-                              class="btn btn-icon btn-sm btn-info m-0 btn-download-file">
-                              <i class="fas fa-download"></i>
-                            </a>
-                            <button data-id="{{ $file->id }}"
-                              class="btn btn-icon btn-sm btn-danger m-0 btn-delete-file">
-                              <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                              <a href="{{ route('admin.delapankeldata.files.download', $file->id) }}"
+                                class="btn btn-info">
+                                <i class="fas fa-download"></i>
+                              </a>
+                              <button data-id="{{ $file->id }}" type="button" class="btn btn-danger btn-delete-file">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       @endforeach

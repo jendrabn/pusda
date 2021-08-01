@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
+use App\Events\UserLogged;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 if (!function_exists('greeting')) {
@@ -22,5 +22,14 @@ if (!function_exists('greeting')) {
     }
 
     return $timing . ', ' . Str::words($name, 2);
+  }
+}
+
+if (!function_exists('save_user_log')) {
+  function save_user_log($user_event)
+  {
+    if (request()->user()) {
+      event(new UserLogged(request()->user(), $user_event));
+    }
   }
 }

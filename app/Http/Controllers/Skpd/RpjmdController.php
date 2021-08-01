@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Skpd;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class RpjmdController extends Controller
 {
-    public function index(TabelRpjmd $tabelRpjmd = null)
+    public function index()
     {
         $categories = TabelRpjmd::with('childs.childs.childs')->get();
         $skpd = Auth::user()->skpd;
@@ -30,7 +29,6 @@ class RpjmdController extends Controller
 
     public function input(TabelRpjmd $tabelRpjmd)
     {
-        $tabelRpjmdId = $tabelRpjmd->id;
         $skpd = Auth::user()->skpd;
 
         $tabelRpjmdIds = UraianRpjmd::select('tabel_rpjmd_id as id')
@@ -39,10 +37,10 @@ class RpjmdController extends Controller
             ->get();
 
         $categories = TabelRpjmd::with('childs.childs.childs')->get();
-        $uraianRpjmd = UraianRpjmd::getUraianByTableId($tabelRpjmdId);
-        $fiturRpjmd = FiturRpjmd::getFiturByTableId($tabelRpjmdId);
+        $uraianRpjmd = UraianRpjmd::getUraianByTableId($tabelRpjmd->id);
+        $fiturRpjmd = FiturRpjmd::getFiturByTableId($tabelRpjmd->id);
         $files = $tabelRpjmd->fileRpjmd;
-        $years = IsiRpjmd::getYears($tabelRpjmdId);
+        $years = IsiRpjmd::getYears($tabelRpjmd->id);
         $allSkpd = Skpd::all()->pluck('singkatan', 'id');
 
         return view('skpd.isiuraian.rpjmd.input', compact('tabelRpjmdIds', 'allSkpd', 'tabelRpjmd', 'skpd', 'categories', 'uraianRpjmd',  'fiturRpjmd', 'files', 'years'));
@@ -108,17 +106,15 @@ class RpjmdController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-
-        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel RPJMD'));
+        save_user_log('Mengubah isi uraian tabel RPJMD');
 
         return back()->with('alert-success', 'Isi uraian tabel RPJMD berhasil diupdate');
     }
 
-    public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
+    public function destroy(UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus uraian tabel RPJMD'));
+        save_user_log('Menghapus uraian tabel RPJMD');
 
         return back()->with('alert-success', 'Uraian tabel RPJMD berhasil dihapus');
     }
@@ -135,8 +131,7 @@ class RpjmdController extends Controller
         ]);
 
         $fiturRpjmd->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah fitur tabel RPJMD'));
+        save_user_log('Mengubah fitur tabel RPJMD');
 
         return back()->with('alert-success', 'Fitur tabel RPJMD berhasil diupdate');
     }
@@ -156,28 +151,27 @@ class RpjmdController extends Controller
             'tabel_rpjmd_id' => $tabelRpjmd->id,
             'file_name' =>  $fileName
         ]);
-
-        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel RPJMD'));
+        save_user_log('Menambahkan file pendukung tabel RPJMD');
 
         return back()->with('alert-success', 'Berhasil menambahkan file pendukung tabel RPJMD');
     }
 
-    public function destroyFile(Request $request, FileRpjmd $fileRpjmd)
+    public function destroyFile(FileRpjmd $fileRpjmd)
     {
         Storage::disk('public')->delete('file_pusda/' . $fileRpjmd->file_name);
         $fileRpjmd->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel RPJMD'));
+        save_user_log('Menghapus file pendukung tabel RPJMD');
 
         return back()->with('alert-success', 'File pendukung tabel RPJMD berhasil dihapus');
     }
 
-    public function downloadFile(Request $request, FileRpjmd $fileRpjmd)
+    public function downloadFile(FileRpjmd $fileRpjmd)
     {
         $path = 'file_pusda/' . $fileRpjmd->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel RPJMD'));
+            save_user_log('Mengunduh file pendukung tabel RPJMD');
+
             return Storage::disk('public')->download($path);
         }
 

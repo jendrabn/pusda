@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Skpd;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\File8KelData;
 use App\Models\Fitur8KelData;
@@ -17,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 class DelapanKelDataController extends Controller
 {
 
-    public function index(Tabel8KelData $tabel8KelData = null)
+    public function index()
     {
         $skpd = Auth::user()->skpd;
         $categories = Tabel8KelData::with('childs.childs.childs')->get();
@@ -31,7 +30,6 @@ class DelapanKelDataController extends Controller
 
     public function input(Tabel8KelData $tabel8KelData)
     {
-        $tabel8KelDataId = $tabel8KelData->id;
         $skpd = Auth::user()->skpd;
         $categories = Tabel8KelData::with('childs.childs.childs')->get();
         $tabel8KelDataIds = Uraian8KelData::select('tabel_8keldata_id as id')
@@ -39,10 +37,10 @@ class DelapanKelDataController extends Controller
             ->groupBy('tabel_8keldata_id')
             ->get();
 
-        $uraian8KelData = Uraian8KelData::getUraianByTableId($tabel8KelDataId);
-        $fitur8KelData = Fitur8KelData::getFiturByTableId($tabel8KelDataId);
+        $uraian8KelData = Uraian8KelData::getUraianByTableId($tabel8KelData->id);
+        $fitur8KelData = Fitur8KelData::getFiturByTableId($tabel8KelData->id);
         $files = $tabel8KelData->file8KelData;
-        $years = Isi8KelData::getYears($tabel8KelDataId);
+        $years = Isi8KelData::getYears($tabel8KelData->id);
         $allSkpd = Skpd::all()->pluck('singkatan', 'id');
 
         return view('skpd.isiuraian.8keldata.input', compact('tabel8KelDataIds', 'allSkpd', 'tabel8KelData', 'skpd', 'categories', 'uraian8KelData',  'fitur8KelData', 'files', 'years'));
@@ -112,17 +110,15 @@ class DelapanKelDataController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-
-        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel 8 kelompok data'));
+        save_user_log('Mengubah isi uraian tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Isi uraian tabel 8 kelompok data berhasil diupdate');
     }
 
-    public function destroy(Request $request, Uraian8KelData $uraian8KelData)
+    public function destroy(Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus uraian tabel 8 kelompok data'));
+        save_user_log('Menghapus uraian tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Uraian tabel 8 kelompok data berhasil dihapus');
     }
@@ -138,8 +134,7 @@ class DelapanKelDataController extends Controller
         ]);
 
         $fitur8KelData->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah fitur tabel 8 kelompok data'));
+        save_user_log('Mengubah fitur tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Fitur tabel 8 kelompok data berhasil diupdate');
     }
@@ -159,28 +154,27 @@ class DelapanKelDataController extends Controller
             'tabel_8keldata_id' => $tabel8KelData->id,
             'file_name' =>  $fileName
         ]);
-
-        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel 8 kelompok data'));
+        save_user_log('Mengupload file pendukung tabel 8 kelompok data');
 
         return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil diupload');
     }
 
-    public function destroyFile(Request $request, File8KelData $file8KelData)
+    public function destroyFile(File8KelData $file8KelData)
     {
         Storage::disk('public')->delete('file_pusda/' . $file8KelData->file_name);
         $file8KelData->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel 8 kelompok data'));
+        save_user_log('Menghapus file pendukung tabel 8 kelompok data');
 
         return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil dihapus');
     }
 
-    public function downloadFile(Request $request, File8KelData $file8KelData)
+    public function downloadFile(File8KelData $file8KelData)
     {
         $path = 'file_pusda/' . $file8KelData->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel 8 Kelompok Data'));
+            save_user_log('Mengunduh file pendukung tabel 8 kelompok data');
+
             return Storage::disk('public')->download($path);
         }
 

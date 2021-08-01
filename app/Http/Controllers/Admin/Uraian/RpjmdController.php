@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelRpjmd;
@@ -40,8 +39,7 @@ class RpjmdController extends Controller
         ]);
 
         UraianRpjmd::create($validated);
-
-        event(new UserLogged($request->user(), 'Menambah form menu uraian RPJMD'));
+        save_user_log('Menambah form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian RPJMD');
     }
@@ -69,8 +67,7 @@ class RpjmdController extends Controller
         ]);
 
         $uraianRpjmd->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah form menu uraian RPJMD'));
+        save_user_log('Mengubah form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Form menu uraian RPJMD berhasil diupdate');
     }
@@ -78,8 +75,7 @@ class RpjmdController extends Controller
     public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus form menu uraian RPJMD'));
+        save_user_log('Menghapus form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Form menu uraian RPJMD berhasil dihapus');
     }

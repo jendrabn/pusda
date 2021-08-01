@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelBps;
@@ -37,8 +36,7 @@ class BpsController extends Controller
         ]);
 
         UraianBps::create($validated);
-
-        event(new UserLogged($request->user(), 'Menambahkan form menu uraian BPS'));
+        save_user_log('Menambahkan form menu uraian BPS');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian BPS');
     }
@@ -65,17 +63,15 @@ class BpsController extends Controller
         ]);
 
         $uraianBps->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah form menu uraian BPS'));
+        save_user_log('Mengubah form menu uraian BPS');
 
         return back()->with('alert-success', 'Form menu uraian BPS berhasil diupdate');
     }
 
-    public function destroy(Request $request, UraianBps $uraianBps)
+    public function destroy(UraianBps $uraianBps)
     {
         $uraianBps->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus form menu uraian BPS'));
+        save_user_log('Menghapus form menu uraian BPS');
 
         return back()->with('alert-success', 'Form menu uraian BPS berhasil dihapus');
     }

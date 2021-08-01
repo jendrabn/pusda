@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelIndikator;
@@ -36,8 +35,7 @@ class IndikatorController extends Controller
         ]);
 
         UraianIndikator::create($validated);
-
-        event(new UserLogged($request->user(), 'Menambahkan form menu uraian indikator'));
+        save_user_log('Menambahkan form menu uraian indikator');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian indikator');
     }
@@ -65,17 +63,15 @@ class IndikatorController extends Controller
         ]);
 
         $uraianIndikator->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah form menu uraian indikator'));
+        save_user_log('Mengubah form menu uraian indikator');
 
         return back()->with('alert-success', 'Form menu uraian indikator berhasil diupdate');
     }
 
-    public function destroy(Request $request, UraianIndikator $uraianIndikator)
+    public function destroy( UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus form menu uraian indikator'));
+        save_user_log('Menghapus form menu uraian indikator');
 
         return back()->with('alert-success', 'Form menu uraian indikator berhasil dihapus');
     }

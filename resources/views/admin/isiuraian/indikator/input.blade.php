@@ -112,27 +112,23 @@
                   @method('PUT')
                   <div class="form-group">
                     <label>Deskripsi:</label>
-                    <textarea name="deskripsi" class="form-control h-100"
-                      rows="3">{{ $fiturIndikator->deskripsi }}</textarea>
+                    <textarea name="deskripsi" class="form-control">{{ $fiturIndikator->deskripsi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Analisis:</label>
-                    <textarea name="analisis" class="form-control h-100"
-                      rows="3">{{ $fiturIndikator->analisis }}</textarea>
+                    <textarea name="analisis" class="form-control">{{ $fiturIndikator->analisis }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Permasalahan:</label>
-                    <textarea name="permasalahan" class="form-control h-100"
-                      rows="3">{{ $fiturIndikator->permasalahan }}</textarea>
+                    <textarea name="permasalahan" class="form-control">{{ $fiturIndikator->permasalahan }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Solusi atau Langkah-langkah Tindak Lanjut:</label>
-                    <textarea name="solusi" class="form-control h-100"
-                      rows="3">{{ $fiturIndikator->solusi }}</textarea>
+                    <textarea name="solusi" class="form-control">{{ $fiturIndikator->solusi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Saran / Rekomendasi ke Gubernur atau Pusat:</label>
-                    <textarea name="saran" class="form-control h-100" rows="3">{{ $fiturIndikator->saran }}</textarea>
+                    <textarea name="saran" class="form-control">{{ $fiturIndikator->saran }}</textarea>
                   </div>
                   <div class="form-group text-right">
                     <button type="submit" class="btn btn-primary">

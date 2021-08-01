@@ -37,7 +37,7 @@
                       id="btn-change-avatar">
                       <i class="fas fa-camera"></i>
                     </button>
-                    <input type="file" hidden id="input-avatar" name="avatar" tabindex="-1">
+                    <input type="file" hidden id="input-avatar" name="avatar" accept="image/*">
                     <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="img-fluid">
                   </div>
                 </div>

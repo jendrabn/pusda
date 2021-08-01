@@ -131,30 +131,26 @@
                   @method('PUT')
                   <div class="form-group">
                     <label>Deskripsi:</label>
-                    <textarea name="deskripsi" class="form-control h-100"
-                      rows="3">{{ $fiturRpjmd->deskripsi }}</textarea>
+                    <textarea name="deskripsi" class="form-control">{{ $fiturRpjmd->deskripsi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Analisis:</label>
-                    <textarea name="analisis" class="form-control h-100"
-                      rows="3">{{ $fiturRpjmd->analisis }}</textarea>
+                    <textarea name="analisis" class="form-control">{{ $fiturRpjmd->analisis }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Permasalahan:</label>
-                    <textarea name="permasalahan" class="form-control h-100"
-                      rows="3">{{ $fiturRpjmd->permasalahan }}</textarea>
+                    <textarea name="permasalahan" class="form-control">{{ $fiturRpjmd->permasalahan }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Solusi atau Langkah-langkah Tindak Lanjut:</label>
-                    <textarea name="solusi" class="form-control h-100" rows="3">{{ $fiturRpjmd->solusi }}</textarea>
+                    <textarea name="solusi" class="form-control">{{ $fiturRpjmd->solusi }}</textarea>
                   </div>
                   <div class="form-group">
                     <label>Saran / Rekomendasi ke Gubernur atau Pusat:</label>
-                    <textarea name="saran" class="form-control h-100" rows="3">{{ $fiturRpjmd->saran }}</textarea>
+                    <textarea name="saran" class="form-control">{{ $fiturRpjmd->saran }}</textarea>
                   </div>
                   <div class="form-group text-right">
-                    <button type="submit" class="btn btn-primary">Simpan
-                      Perubahan</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                   </div>
                 </form>
               </div>
@@ -182,8 +178,7 @@
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
                             <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
-                              <a href="{{ route('admin.rpjmd.files.download', $file->id) }}"
-                                class="btn btn-info">
+                              <a href="{{ route('admin.rpjmd.files.download', $file->id) }}" class="btn btn-info">
                                 <i class="fas fa-download"></i>
                               </a>
                               <button data-id="{{ $file->id }}" type="button" class="btn btn-danger btn-delete-file">

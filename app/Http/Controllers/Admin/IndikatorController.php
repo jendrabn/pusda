@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\FileIndikator;
 use App\Models\FiturIndikator;
@@ -25,12 +24,11 @@ class IndikatorController extends Controller
 
     public function input(TabelIndikator $tabelIndikator)
     {
-        $tabelIndikatorId = $tabelIndikator->id;
         $categories = TabelIndikator::with('childs.childs.childs')->get();
-        $uraianIndikator = UraianIndikator::getUraianByTableId($tabelIndikatorId);
-        $fiturIndikator = FiturIndikator::getFiturByTableId($tabelIndikatorId);
+        $uraianIndikator = UraianIndikator::getUraianByTableId($tabelIndikator->id);
+        $fiturIndikator = FiturIndikator::getFiturByTableId($tabelIndikator->id);
         $files = $tabelIndikator->fileIndikator;
-        $years = IsiIndikator::getYears($tabelIndikatorId);
+        $years = IsiIndikator::getYears($tabelIndikator->id);
 
         return view('admin.isiuraian.indikator.input', compact('tabelIndikator', 'categories', 'uraianIndikator',  'fiturIndikator', 'files', 'years'));
     }
@@ -94,17 +92,15 @@ class IndikatorController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-
-        event(new UserLogged($request->user(), 'Mengubah isi uraian tabel indikator'));
+        save_user_log('Mengubah isi uraian tabel indikator');
 
         return back()->with('alert-success', 'Isi uraian tabel indikator berhasil diupdate');
     }
 
-    public function destroy(Request $request, UraianIndikator $uraianIndikator)
+    public function destroy(UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus uraian tabel indikator'));
+        save_user_log('Menghapus uraian tabel indikator');
 
         return back()->with('alert-success', 'Uraian tabel indikator berhasil dihapus');
     }
@@ -120,8 +116,7 @@ class IndikatorController extends Controller
         ]);
 
         $fiturIndikator->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah fitur tabel indikator'));
+        save_user_log('Mengubah fitur tabel indikator');
 
         return back()->with('alert-success', 'Fitur tabel indikator berhasil diupdate');
     }
@@ -142,27 +137,27 @@ class IndikatorController extends Controller
             'file_name' =>  $fileName
         ]);
 
-        event(new UserLogged($request->user(), 'Menambahkan file pendukung tabel indikator'));
+        save_user_log('Menambahkan file pendukung tabel indikator');
 
         return back()->with('alert-success', 'File tabel indikator pendukung berhasil diupload');
     }
 
-    public function destroyFile(Request $request, FileIndikator $fileIndikator)
+    public function destroyFile(FileIndikator $fileIndikator)
     {
         Storage::disk('public')->delete('file_pusda/' . $fileIndikator->file_name);
         $fileIndikator->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus file pendukung tabel indikator'));
+        save_user_log('Menghapus file pendukung tabel indikator');
 
         return back()->with('alert-success', 'File pendukung berhasil dihapus');
     }
 
-    public function downloadFile(Request $request, FileIndikator $fileIndikator)
+    public function downloadFile(FileIndikator $fileIndikator)
     {
         $path = 'file_pusda/' . $fileIndikator->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            event(new UserLogged($request->user(), 'Mengunduh file pendukung tabel indikator'));
+            save_user_log('Mengunduh file pendukung tabel indikator');
+
             return Storage::disk('public')->download($path);
         }
 
@@ -189,8 +184,7 @@ class IndikatorController extends Controller
                 }
             }
         });
-
-        event(new UserLogged($request->user(), 'Menambahkan tahun tabel indikator'));
+        save_user_log('Menambahkan tahun tabel indikator');
 
         return response()->json([
             'success' => true,
@@ -198,14 +192,13 @@ class IndikatorController extends Controller
         ], 201);
     }
 
-    public function destroyTahun(Request $request, TabelIndikator $tabelIndikator, $year)
+    public function destroyTahun(TabelIndikator $tabelIndikator, $year)
     {
         $uraianIndikator = $tabelIndikator->uraianIndikator;
         $uraianIndikator->each(function ($uraian) use ($year) {
             $uraian->isiIndikator()->where('tahun', $year)->delete();
         });
-
-        event(new UserLogged($request->user(), 'Menghapus tahun tabel indikator'));
+        save_user_log('Menghapus tahun tabel indikator');
 
         return back()->with('alert-success', 'Berhasil menghapus tahun tabel indikator');
     }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
@@ -39,8 +38,7 @@ class DelapanKelDataController extends Controller
         ]);
 
         Uraian8KelData::create($validated);
-
-        event(new UserLogged($request->user(), 'Menambah form menu uraian 8 kelompok data'));
+        save_user_log('Menambah form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian 8 kelompok data');
     }
@@ -68,17 +66,15 @@ class DelapanKelDataController extends Controller
         ]);
 
         $uraian8KelData->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah form menu uraian 8 kelompok data'));
+        save_user_log('Mengubah form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Form menu Uraian 8 kelompok data berhasil diupdate');
     }
 
-    public function destroy(Request $request, Uraian8KelData $uraian8KelData)
+    public function destroy(Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus form menu uraian 8 kelompok data'));
+        save_user_log('Menghapus form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Form menu uraian 8 kelompok data berhasil dihapus');
     }

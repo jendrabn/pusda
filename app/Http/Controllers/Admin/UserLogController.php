@@ -20,8 +20,7 @@ class UserLogController extends Controller
         abort_if(!$request->ajax(), 404);
 
         UserLog::truncate();
-
-        event(new UserLogged($request->user(), 'Menghapus semua user logs'));
+        save_user_log('Menghapus semua user logs');
 
         return response()->json([
             'success' => true,

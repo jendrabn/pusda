@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\SkpdsDataTable;
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
@@ -29,8 +28,7 @@ class SkpdController extends Controller
         ]);
 
         $skpd = Skpd::create($validated);
-
-        event(new UserLogged($request->user(), 'Menambahkan SKPD baru dengan nama ' . $skpd->nama));
+        save_user_log('Menambahkan SKPD baru dengan nama ' . $skpd->nama);
 
         return back()->with('alert-success', 'Berhasil menambahkan SKPD baru');
     }
@@ -51,8 +49,7 @@ class SkpdController extends Controller
         ]);
 
         $skpd->update($validated);
-
-        event(new UserLogged($request->user(), 'Mengubah data SKPD'));
+        save_user_log('Mengubah data SKPD');
 
         return back()->with('alert-success', 'SKPD berhasil diupdate');
     }
@@ -61,8 +58,7 @@ class SkpdController extends Controller
     {
         $name = $skpd->nama;
         $skpd->delete();
-
-        event(new UserLogged($request->user(), 'Menghapus SKPD ' . $name));
+        save_user_log('Menghapus SKPD ' . $name);
 
         return back()->with('alert-success', 'Berhasil menghapus data SKPD');
     }
