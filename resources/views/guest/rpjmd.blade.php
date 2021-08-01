@@ -11,7 +11,7 @@
         <h4 class="card-header__title">RPJMD</h4>
       </div>
       <div class="card-body">
-        @include('guest.partials.menu-tree', ['categories' => $categories, 'resourceName' => 'rpjmd'])
+        @include('guest.partials.menu_tree', ['categories' => $categories, 'resourceName' => 'rpjmd'])
       </div>
     </div>
   </div>

@@ -11,7 +11,7 @@
         <h4 class="card-header__title">BPS</h4>
       </div>
       <div class="card-body">
-        @include('guest.partials.menu-tree-bps')
+        @include('guest.partials.menu_tree_bps')
       </div>
     </div>
   </div>

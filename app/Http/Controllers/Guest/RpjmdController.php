@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Guest;
 
-use App\Exports\RpjmdExport;
 use App\Http\Controllers\Controller;
 use App\Models\FiturRpjmd;
 use App\Models\IsiRpjmd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
-use Maatwebsite\Excel\Facades\Excel;
 
 class RpjmdController extends Controller
 {

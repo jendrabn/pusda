@@ -3753,7 +3753,7 @@
         "id": "1",
         "skpd_id": "1",
         "parent_id": null,
-        "menu_name": "Parent",
+        "nama_menu": "Parent",
         "created_at": null,
         "updated_at": null
       },
@@ -3761,7 +3761,7 @@
         "id": "2",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Data Umum",
+        "nama_menu": "Data Umum",
         "created_at": null,
         "updated_at": null
       },
@@ -3769,7 +3769,7 @@
         "id": "3",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Sosial \/ Budaya",
+        "nama_menu": "Sosial \/ Budaya",
         "created_at": null,
         "updated_at": null
       },
@@ -3777,7 +3777,7 @@
         "id": "4",
         "skpd_id": "1",
         "parent_id": "2",
-        "menu_name": "Geografi",
+        "nama_menu": "Geografi",
         "created_at": null,
         "updated_at": null
       },
@@ -3785,7 +3785,7 @@
         "id": "6",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Jumlah Gunung",
+        "nama_menu": "Jumlah Gunung",
         "created_at": null,
         "updated_at": null
       },
@@ -3793,7 +3793,7 @@
         "id": "177",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Sumber Daya Alam",
+        "nama_menu": "Sumber Daya Alam",
         "created_at": null,
         "updated_at": null
       },
@@ -3801,7 +3801,7 @@
         "id": "185",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Luas Wilayah",
+        "nama_menu": "Luas Wilayah",
         "created_at": null,
         "updated_at": null
       },
@@ -3809,7 +3809,7 @@
         "id": "191",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Keadaan Iklim Rata - Rata",
+        "nama_menu": "Keadaan Iklim Rata - Rata",
         "created_at": null,
         "updated_at": null
       },
@@ -3817,7 +3817,7 @@
         "id": "192",
         "skpd_id": "1",
         "parent_id": "2",
-        "menu_name": "Pemerintahan",
+        "nama_menu": "Pemerintahan",
         "created_at": null,
         "updated_at": null
       },
@@ -3825,7 +3825,7 @@
         "id": "193",
         "skpd_id": "1",
         "parent_id": "192",
-        "menu_name": "Administrasi Wilayah",
+        "nama_menu": "Administrasi Wilayah",
         "created_at": null,
         "updated_at": null
       },
@@ -3833,7 +3833,7 @@
         "id": "199",
         "skpd_id": "1",
         "parent_id": "2",
-        "menu_name": "Demografi",
+        "nama_menu": "Demografi",
         "created_at": null,
         "updated_at": null
       },
@@ -3841,7 +3841,7 @@
         "id": "221",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Kesehatan",
+        "nama_menu": "Kesehatan",
         "created_at": null,
         "updated_at": null
       },
@@ -3849,7 +3849,7 @@
         "id": "276",
         "skpd_id": "1",
         "parent_id": "177",
-        "menu_name": "Pertanian, Kehutanan, Kelautan, Perikanan,  Peternakan, Perkebunan",
+        "nama_menu": "Pertanian, Kehutanan, Kelautan, Perikanan,  Peternakan, Perkebunan",
         "created_at": null,
         "updated_at": null
       },
@@ -3857,7 +3857,7 @@
         "id": "278",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Kesejahteraan Sosial",
+        "nama_menu": "Kesejahteraan Sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -3865,7 +3865,7 @@
         "id": "280",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Penduduk Penyandang Masalah Sosial",
+        "nama_menu": "Penduduk Penyandang Masalah Sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -3873,7 +3873,7 @@
         "id": "281",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Potensi dan Sumber Kesejahteraan Sosial (PSKS)",
+        "nama_menu": "Potensi dan Sumber Kesejahteraan Sosial (PSKS)",
         "created_at": null,
         "updated_at": null
       },
@@ -3881,7 +3881,7 @@
         "id": "285",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Keluarga Menurut Tingkat Kesejahteraan",
+        "nama_menu": "Keluarga Menurut Tingkat Kesejahteraan",
         "created_at": null,
         "updated_at": null
       },
@@ -3889,7 +3889,7 @@
         "id": "288",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Jumlah PMKS",
+        "nama_menu": "Jumlah PMKS",
         "created_at": null,
         "updated_at": null
       },
@@ -3897,7 +3897,7 @@
         "id": "295",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Agama",
+        "nama_menu": "Agama",
         "created_at": null,
         "updated_at": null
       },
@@ -3905,7 +3905,7 @@
         "id": "296",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Jumlah Pemeluk Agama",
+        "nama_menu": "Jumlah Pemeluk Agama",
         "created_at": null,
         "updated_at": null
       },
@@ -3913,7 +3913,7 @@
         "id": "297",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Sarana Ibadah",
+        "nama_menu": "Sarana Ibadah",
         "created_at": null,
         "updated_at": null
       },
@@ -3921,7 +3921,7 @@
         "id": "298",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Jumlah Jamaáh Haji",
+        "nama_menu": "Jumlah Jamaáh Haji",
         "created_at": null,
         "updated_at": null
       },
@@ -3929,7 +3929,7 @@
         "id": "299",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Jumlah KUA",
+        "nama_menu": "Jumlah KUA",
         "created_at": null,
         "updated_at": null
       },
@@ -3937,7 +3937,7 @@
         "id": "300",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Jumlah Penyuluh Agama",
+        "nama_menu": "Jumlah Penyuluh Agama",
         "created_at": null,
         "updated_at": null
       },
@@ -3945,7 +3945,7 @@
         "id": "301",
         "skpd_id": "1",
         "parent_id": "295",
-        "menu_name": "Jumlah Lembaga Pendidikan Keagamaan",
+        "nama_menu": "Jumlah Lembaga Pendidikan Keagamaan",
         "created_at": null,
         "updated_at": null
       },
@@ -3953,7 +3953,7 @@
         "id": "303",
         "skpd_id": "1",
         "parent_id": "276",
-        "menu_name": "Peternakan",
+        "nama_menu": "Peternakan",
         "created_at": null,
         "updated_at": null
       },
@@ -3961,7 +3961,7 @@
         "id": "315",
         "skpd_id": "1",
         "parent_id": "177",
-        "menu_name": "Lingkungan Hidup, Tata Ruang dan Pertanahan",
+        "nama_menu": "Lingkungan Hidup, Tata Ruang dan Pertanahan",
         "created_at": null,
         "updated_at": null
       },
@@ -3969,7 +3969,7 @@
         "id": "316",
         "skpd_id": "1",
         "parent_id": "315",
-        "menu_name": "Lingkungan Hidup",
+        "nama_menu": "Lingkungan Hidup",
         "created_at": null,
         "updated_at": null
       },
@@ -3977,7 +3977,7 @@
         "id": "325",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Infrastruktur",
+        "nama_menu": "Infrastruktur",
         "created_at": null,
         "updated_at": null
       },
@@ -3985,7 +3985,7 @@
         "id": "326",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Industri, Perdagangan, Lembaga Keuangan, Koperasi, Usaha, Investasi",
+        "nama_menu": "Industri, Perdagangan, Lembaga Keuangan, Koperasi, Usaha, Investasi",
         "created_at": null,
         "updated_at": null
       },
@@ -3993,7 +3993,7 @@
         "id": "327",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Ekonomi dan Keuangan",
+        "nama_menu": "Ekonomi dan Keuangan",
         "created_at": null,
         "updated_at": null
       },
@@ -4001,7 +4001,7 @@
         "id": "328",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Politik, Hukum dan Keamanan",
+        "nama_menu": "Politik, Hukum dan Keamanan",
         "created_at": null,
         "updated_at": null
       },
@@ -4009,7 +4009,7 @@
         "id": "329",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Insidensial",
+        "nama_menu": "Insidensial",
         "created_at": null,
         "updated_at": null
       },
@@ -4017,7 +4017,7 @@
         "id": "330",
         "skpd_id": "1",
         "parent_id": "325",
-        "menu_name": "Perumahan dan Pemukiman",
+        "nama_menu": "Perumahan dan Pemukiman",
         "created_at": null,
         "updated_at": null
       },
@@ -4025,7 +4025,7 @@
         "id": "331",
         "skpd_id": "1",
         "parent_id": "325",
-        "menu_name": "Pekerjaan Umum",
+        "nama_menu": "Pekerjaan Umum",
         "created_at": null,
         "updated_at": null
       },
@@ -4033,7 +4033,7 @@
         "id": "332",
         "skpd_id": "1",
         "parent_id": "325",
-        "menu_name": "Pariwisata, Pos, Telekomunikasi dan Informatika",
+        "nama_menu": "Pariwisata, Pos, Telekomunikasi dan Informatika",
         "created_at": null,
         "updated_at": null
       },
@@ -4041,7 +4041,7 @@
         "id": "333",
         "skpd_id": "1",
         "parent_id": "325",
-        "menu_name": "Perhubungan dan Transportasi",
+        "nama_menu": "Perhubungan dan Transportasi",
         "created_at": null,
         "updated_at": null
       },
@@ -4049,7 +4049,7 @@
         "id": "334",
         "skpd_id": "1",
         "parent_id": "326",
-        "menu_name": "Industri, Perdagangan, Pengembangan Usaha Nasional, Lembaga Keuangan dan Koperasi",
+        "nama_menu": "Industri, Perdagangan, Pengembangan Usaha Nasional, Lembaga Keuangan dan Koperasi",
         "created_at": null,
         "updated_at": null
       },
@@ -4057,7 +4057,7 @@
         "id": "335",
         "skpd_id": "1",
         "parent_id": "326",
-        "menu_name": "BUMD, Perbankan Daerah dan Lembaga Keuangan Daerah",
+        "nama_menu": "BUMD, Perbankan Daerah dan Lembaga Keuangan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -4065,7 +4065,7 @@
         "id": "343",
         "skpd_id": "1",
         "parent_id": "328",
-        "menu_name": "Politik",
+        "nama_menu": "Politik",
         "created_at": null,
         "updated_at": null
       },
@@ -4073,7 +4073,7 @@
         "id": "344",
         "skpd_id": "1",
         "parent_id": "328",
-        "menu_name": "hukum",
+        "nama_menu": "hukum",
         "created_at": null,
         "updated_at": null
       },
@@ -4081,7 +4081,7 @@
         "id": "347",
         "skpd_id": "1",
         "parent_id": "329",
-        "menu_name": "Bencana Alam",
+        "nama_menu": "Bencana Alam",
         "created_at": null,
         "updated_at": null
       },
@@ -4089,7 +4089,7 @@
         "id": "349",
         "skpd_id": "1",
         "parent_id": "329",
-        "menu_name": "Pelanggaran Jalur",
+        "nama_menu": "Pelanggaran Jalur",
         "created_at": null,
         "updated_at": null
       },
@@ -4097,7 +4097,7 @@
         "id": "350",
         "skpd_id": "1",
         "parent_id": "329",
-        "menu_name": "Kebakaran Hutan",
+        "nama_menu": "Kebakaran Hutan",
         "created_at": null,
         "updated_at": null
       },
@@ -4105,7 +4105,7 @@
         "id": "351",
         "skpd_id": "1",
         "parent_id": "329",
-        "menu_name": "Pencurian",
+        "nama_menu": "Pencurian",
         "created_at": null,
         "updated_at": null
       },
@@ -4113,7 +4113,7 @@
         "id": "352",
         "skpd_id": "1",
         "parent_id": "330",
-        "menu_name": "Perumahan dan Pemukiman",
+        "nama_menu": "Perumahan dan Pemukiman",
         "created_at": null,
         "updated_at": null
       },
@@ -4121,7 +4121,7 @@
         "id": "381",
         "skpd_id": "1",
         "parent_id": "332",
-        "menu_name": "Pariwisata",
+        "nama_menu": "Pariwisata",
         "created_at": null,
         "updated_at": null
       },
@@ -4129,7 +4129,7 @@
         "id": "382",
         "skpd_id": "1",
         "parent_id": "332",
-        "menu_name": "Pos dan Telekomunikasi",
+        "nama_menu": "Pos dan Telekomunikasi",
         "created_at": null,
         "updated_at": null
       },
@@ -4137,7 +4137,7 @@
         "id": "386",
         "skpd_id": "1",
         "parent_id": "333",
-        "menu_name": "Angkutan Umum",
+        "nama_menu": "Angkutan Umum",
         "created_at": null,
         "updated_at": null
       },
@@ -4145,7 +4145,7 @@
         "id": "387",
         "skpd_id": "1",
         "parent_id": "333",
-        "menu_name": "Pelayanan Transportasi",
+        "nama_menu": "Pelayanan Transportasi",
         "created_at": null,
         "updated_at": null
       },
@@ -4153,7 +4153,7 @@
         "id": "388",
         "skpd_id": "1",
         "parent_id": "333",
-        "menu_name": "Jumlah Kendaraan Bermotor",
+        "nama_menu": "Jumlah Kendaraan Bermotor",
         "created_at": null,
         "updated_at": null
       },
@@ -4161,7 +4161,7 @@
         "id": "389",
         "skpd_id": "1",
         "parent_id": "333",
-        "menu_name": "Perhubungan",
+        "nama_menu": "Perhubungan",
         "created_at": null,
         "updated_at": null
       },
@@ -4169,7 +4169,7 @@
         "id": "390",
         "skpd_id": "1",
         "parent_id": "334",
-        "menu_name": "Industri",
+        "nama_menu": "Industri",
         "created_at": null,
         "updated_at": null
       },
@@ -4177,7 +4177,7 @@
         "id": "391",
         "skpd_id": "1",
         "parent_id": "334",
-        "menu_name": "Perdagangan",
+        "nama_menu": "Perdagangan",
         "created_at": null,
         "updated_at": null
       },
@@ -4185,7 +4185,7 @@
         "id": "403",
         "skpd_id": "1",
         "parent_id": "334",
-        "menu_name": "Lembaga Perjinan",
+        "nama_menu": "Lembaga Perjinan",
         "created_at": null,
         "updated_at": null
       },
@@ -4193,7 +4193,7 @@
         "id": "409",
         "skpd_id": "1",
         "parent_id": "335",
-        "menu_name": "Jumlah PDAM",
+        "nama_menu": "Jumlah PDAM",
         "created_at": null,
         "updated_at": null
       },
@@ -4201,7 +4201,7 @@
         "id": "410",
         "skpd_id": "1",
         "parent_id": "335",
-        "menu_name": "Jumlah Investor Berskala Nasional",
+        "nama_menu": "Jumlah Investor Berskala Nasional",
         "created_at": null,
         "updated_at": null
       },
@@ -4209,7 +4209,7 @@
         "id": "440",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Komposisi Anggota DPRD Berdasarkan Jenis Kelamin",
+        "nama_menu": "Komposisi Anggota DPRD Berdasarkan Jenis Kelamin",
         "created_at": null,
         "updated_at": null
       },
@@ -4217,7 +4217,7 @@
         "id": "441",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Jumlah Fraksi DPRD",
+        "nama_menu": "Jumlah Fraksi DPRD",
         "created_at": null,
         "updated_at": null
       },
@@ -4225,7 +4225,7 @@
         "id": "442",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Partai Politik",
+        "nama_menu": "Partai Politik",
         "created_at": null,
         "updated_at": null
       },
@@ -4233,7 +4233,7 @@
         "id": "444",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Tingkat Partisipasi Pemilih",
+        "nama_menu": "Tingkat Partisipasi Pemilih",
         "created_at": null,
         "updated_at": null
       },
@@ -4241,7 +4241,7 @@
         "id": "445",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Organisasi Kemasyarakatan",
+        "nama_menu": "Organisasi Kemasyarakatan",
         "created_at": null,
         "updated_at": null
       },
@@ -4249,7 +4249,7 @@
         "id": "450",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Lembaga Swadaya Masyarakat (LSM)",
+        "nama_menu": "Lembaga Swadaya Masyarakat (LSM)",
         "created_at": null,
         "updated_at": null
       },
@@ -4257,7 +4257,7 @@
         "id": "451",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Jumlah Kegiatan Pembinaan Politik Daerah",
+        "nama_menu": "Jumlah Kegiatan Pembinaan Politik Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -4265,7 +4265,7 @@
         "id": "452",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Jumlah Anggota DPRD",
+        "nama_menu": "Jumlah Anggota DPRD",
         "created_at": null,
         "updated_at": null
       },
@@ -4273,7 +4273,7 @@
         "id": "453",
         "skpd_id": "1",
         "parent_id": "344",
-        "menu_name": "Kelembagaan",
+        "nama_menu": "Kelembagaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4281,7 +4281,7 @@
         "id": "457",
         "skpd_id": "1",
         "parent_id": "344",
-        "menu_name": "Jumlah Tindak Kriminal",
+        "nama_menu": "Jumlah Tindak Kriminal",
         "created_at": null,
         "updated_at": null
       },
@@ -4289,7 +4289,7 @@
         "id": "458",
         "skpd_id": "1",
         "parent_id": "344",
-        "menu_name": "Jumlah Tindak Kriminal yang Ditangani",
+        "nama_menu": "Jumlah Tindak Kriminal yang Ditangani",
         "created_at": null,
         "updated_at": null
       },
@@ -4297,7 +4297,7 @@
         "id": "477",
         "skpd_id": "1",
         "parent_id": "351",
-        "menu_name": "Jumlah Lokasi Pencurian dan Penyelundup",
+        "nama_menu": "Jumlah Lokasi Pencurian dan Penyelundup",
         "created_at": null,
         "updated_at": null
       },
@@ -4305,7 +4305,7 @@
         "id": "500",
         "skpd_id": "1",
         "parent_id": "335",
-        "menu_name": "Perbankan",
+        "nama_menu": "Perbankan",
         "created_at": null,
         "updated_at": null
       },
@@ -4313,7 +4313,7 @@
         "id": "501",
         "skpd_id": "1",
         "parent_id": "199",
-        "menu_name": "Administrasi Kependudukan",
+        "nama_menu": "Administrasi Kependudukan",
         "created_at": null,
         "updated_at": null
       },
@@ -4321,7 +4321,7 @@
         "id": "502",
         "skpd_id": "1",
         "parent_id": "199",
-        "menu_name": "Pencatatan Sipil",
+        "nama_menu": "Pencatatan Sipil",
         "created_at": null,
         "updated_at": null
       },
@@ -4329,7 +4329,7 @@
         "id": "505",
         "skpd_id": "1",
         "parent_id": "334",
-        "menu_name": "Koperasi, Usaha Kecil, dan Menengah",
+        "nama_menu": "Koperasi, Usaha Kecil, dan Menengah",
         "created_at": null,
         "updated_at": null
       },
@@ -4337,7 +4337,7 @@
         "id": "510",
         "skpd_id": "1",
         "parent_id": "276",
-        "menu_name": "Pangan",
+        "nama_menu": "Pangan",
         "created_at": null,
         "updated_at": null
       },
@@ -4345,7 +4345,7 @@
         "id": "513",
         "skpd_id": "1",
         "parent_id": "221",
-        "menu_name": "Pengendalian Penduduk dan Keluarga Berencana",
+        "nama_menu": "Pengendalian Penduduk dan Keluarga Berencana",
         "created_at": null,
         "updated_at": null
       },
@@ -4353,7 +4353,7 @@
         "id": "514",
         "skpd_id": "1",
         "parent_id": "276",
-        "menu_name": "Pertanian",
+        "nama_menu": "Pertanian",
         "created_at": null,
         "updated_at": null
       },
@@ -4361,7 +4361,7 @@
         "id": "515",
         "skpd_id": "1",
         "parent_id": "199",
-        "menu_name": "Ketenagakerjaan",
+        "nama_menu": "Ketenagakerjaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4369,7 +4369,7 @@
         "id": "516",
         "skpd_id": "1",
         "parent_id": "199",
-        "menu_name": "Pemberdayaan Perempuan dan Perlindungan Anak",
+        "nama_menu": "Pemberdayaan Perempuan dan Perlindungan Anak",
         "created_at": null,
         "updated_at": null
       },
@@ -4377,7 +4377,7 @@
         "id": "542",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Pendidikan",
+        "nama_menu": "Pendidikan",
         "created_at": null,
         "updated_at": null
       },
@@ -4385,7 +4385,7 @@
         "id": "543",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Penduduk Berdasarkan Usia Sekolah",
+        "nama_menu": "Penduduk Berdasarkan Usia Sekolah",
         "created_at": null,
         "updated_at": null
       },
@@ -4393,7 +4393,7 @@
         "id": "544",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Pendidikan Anak Usia Dini",
+        "nama_menu": "Pendidikan Anak Usia Dini",
         "created_at": null,
         "updated_at": null
       },
@@ -4401,7 +4401,7 @@
         "id": "545",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Sekolah Taman Kanak-Kanak",
+        "nama_menu": "Sekolah Taman Kanak-Kanak",
         "created_at": null,
         "updated_at": null
       },
@@ -4409,7 +4409,7 @@
         "id": "546",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Pendidikan Dasar",
+        "nama_menu": "Pendidikan Dasar",
         "created_at": null,
         "updated_at": null
       },
@@ -4417,7 +4417,7 @@
         "id": "547",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Pendidikan Menengah Pertama",
+        "nama_menu": "Pendidikan Menengah Pertama",
         "created_at": null,
         "updated_at": null
       },
@@ -4425,7 +4425,7 @@
         "id": "548",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Pendidikan Menengah Atas Dan Kejuruan",
+        "nama_menu": "Pendidikan Menengah Atas Dan Kejuruan",
         "created_at": null,
         "updated_at": null
       },
@@ -4433,7 +4433,7 @@
         "id": "549",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Murid Putus Sekolah",
+        "nama_menu": "Murid Putus Sekolah",
         "created_at": null,
         "updated_at": null
       },
@@ -4441,7 +4441,7 @@
         "id": "550",
         "skpd_id": "1",
         "parent_id": "549",
-        "menu_name": "SD\/Sederajat",
+        "nama_menu": "SD\/Sederajat",
         "created_at": null,
         "updated_at": null
       },
@@ -4449,7 +4449,7 @@
         "id": "551",
         "skpd_id": "1",
         "parent_id": "549",
-        "menu_name": "SMP\/Sederajat",
+        "nama_menu": "SMP\/Sederajat",
         "created_at": null,
         "updated_at": null
       },
@@ -4457,7 +4457,7 @@
         "id": "552",
         "skpd_id": "1",
         "parent_id": "549",
-        "menu_name": "SMA\/Sederajat",
+        "nama_menu": "SMA\/Sederajat",
         "created_at": null,
         "updated_at": null
       },
@@ -4465,7 +4465,7 @@
         "id": "553",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Perguruan Tinggi",
+        "nama_menu": "Perguruan Tinggi",
         "created_at": null,
         "updated_at": null
       },
@@ -4473,7 +4473,7 @@
         "id": "554",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Pendidikan Non Formal",
+        "nama_menu": "Pendidikan Non Formal",
         "created_at": null,
         "updated_at": null
       },
@@ -4481,7 +4481,7 @@
         "id": "557",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Kebudayaan",
+        "nama_menu": "Kebudayaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4489,7 +4489,7 @@
         "id": "562",
         "skpd_id": "1",
         "parent_id": "2",
-        "menu_name": "Komoditas",
+        "nama_menu": "Komoditas",
         "created_at": null,
         "updated_at": null
       },
@@ -4497,7 +4497,7 @@
         "id": "570",
         "skpd_id": "1",
         "parent_id": "221",
-        "menu_name": "Kesehatan",
+        "nama_menu": "Kesehatan",
         "created_at": null,
         "updated_at": null
       },
@@ -4505,7 +4505,7 @@
         "id": "572",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Kesejahteraan Sosial",
+        "nama_menu": "Kesejahteraan Sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -4513,7 +4513,7 @@
         "id": "575",
         "skpd_id": "1",
         "parent_id": "331",
-        "menu_name": "Pekerjaan Umum dan Penataan Ruang",
+        "nama_menu": "Pekerjaan Umum dan Penataan Ruang",
         "created_at": null,
         "updated_at": null
       },
@@ -4521,7 +4521,7 @@
         "id": "576",
         "skpd_id": "1",
         "parent_id": "3",
-        "menu_name": "Perpustakaan",
+        "nama_menu": "Perpustakaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4529,7 +4529,7 @@
         "id": "577",
         "skpd_id": "1",
         "parent_id": "576",
-        "menu_name": "Perpustakaan",
+        "nama_menu": "Perpustakaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4537,7 +4537,7 @@
         "id": "578",
         "skpd_id": "1",
         "parent_id": "576",
-        "menu_name": "Kearsipan",
+        "nama_menu": "Kearsipan",
         "created_at": null,
         "updated_at": null
       },
@@ -4545,7 +4545,7 @@
         "id": "579",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Kebudayaan",
+        "nama_menu": "Kebudayaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4553,7 +4553,7 @@
         "id": "580",
         "skpd_id": "1",
         "parent_id": "557",
-        "menu_name": "Kebudayaan",
+        "nama_menu": "Kebudayaan",
         "created_at": null,
         "updated_at": null
       },
@@ -4561,7 +4561,7 @@
         "id": "581",
         "skpd_id": "1",
         "parent_id": "334",
-        "menu_name": "Perijinan dan Pelayanan Terpadu Satu Pintu",
+        "nama_menu": "Perijinan dan Pelayanan Terpadu Satu Pintu",
         "created_at": null,
         "updated_at": null
       },
@@ -4569,7 +4569,7 @@
         "id": "582",
         "skpd_id": "1",
         "parent_id": "276",
-        "menu_name": "Perikanan",
+        "nama_menu": "Perikanan",
         "created_at": null,
         "updated_at": null
       },
@@ -4577,7 +4577,7 @@
         "id": "583",
         "skpd_id": "1",
         "parent_id": "332",
-        "menu_name": "Informatika",
+        "nama_menu": "Informatika",
         "created_at": null,
         "updated_at": null
       },
@@ -4585,7 +4585,7 @@
         "id": "584",
         "skpd_id": "1",
         "parent_id": "347",
-        "menu_name": "Bencana Alam",
+        "nama_menu": "Bencana Alam",
         "created_at": null,
         "updated_at": null
       },
@@ -4593,7 +4593,7 @@
         "id": "586",
         "skpd_id": "1",
         "parent_id": "343",
-        "menu_name": "Politik Dalam Negeri dan Pengawasan",
+        "nama_menu": "Politik Dalam Negeri dan Pengawasan",
         "created_at": null,
         "updated_at": null
       },
@@ -4601,7 +4601,7 @@
         "id": "587",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Tinggi Wilayah",
+        "nama_menu": "Tinggi Wilayah",
         "created_at": null,
         "updated_at": null
       },
@@ -4609,7 +4609,7 @@
         "id": "588",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Jarak ke Ibukota",
+        "nama_menu": "Jarak ke Ibukota",
         "created_at": null,
         "updated_at": null
       },
@@ -4617,7 +4617,7 @@
         "id": "589",
         "skpd_id": "1",
         "parent_id": "4",
-        "menu_name": "Jumlah Pantai",
+        "nama_menu": "Jumlah Pantai",
         "created_at": null,
         "updated_at": null
       },
@@ -4625,7 +4625,7 @@
         "id": "590",
         "skpd_id": "1",
         "parent_id": "192",
-        "menu_name": "DPRD",
+        "nama_menu": "DPRD",
         "created_at": null,
         "updated_at": null
       },
@@ -4633,7 +4633,7 @@
         "id": "591",
         "skpd_id": "1",
         "parent_id": "192",
-        "menu_name": "SDM",
+        "nama_menu": "SDM",
         "created_at": null,
         "updated_at": null
       },
@@ -4641,7 +4641,7 @@
         "id": "592",
         "skpd_id": "1",
         "parent_id": "327",
-        "menu_name": "Pendapatan",
+        "nama_menu": "Pendapatan",
         "created_at": null,
         "updated_at": null
       },
@@ -4649,7 +4649,7 @@
         "id": "593",
         "skpd_id": "1",
         "parent_id": "327",
-        "menu_name": "Belanja",
+        "nama_menu": "Belanja",
         "created_at": null,
         "updated_at": null
       },
@@ -4657,7 +4657,7 @@
         "id": "594",
         "skpd_id": "1",
         "parent_id": "327",
-        "menu_name": "Pajak Bumi dan Bangunan",
+        "nama_menu": "Pajak Bumi dan Bangunan",
         "created_at": null,
         "updated_at": null
       },
@@ -4665,7 +4665,7 @@
         "id": "595",
         "skpd_id": "1",
         "parent_id": "592",
-        "menu_name": "Realisasi Pendapatan",
+        "nama_menu": "Realisasi Pendapatan",
         "created_at": null,
         "updated_at": null
       },
@@ -4673,7 +4673,7 @@
         "id": "596",
         "skpd_id": "1",
         "parent_id": "593",
-        "menu_name": "Realisasi Belanja",
+        "nama_menu": "Realisasi Belanja",
         "created_at": null,
         "updated_at": null
       },
@@ -4681,7 +4681,7 @@
         "id": "597",
         "skpd_id": "1",
         "parent_id": "594",
-        "menu_name": "Ketetapan dan Penerimaan Pajak Bumi dan Bangunan",
+        "nama_menu": "Ketetapan dan Penerimaan Pajak Bumi dan Bangunan",
         "created_at": null,
         "updated_at": null
       },
@@ -4689,7 +4689,7 @@
         "id": "598",
         "skpd_id": "1",
         "parent_id": "278",
-        "menu_name": "Indeks Pembangunan Manusia (IPM)",
+        "nama_menu": "Indeks Pembangunan Manusia (IPM)",
         "created_at": null,
         "updated_at": null
       },
@@ -4697,7 +4697,7 @@
         "id": "599",
         "skpd_id": "1",
         "parent_id": "542",
-        "menu_name": "Sekolah Luar Biasa",
+        "nama_menu": "Sekolah Luar Biasa",
         "created_at": null,
         "updated_at": null
       }
@@ -4711,224 +4711,224 @@
       {
         "id": "1",
         "parent_id": null,
-        "menu_name": "Parent",
+        "nama_menu": "Parent",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "24",
         "parent_id": "1",
-        "menu_name": "Sosial dan Kependudukan",
+        "nama_menu": "Sosial dan Kependudukan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "25",
         "parent_id": "1",
-        "menu_name": "Ekonomi dan Perdagangan",
+        "nama_menu": "Ekonomi dan Perdagangan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "26",
         "parent_id": "1",
-        "menu_name": "Pertanian dan Pertambangan",
+        "nama_menu": "Pertanian dan Pertambangan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "27",
         "parent_id": "24",
-        "menu_name": "Indeks Pembangunan Manusia",
+        "nama_menu": "Indeks Pembangunan Manusia",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "28",
         "parent_id": "24",
-        "menu_name": "Kemiskinan",
+        "nama_menu": "Kemiskinan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "29",
         "parent_id": "24",
-        "menu_name": "Kependudukan",
+        "nama_menu": "Kependudukan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "30",
         "parent_id": "24",
-        "menu_name": "Kesehatan",
+        "nama_menu": "Kesehatan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "31",
         "parent_id": "24",
-        "menu_name": "Pendidikan",
+        "nama_menu": "Pendidikan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "32",
         "parent_id": "27",
-        "menu_name": "Indeks Pembangunan Manusia Metode Baru Kabupaten Situbondo",
+        "nama_menu": "Indeks Pembangunan Manusia Metode Baru Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "33",
         "parent_id": "30",
-        "menu_name": "Angka Harapan Hidup Kabupaten Situbondo",
+        "nama_menu": "Angka Harapan Hidup Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "34",
         "parent_id": "31",
-        "menu_name": "Harapan Lama Sekolah Kabupaten Situbondo",
+        "nama_menu": "Harapan Lama Sekolah Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "35",
         "parent_id": "31",
-        "menu_name": "Rata - Rata Lama Sekolah Kabupaten Situbondo",
+        "nama_menu": "Rata - Rata Lama Sekolah Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "36",
         "parent_id": "28",
-        "menu_name": "Jumlah Penduduk Miskin Kabupaten Situbondo",
+        "nama_menu": "Jumlah Penduduk Miskin Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "37",
         "parent_id": "28",
-        "menu_name": "Prosentase Penduduk Miskin Kabupaten Situbondo",
+        "nama_menu": "Prosentase Penduduk Miskin Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "38",
         "parent_id": "29",
-        "menu_name": "Jumlah Penduduk Kabupaten Situbondo",
+        "nama_menu": "Jumlah Penduduk Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "40",
         "parent_id": "25",
-        "menu_name": "Produk Domestik Regional Bruto (PDRB)",
+        "nama_menu": "Produk Domestik Regional Bruto (PDRB)",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "41",
         "parent_id": "40",
-        "menu_name": "Distribusi PDRB Kabupaten Situbondo Atas Dasar Harga Berlaku Menurut Lapangan Usaha",
+        "nama_menu": "Distribusi PDRB Kabupaten Situbondo Atas Dasar Harga Berlaku Menurut Lapangan Usaha",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "42",
         "parent_id": "40",
-        "menu_name": "Laju Implisit PDRB Kabupaten Situbondo Menurut Lapangan Usaha",
+        "nama_menu": "Laju Implisit PDRB Kabupaten Situbondo Menurut Lapangan Usaha",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "43",
         "parent_id": "40",
-        "menu_name": "Laju Pertumbuhan PDRB Kabupaten Situbondo Atas Dasar Harga Konstan 2010 Menurut Lapangan Usaha",
+        "nama_menu": "Laju Pertumbuhan PDRB Kabupaten Situbondo Atas Dasar Harga Konstan 2010 Menurut Lapangan Usaha",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "44",
         "parent_id": "40",
-        "menu_name": "PDRB Kabupaten Situbondo Atas Dasar Harga Berlaku Menurut Lapangan Usaha",
+        "nama_menu": "PDRB Kabupaten Situbondo Atas Dasar Harga Berlaku Menurut Lapangan Usaha",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "45",
         "parent_id": "40",
-        "menu_name": "PDRB Kabupaten Situbondo Atas Dasar Harga Konstan Menurut Lapangan Usaha",
+        "nama_menu": "PDRB Kabupaten Situbondo Atas Dasar Harga Konstan Menurut Lapangan Usaha",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "46",
         "parent_id": "25",
-        "menu_name": "Transportasi",
+        "nama_menu": "Transportasi",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "47",
         "parent_id": "46",
-        "menu_name": "Banyaknya Kendaraan Bermotor yang Terdaftar",
+        "nama_menu": "Banyaknya Kendaraan Bermotor yang Terdaftar",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "48",
         "parent_id": "26",
-        "menu_name": "Holtikultura",
+        "nama_menu": "Holtikultura",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "49",
         "parent_id": "48",
-        "menu_name": "Produksi Buah - Buahan Menurut Jenisnya",
+        "nama_menu": "Produksi Buah - Buahan Menurut Jenisnya",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "50",
         "parent_id": "26",
-        "menu_name": "Perikanan",
+        "nama_menu": "Perikanan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "51",
         "parent_id": "50",
-        "menu_name": "Produksi Budidaya Rumput Laut di Kabupaten Situbondo",
+        "nama_menu": "Produksi Budidaya Rumput Laut di Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "52",
         "parent_id": "50",
-        "menu_name": "Produksi Perikanan Budidaya Air Kolam di Kabupaten Situbondo",
+        "nama_menu": "Produksi Perikanan Budidaya Air Kolam di Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "53",
         "parent_id": "50",
-        "menu_name": "Produksi Perikanan Budidaya Tambak di Kabupaten Situbondo",
+        "nama_menu": "Produksi Perikanan Budidaya Tambak di Kabupaten Situbondo",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "54",
         "parent_id": "26",
-        "menu_name": "Peternakan",
+        "nama_menu": "Peternakan",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "55",
         "parent_id": "54",
-        "menu_name": "Populasi Ternak dan Unggas Menurut Jenisnya",
+        "nama_menu": "Populasi Ternak dan Unggas Menurut Jenisnya",
         "created_at": null,
         "updated_at": null
       }
@@ -4942,49 +4942,49 @@
       {
         "id": "1",
         "parent_id": null,
-        "menu_name": "Parent",
+        "nama_menu": "Parent",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "17",
         "parent_id": "1",
-        "menu_name": "Proyeksi Capaian Indikator Kinerja Daerah",
+        "nama_menu": "Proyeksi Capaian Indikator Kinerja Daerah",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "18",
         "parent_id": "17",
-        "menu_name": "Proyeksi Capaian Indikator Kinerja Daerah",
+        "nama_menu": "Proyeksi Capaian Indikator Kinerja Daerah",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "19",
         "parent_id": "18",
-        "menu_name": "Proyeksi Capaian Indikator Kinerja Daerah",
+        "nama_menu": "Proyeksi Capaian Indikator Kinerja Daerah",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "20",
         "parent_id": "1",
-        "menu_name": "Proyeksi Capaian Indikator Sasaran (Impact)",
+        "nama_menu": "Proyeksi Capaian Indikator Sasaran (Impact)",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "21",
         "parent_id": "20",
-        "menu_name": "Proyeksi Capaian Indikator Sasaran (Impact)",
+        "nama_menu": "Proyeksi Capaian Indikator Sasaran (Impact)",
         "created_at": null,
         "updated_at": null
       },
       {
         "id": "22",
         "parent_id": "21",
-        "menu_name": "Proyeksi Capaian Indikator Sasaran (Impact)",
+        "nama_menu": "Proyeksi Capaian Indikator Sasaran (Impact)",
         "created_at": null,
         "updated_at": null
       }
@@ -4999,7 +4999,7 @@
         "id": "1",
         "skpd_id": "1",
         "parent_id": null,
-        "menu_name": "Parent",
+        "nama_menu": "Parent",
         "created_at": null,
         "updated_at": null
       },
@@ -5007,7 +5007,7 @@
         "id": "23",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Urusan Pemerintahan Wajib yang Berkaitan dengan Pelayanan Dasar",
+        "nama_menu": "Urusan Pemerintahan Wajib yang Berkaitan dengan Pelayanan Dasar",
         "created_at": null,
         "updated_at": null
       },
@@ -5015,7 +5015,7 @@
         "id": "24",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Pendidikan",
+        "nama_menu": "Pendidikan",
         "created_at": null,
         "updated_at": null
       },
@@ -5023,7 +5023,7 @@
         "id": "25",
         "skpd_id": "1",
         "parent_id": "24",
-        "menu_name": "Program Pendidikan Anak Usia Dini",
+        "nama_menu": "Program Pendidikan Anak Usia Dini",
         "created_at": null,
         "updated_at": null
       },
@@ -5031,7 +5031,7 @@
         "id": "26",
         "skpd_id": "1",
         "parent_id": "24",
-        "menu_name": "Program Wajib Belajar Pendidikan Dasar Sembilan Tahun",
+        "nama_menu": "Program Wajib Belajar Pendidikan Dasar Sembilan Tahun",
         "created_at": null,
         "updated_at": null
       },
@@ -5039,7 +5039,7 @@
         "id": "27",
         "skpd_id": "1",
         "parent_id": "24",
-        "menu_name": "Program Pendidikan Non Formal",
+        "nama_menu": "Program Pendidikan Non Formal",
         "created_at": null,
         "updated_at": null
       },
@@ -5047,7 +5047,7 @@
         "id": "28",
         "skpd_id": "1",
         "parent_id": "24",
-        "menu_name": "Program Peningkatan Mutu Pendidik Dan Tenaga Kependidikan",
+        "nama_menu": "Program Peningkatan Mutu Pendidik Dan Tenaga Kependidikan",
         "created_at": null,
         "updated_at": null
       },
@@ -5055,7 +5055,7 @@
         "id": "29",
         "skpd_id": "1",
         "parent_id": "24",
-        "menu_name": "Program Pelayanan Manajemen Pendidikan",
+        "nama_menu": "Program Pelayanan Manajemen Pendidikan",
         "created_at": null,
         "updated_at": null
       },
@@ -5063,7 +5063,7 @@
         "id": "41",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Kesehatan",
+        "nama_menu": "Kesehatan",
         "created_at": null,
         "updated_at": null
       },
@@ -5071,7 +5071,7 @@
         "id": "42",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program upaya kesehatan masyarakat",
+        "nama_menu": "Program upaya kesehatan masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5079,7 +5079,7 @@
         "id": "43",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program pengawasan obat dan makanan",
+        "nama_menu": "Program pengawasan obat dan makanan",
         "created_at": null,
         "updated_at": null
       },
@@ -5087,7 +5087,7 @@
         "id": "44",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program Pengembangan Obat Asli Indonesia",
+        "nama_menu": "Program Pengembangan Obat Asli Indonesia",
         "created_at": null,
         "updated_at": null
       },
@@ -5095,7 +5095,7 @@
         "id": "45",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program Promosi Kesehatan Dan Pemberdayaan Masyarakat",
+        "nama_menu": "Program Promosi Kesehatan Dan Pemberdayaan Masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5103,7 +5103,7 @@
         "id": "46",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program perbaikan gizi masyarakat",
+        "nama_menu": "Program perbaikan gizi masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5111,7 +5111,7 @@
         "id": "47",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program penyehatan lingkungan",
+        "nama_menu": "Program penyehatan lingkungan",
         "created_at": null,
         "updated_at": null
       },
@@ -5119,7 +5119,7 @@
         "id": "48",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program pencegahan dan pemberantasan penyakit menular",
+        "nama_menu": "Program pencegahan dan pemberantasan penyakit menular",
         "created_at": null,
         "updated_at": null
       },
@@ -5127,7 +5127,7 @@
         "id": "49",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program peningkatan pelayanan kesehatan Lansia",
+        "nama_menu": "Program peningkatan pelayanan kesehatan Lansia",
         "created_at": null,
         "updated_at": null
       },
@@ -5135,7 +5135,7 @@
         "id": "50",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program standarisasi pelayanan kesehatan",
+        "nama_menu": "Program standarisasi pelayanan kesehatan",
         "created_at": null,
         "updated_at": null
       },
@@ -5143,7 +5143,7 @@
         "id": "51",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program pengadaan peningkatan dan perbaikan sarana dan prasarana puskesmas\/puskesmas pembantu dan jaringannya",
+        "nama_menu": "Program pengadaan peningkatan dan perbaikan sarana dan prasarana puskesmas\/puskesmas pembantu dan jaringannya",
         "created_at": null,
         "updated_at": null
       },
@@ -5151,7 +5151,7 @@
         "id": "52",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program Peningkatan Pelayanan Kesehatan Usila",
+        "nama_menu": "Program Peningkatan Pelayanan Kesehatan Usila",
         "created_at": null,
         "updated_at": null
       },
@@ -5159,7 +5159,7 @@
         "id": "53",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program Peningkatan Kualitas Pelayanan Kesehatan Pada BLUD",
+        "nama_menu": "Program Peningkatan Kualitas Pelayanan Kesehatan Pada BLUD",
         "created_at": null,
         "updated_at": null
       },
@@ -5167,7 +5167,7 @@
         "id": "54",
         "skpd_id": "1",
         "parent_id": "41",
-        "menu_name": "Program Keluarga Berencana",
+        "nama_menu": "Program Keluarga Berencana",
         "created_at": null,
         "updated_at": null
       },
@@ -5175,7 +5175,7 @@
         "id": "56",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Pekerjaan Umum dan Penataan Ruang",
+        "nama_menu": "Pekerjaan Umum dan Penataan Ruang",
         "created_at": null,
         "updated_at": null
       },
@@ -5183,7 +5183,7 @@
         "id": "57",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Pembangunan Jalan dan Jembatan",
+        "nama_menu": "Program Pembangunan Jalan dan Jembatan",
         "created_at": null,
         "updated_at": null
       },
@@ -5191,7 +5191,7 @@
         "id": "58",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Rehabilitasi\/Pemeliharaan Jalan dan Jembatan",
+        "nama_menu": "Program Rehabilitasi\/Pemeliharaan Jalan dan Jembatan",
         "created_at": null,
         "updated_at": null
       },
@@ -5199,7 +5199,7 @@
         "id": "59",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Pembangunan Sistem Informasi\/Data Base Jalan Dan Jembatan",
+        "nama_menu": "Program Pembangunan Sistem Informasi\/Data Base Jalan Dan Jembatan",
         "created_at": null,
         "updated_at": null
       },
@@ -5207,7 +5207,7 @@
         "id": "60",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Peningkatan Sarana Dan Prasarana Kebinamargaan",
+        "nama_menu": "Program Peningkatan Sarana Dan Prasarana Kebinamargaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5215,7 +5215,7 @@
         "id": "61",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Pengembangan dan Pengelolaan Jaringan Irigasi, Rawa dan Jaringan Pengairan Lainnya",
+        "nama_menu": "Program Pengembangan dan Pengelolaan Jaringan Irigasi, Rawa dan Jaringan Pengairan Lainnya",
         "created_at": null,
         "updated_at": null
       },
@@ -5223,7 +5223,7 @@
         "id": "62",
         "skpd_id": "1",
         "parent_id": "56",
-        "menu_name": "Program Pengendalian Banjir",
+        "nama_menu": "Program Pengendalian Banjir",
         "created_at": null,
         "updated_at": null
       },
@@ -5231,7 +5231,7 @@
         "id": "64",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Perumahan Rakyat dan Kawasan Permukiman",
+        "nama_menu": "Perumahan Rakyat dan Kawasan Permukiman",
         "created_at": null,
         "updated_at": null
       },
@@ -5239,7 +5239,7 @@
         "id": "65",
         "skpd_id": "1",
         "parent_id": "64",
-        "menu_name": "Program Pengembangan Kinerja Pengelolaan Persampahan",
+        "nama_menu": "Program Pengembangan Kinerja Pengelolaan Persampahan",
         "created_at": null,
         "updated_at": null
       },
@@ -5247,7 +5247,7 @@
         "id": "66",
         "skpd_id": "1",
         "parent_id": "64",
-        "menu_name": "Program Pengembangan Perumahan",
+        "nama_menu": "Program Pengembangan Perumahan",
         "created_at": null,
         "updated_at": null
       },
@@ -5255,7 +5255,7 @@
         "id": "67",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Ketenteraman, ketertiban umum, dan perlindungan masyarakat",
+        "nama_menu": "Ketenteraman, ketertiban umum, dan perlindungan masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5263,7 +5263,7 @@
         "id": "68",
         "skpd_id": "1",
         "parent_id": "67",
-        "menu_name": "Program Pemeliharaan kantrantibmas dan penanganan tindak Kriminal",
+        "nama_menu": "Program Pemeliharaan kantrantibmas dan penanganan tindak Kriminal",
         "created_at": null,
         "updated_at": null
       },
@@ -5271,7 +5271,7 @@
         "id": "69",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Program Pengembangan Wawasan Kebangsaan",
+        "nama_menu": "Program Pengembangan Wawasan Kebangsaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5279,7 +5279,7 @@
         "id": "70",
         "skpd_id": "1",
         "parent_id": "69",
-        "menu_name": "Pembinaan Pola Pikir dan Peningkatan Wawasan Kebangsaan",
+        "nama_menu": "Pembinaan Pola Pikir dan Peningkatan Wawasan Kebangsaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5287,7 +5287,7 @@
         "id": "71",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Program Kemitraan Pengembangan Wawasan Kebangsaan",
+        "nama_menu": "Program Kemitraan Pengembangan Wawasan Kebangsaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5295,7 +5295,7 @@
         "id": "72",
         "skpd_id": "1",
         "parent_id": "71",
-        "menu_name": "Program Kemitraan Pengembangan Wawasan Kebangsaan",
+        "nama_menu": "Program Kemitraan Pengembangan Wawasan Kebangsaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5303,7 +5303,7 @@
         "id": "73",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Program Pemberdayaan Masyarakat untuk menjaga ketertiban dan keamanan",
+        "nama_menu": "Program Pemberdayaan Masyarakat untuk menjaga ketertiban dan keamanan",
         "created_at": null,
         "updated_at": null
       },
@@ -5311,7 +5311,7 @@
         "id": "74",
         "skpd_id": "1",
         "parent_id": "73",
-        "menu_name": "Program Pemberdayaan Masyarakat untuk menjaga ketertiban dan keamanan",
+        "nama_menu": "Program Pemberdayaan Masyarakat untuk menjaga ketertiban dan keamanan",
         "created_at": null,
         "updated_at": null
       },
@@ -5319,7 +5319,7 @@
         "id": "75",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Program Pendidikan Politik Masyarakat",
+        "nama_menu": "Program Pendidikan Politik Masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5327,7 +5327,7 @@
         "id": "76",
         "skpd_id": "1",
         "parent_id": "75",
-        "menu_name": "Program Pendidikan Politik Masyarakat",
+        "nama_menu": "Program Pendidikan Politik Masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5335,7 +5335,7 @@
         "id": "77",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Program Peningkatan Pemberantasan Penyakit Masyarakat (Pekat)",
+        "nama_menu": "Program Peningkatan Pemberantasan Penyakit Masyarakat (Pekat)",
         "created_at": null,
         "updated_at": null
       },
@@ -5343,7 +5343,7 @@
         "id": "78",
         "skpd_id": "1",
         "parent_id": "77",
-        "menu_name": "Program Peningkatan Pemberantasan Penyakit Masyarakat (Pekat)",
+        "nama_menu": "Program Peningkatan Pemberantasan Penyakit Masyarakat (Pekat)",
         "created_at": null,
         "updated_at": null
       },
@@ -5351,7 +5351,7 @@
         "id": "79",
         "skpd_id": "1",
         "parent_id": "23",
-        "menu_name": "Sosial",
+        "nama_menu": "Sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -5359,7 +5359,7 @@
         "id": "80",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pemberdayaan fakis miskin komoditas adat terpencil dan penyandang masalah kesejahteraan sosial (PMKS Lainnya)",
+        "nama_menu": "Program pemberdayaan fakis miskin komoditas adat terpencil dan penyandang masalah kesejahteraan sosial (PMKS Lainnya)",
         "created_at": null,
         "updated_at": null
       },
@@ -5367,7 +5367,7 @@
         "id": "81",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program Pelayanan dan Rehabilitasi Kesejahteraan Sosial",
+        "nama_menu": "Program Pelayanan dan Rehabilitasi Kesejahteraan Sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -5375,7 +5375,7 @@
         "id": "82",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pembinaan anak terlantar",
+        "nama_menu": "Program pembinaan anak terlantar",
         "created_at": null,
         "updated_at": null
       },
@@ -5383,7 +5383,7 @@
         "id": "83",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pembinaan para penyandang cacat dan trauma",
+        "nama_menu": "Program pembinaan para penyandang cacat dan trauma",
         "created_at": null,
         "updated_at": null
       },
@@ -5391,7 +5391,7 @@
         "id": "84",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pembinaan panti asuhan\/panti jompo",
+        "nama_menu": "Program pembinaan panti asuhan\/panti jompo",
         "created_at": null,
         "updated_at": null
       },
@@ -5399,7 +5399,7 @@
         "id": "85",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pembinaan eks penyandang penyakit sosial (eks narapidana PSK Narkoba dan Penyakit Sosial Lainnya",
+        "nama_menu": "Program pembinaan eks penyandang penyakit sosial (eks narapidana PSK Narkoba dan Penyakit Sosial Lainnya",
         "created_at": null,
         "updated_at": null
       },
@@ -5407,7 +5407,7 @@
         "id": "86",
         "skpd_id": "1",
         "parent_id": "79",
-        "menu_name": "Program pemberdayaan kelembagaan kesejahteraan sosial",
+        "nama_menu": "Program pemberdayaan kelembagaan kesejahteraan sosial",
         "created_at": null,
         "updated_at": null
       },
@@ -5415,7 +5415,7 @@
         "id": "87",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Urusan Pemerintahan Wajib yang tidak Berkaitan dengan Pelayanan Dasar",
+        "nama_menu": "Urusan Pemerintahan Wajib yang tidak Berkaitan dengan Pelayanan Dasar",
         "created_at": null,
         "updated_at": null
       },
@@ -5423,7 +5423,7 @@
         "id": "88",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Tenaga Kerja",
+        "nama_menu": "Tenaga Kerja",
         "created_at": null,
         "updated_at": null
       },
@@ -5431,7 +5431,7 @@
         "id": "89",
         "skpd_id": "1",
         "parent_id": "88",
-        "menu_name": "Program Peningkatan Kualitas dan Produktivitas Tenaga Kerja",
+        "nama_menu": "Program Peningkatan Kualitas dan Produktivitas Tenaga Kerja",
         "created_at": null,
         "updated_at": null
       },
@@ -5439,7 +5439,7 @@
         "id": "91",
         "skpd_id": "1",
         "parent_id": "88",
-        "menu_name": "Program Peningkatan Kesempatan Kerja",
+        "nama_menu": "Program Peningkatan Kesempatan Kerja",
         "created_at": null,
         "updated_at": null
       },
@@ -5447,7 +5447,7 @@
         "id": "92",
         "skpd_id": "1",
         "parent_id": "88",
-        "menu_name": "Program Perlindungan dan Pengembangan Lembaga Ketenagakerjaan",
+        "nama_menu": "Program Perlindungan dan Pengembangan Lembaga Ketenagakerjaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5455,7 +5455,7 @@
         "id": "94",
         "skpd_id": "1",
         "parent_id": "88",
-        "menu_name": "Program penyebaran informasi ketenagakerjaan dan ketransmigrasian",
+        "nama_menu": "Program penyebaran informasi ketenagakerjaan dan ketransmigrasian",
         "created_at": null,
         "updated_at": null
       },
@@ -5463,7 +5463,7 @@
         "id": "95",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Pemberdayaan Perempuan dan Perlindungan Anak",
+        "nama_menu": "Pemberdayaan Perempuan dan Perlindungan Anak",
         "created_at": null,
         "updated_at": null
       },
@@ -5471,7 +5471,7 @@
         "id": "96",
         "skpd_id": "1",
         "parent_id": "95",
-        "menu_name": "Program Penguatan Kelembagaan Pengarusutamaan Gender dan Anak",
+        "nama_menu": "Program Penguatan Kelembagaan Pengarusutamaan Gender dan Anak",
         "created_at": null,
         "updated_at": null
       },
@@ -5479,7 +5479,7 @@
         "id": "97",
         "skpd_id": "1",
         "parent_id": "95",
-        "menu_name": "Program Peningkatan Kualitas Hidup dan Perlindungan Perempuan",
+        "nama_menu": "Program Peningkatan Kualitas Hidup dan Perlindungan Perempuan",
         "created_at": null,
         "updated_at": null
       },
@@ -5487,7 +5487,7 @@
         "id": "98",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Pangan",
+        "nama_menu": "Pangan",
         "created_at": null,
         "updated_at": null
       },
@@ -5495,7 +5495,7 @@
         "id": "99",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PENINGKATAN KETAHANAN PANGAN (PERTANIAN\/ PERKEBUNAN)",
+        "nama_menu": "PROGRAM PENINGKATAN KETAHANAN PANGAN (PERTANIAN\/ PERKEBUNAN)",
         "created_at": null,
         "updated_at": null
       },
@@ -5503,7 +5503,7 @@
         "id": "101",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PENINGKATAN DIVERSIFIKASI PANGAN",
+        "nama_menu": "PROGRAM PENINGKATAN DIVERSIFIKASI PANGAN",
         "created_at": null,
         "updated_at": null
       },
@@ -5511,7 +5511,7 @@
         "id": "102",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PENINGKATAN PEMASARAN HASIL PRODUKSI PERTANIAN\/ PERKEBUNAN",
+        "nama_menu": "PROGRAM PENINGKATAN PEMASARAN HASIL PRODUKSI PERTANIAN\/ PERKEBUNAN",
         "created_at": null,
         "updated_at": null
       },
@@ -5519,7 +5519,7 @@
         "id": "103",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PENINGKATAN PENERAPAN TEKNOLOGI PERTANIAN\/ PERKEBUNAN",
+        "nama_menu": "PROGRAM PENINGKATAN PENERAPAN TEKNOLOGI PERTANIAN\/ PERKEBUNAN",
         "created_at": null,
         "updated_at": null
       },
@@ -5527,7 +5527,7 @@
         "id": "104",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PEMBERDAYAAN PENYULUH PERTANIAN\/ PERKEBUNAN LAPANGAN",
+        "nama_menu": "PROGRAM PEMBERDAYAAN PENYULUH PERTANIAN\/ PERKEBUNAN LAPANGAN",
         "created_at": null,
         "updated_at": null
       },
@@ -5535,7 +5535,7 @@
         "id": "105",
         "skpd_id": "1",
         "parent_id": "98",
-        "menu_name": "PROGRAM PENINGKATAN KESEJAHTERAAN PETANI",
+        "nama_menu": "PROGRAM PENINGKATAN KESEJAHTERAAN PETANI",
         "created_at": null,
         "updated_at": null
       },
@@ -5543,7 +5543,7 @@
         "id": "106",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Lingkungan Hidup",
+        "nama_menu": "Lingkungan Hidup",
         "created_at": null,
         "updated_at": null
       },
@@ -5551,7 +5551,7 @@
         "id": "107",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Pengembangan Kineja Pengelolaan Persampahan",
+        "nama_menu": "Program Pengembangan Kineja Pengelolaan Persampahan",
         "created_at": null,
         "updated_at": null
       },
@@ -5559,7 +5559,7 @@
         "id": "108",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Pengendalian Pencemaran dan Perusakan Lingkungan Hidup",
+        "nama_menu": "Program Pengendalian Pencemaran dan Perusakan Lingkungan Hidup",
         "created_at": null,
         "updated_at": null
       },
@@ -5567,7 +5567,7 @@
         "id": "109",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Perlindungan dan Konservasi Sumber Daya Alam",
+        "nama_menu": "Program Perlindungan dan Konservasi Sumber Daya Alam",
         "created_at": null,
         "updated_at": null
       },
@@ -5575,7 +5575,7 @@
         "id": "110",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Rehabilitasi dan Pemulihan Cadangan Sumber Daya Alam",
+        "nama_menu": "Program Rehabilitasi dan Pemulihan Cadangan Sumber Daya Alam",
         "created_at": null,
         "updated_at": null
       },
@@ -5583,7 +5583,7 @@
         "id": "111",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Peningkatan kualitas dan akses informasi Sumber Daya Alam dan Lingkungan Hidup",
+        "nama_menu": "Program Peningkatan kualitas dan akses informasi Sumber Daya Alam dan Lingkungan Hidup",
         "created_at": null,
         "updated_at": null
       },
@@ -5591,7 +5591,7 @@
         "id": "112",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Peningkatan pengendalian Polusi",
+        "nama_menu": "Program Peningkatan pengendalian Polusi",
         "created_at": null,
         "updated_at": null
       },
@@ -5599,7 +5599,7 @@
         "id": "113",
         "skpd_id": "1",
         "parent_id": "106",
-        "menu_name": "Program Pengembangan Ekowisata dan Jasa Lingkungan di kawasan - kawasan konservasi",
+        "nama_menu": "Program Pengembangan Ekowisata dan Jasa Lingkungan di kawasan - kawasan konservasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5607,7 +5607,7 @@
         "id": "114",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Administrasi Kependudukan dan Pencatatan Sipil",
+        "nama_menu": "Administrasi Kependudukan dan Pencatatan Sipil",
         "created_at": null,
         "updated_at": null
       },
@@ -5615,7 +5615,7 @@
         "id": "115",
         "skpd_id": "1",
         "parent_id": "114",
-        "menu_name": "Program Penataan Administrasi Pendaftaran Penduduk",
+        "nama_menu": "Program Penataan Administrasi Pendaftaran Penduduk",
         "created_at": null,
         "updated_at": null
       },
@@ -5623,7 +5623,7 @@
         "id": "116",
         "skpd_id": "1",
         "parent_id": "114",
-        "menu_name": "Program Penataan administrasi pencatatan sipil",
+        "nama_menu": "Program Penataan administrasi pencatatan sipil",
         "created_at": null,
         "updated_at": null
       },
@@ -5631,7 +5631,7 @@
         "id": "117",
         "skpd_id": "1",
         "parent_id": "114",
-        "menu_name": "Program pengembangan jaringan komunikasi data dan informasi administrasi kependudukan",
+        "nama_menu": "Program pengembangan jaringan komunikasi data dan informasi administrasi kependudukan",
         "created_at": null,
         "updated_at": null
       },
@@ -5639,7 +5639,7 @@
         "id": "121",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Pemberdayaan Masyarakat dan Desa",
+        "nama_menu": "Pemberdayaan Masyarakat dan Desa",
         "created_at": null,
         "updated_at": null
       },
@@ -5647,7 +5647,7 @@
         "id": "122",
         "skpd_id": "1",
         "parent_id": "121",
-        "menu_name": "Program Peningkatan Keberdayaan Masyarakat Perdesaan",
+        "nama_menu": "Program Peningkatan Keberdayaan Masyarakat Perdesaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5655,7 +5655,7 @@
         "id": "123",
         "skpd_id": "1",
         "parent_id": "121",
-        "menu_name": "Program Pengembangan lembaga ekonomi Pedesaan",
+        "nama_menu": "Program Pengembangan lembaga ekonomi Pedesaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5663,7 +5663,7 @@
         "id": "124",
         "skpd_id": "1",
         "parent_id": "121",
-        "menu_name": "Program Peningkatan Partisipasi Masyarakat dalam membangun desa",
+        "nama_menu": "Program Peningkatan Partisipasi Masyarakat dalam membangun desa",
         "created_at": null,
         "updated_at": null
       },
@@ -5671,7 +5671,7 @@
         "id": "125",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Pengendalian Penduduk dan Keluarga Berencana",
+        "nama_menu": "Pengendalian Penduduk dan Keluarga Berencana",
         "created_at": null,
         "updated_at": null
       },
@@ -5679,7 +5679,7 @@
         "id": "127",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Keluarga Berencana",
+        "nama_menu": "Program Keluarga Berencana",
         "created_at": null,
         "updated_at": null
       },
@@ -5687,7 +5687,7 @@
         "id": "128",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Kesehatan Reproduksi Remaja",
+        "nama_menu": "Program Kesehatan Reproduksi Remaja",
         "created_at": null,
         "updated_at": null
       },
@@ -5695,7 +5695,7 @@
         "id": "129",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Pelayanan Kontrasepsi",
+        "nama_menu": "Program Pelayanan Kontrasepsi",
         "created_at": null,
         "updated_at": null
       },
@@ -5703,7 +5703,7 @@
         "id": "130",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Pembinaan Peran Serta Masyarakat Dalam Pelayanan KB\/KR Yang Mandiri",
+        "nama_menu": "Program Pembinaan Peran Serta Masyarakat Dalam Pelayanan KB\/KR Yang Mandiri",
         "created_at": null,
         "updated_at": null
       },
@@ -5711,7 +5711,7 @@
         "id": "131",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Pengembangan Pusat Pelayanan Informasi dan Konseling KRR",
+        "nama_menu": "Program Pengembangan Pusat Pelayanan Informasi dan Konseling KRR",
         "created_at": null,
         "updated_at": null
       },
@@ -5719,7 +5719,7 @@
         "id": "132",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Peningkatan Penanggulangan Narkoba, PMS Termasuk HIV\/AIDS",
+        "nama_menu": "Program Peningkatan Penanggulangan Narkoba, PMS Termasuk HIV\/AIDS",
         "created_at": null,
         "updated_at": null
       },
@@ -5727,7 +5727,7 @@
         "id": "133",
         "skpd_id": "1",
         "parent_id": "125",
-        "menu_name": "Program Penyiapan Tenaga Pendamping Kelompok Bina Keluarga",
+        "nama_menu": "Program Penyiapan Tenaga Pendamping Kelompok Bina Keluarga",
         "created_at": null,
         "updated_at": null
       },
@@ -5735,7 +5735,7 @@
         "id": "134",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Perhubungan",
+        "nama_menu": "Perhubungan",
         "created_at": null,
         "updated_at": null
       },
@@ -5743,7 +5743,7 @@
         "id": "135",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Pembangunan Prasarana dan Fasilitas Perhubungan",
+        "nama_menu": "Program Pembangunan Prasarana dan Fasilitas Perhubungan",
         "created_at": null,
         "updated_at": null
       },
@@ -5751,7 +5751,7 @@
         "id": "136",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Rehabilitasi dan Pemeliharaan Prasarana dan Fasilitas LLAJ",
+        "nama_menu": "Program Rehabilitasi dan Pemeliharaan Prasarana dan Fasilitas LLAJ",
         "created_at": null,
         "updated_at": null
       },
@@ -5759,7 +5759,7 @@
         "id": "137",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Peningkatan Pelayanan Angkutan",
+        "nama_menu": "Program Peningkatan Pelayanan Angkutan",
         "created_at": null,
         "updated_at": null
       },
@@ -5767,7 +5767,7 @@
         "id": "138",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Pembangunan Sarana dan Prasarana Perhubungan",
+        "nama_menu": "Program Pembangunan Sarana dan Prasarana Perhubungan",
         "created_at": null,
         "updated_at": null
       },
@@ -5775,7 +5775,7 @@
         "id": "139",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Peningkatan dan Pengamanan Lalu Lintas",
+        "nama_menu": "Program Peningkatan dan Pengamanan Lalu Lintas",
         "created_at": null,
         "updated_at": null
       },
@@ -5783,7 +5783,7 @@
         "id": "140",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Peningkatan Kelaikan Pengoperasian Kendaraan Bermotor",
+        "nama_menu": "Program Peningkatan Kelaikan Pengoperasian Kendaraan Bermotor",
         "created_at": null,
         "updated_at": null
       },
@@ -5791,7 +5791,7 @@
         "id": "141",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Peningkatan Pelayanan Penyelenggaraan Pos dan Telekomunikasi",
+        "nama_menu": "Program Peningkatan Pelayanan Penyelenggaraan Pos dan Telekomunikasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5799,7 +5799,7 @@
         "id": "142",
         "skpd_id": "1",
         "parent_id": "134",
-        "menu_name": "Program Rehabilitasi dan Pemeliharaan Sarana dan Prasarana Perhubungan",
+        "nama_menu": "Program Rehabilitasi dan Pemeliharaan Sarana dan Prasarana Perhubungan",
         "created_at": null,
         "updated_at": null
       },
@@ -5807,7 +5807,7 @@
         "id": "143",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Komunikasi dan Informatika",
+        "nama_menu": "Komunikasi dan Informatika",
         "created_at": null,
         "updated_at": null
       },
@@ -5815,7 +5815,7 @@
         "id": "144",
         "skpd_id": "1",
         "parent_id": "143",
-        "menu_name": "Program Pengembangan Komunikasi, Informasi dan Media Massa",
+        "nama_menu": "Program Pengembangan Komunikasi, Informasi dan Media Massa",
         "created_at": null,
         "updated_at": null
       },
@@ -5823,7 +5823,7 @@
         "id": "145",
         "skpd_id": "1",
         "parent_id": "143",
-        "menu_name": "Program Fasilitas Peningkatan SDM Bidang Komunikasi dan Informasi",
+        "nama_menu": "Program Fasilitas Peningkatan SDM Bidang Komunikasi dan Informasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5831,7 +5831,7 @@
         "id": "146",
         "skpd_id": "1",
         "parent_id": "143",
-        "menu_name": "Program Kerjasama Informasi dengan Mas Media",
+        "nama_menu": "Program Kerjasama Informasi dengan Mas Media",
         "created_at": null,
         "updated_at": null
       },
@@ -5839,7 +5839,7 @@
         "id": "147",
         "skpd_id": "1",
         "parent_id": "143",
-        "menu_name": "Program Optimalisasi Pemanfaatan Teknologi Komunikasi dan Informatika",
+        "nama_menu": "Program Optimalisasi Pemanfaatan Teknologi Komunikasi dan Informatika",
         "created_at": null,
         "updated_at": null
       },
@@ -5847,7 +5847,7 @@
         "id": "148",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Koperasi, Usaha Kecil dan Menengah",
+        "nama_menu": "Koperasi, Usaha Kecil dan Menengah",
         "created_at": null,
         "updated_at": null
       },
@@ -5855,7 +5855,7 @@
         "id": "149",
         "skpd_id": "1",
         "parent_id": "148",
-        "menu_name": "Program Penciptaan Iklim Usaha Usaha Kecil Menengah Yang Konduksif",
+        "nama_menu": "Program Penciptaan Iklim Usaha Usaha Kecil Menengah Yang Konduksif",
         "created_at": null,
         "updated_at": null
       },
@@ -5863,7 +5863,7 @@
         "id": "150",
         "skpd_id": "1",
         "parent_id": "148",
-        "menu_name": "Program Pengembangan Kewirausahaan Dan Keunggulan Kompetitif Usaha Kecil Menengah",
+        "nama_menu": "Program Pengembangan Kewirausahaan Dan Keunggulan Kompetitif Usaha Kecil Menengah",
         "created_at": null,
         "updated_at": null
       },
@@ -5871,7 +5871,7 @@
         "id": "151",
         "skpd_id": "1",
         "parent_id": "148",
-        "menu_name": "Program Pengembangan Sistem Pendukung Usaha Bagi Usaha Mikro Kecil Menengah",
+        "nama_menu": "Program Pengembangan Sistem Pendukung Usaha Bagi Usaha Mikro Kecil Menengah",
         "created_at": null,
         "updated_at": null
       },
@@ -5879,7 +5879,7 @@
         "id": "152",
         "skpd_id": "1",
         "parent_id": "148",
-        "menu_name": "Program Peningkatan Kualitas Kelembagaan Koperasi",
+        "nama_menu": "Program Peningkatan Kualitas Kelembagaan Koperasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5887,7 +5887,7 @@
         "id": "154",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Penanaman Modal",
+        "nama_menu": "Penanaman Modal",
         "created_at": null,
         "updated_at": null
       },
@@ -5895,7 +5895,7 @@
         "id": "155",
         "skpd_id": "1",
         "parent_id": "154",
-        "menu_name": "Program Peningkatan Promosi dan Kerjasama Investasi",
+        "nama_menu": "Program Peningkatan Promosi dan Kerjasama Investasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5903,7 +5903,7 @@
         "id": "156",
         "skpd_id": "1",
         "parent_id": "154",
-        "menu_name": "Program Peningkatan Iklim Investasi dan Realisasi Investasi",
+        "nama_menu": "Program Peningkatan Iklim Investasi dan Realisasi Investasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5911,7 +5911,7 @@
         "id": "157",
         "skpd_id": "1",
         "parent_id": "154",
-        "menu_name": "Program Pelayanan Perijinan Terpadu",
+        "nama_menu": "Program Pelayanan Perijinan Terpadu",
         "created_at": null,
         "updated_at": null
       },
@@ -5919,7 +5919,7 @@
         "id": "158",
         "skpd_id": "1",
         "parent_id": "154",
-        "menu_name": "Program Optimalisasi Pemanfaatan Teknologi Informasi",
+        "nama_menu": "Program Optimalisasi Pemanfaatan Teknologi Informasi",
         "created_at": null,
         "updated_at": null
       },
@@ -5927,7 +5927,7 @@
         "id": "159",
         "skpd_id": "1",
         "parent_id": "154",
-        "menu_name": "Program mengintensifkan Penanganan pengaduan masyarakat",
+        "nama_menu": "Program mengintensifkan Penanganan pengaduan masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -5935,7 +5935,7 @@
         "id": "160",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Kepemudaan dan Olahraga",
+        "nama_menu": "Kepemudaan dan Olahraga",
         "created_at": null,
         "updated_at": null
       },
@@ -5943,7 +5943,7 @@
         "id": "161",
         "skpd_id": "1",
         "parent_id": "160",
-        "menu_name": "Program Peningkatan Peran Serta Kepemudaan",
+        "nama_menu": "Program Peningkatan Peran Serta Kepemudaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5951,7 +5951,7 @@
         "id": "162",
         "skpd_id": "1",
         "parent_id": "160",
-        "menu_name": "Program Pembinaan Dan Pemasyarakatan Olahraga",
+        "nama_menu": "Program Pembinaan Dan Pemasyarakatan Olahraga",
         "created_at": null,
         "updated_at": null
       },
@@ -5959,7 +5959,7 @@
         "id": "163",
         "skpd_id": "1",
         "parent_id": "160",
-        "menu_name": "Program Peningkatan Sarana Dan Prasarana Olah Raga",
+        "nama_menu": "Program Peningkatan Sarana Dan Prasarana Olah Raga",
         "created_at": null,
         "updated_at": null
       },
@@ -5967,7 +5967,7 @@
         "id": "164",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Statistik",
+        "nama_menu": "Statistik",
         "created_at": null,
         "updated_at": null
       },
@@ -5975,7 +5975,7 @@
         "id": "165",
         "skpd_id": "1",
         "parent_id": "164",
-        "menu_name": "Program Pengembangan Data\/ Informasi\/ Statistik Daerah",
+        "nama_menu": "Program Pengembangan Data\/ Informasi\/ Statistik Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -5983,7 +5983,7 @@
         "id": "166",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Kebudayaan",
+        "nama_menu": "Kebudayaan",
         "created_at": null,
         "updated_at": null
       },
@@ -5991,7 +5991,7 @@
         "id": "167",
         "skpd_id": "1",
         "parent_id": "166",
-        "menu_name": "Program Pengembangan Nilai Budaya",
+        "nama_menu": "Program Pengembangan Nilai Budaya",
         "created_at": null,
         "updated_at": null
       },
@@ -5999,7 +5999,7 @@
         "id": "168",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Perpustakaan",
+        "nama_menu": "Perpustakaan",
         "created_at": null,
         "updated_at": null
       },
@@ -6007,7 +6007,7 @@
         "id": "169",
         "skpd_id": "1",
         "parent_id": "168",
-        "menu_name": "Program Pengembangan Budaya Baca dan Pembinaan Perpustakaan",
+        "nama_menu": "Program Pengembangan Budaya Baca dan Pembinaan Perpustakaan",
         "created_at": null,
         "updated_at": null
       },
@@ -6015,7 +6015,7 @@
         "id": "170",
         "skpd_id": "1",
         "parent_id": "87",
-        "menu_name": "Kearsipan",
+        "nama_menu": "Kearsipan",
         "created_at": null,
         "updated_at": null
       },
@@ -6023,7 +6023,7 @@
         "id": "171",
         "skpd_id": "1",
         "parent_id": "170",
-        "menu_name": "Program Penyelamatan dan Pelestarian Dokumen\/Arsip Daerah",
+        "nama_menu": "Program Penyelamatan dan Pelestarian Dokumen\/Arsip Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6031,7 +6031,7 @@
         "id": "172",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Urusan Pemerintahan Pilihan",
+        "nama_menu": "Urusan Pemerintahan Pilihan",
         "created_at": null,
         "updated_at": null
       },
@@ -6039,7 +6039,7 @@
         "id": "173",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Kelautan dan Perikanan",
+        "nama_menu": "Kelautan dan Perikanan",
         "created_at": null,
         "updated_at": null
       },
@@ -6047,7 +6047,7 @@
         "id": "174",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pengembangan Perikanan Tangkap",
+        "nama_menu": "Program Pengembangan Perikanan Tangkap",
         "created_at": null,
         "updated_at": null
       },
@@ -6055,7 +6055,7 @@
         "id": "175",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pemberdayaan ekonomi mayarakat pesisir",
+        "nama_menu": "Program Pemberdayaan ekonomi mayarakat pesisir",
         "created_at": null,
         "updated_at": null
       },
@@ -6063,7 +6063,7 @@
         "id": "176",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pengembangan Kelautan, Pesisir, Pulau-Pulau Kecil dan Pengawasan)",
+        "nama_menu": "Program Pengembangan Kelautan, Pesisir, Pulau-Pulau Kecil dan Pengawasan)",
         "created_at": null,
         "updated_at": null
       },
@@ -6071,7 +6071,7 @@
         "id": "177",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pengembangan Kawasan Budidaya Laut, Air Payau dan Air Tawar",
+        "nama_menu": "Program Pengembangan Kawasan Budidaya Laut, Air Payau dan Air Tawar",
         "created_at": null,
         "updated_at": null
       },
@@ -6079,7 +6079,7 @@
         "id": "178",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pengelolaan Sumber Daya Perikanan Budidaya",
+        "nama_menu": "Program Pengelolaan Sumber Daya Perikanan Budidaya",
         "created_at": null,
         "updated_at": null
       },
@@ -6087,7 +6087,7 @@
         "id": "179",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program peningkatan kegiatan budaya kelautan dan wawasan maritim kepada masyarakat",
+        "nama_menu": "Program peningkatan kegiatan budaya kelautan dan wawasan maritim kepada masyarakat",
         "created_at": null,
         "updated_at": null
       },
@@ -6095,7 +6095,7 @@
         "id": "180",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pengembangan Budidaya Perikanan",
+        "nama_menu": "Program Pengembangan Budidaya Perikanan",
         "created_at": null,
         "updated_at": null
       },
@@ -6103,7 +6103,7 @@
         "id": "181",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Optimalisasi Hasil Perikanan",
+        "nama_menu": "Program Optimalisasi Hasil Perikanan",
         "created_at": null,
         "updated_at": null
       },
@@ -6111,7 +6111,7 @@
         "id": "182",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Peningkatan Pengolahan dan Pemasaran Hasil Perikanan",
+        "nama_menu": "Program Peningkatan Pengolahan dan Pemasaran Hasil Perikanan",
         "created_at": null,
         "updated_at": null
       },
@@ -6119,7 +6119,7 @@
         "id": "183",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Pemberdayaan Masyarakat Dalam Pengawasan Dan Pengendalian",
+        "nama_menu": "Program Pemberdayaan Masyarakat Dalam Pengawasan Dan Pengendalian",
         "created_at": null,
         "updated_at": null
       },
@@ -6127,7 +6127,7 @@
         "id": "184",
         "skpd_id": "1",
         "parent_id": "173",
-        "menu_name": "Program Peningkatan Kesadaran dan Penegakan Hukum dalam Pendayagunaan Sumberdaya Laut",
+        "nama_menu": "Program Peningkatan Kesadaran dan Penegakan Hukum dalam Pendayagunaan Sumberdaya Laut",
         "created_at": null,
         "updated_at": null
       },
@@ -6135,7 +6135,7 @@
         "id": "185",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Pariwisata",
+        "nama_menu": "Pariwisata",
         "created_at": null,
         "updated_at": null
       },
@@ -6143,7 +6143,7 @@
         "id": "186",
         "skpd_id": "1",
         "parent_id": "185",
-        "menu_name": "Program Pengembangan Pemasaran Pariwisata",
+        "nama_menu": "Program Pengembangan Pemasaran Pariwisata",
         "created_at": null,
         "updated_at": null
       },
@@ -6151,7 +6151,7 @@
         "id": "187",
         "skpd_id": "1",
         "parent_id": "185",
-        "menu_name": "Program Pengembangan Destinasi Pariwisata",
+        "nama_menu": "Program Pengembangan Destinasi Pariwisata",
         "created_at": null,
         "updated_at": null
       },
@@ -6159,7 +6159,7 @@
         "id": "188",
         "skpd_id": "1",
         "parent_id": "185",
-        "menu_name": "Program Pengembangan Kemitraan",
+        "nama_menu": "Program Pengembangan Kemitraan",
         "created_at": null,
         "updated_at": null
       },
@@ -6167,7 +6167,7 @@
         "id": "190",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Pertanian",
+        "nama_menu": "Pertanian",
         "created_at": null,
         "updated_at": null
       },
@@ -6175,7 +6175,7 @@
         "id": "191",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Peningkatan Ketahanan Pangan (Pertanian \/ Perkebunan)",
+        "nama_menu": "Peningkatan Ketahanan Pangan (Pertanian \/ Perkebunan)",
         "created_at": null,
         "updated_at": null
       },
@@ -6183,7 +6183,7 @@
         "id": "192",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Peningkatan Produksi Pertanian\/perkebunan",
+        "nama_menu": "Peningkatan Produksi Pertanian\/perkebunan",
         "created_at": null,
         "updated_at": null
       },
@@ -6191,7 +6191,7 @@
         "id": "193",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Program Pengembangan Agribisnis",
+        "nama_menu": "Program Pengembangan Agribisnis",
         "created_at": null,
         "updated_at": null
       },
@@ -6199,7 +6199,7 @@
         "id": "194",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Peningkatan kesejahteraan petani",
+        "nama_menu": "Peningkatan kesejahteraan petani",
         "created_at": null,
         "updated_at": null
       },
@@ -6207,7 +6207,7 @@
         "id": "195",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Peningkatan pemasaran hasil produksi pertanian \/ perkebunan",
+        "nama_menu": "Peningkatan pemasaran hasil produksi pertanian \/ perkebunan",
         "created_at": null,
         "updated_at": null
       },
@@ -6215,7 +6215,7 @@
         "id": "196",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Program peningkatan penerapan teknologi pertanian\/perkebunan",
+        "nama_menu": "Program peningkatan penerapan teknologi pertanian\/perkebunan",
         "created_at": null,
         "updated_at": null
       },
@@ -6223,7 +6223,7 @@
         "id": "197",
         "skpd_id": "1",
         "parent_id": "190",
-        "menu_name": "Peningkatan Kualitas Bahan Baku Industri Hasil Tembakau",
+        "nama_menu": "Peningkatan Kualitas Bahan Baku Industri Hasil Tembakau",
         "created_at": null,
         "updated_at": null
       },
@@ -6231,7 +6231,7 @@
         "id": "198",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Peternakan",
+        "nama_menu": "Peternakan",
         "created_at": null,
         "updated_at": null
       },
@@ -6239,7 +6239,7 @@
         "id": "199",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program Pencegahan dan Penanggulangan Penyakit Ternak",
+        "nama_menu": "Program Pencegahan dan Penanggulangan Penyakit Ternak",
         "created_at": null,
         "updated_at": null
       },
@@ -6247,7 +6247,7 @@
         "id": "200",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program peningkatan produksi hasil peternakan",
+        "nama_menu": "Program peningkatan produksi hasil peternakan",
         "created_at": null,
         "updated_at": null
       },
@@ -6255,7 +6255,7 @@
         "id": "201",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program peningkatan pemasaran hasil produksi peternakan",
+        "nama_menu": "Program peningkatan pemasaran hasil produksi peternakan",
         "created_at": null,
         "updated_at": null
       },
@@ -6263,7 +6263,7 @@
         "id": "202",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program Peningkatan Penerapan Teknologi Peternakan",
+        "nama_menu": "Program Peningkatan Penerapan Teknologi Peternakan",
         "created_at": null,
         "updated_at": null
       },
@@ -6271,7 +6271,7 @@
         "id": "203",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program Rehabilitasi Hutan dan Lahan",
+        "nama_menu": "Program Rehabilitasi Hutan dan Lahan",
         "created_at": null,
         "updated_at": null
       },
@@ -6279,7 +6279,7 @@
         "id": "205",
         "skpd_id": "1",
         "parent_id": "198",
-        "menu_name": "Program Perlindungan dan Konservasi Sumber Daya Hutan",
+        "nama_menu": "Program Perlindungan dan Konservasi Sumber Daya Hutan",
         "created_at": null,
         "updated_at": null
       },
@@ -6287,7 +6287,7 @@
         "id": "206",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Energi dan Sumber Daya Mineral",
+        "nama_menu": "Energi dan Sumber Daya Mineral",
         "created_at": null,
         "updated_at": null
       },
@@ -6295,7 +6295,7 @@
         "id": "207",
         "skpd_id": "1",
         "parent_id": "206",
-        "menu_name": "Program Pengembangan Ketenaga Listrikan",
+        "nama_menu": "Program Pengembangan Ketenaga Listrikan",
         "created_at": null,
         "updated_at": null
       },
@@ -6303,7 +6303,7 @@
         "id": "209",
         "skpd_id": "1",
         "parent_id": "206",
-        "menu_name": "Program Pembinaan dan Pengawasan Pertambangan",
+        "nama_menu": "Program Pembinaan dan Pengawasan Pertambangan",
         "created_at": null,
         "updated_at": null
       },
@@ -6311,7 +6311,7 @@
         "id": "210",
         "skpd_id": "1",
         "parent_id": "206",
-        "menu_name": "Program Pembinaan dan Pengembangan Bidang Energi dan Ketenagalistrikan",
+        "nama_menu": "Program Pembinaan dan Pengembangan Bidang Energi dan Ketenagalistrikan",
         "created_at": null,
         "updated_at": null
       },
@@ -6319,7 +6319,7 @@
         "id": "211",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Perdagangan",
+        "nama_menu": "Perdagangan",
         "created_at": null,
         "updated_at": null
       },
@@ -6327,7 +6327,7 @@
         "id": "212",
         "skpd_id": "1",
         "parent_id": "211",
-        "menu_name": "Program Perlindungan Konsumen dan Pengamanan Perdagangan",
+        "nama_menu": "Program Perlindungan Konsumen dan Pengamanan Perdagangan",
         "created_at": null,
         "updated_at": null
       },
@@ -6335,7 +6335,7 @@
         "id": "213",
         "skpd_id": "1",
         "parent_id": "211",
-        "menu_name": "Program Peningkatan dan Pengembangan Ekspor",
+        "nama_menu": "Program Peningkatan dan Pengembangan Ekspor",
         "created_at": null,
         "updated_at": null
       },
@@ -6343,7 +6343,7 @@
         "id": "214",
         "skpd_id": "1",
         "parent_id": "211",
-        "menu_name": "Program Peningkatan Efisiensi Perdagangan Dalam Negeri",
+        "nama_menu": "Program Peningkatan Efisiensi Perdagangan Dalam Negeri",
         "created_at": null,
         "updated_at": null
       },
@@ -6351,7 +6351,7 @@
         "id": "215",
         "skpd_id": "1",
         "parent_id": "211",
-        "menu_name": "Program Pembinaan Pedagang Kakilima dan Asongan",
+        "nama_menu": "Program Pembinaan Pedagang Kakilima dan Asongan",
         "created_at": null,
         "updated_at": null
       },
@@ -6359,7 +6359,7 @@
         "id": "216",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Perindustrian",
+        "nama_menu": "Perindustrian",
         "created_at": null,
         "updated_at": null
       },
@@ -6367,7 +6367,7 @@
         "id": "217",
         "skpd_id": "1",
         "parent_id": "216",
-        "menu_name": "Program Pengembangan Industri Kecil dan Menengah",
+        "nama_menu": "Program Pengembangan Industri Kecil dan Menengah",
         "created_at": null,
         "updated_at": null
       },
@@ -6375,7 +6375,7 @@
         "id": "218",
         "skpd_id": "1",
         "parent_id": "216",
-        "menu_name": "Program Pengembangan Sentra-Sentra Industri Potensial",
+        "nama_menu": "Program Pengembangan Sentra-Sentra Industri Potensial",
         "created_at": null,
         "updated_at": null
       },
@@ -6383,7 +6383,7 @@
         "id": "219",
         "skpd_id": "1",
         "parent_id": "216",
-        "menu_name": "Program Penataan Struktur Industri",
+        "nama_menu": "Program Penataan Struktur Industri",
         "created_at": null,
         "updated_at": null
       },
@@ -6391,7 +6391,7 @@
         "id": "220",
         "skpd_id": "1",
         "parent_id": "172",
-        "menu_name": "Transmigrasi",
+        "nama_menu": "Transmigrasi",
         "created_at": null,
         "updated_at": null
       },
@@ -6399,7 +6399,7 @@
         "id": "221",
         "skpd_id": "1",
         "parent_id": "220",
-        "menu_name": "Program Pengembangan Wilayah Transmigrasi",
+        "nama_menu": "Program Pengembangan Wilayah Transmigrasi",
         "created_at": null,
         "updated_at": null
       },
@@ -6407,7 +6407,7 @@
         "id": "222",
         "skpd_id": "1",
         "parent_id": "1",
-        "menu_name": "Penunjang Urusan Pemerintahan",
+        "nama_menu": "Penunjang Urusan Pemerintahan",
         "created_at": null,
         "updated_at": null
       },
@@ -6415,7 +6415,7 @@
         "id": "223",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Perencanaan",
+        "nama_menu": "Perencanaan",
         "created_at": null,
         "updated_at": null
       },
@@ -6423,7 +6423,7 @@
         "id": "224",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Kerjasama Pembangunan",
+        "nama_menu": "Program Kerjasama Pembangunan",
         "created_at": null,
         "updated_at": null
       },
@@ -6431,7 +6431,7 @@
         "id": "225",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Pengembangan data\/informasi",
+        "nama_menu": "Program Pengembangan data\/informasi",
         "created_at": null,
         "updated_at": null
       },
@@ -6439,7 +6439,7 @@
         "id": "226",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Perencanaan Pengembangan Kota-kota menengah dan besar",
+        "nama_menu": "Program Perencanaan Pengembangan Kota-kota menengah dan besar",
         "created_at": null,
         "updated_at": null
       },
@@ -6447,7 +6447,7 @@
         "id": "227",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program peningkatan kapasitas kelembagaan perencanaan pembangunan daerah",
+        "nama_menu": "Program peningkatan kapasitas kelembagaan perencanaan pembangunan daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6455,7 +6455,7 @@
         "id": "228",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Perencanaan Pembangunan Daerah",
+        "nama_menu": "Program Perencanaan Pembangunan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6463,7 +6463,7 @@
         "id": "229",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Perencanaan Pembangunan Ekonomi",
+        "nama_menu": "Program Perencanaan Pembangunan Ekonomi",
         "created_at": null,
         "updated_at": null
       },
@@ -6471,7 +6471,7 @@
         "id": "230",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program Perencanaan Sosial Budaya",
+        "nama_menu": "Program Perencanaan Sosial Budaya",
         "created_at": null,
         "updated_at": null
       },
@@ -6479,7 +6479,7 @@
         "id": "231",
         "skpd_id": "1",
         "parent_id": "223",
-        "menu_name": "Program perencanaan prasarana wilayah dan sumber daya alam",
+        "nama_menu": "Program perencanaan prasarana wilayah dan sumber daya alam",
         "created_at": null,
         "updated_at": null
       },
@@ -6487,7 +6487,7 @@
         "id": "234",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Kepegawaian",
+        "nama_menu": "Kepegawaian",
         "created_at": null,
         "updated_at": null
       },
@@ -6495,7 +6495,7 @@
         "id": "235",
         "skpd_id": "1",
         "parent_id": "234",
-        "menu_name": "Program Peningkatan Sistem Pengawasan Internal dan Pengendalian Pelaksanaan Kebijakan Daerah",
+        "nama_menu": "Program Peningkatan Sistem Pengawasan Internal dan Pengendalian Pelaksanaan Kebijakan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6503,7 +6503,7 @@
         "id": "236",
         "skpd_id": "1",
         "parent_id": "234",
-        "menu_name": "Program Pendidikan dan Kedinasan",
+        "nama_menu": "Program Pendidikan dan Kedinasan",
         "created_at": null,
         "updated_at": null
       },
@@ -6511,7 +6511,7 @@
         "id": "237",
         "skpd_id": "1",
         "parent_id": "234",
-        "menu_name": "Program Pembinaan dan Pengembangan Aparatur",
+        "nama_menu": "Program Pembinaan dan Pengembangan Aparatur",
         "created_at": null,
         "updated_at": null
       },
@@ -6519,7 +6519,7 @@
         "id": "238",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Keuangan",
+        "nama_menu": "Keuangan",
         "created_at": null,
         "updated_at": null
       },
@@ -6527,7 +6527,7 @@
         "id": "239",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan dan Pengembangan Pengelolaan Keuangan Daerah",
+        "nama_menu": "Program Peningkatan dan Pengembangan Pengelolaan Keuangan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6535,7 +6535,7 @@
         "id": "240",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Manajemen Pengelolaan Barang Milik Daerah",
+        "nama_menu": "Program Peningkatan Manajemen Pengelolaan Barang Milik Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6543,7 +6543,7 @@
         "id": "241",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Pemanfaatan Dan Penggunaan Barang Milik Daerah",
+        "nama_menu": "Program Pemanfaatan Dan Penggunaan Barang Milik Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6551,7 +6551,7 @@
         "id": "242",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Penatausahaan dan Pelaporan Keuangan Daerah",
+        "nama_menu": "Program Peningkatan Penatausahaan dan Pelaporan Keuangan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6559,7 +6559,7 @@
         "id": "243",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Akuntabilitas Pengelolaan Keuangan Daerah",
+        "nama_menu": "Program Peningkatan Akuntabilitas Pengelolaan Keuangan Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6567,7 +6567,7 @@
         "id": "244",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "PROGRAM PENINGKATAN DANPENGEMBANGAN PENGELOLAAN PAJAKDAERAH SELAIN PBB-P2 DAN BPHTB",
+        "nama_menu": "PROGRAM PENINGKATAN DANPENGEMBANGAN PENGELOLAAN PAJAKDAERAH SELAIN PBB-P2 DAN BPHTB",
         "created_at": null,
         "updated_at": null
       },
@@ -6575,7 +6575,7 @@
         "id": "245",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Pendapatan Pajak Daerah Selain PBB-P2 dan BPHTB dan Retribusi Daerah",
+        "nama_menu": "Program Peningkatan Pendapatan Pajak Daerah Selain PBB-P2 dan BPHTB dan Retribusi Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6583,7 +6583,7 @@
         "id": "246",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Penatausahaan Pajak Daerah Selain PBB-P2 dan BPHTB dan Retribusi Daerah",
+        "nama_menu": "Program Peningkatan Penatausahaan Pajak Daerah Selain PBB-P2 dan BPHTB dan Retribusi Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6591,7 +6591,7 @@
         "id": "247",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan dan Pengembangan Pengelolaan PBB-P2 dan BPHTB",
+        "nama_menu": "Program Peningkatan dan Pengembangan Pengelolaan PBB-P2 dan BPHTB",
         "created_at": null,
         "updated_at": null
       },
@@ -6599,7 +6599,7 @@
         "id": "248",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Penerimaan dan Pengelolaan PBB-P2 dan BPHTB",
+        "nama_menu": "Program Peningkatan Penerimaan dan Pengelolaan PBB-P2 dan BPHTB",
         "created_at": null,
         "updated_at": null
       },
@@ -6607,7 +6607,7 @@
         "id": "249",
         "skpd_id": "1",
         "parent_id": "238",
-        "menu_name": "Program Peningkatan Penatausahaan dan Pelaporan PBB-P2 dan BPHTB",
+        "nama_menu": "Program Peningkatan Penatausahaan dan Pelaporan PBB-P2 dan BPHTB",
         "created_at": null,
         "updated_at": null
       },
@@ -6615,7 +6615,7 @@
         "id": "250",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Penelitian dan Pengembangan",
+        "nama_menu": "Penelitian dan Pengembangan",
         "created_at": null,
         "updated_at": null
       },
@@ -6623,7 +6623,7 @@
         "id": "251",
         "skpd_id": "1",
         "parent_id": "250",
-        "menu_name": "Program Penelitian dan Pengembangan Ilmu Pengetahuan",
+        "nama_menu": "Program Penelitian dan Pengembangan Ilmu Pengetahuan",
         "created_at": null,
         "updated_at": null
       },
@@ -6631,7 +6631,7 @@
         "id": "253",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Pengawasan",
+        "nama_menu": "Pengawasan",
         "created_at": null,
         "updated_at": null
       },
@@ -6639,7 +6639,7 @@
         "id": "254",
         "skpd_id": "1",
         "parent_id": "253",
-        "menu_name": "Program Peningkatan Sistem Pengawasan Internal dan Pengendalian Pelaksanaan KDH",
+        "nama_menu": "Program Peningkatan Sistem Pengawasan Internal dan Pengendalian Pelaksanaan KDH",
         "created_at": null,
         "updated_at": null
       },
@@ -6647,7 +6647,7 @@
         "id": "255",
         "skpd_id": "1",
         "parent_id": "253",
-        "menu_name": "Program Peningkatan Profesionalisme Tenaga Pemeriksa dan Aparatur Pengawasan",
+        "nama_menu": "Program Peningkatan Profesionalisme Tenaga Pemeriksa dan Aparatur Pengawasan",
         "created_at": null,
         "updated_at": null
       },
@@ -6655,7 +6655,7 @@
         "id": "261",
         "skpd_id": "1",
         "parent_id": "222",
-        "menu_name": "Sekretariat Daerah",
+        "nama_menu": "Sekretariat Daerah",
         "created_at": null,
         "updated_at": null
       },
@@ -6663,7 +6663,7 @@
         "id": "262",
         "skpd_id": "1",
         "parent_id": "261",
-        "menu_name": "Program Peningkatan Pelayanan Kedinasan Kepala Daerah\/Wakil Kepala Daerah",
+        "nama_menu": "Program Peningkatan Pelayanan Kedinasan Kepala Daerah\/Wakil Kepala Daerah",
         "created_at": null,
         "updated_at": null
       }

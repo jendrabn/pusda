@@ -87,7 +87,7 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        event(new UserLogged($request->user(), 'Login'));
+        save_user_log('Login');
 
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
@@ -107,7 +107,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        event(new UserLogged($request->user(), 'Logout'));
+        save_user_log('Logout');
         $this->guard()->logout();
 
         $request->session()->invalidate();

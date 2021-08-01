@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Guest;
 
-use App\Exports\DelapanKelDataExport;
 use App\Http\Controllers\Controller;
 use App\Models\Fitur8KelData;
 use App\Models\Isi8KelData;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
-use Maatwebsite\Excel\Facades\Excel;
 
 class DelapanKelDataController extends Controller
 {

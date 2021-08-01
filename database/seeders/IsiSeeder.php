@@ -14,6 +14,8 @@ use Illuminate\Database\Seeder;
 
 class IsiSeeder extends Seeder
 {
+    private const YEARS = [2021, 2020, 2019, 2018, 2017, 2016];
+
     /**
      * Run the database seeds.
      *
@@ -21,12 +23,11 @@ class IsiSeeder extends Seeder
      */
     public function run()
     {
-        Tabel8KelData::all()->each(function ($tabel) {
+        Tabel8KelData::with(['uraian8KelData', 'uraian8KelData.isi8KelData'])->get()->each(function ($tabel) {
             $tabel->uraian8KelData->each(function ($uraian) {
-                $years = [2021, 2020, 2019, 2018, 2017];
-                foreach ($years as $year) {
+                foreach (self::YEARS as $year) {
                     if ($uraian->parent_id) {
-                        $isi = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->where('tahun', $year)->first();
+                        $isi = $uraian->isi8KelData->where('tahun', $year)->first();
                         if (is_null($isi)) {
                             Isi8KelData::create([
                                 'uraian_8keldata_id' => $uraian->id,
@@ -39,12 +40,11 @@ class IsiSeeder extends Seeder
             });
         });
 
-        TabelRpjmd::all()->each(function ($tabel) {
+        TabelRpjmd::with(['uraianRpjmd', 'uraianRpjmd.isiRpjmd'])->get()->each(function ($tabel) {
             $tabel->uraianRpjmd->each(function ($uraian) {
-                $years = [2021, 2020, 2019, 2018, 2017];
-                foreach ($years as $year) {
+                foreach (self::YEARS as $year) {
                     if ($uraian->parent_id) {
-                        $isi = IsiRpjmd::where('uraian_rpjmd_id', $uraian->id)->where('tahun', $year)->first();
+                        $isi = $uraian->isiRpjmd->where('tahun', $year)->first();
                         if (is_null($isi)) {
                             IsiRpjmd::create([
                                 'uraian_rpjmd_id' => $uraian->id,
@@ -57,12 +57,11 @@ class IsiSeeder extends Seeder
             });
         });
 
-        TabelIndikator::all()->each(function ($tabel) {
+        TabelIndikator::with(['uraianIndikator', 'uraianIndikator.isiIndikator'])->get()->each(function ($tabel) {
             $tabel->uraianIndikator->each(function ($uraian) {
-                $years = [2021, 2020, 2019, 2018, 2017];
-                foreach ($years as $year) {
+                foreach (self::YEARS as $year) {
                     if ($uraian->parent_id) {
-                        $isi = IsiIndikator::where('uraian_indikator_id', $uraian->id)->where('tahun', $year)->first();
+                        $isi = $uraian->isiIndikator->where('tahun', $year)->first();
                         if (is_null($isi)) {
                             IsiIndikator::create([
                                 'uraian_indikator_id' => $uraian->id,
@@ -75,12 +74,11 @@ class IsiSeeder extends Seeder
             });
         });
 
-        TabelBps::all()->each(function ($tabel) {
+        TabelBps::with(['uraianBps', 'uraianBps.isiBps'])->each(function ($tabel) {
             $tabel->uraianBps->each(function ($uraian) {
-                $years = [2021, 2020, 2019, 2018, 2017];
-                foreach ($years as $year) {
+                foreach (self::YEARS as $year) {
                     if ($uraian->parent_id) {
-                        $isi = IsiBps::where('uraian_bps_id', $uraian->id)->where('tahun', $year)->first();
+                        $isi = $uraian->isiBps->where('tahun', $year)->first();
                         if (is_null($isi)) {
                             IsiBps::create([
                                 'uraian_bps_id' => $uraian->id,

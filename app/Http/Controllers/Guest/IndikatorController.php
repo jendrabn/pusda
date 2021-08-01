@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Guest;
 
-use App\Exports\IndikatorExport;
 use App\Http\Controllers\Controller;
 use App\Models\FiturIndikator;
 use App\Models\IsiIndikator;
 use App\Models\TabelIndikator;
 use App\Models\UraianIndikator;
-use Maatwebsite\Excel\Facades\Excel;
 
 class IndikatorController extends Controller
 {

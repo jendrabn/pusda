@@ -11,7 +11,7 @@
         <h4 class="card-header__title">8 Kelompok Data</h4>
       </div>
       <div class="card-body">
-        @include('guest.partials.menu-tree', ['categories' => $categories, 'resourceName' => 'delapankeldata'])
+        @include('guest.partials.menu_tree', ['categories' => $categories, 'resourceName' => 'delapankeldata'])
       </div>
     </div>
   </div>

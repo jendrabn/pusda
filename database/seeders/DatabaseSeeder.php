@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             Fitur8KelDataSeeder::class,
             FiturRpjmdSeeder::class,
             FiturBpsSeeder::class,
-            FiturIndikatorSeeder::class
+            FiturIndikatorSeeder::class,
+            IsiSeeder::class
         ]);
     }
 }

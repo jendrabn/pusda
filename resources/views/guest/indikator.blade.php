@@ -10,7 +10,7 @@
         <h4 class="card-header__title">Indikator</h4>
       </div>
       <div class="card-body">
-        @include('guest.partials.menu-tree', ['categories' => $categories, 'resourceName' => 'indikator'])
+        @include('guest.partials.menu_tree', ['categories' => $categories, 'resourceName' => 'indikator'])
       </div>
     </div>
   </div>

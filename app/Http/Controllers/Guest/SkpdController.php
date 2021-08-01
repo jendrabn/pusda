@@ -24,6 +24,6 @@ class SkpdController extends Controller
 
         $categories = Tabel8KelData::where('parent_id', 1)->get();
 
-        return view('guest.skpd-delapankeldata', compact('tabel8KelDataIds', 'categories'));
+        return view('guest.skpd_delapankeldata', compact('tabel8KelDataIds', 'categories'));
     }
 }

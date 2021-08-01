@@ -12,7 +12,7 @@
       </div>
       <div class="card-body">
         <div class="action">
-          @include('guest.partials.button-export', ['id' => $tabel8KelData->id, 'resourceName' => 'delapankeldata'])
+          @include('guest.partials.button_export', ['id' => $tabel8KelData->id, 'resourceName' => 'delapankeldata'])
         </div>
         <div class="table-responsive">
           <table class="table table-bordered table-hover">
@@ -67,7 +67,7 @@
       </div>
     </div>
   </div>
-  @include('guest.partials.modal-graphic')
+  @include('guest.partials.modal_graphic')
 @endsection
 
 @push('scripts')
