@@ -2,7 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Uraian8KelData;
+use App\Models\UraianBps;
+use App\Models\UraianIndikator;
+use App\Models\UraianRpjmd;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class UraianSeeder extends Seeder
 {
@@ -35,13 +40,6 @@ class UraianSeeder extends Seeder
         //     }
         // });
 
-        $uraians = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
-        $uraians =  $uraians->where('type', 'table')->where('name', 'uraian_8keldata')->first()['data'];
-
-        foreach (array_chunk($uraians, 1000) as $uraian) {
-            Uraian8KelData::insert($uraian);
-        }
-
         // $uraians = collect(json_decode(Storage::get('seeds/pusda_lama.json'), true));
         // $uraians = collect($uraians->where('type', 'table')->where('name', 'uraian_rpjmd')->first()['data']);
         // $uraians = $uraians->map(function ($uraian) {
@@ -64,13 +62,6 @@ class UraianSeeder extends Seeder
         //     }
         // });
 
-        $uraians = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
-        $uraians = $uraians->where('type', 'table')->where('name', 'uraian_rpjmd')->first()['data'];
-
-        foreach (array_chunk($uraians, 1000) as $uraian) {
-            UraianRpjmd::insert($uraian);
-        }
-
         // $uraians = collect(json_decode(Storage::get('seeds/pusda_lama.json'), true));
         // $uraians = collect($uraians->where('type', 'table')->where('name', 'uraian_bps')->first()['data']);
         // $uraians = $uraians->map(function ($uraian) {
@@ -91,13 +82,6 @@ class UraianSeeder extends Seeder
         //         UraianBps::create($uraian);
         //     }
         // });
-
-        $uraians = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
-        $uraians = $uraians->where('type', 'table')->where('name', 'uraian_bps')->first()['data'];
-
-        foreach (array_chunk($uraians, 1000) as $uraian) {
-            UraianBps::insert($uraian);
-        }
 
         // $uraians = collect(json_decode(Storage::get('seeds/pusda_lama.json'), true));
         // $uraians = collect($uraians->where('type', 'table')->where('name', 'uraian_indikator')->first()['data']);
@@ -120,11 +104,27 @@ class UraianSeeder extends Seeder
         //     }
         // });
 
-        $uraians = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
-        $uraians = $uraians->where('type', 'table')->where('name', 'uraian_indikator')->first()['data'];
+        $pusdaBaru = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
 
-        foreach (array_chunk($uraians, 1000) as $uraian) {
+        $uraian8KelData = $pusdaBaru->where('type', 'table')->where('name', 'uraian_8keldata')->first()['data'];
+        $uraianRpjmd = $pusdaBaru->where('type', 'table')->where('name', 'uraian_rpjmd')->first()['data'];
+        $uraianIndikator = $pusdaBaru->where('type', 'table')->where('name', 'uraian_indikator')->first()['data'];
+        $uraianBps = $pusdaBaru->where('type', 'table')->where('name', 'uraian_bps')->first()['data'];
+
+        foreach (array_chunk($uraian8KelData, 1000) as $uraian) {
+            Uraian8KelData::insert($uraian);
+        }
+
+        foreach (array_chunk($uraianRpjmd, 1000) as $uraian) {
+            UraianRpjmd::insert($uraian);
+        }
+
+        foreach (array_chunk($uraianIndikator, 1000) as $uraian) {
             UraianIndikator::insert($uraian);
+        }
+
+        foreach (array_chunk($uraianBps, 1000) as $uraian) {
+            UraianBps::insert($uraian);
         }
     }
 }

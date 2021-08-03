@@ -21,15 +21,6 @@ class DatabaseSeeder extends Seeder
             TabelRpjmdSeeder::class,
             TabelIndikatorSeeder::class,
             TabelBpsSeeder::class,
-            Uraian8KelDataSeeder::class,
-            UraianRpjmdSeeder::class,
-            UraianIndikatorSeeder::class,
-            UraianBpsSeeder::class,
-            Fitur8KelDataSeeder::class,
-            FiturRpjmdSeeder::class,
-            FiturBpsSeeder::class,
-            FiturIndikatorSeeder::class,
-            IsiSeeder::class
         ]);
     }
 }

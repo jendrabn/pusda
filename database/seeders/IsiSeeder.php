@@ -93,6 +93,7 @@ class IsiSeeder extends Seeder
         // });
 
         $pusdaBaru = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
+        
         $isi8KelData = $pusdaBaru->where('type', 'table')->where('name', 'isi_8keldata')->first()['data'];
         $isiRpjmd = $pusdaBaru->where('type', 'table')->where('name', 'isi_rpjmd')->first()['data'];
         $isiBps = $pusdaBaru->where('type', 'table')->where('name', 'isi_bps')->first()['data'];
