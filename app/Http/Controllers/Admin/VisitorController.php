@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\StatisticsDataTable;
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
 use App\Models\Statistic;
 use Illuminate\Http\Request;

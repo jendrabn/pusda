@@ -59,6 +59,8 @@
   @yield('outer')
   <script src="{{ asset('assets/js/app.js') }}"></script>
   <script src="{{ asset('assets/module/jstree/dist/jstree.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"
+    integrity="sha256-qoN08nWXsFH+S9CtIq99e5yzYHioRHtNB9t2qy1MSmc=" crossorigin="anonymous"></script>
   <script>
     $(function() {
       $('#dataTable').DataTable({

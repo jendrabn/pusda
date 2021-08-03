@@ -91,7 +91,7 @@
                             <td class=" text-center"><button data-id="{{ $child->id }}"
                                 class="btn btn-info btn-sm btn-grafik">Grafik</button></td>
                             <td class="text-center">
-                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                              <div class="btn-group btn-group-sm">
                                 <button data-id="{{ $child->id }}" type="button" class="btn btn-warning btn-edit"><i
                                     class="fas fa-pencil-alt"></i></button>
                                 <button data-id="{{ $child->id }}" type="button" class="btn btn-danger btn-delete"><i
@@ -160,7 +160,7 @@
                           <td class="text-center">{{ ++$index }}</td>
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
-                            <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                            <div class="btn-group btn-group-sm">
                               <a href="{{ route('admin.indikator.files.download', $file->id) }}" class="btn btn-info">
                                 <i class="fas fa-download"></i>
                               </a>
@@ -194,14 +194,10 @@
 @endsection
 
 @push('scripts')
-  @include('admin.isiuraian.partials.scripts')
+  <script src="{{ asset('assets/js/isi-uraian.js') }}"></script>
   <script>
     $(function() {
-      initIsiUraianPage('indikator');
+      initIsiUraianPage('indikator', 'admin');
     });
   </script>
-@endpush
-
-@push('styles')
-  @include('admin.isiuraian.partials.styles')
 @endpush

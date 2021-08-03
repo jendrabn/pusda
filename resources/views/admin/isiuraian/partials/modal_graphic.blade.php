@@ -10,7 +10,7 @@
       <div class="modal-body" id="chart-container">
         <canvas id="chart-isi-uraian" width="100%" height="100%"></canvas>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer bg-whitesmoke br">
         <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Tutup</button>
         <button type="button" id="chart-download" class="btn btn-success btn-icon icon-left">
           <i class="fas fa-download"></i> Download

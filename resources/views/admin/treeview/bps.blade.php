@@ -49,7 +49,7 @@
                   <td>{{ $category->parent->nama_menu ?? '' }}</td>
                   <td class="text-center">
                     @if ($category->id > 1)
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                      <div class="btn-group btn-group-sm">
                         <a href="{{ route('admin.treeview.bps.edit', [$category->id]) }}"
                           class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
                         <button data-url="{{ route('admin.treeview.bps.destroy', $category->id) }}" type="button"

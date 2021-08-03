@@ -10,7 +10,7 @@
     </div>
 
     <div class="card-body">
-      <form method="POST" action="{{ route('login') }}">
+      <form method="POST" action="{{ route('login') }}" id="form-login">
         @csrf
         <div class="form-group">
           <label for="username">Username atau Email</label>
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4" id="btn-login">
             Login
           </button>
         </div>
@@ -78,6 +78,13 @@
           icon.addClass('fa-eye');
         }
       });
+
+      $('#form-login').on('submit', function(e) {
+        $('#btn-login').addClass('btn-progress');
+        $('#username').attr('readonly', true);
+        $('#password').attr('readonly', true);
+      });
+
     });
   </script>
 @endpush

@@ -165,8 +165,6 @@ class BpsController extends Controller
 
     public function storeTahun(Request $request, TabelBps $tabelBps)
     {
-        abort_if(!$request->ajax(), 404);
-
         $request->validate(['tahun' => ['required', 'array']]);
 
         $tabelBps->uraianBps->each(function ($uraian) use ($request) {
@@ -185,10 +183,7 @@ class BpsController extends Controller
         });
         save_user_log('Menambahkan tahun tabel BPS');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menambahkan tahun tabel BPS'
-        ], 201);
+        return back()->with('alert-success', 'Berhasil menambahkan tahun tabel BPS');
     }
 
     public function destroyTahun(TabelBps $tabelBps, $year)

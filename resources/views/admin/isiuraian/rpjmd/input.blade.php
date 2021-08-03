@@ -109,7 +109,7 @@
                               </select>
                             </td>
                             <td class="text-center">
-                              <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                              <div class="btn-group btn-group-sm">
                                 <button data-id="{{ $child->id }}" type="button" class="btn btn-warning btn-edit"><i
                                     class="fas fa-pencil-alt"></i></button>
                                 <button data-id="{{ $child->id }}" type="button" class="btn btn-danger btn-delete"><i
@@ -177,7 +177,7 @@
                           <td class="text-center">{{ ++$index }}</td>
                           <td>{{ $file->file_name }}</td>
                           <td class="text-center">
-                            <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                            <div class="btn-group btn-group-sm">
                               <a href="{{ route('admin.rpjmd.files.download', $file->id) }}" class="btn btn-info">
                                 <i class="fas fa-download"></i>
                               </a>
@@ -201,16 +201,6 @@
   @include('admin.isiuraian.partials.hidden_form')
 @endsection
 
-@push('scripts')
-  @include('admin.isiuraian.partials.scripts')
-  <script>
-    $(function() {
-      initIsiUraianPage('rpjmd');
-    });
-  </script>
-@endpush
-
-
 @section('outer')
   @include('admin.isiuraian.partials.modal_graphic')
   @include('admin.isiuraian.partials.modal_edit', ['action' => route('admin.rpjmd.update'), 'showKetersediaanData' =>
@@ -220,6 +210,11 @@
   $tabelRpjmd->id])
 @endsection
 
-@push('styles')
-  @include('admin.isiuraian.partials.styles')
+@push('scripts')
+  <script src="{{ asset('assets/js/isi-uraian.js') }}"></script>
+  <script>
+    $(function() {
+      initIsiUraianPage('rpjmd', 'admin');
+    });
+  </script>
 @endpush

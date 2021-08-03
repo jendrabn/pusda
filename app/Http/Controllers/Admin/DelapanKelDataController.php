@@ -74,7 +74,7 @@ class DelapanKelDataController extends Controller
             'uraian' => $uraian8KelData->uraian,
             'satuan' => $uraian8KelData->satuan,
             'isi' => $isi8KelData,
-            'ketersedian_data' => $uraian8KelData->ketersediaan_data
+            'ketersediaan_data' => $uraian8KelData->ketersediaan_data
         ];
 
         return response()->json($response);
@@ -205,8 +205,6 @@ class DelapanKelDataController extends Controller
 
     public function storeTahun(Request $request, Tabel8KelData $tabel8KelData)
     {
-        abort_if(!$request->ajax(), 404);
-
         $request->validate(['tahun' => ['required', 'array']]);
 
         $tabel8KelData->uraian8KelData->each(function ($uraian) use ($request) {
@@ -225,10 +223,7 @@ class DelapanKelDataController extends Controller
         });
         save_user_log('Menambahkan tahun tabel 8 kelompok data');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menambahkan tahun tabel 8 kelompok data'
-        ], 201);
+        return back()->with('alert-success', 'Berhasil menambahkan tahun tabel 8 kelompok data');
     }
 
     public function destroyTahun(Tabel8KelData $tabel8KelData, $year)

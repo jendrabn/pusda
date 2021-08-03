@@ -166,8 +166,6 @@ class IndikatorController extends Controller
 
     public function storeTahun(Request $request, TabelIndikator $tabelIndikator)
     {
-        abort_if(!$request->ajax(), 404);
-
         $request->validate(['tahun' => ['required', 'array']]);
 
         $tabelIndikator->uraianIndikator->each(function ($uraian) use ($request) {
@@ -186,10 +184,7 @@ class IndikatorController extends Controller
         });
         save_user_log('Menambahkan tahun tabel indikator');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menambahkan tahun tabel indikator'
-        ], 201);
+        return back()->with('alert-success', 'Berhasil menambahkan tahun tabel indikator');
     }
 
     public function destroyTahun(TabelIndikator $tabelIndikator, $year)

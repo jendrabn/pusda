@@ -108,7 +108,7 @@
                   <td class="text-center">{{ ++$index }}</td>
                   <td>{{ $item->uraian }}</td>
                   <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                    <div class="btn-group btn-group-sm">
                       <a href="{{ route('admin.uraian.bps.edit', [$tabelBps->id, $item->id]) }}"
                         class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i> </a>
                       <button data-url="{{ route('admin.uraian.bps.destroy', $item->id) }}" type="button"
@@ -121,7 +121,7 @@
                     <td></td>
                     <td style="text-indent: 1rem;">{{ $item->uraian }}</td>
                     <td class="text-center">
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Aksi">
+                      <div class="btn-group btn-group-sm">
                         <a href="{{ route('admin.uraian.bps.edit', [$tabelBps->id, $item->id]) }}"
                           class="btn btn-warning btn-icon"><i class="fas fa-pencil-alt"></i></a>
                         <button data-url="{{ route('admin.uraian.bps.destroy', $item->id) }}" type="button"

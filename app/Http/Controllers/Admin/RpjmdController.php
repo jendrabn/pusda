@@ -74,7 +74,7 @@ class RpjmdController extends Controller
             'uraian' => $uraianRpjmd->uraian,
             'satuan' => $uraianRpjmd->satuan,
             'isi' =>  $isiRpjmd,
-            'ketersedian_data' => $uraianRpjmd->ketersediaan_data
+            'ketersediaan_data' => $uraianRpjmd->ketersediaan_data
         ];
 
         return response()->json($response);
@@ -204,8 +204,6 @@ class RpjmdController extends Controller
 
     public function storeTahun(Request $request, TabelRpjmd $tabelRpjmd)
     {
-        abort_if(!$request->ajax(), 404);
-
         $request->validate(['tahun' => ['required', 'array']]);
 
         $tabelRpjmd->uraianRpjmd->each(function ($uraian) use ($request) {
@@ -224,10 +222,7 @@ class RpjmdController extends Controller
         });
         save_user_log('Menambahkan tahun tabel RPJMD');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menambahkan tahun tabel RPJMD'
-        ], 201);
+        return back()->with('alert-success', 'Berhasil menambahkan tahun tabel RPJMD');
     }
 
     public function destroyTahun(TabelRpjmd $tabelRpjmd, $year)

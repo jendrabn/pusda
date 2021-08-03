@@ -148,3 +148,7 @@ html {
         background-color: rgba($color: color(dark), $alpha: 0.8);
     }
 }
+
+select[name="sumber_data"] {
+    min-width: 100px;
+}

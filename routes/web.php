@@ -84,9 +84,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/print_reports', [\App\Http\Controllers\Admin\PrintReportController::class, 'index'])->name('print_reports');
 
-        // Kategori SKPD [CRUD Kategori SKPD]
-        // Route::resource('skpd_category', App\Http\Controllers\Admin\SkpdCategoryController::class)->except(['create', 'show', 'edit']);
-
         // Log Users 
         Route::get('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'index'])->name('userlog.index');
         Route::delete('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'destroyAll'])->name('userlog.destroyall');

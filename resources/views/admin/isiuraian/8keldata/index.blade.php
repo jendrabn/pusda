@@ -22,7 +22,7 @@
 @endsection
 
 @push('scripts')
-  @include('admin.isiuraian.partials.scripts')
+  <script src="{{ asset('assets/js/isi-uraian.js') }}"></script>
   <script>
     $(function() {
       initTreeView(true, '#jstree');
