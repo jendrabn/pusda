@@ -56,10 +56,15 @@ class SkpdController extends Controller
 
     public function destroy(Request $request, Skpd $skpd)
     {
+        abort_if(!$request->ajax(), 404);
+
         $name = $skpd->nama;
         $skpd->delete();
         save_user_log('Menghapus SKPD ' . $name);
 
-        return back()->with('alert-success', 'Berhasil menghapus data SKPD');
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil menghapus SKPD ' . $name
+        ], 200);
     }
 }

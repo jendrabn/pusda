@@ -128,12 +128,14 @@ function handleUpdateSumberData(resourceName, role) {
 function handleShowModalEdit(resourceName, role) {
   $('#isi-uraian-table').on('click', 'tbody .btn-edit', function () {
     const btn = $(this);
-    btn.addClass('btn-progress');
     const id = $(this).data('id');
     $.ajax({
       url: `/${role}/${resourceName}/${id}/edit`,
       type: 'get',
       dataType: 'json',
+      beforeSend: function () {
+        btn.addClass('btn-progress');
+      },
       success: function (data) {
         fillFormEdit(data);
         $('#modal-edit').modal('show');
@@ -154,12 +156,14 @@ function handleShowModalEdit(resourceName, role) {
 function handleShowModalGraphic(resourceName, role) {
   $('#isi-uraian-table').on('click', 'tbody .btn-grafik', function () {
     const btn = $(this);
-    btn.addClass('btn-progress');
     const id = $(this).data('id');
     $.ajax({
       url: `/${role}/${resourceName}/${id}/edit`,
       type: 'get',
       dataType: 'json',
+      beforeSend: function () {
+        btn.addClass('btn-progress');
+      },
       success: function (data) {
         const { isi, uraian } = data
 
@@ -214,8 +218,8 @@ function handleShowModalGraphic(resourceName, role) {
         $('#modal-chart').modal('show');
         btn.removeClass('btn-progress');
       },
-      error: function (xhr, status, error) {
-        const errorMessage = xhr.status + ': ' + xhr.statusText;
+      error: function (error) {
+        const errorMessage = error.status + ': ' + error.statusText;
         Toast.fire({
           icon: 'error',
           title: errorMessage

@@ -42,13 +42,14 @@
       const userLogsTable = window.LaravelDataTables['userlogs-table'];
 
       $('button#btn-delete').on('click', function(e) {
+        const btn = $(this);
         Swal.fire({
-          title: 'Apakah kamu yakin?',
-          text: 'Semua data user logs yang sudah dihapus tidak bisa dikembalikan!',
+          title: 'Ingin menghapus semua User Logs?',
+          text: 'Semua user logs yang sudah dihapus tidak bisa dikembalikan!',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#fc544b',
-          cancelButtonColor: '#3490dc',
+          cancelButtonColor: '#cdd3d8',
+          confirmButtonColor: '#6777ef',
           confirmButtonText: 'Hapus',
           cancelButtonText: 'Batal'
         }).then((result) => {
@@ -60,12 +61,18 @@
               data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
               },
+              beforeSend() {
+                btn.addClass('btn-progress');
+              },
               success: function(data) {
                 userLogsTable.ajax.reload();
                 Swal.fire('Dihapus!', data.message, 'success');
+                btn.removeClass('btn-progress');
               },
               error: function(error) {
-                Swal.fire('Gagal!', error.statusText, 'error');
+                const errorMessage = error.status + ': ' + error.statusText;
+                Swal.fire('Gagal!', errorMessage, 'error');
+                btn.removeClass('btn-progress');
               }
             });
           }

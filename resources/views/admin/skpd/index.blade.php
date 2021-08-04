@@ -85,23 +85,45 @@
   {{ $dataTable->scripts() }}
   <script>
     $(function() {
-      $('.btn-delete').click(function() {
+      const skpdsTable = window.LaravelDataTables['skpds-table'];
+
+      $('#skpds-table').on('click', '.btn-delete', function(e) {
+        const btn = $(this);
         Swal.fire({
-          title: 'Hapus Data SKPD ?',
-          text: 'Data yang sudah dihapus tidak bisa dikembalikan!',
+          title: 'Ingin menghapus SKPD ?',
+          text: 'Semua menu treeview dan uraian yang terkait dengan SKPD tersebut akan dihapus!',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
+          cancelButtonColor: '#cdd3d8',
+          confirmButtonColor: '#6777ef',
           confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal',
+          cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.isConfirmed) {
-            $('#form-delete').prop('action', $(this).data('url'))
-            $('#form-delete').submit()
+            $.ajax({
+              url: $(this).data('url'),
+              type: 'DELETE',
+              dataType: 'json',
+              data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+              },
+              beforeSend() {
+                btn.addClass('btn-progress');
+              },
+              success: function(data) {
+                skpdsTable.ajax.reload();
+                Swal.fire('Dihapus!', data.message, 'success');
+                btn.removeClass('btn-progress');
+              },
+              error: function(error) {
+                const errorMessage = error.status + ': ' + error.statusText;
+                Swal.fire('Gagal!', errorMessage, 'error');
+                btn.removeClass('btn-progress');
+              }
+            });
           }
-        })
-      })
-    })
+        });
+      });
+    });
   </script>
 @endpush
