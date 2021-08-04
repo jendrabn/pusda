@@ -157,8 +157,8 @@ class RpjmdController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $latestFileId = FileRpjmd::latest()->first()->id ?? '';
-        $fileName = $file->getClientOriginalName() . '-' . $latestFileId;
+        $latestFileId = FileRpjmd::latest()->first()->id ?? '0';
+        $fileName = $latestFileId  . '_' .  $file->getClientOriginalName();
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileRpjmd::create([

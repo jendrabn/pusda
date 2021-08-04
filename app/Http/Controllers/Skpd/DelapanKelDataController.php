@@ -146,8 +146,8 @@ class DelapanKelDataController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $latestFileId = File8KelData::latest()->first()->id ?? '';
-        $fileName =  $file->getClientOriginalName() . '_' . $latestFileId;
+        $latestFileId = File8KelData::latest()->first()->id ?? '0';
+        $fileName = $latestFileId  . '_' .  $file->getClientOriginalName();
         $file->storeAs('file_pusda', $fileName, 'public');
 
         File8KelData::create([

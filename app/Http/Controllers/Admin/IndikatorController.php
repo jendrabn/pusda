@@ -128,8 +128,8 @@ class IndikatorController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $latestFileId = FileIndikator::latest()->first()->id ?? '';
-        $fileName = $file->getClientOriginalName() . '_' . $latestFileId;
+        $latestFileId = FileIndikator::latest()->first()->id ?? '0';
+        $fileName = $latestFileId  . '_' .  $file->getClientOriginalName();
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileIndikator::create([

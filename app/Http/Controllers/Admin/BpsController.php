@@ -127,8 +127,8 @@ class BpsController extends Controller
         ]);
 
         $file = $request->file('file_document');
-        $latestFileId = FileBps::latest()->first()->id ?? '';
-        $fileName =  $file->getClientOriginalName() . '_' . $latestFileId;
+        $latestFileId = FileBps::latest()->first()->id ?? '0';
+        $fileName = $latestFileId  . '_' .  $file->getClientOriginalName();
         $file->storeAs('file_pusda', $fileName, 'public');
 
         FileBps::create([
