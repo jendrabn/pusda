@@ -7,7 +7,7 @@
 @section('content')
   <section class="section-header">
     <div class="section-header-back">
-      <a href="{{ url()->previous() }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+      <a href="{{ route('admin.users.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
     </div>
     <h1>Edit User</h1>
     <div class="section-header-breadcrumb">
