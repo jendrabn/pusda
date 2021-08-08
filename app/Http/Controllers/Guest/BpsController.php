@@ -49,25 +49,25 @@ class BpsController extends Controller
 
     public function getSummaryUraianForChart($id)
     {
-        $t = IsiBps::limit(5)->groupBy('tahun')->get(['tahun'])->sortBy('tahun');
-        $tabel = TabelBps::where('id', $id)->first();
-        $n = 1;
-        $mm = 1;
-        foreach ($t as $tahun) {
-            $thn = IsiBps::query()
-                ->leftJoin('uraian_bps', 'uraian_bps.id', 'isi_bps.uraian_bps_id')
-                ->leftJoin('tabel_bps', 'tabel_bps.id', 'uraian_bps.tabel_bps_id')
-                ->where('isi_bps.tahun', $tahun->tahun)
-                ->where('tabel_bps.id', $id)
-                ->sum('isi_bps.isi');
-            ${'ket' . $mm++} = $tahun->tahun;
-            ${'d' . $n++} = $thn;
+        $tabel = TabelBps::findOrFail($id);
+        $years = IsiBps::getYears($id);
+
+        $label = [];
+        $data = [];
+
+        foreach ($years as $year) {
+            $totalIsi = IsiBps::whereHas('uraianBps.tabelBps', function ($q) use ($id) {
+                $q->where('id', $id);
+            })->where('tahun', $year)->sum('isi');
+
+            array_push($label, $year);
+            array_push($data, $totalIsi);
         }
 
         return response()->json([
-            "nama" => $tabel->nama_menu,
-            "label" => [$ket1, $ket2, $ket3, $ket4, $ket5],
-            "data" => [$d1, $d2, $d3, $d4, $d5]
+            'nama' => $tabel->nama_menu,
+            'label' => $label,
+            'data' => $data
         ]);
     }
 }

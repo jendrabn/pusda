@@ -23,7 +23,6 @@ class CreateUraianBpsTable extends Migration
             $table->string('satuan', 30)->nullable();
             $table->timestamps();
 
-
             $table->foreign('parent_id')->references('id')->on('uraian_bps')->onDelete('cascade');
             $table->foreign('skpd_id')->references('id')->on('skpd')->onDelete('cascade');
         });

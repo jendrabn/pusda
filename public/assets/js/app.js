@@ -1912,16 +1912,14 @@ __webpack_require__(/*! datatables.net-buttons-bs4 */ "./node_modules/datatables
   \***************************************/
 /***/ (() => {
 
-"use strict";
 /**
  *
  * You can write your JS code here, DO NOT touch the default style file
  * because it will make it harder for you to update.
  *
  */
-
-
-if (document.getElementsByTagName('nav')) {
+// "use strict";
+if (document.getElementsByTagName('nav').length) {
   var scrollTopElement = document.querySelector('.scroll-top');
   var headerHeight = document.getElementsByTagName('nav')[0].clientHeight;
   scrollTopElement.addEventListener('click', function () {

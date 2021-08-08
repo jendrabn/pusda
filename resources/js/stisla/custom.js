@@ -5,9 +5,10 @@
  *
  */
 
-"use strict";
+// "use strict";
 
-if (document.getElementsByTagName('nav')) {
+
+if (document.getElementsByTagName('nav').length) {
   const scrollTopElement = document.querySelector('.scroll-top');
   const headerHeight = document.getElementsByTagName('nav')[0].clientHeight;
 
