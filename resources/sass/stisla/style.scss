@@ -11,14 +11,14 @@
  *
  */
 
-@import '~bootstrap/dist/css/bootstrap.css';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-@import '~@fortawesome/fontawesome-free/scss/brands.scss';
-@import '~@fortawesome/fontawesome-free/scss/regular.scss';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~select2/src/scss/core.scss';
-@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
-@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+@import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/regular.scss';
+@import '../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '../../../node_modules/select2/src/scss/core.scss';
+@import "../../../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "../../../node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
 
 @import '_functions';
 

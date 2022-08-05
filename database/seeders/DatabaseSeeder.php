@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
             TabelRpjmdSeeder::class,
             TabelIndikatorSeeder::class,
             TabelBpsSeeder::class,
+            UraianSeeder::class,
+            IsiSeeder::class,
+            FiturSeeder::class,
         ]);
     }
 }
