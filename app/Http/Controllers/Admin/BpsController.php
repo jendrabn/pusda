@@ -90,7 +90,6 @@ class BpsController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-        save_user_log('Mengubah isi uraian tabel BPS');
 
         return back()->with('alert-success', 'Isi uraian tabel BPS berhasil diupdate');
     }
@@ -98,7 +97,6 @@ class BpsController extends Controller
     public function destroy(UraianBps $uraianBps)
     {
         $uraianBps->delete();
-        save_user_log('Menghapus uraian tabel BPS');
 
         return back()->with('alert-success', 'Uraian tabel BPS berhasil dihapus');
     }
@@ -114,7 +112,6 @@ class BpsController extends Controller
         ]);
 
         $fiturBps->update($validated);
-        save_user_log('Mengubah fitur tabel BPS');
 
         return back()->with('alert-success', 'Fitur tabel BPS berhasil diupdate');
     }
@@ -136,7 +133,6 @@ class BpsController extends Controller
             'file_name' =>  $fileName
         ]);
 
-        save_user_log('Mengupload file pendukung tabel BPS');
 
         return back()->with('alert-success', 'File pendukung tabel BPS berhasil diupload');
     }
@@ -145,7 +141,6 @@ class BpsController extends Controller
     {
         Storage::disk('public')->delete('file_pusda/' . $fileBps->file_name);
         $fileBps->delete();
-        save_user_log('Menghapus file pendukung tabel BPS');
 
         return back()->with('alert-success', 'File pendukung tabel BPS berhasil dihapus');
     }
@@ -155,7 +150,6 @@ class BpsController extends Controller
         $path = 'file_pusda/' . $fileBps->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            save_user_log('Mengunduh file pendukung tabel BPS');
 
             return Storage::disk('public')->download($path);
         }
@@ -181,7 +175,6 @@ class BpsController extends Controller
                 }
             }
         });
-        save_user_log('Menambahkan tahun tabel BPS');
 
         return back()->with('alert-success', 'Berhasil menambahkan tahun tabel BPS');
     }
@@ -192,7 +185,6 @@ class BpsController extends Controller
         $uraianBps->each(function ($uraian) use ($year) {
             $uraian->isibps()->where('tahun', $year)->delete();
         });
-        save_user_log('Menghapus tahun tabel BPS');
 
         return back()->with('alert-success', 'Berhasil menghapus tahun tabel BPS');
     }

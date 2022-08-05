@@ -20,7 +20,6 @@ class VisitorController extends Controller
         abort_if(!$request->ajax(), 404);
 
         Statistic::truncate();
-        save_user_log('Menghapus semua statistik pengunjung');
 
         return response()->json([
             'success' => true,

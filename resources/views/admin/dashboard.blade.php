@@ -26,7 +26,6 @@
       color: #cbd4e0;
       font-size: 26px;
     }
-
   </style>
 @endpush
 
@@ -115,50 +114,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-header">
-            <h4>Aktivitas Terbaru</h4>
-            <div class="card-header-action">
-              <a href="{{ route('admin.userlog.index') }}" class="btn btn-danger">Lihat Selengkapnya <i
-                  class="fas fa-chevron-right"></i></a>
-            </div>
-          </div>
-          <div class="card-body p-0">
-            <div class="table-responsive table-invoice">
-              <table class="table table-striped">
-                <tr>
-                  <th>#</th>
-                  <th>Nama</th>
-                  <th>Level</th>
-                  <th>Tipe</th>
-                  <th>Waktu</th>
-                </tr>
-                @foreach ($userLogs as $index => $log)
-                  <tr>
-                    <td>{{ ++$index }}</td>
-                    <td class="font-weight-600">{{ $log->user->name }}</td>
-                    <td>
-                      @if ($log->user->level === 1)
-                        <div class="badge badge-info">{{ $log->user->role }}</div>
-                      @endif
-                      @if ($log->user->level === 2)
-                        <div class="badge badge-warning">{{ $log->user->role }}</div>
-                      @endif
-                    </td>
-                    <td>{{ $log->type }}</td>
-                    <td>
-                      {{ $log->created_at->diffForHumans() }}
-                    </td>
-                  </tr>
-                @endforeach
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
 @endsection
 

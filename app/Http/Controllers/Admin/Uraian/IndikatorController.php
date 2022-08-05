@@ -35,7 +35,6 @@ class IndikatorController extends Controller
         ]);
 
         UraianIndikator::create($validated);
-        save_user_log('Menambahkan form menu uraian indikator');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian indikator');
     }
@@ -63,15 +62,13 @@ class IndikatorController extends Controller
         ]);
 
         $uraianIndikator->update($validated);
-        save_user_log('Mengubah form menu uraian indikator');
 
         return back()->with('alert-success', 'Form menu uraian indikator berhasil diupdate');
     }
 
-    public function destroy( UraianIndikator $uraianIndikator)
+    public function destroy(UraianIndikator $uraianIndikator)
     {
         $uraianIndikator->delete();
-        save_user_log('Menghapus form menu uraian indikator');
 
         return back()->with('alert-success', 'Form menu uraian indikator berhasil dihapus');
     }

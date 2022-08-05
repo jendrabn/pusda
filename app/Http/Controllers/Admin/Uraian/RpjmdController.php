@@ -39,7 +39,6 @@ class RpjmdController extends Controller
         ]);
 
         UraianRpjmd::create($validated);
-        save_user_log('Menambah form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian RPJMD');
     }
@@ -67,7 +66,6 @@ class RpjmdController extends Controller
         ]);
 
         $uraianRpjmd->update($validated);
-        save_user_log('Mengubah form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Form menu uraian RPJMD berhasil diupdate');
     }
@@ -75,7 +73,6 @@ class RpjmdController extends Controller
     public function destroy(Request $request, UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
-        save_user_log('Menghapus form menu uraian RPJMD');
 
         return back()->with('alert-success', 'Form menu uraian RPJMD berhasil dihapus');
     }

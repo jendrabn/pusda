@@ -106,7 +106,6 @@ class RpjmdController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-        save_user_log('Mengubah isi uraian tabel RPJMD');
 
         return back()->with('alert-success', 'Isi uraian tabel RPJMD berhasil diupdate');
     }
@@ -114,7 +113,6 @@ class RpjmdController extends Controller
     public function destroy(UraianRpjmd $uraianRpjmd)
     {
         $uraianRpjmd->delete();
-        save_user_log('Menghapus uraian tabel RPJMD');
 
         return back()->with('alert-success', 'Uraian tabel RPJMD berhasil dihapus');
     }
@@ -131,7 +129,6 @@ class RpjmdController extends Controller
         ]);
 
         $fiturRpjmd->update($validated);
-        save_user_log('Mengubah fitur tabel RPJMD');
 
         return back()->with('alert-success', 'Fitur tabel RPJMD berhasil diupdate');
     }
@@ -151,7 +148,6 @@ class RpjmdController extends Controller
             'tabel_rpjmd_id' => $tabelRpjmd->id,
             'file_name' =>  $fileName
         ]);
-        save_user_log('Menambahkan file pendukung tabel RPJMD');
 
         return back()->with('alert-success', 'Berhasil menambahkan file pendukung tabel RPJMD');
     }
@@ -160,7 +156,6 @@ class RpjmdController extends Controller
     {
         Storage::disk('public')->delete('file_pusda/' . $fileRpjmd->file_name);
         $fileRpjmd->delete();
-        save_user_log('Menghapus file pendukung tabel RPJMD');
 
         return back()->with('alert-success', 'File pendukung tabel RPJMD berhasil dihapus');
     }
@@ -170,7 +165,6 @@ class RpjmdController extends Controller
         $path = 'file_pusda/' . $fileRpjmd->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            save_user_log('Mengunduh file pendukung tabel RPJMD');
 
             return Storage::disk('public')->download($path);
         }

@@ -22,8 +22,6 @@ class DashboardController extends Controller
             'total_bps' =>  UraianBps::count()
         ];
 
-        $userLogs = UserLog::with('user')->latest()->limit(5)->get();
-
-        return view('admin.dashboard', compact('info', 'userLogs'));
+        return view('admin.dashboard', compact('info'));
     }
 }

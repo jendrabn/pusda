@@ -38,7 +38,6 @@ class DelapanKelDataController extends Controller
         ]);
 
         Uraian8KelData::create($validated);
-        save_user_log('Menambah form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian 8 kelompok data');
     }
@@ -66,7 +65,6 @@ class DelapanKelDataController extends Controller
         ]);
 
         $uraian8KelData->update($validated);
-        save_user_log('Mengubah form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Form menu Uraian 8 kelompok data berhasil diupdate');
     }
@@ -74,7 +72,6 @@ class DelapanKelDataController extends Controller
     public function destroy(Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-        save_user_log('Menghapus form menu uraian 8 kelompok data');
 
         return back()->with('alert-success', 'Form menu uraian 8 kelompok data berhasil dihapus');
     }

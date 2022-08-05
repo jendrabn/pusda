@@ -36,7 +36,6 @@ class BpsController extends Controller
         ]);
 
         UraianBps::create($validated);
-        save_user_log('Menambahkan form menu uraian BPS');
 
         return back()->with('alert-success', 'Berhasil menambahkan form menu uraian BPS');
     }
@@ -63,7 +62,6 @@ class BpsController extends Controller
         ]);
 
         $uraianBps->update($validated);
-        save_user_log('Mengubah form menu uraian BPS');
 
         return back()->with('alert-success', 'Form menu uraian BPS berhasil diupdate');
     }
@@ -71,7 +69,6 @@ class BpsController extends Controller
     public function destroy(UraianBps $uraianBps)
     {
         $uraianBps->delete();
-        save_user_log('Menghapus form menu uraian BPS');
 
         return back()->with('alert-success', 'Form menu uraian BPS berhasil dihapus');
     }

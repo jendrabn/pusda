@@ -27,7 +27,6 @@ class DelapanKelDataController extends Controller
         $validated['skpd_id'] = Auth::user()->skpd->id;
 
         Tabel8KelData::create($validated);
-        save_user_log('Menambahkan menu treeview 8 kelompok data');
 
         return back()->with('alert-success', 'Berhasil menambahkan menu treeview 8 kelompok data');
     }
@@ -50,7 +49,6 @@ class DelapanKelDataController extends Controller
         ]);
 
         $tabel8KelData->update($validated);
-        save_user_log('Mengubah menu treeview 8 kelompok data');
 
         return back()->with('alert-success', 'Menu treeview 8 kelompok data berhasil diupdate');
     }
@@ -59,7 +57,6 @@ class DelapanKelDataController extends Controller
     {
         $tabel8KelData = Tabel8KelData::findOrFail($id);
         $tabel8KelData->delete();
-        save_user_log('Menghapus menu treeeview 8 kelompok data');
 
         return back()->with('alert-success', 'Menu treeview 8 kelompok data berhasil dihapus');
     }

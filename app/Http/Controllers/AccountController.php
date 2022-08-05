@@ -38,7 +38,6 @@ class AccountController extends Controller
         }
 
         $user->update($validated);
-        save_user_log('Mengubah profile');
 
         return back()->with('alert-success', 'Profil berhasil diupdate');
     }
@@ -59,7 +58,6 @@ class AccountController extends Controller
 
         if (Hash::check($request->current_password, $user->password)) {
             $user = $user->update(['password' => Hash::make($request->password)]);
-            save_user_log('Mengubah password');
 
             return back()->with('alert-success', 'Password berhasil diubah');
         }

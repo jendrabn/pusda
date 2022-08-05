@@ -23,7 +23,6 @@ class BpsController extends Controller
         ]);
 
         TabelBps::create($validated);
-        save_user_log('Menambahkan menu treeview BPS');
 
         return back()->with('alert-success', 'Berhasil menambahkan menu treeview BPS');
     }
@@ -46,7 +45,6 @@ class BpsController extends Controller
         ]);
 
         $tabelBps->update($validated);
-        save_user_log('Mengubah menu treeview BPS');
 
         return back()->with('alert-success', 'Menu treeview BPS berhasil diupdate');
     }
@@ -55,7 +53,6 @@ class BpsController extends Controller
     {
         $tabelBps = TabelBps::findOrFail($id);
         $tabelBps->delete();
-        save_user_log('Menghapus menu treeview BPS');
 
         return back()->with('alert-success', 'Menu treeview BPS berhasil dihapus');
     }

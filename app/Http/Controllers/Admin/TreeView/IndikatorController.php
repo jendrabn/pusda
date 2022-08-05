@@ -24,7 +24,6 @@ class IndikatorController extends Controller
         ]);
 
         TabelIndikator::create($validated);
-        save_user_log('Menambahkan menu treeview indikator');
 
         return back()->with('alert-success', 'Berhasil menambahkan menu treeview indikator');
     }
@@ -47,7 +46,6 @@ class IndikatorController extends Controller
         ]);
 
         $tabelIndikator->update($validated);
-        save_user_log('Mengubah menu treeview indikator');
 
         return back()->with('alert-success', 'Menu treeview indikator berhasil diupdate');
     }
@@ -56,7 +54,6 @@ class IndikatorController extends Controller
     {
         $tabelIndikator = TabelIndikator::findOrFail($id);
         $tabelIndikator->delete();
-        save_user_log('Menghapus menu treeeview indikator');
 
         return back()->with('alert-success', 'Menu treeview indikator berhasil dihapus');
     }

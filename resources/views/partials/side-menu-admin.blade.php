@@ -87,10 +87,6 @@ $skpd_categories = \App\Models\SkpdCategory::all()->pluck('name', 'id');
   <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users"></i>
     <span>User</span></a>
 </li>
-<li class="{{ request()->routeIs('admin.userlog.index') ? 'active' : '' }}">
-  <a class="nav-link" href="{{ route('admin.userlog.index') }}"><i class="fas fa-user-clock"></i>
-    <span>Log User</span></a>
-</li>
 <li class="{{ request()->routeIs('admin.visitor') ? 'active' : '' }}">
   <a class="nav-link" href="{{ route('admin.visitor') }}"><i class="fas fa-eye"></i>
     <span>Pengunjung</span></a>

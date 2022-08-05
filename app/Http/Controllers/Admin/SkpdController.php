@@ -28,7 +28,6 @@ class SkpdController extends Controller
         ]);
 
         $skpd = Skpd::create($validated);
-        save_user_log('Menambahkan SKPD baru dengan nama ' . $skpd->nama);
 
         return back()->with('alert-success', 'Berhasil menambahkan SKPD baru');
     }
@@ -49,7 +48,6 @@ class SkpdController extends Controller
         ]);
 
         $skpd->update($validated);
-        save_user_log('Mengubah data SKPD');
 
         return back()->with('alert-success', 'SKPD berhasil diupdate');
     }
@@ -60,7 +58,6 @@ class SkpdController extends Controller
 
         $name = $skpd->nama;
         $skpd->delete();
-        save_user_log('Menghapus SKPD ' . $name);
 
         return response()->json([
             'success' => true,

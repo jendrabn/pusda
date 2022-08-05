@@ -27,7 +27,6 @@ class RpjmdController extends Controller
         $validated['skpd_id'] = Auth::user()->skpd->id;
 
         TabelRpjmd::create($validated);
-        save_user_log('Menambahkan menu treeview RPJMD');
 
         return back()->with('alert-success', 'Berhasil menambahkan data');
     }
@@ -50,7 +49,6 @@ class RpjmdController extends Controller
         ]);
 
         $tabelRpjmd->update($validated);
-        save_user_log('Mengubah menu treeview RPJMD');
 
         return back()->with('alert-success', 'Menu treeview RPJMD berhasil diupdate');
     }
@@ -59,7 +57,6 @@ class RpjmdController extends Controller
     {
         $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $tabelRpjmd->delete();
-        save_user_log('Menghapus menu treeview RPJMD');
 
         return back()->with('alert-success', 'Menu treeview RPJMD berhasil dihapus');
     }

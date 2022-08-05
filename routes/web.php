@@ -68,7 +68,7 @@ Route::prefix('exports')->name('exports.')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    // User Account 
+    // User Account
     Route::get('/profile', [\App\Http\Controllers\AccountController::class, 'profile'])->name('profile');
     Route::put('/profile', [\App\Http\Controllers\AccountController::class, 'updateProfile'])->name('update_profile');
     Route::get('/change_password', [\App\Http\Controllers\AccountController::class, 'password'])->name('change_password');
@@ -83,15 +83,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/print_reports', [\App\Http\Controllers\Admin\PrintReportController::class, 'index'])->name('print_reports');
 
-        // Log Users 
-        Route::get('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'index'])->name('userlog.index');
-        Route::delete('/userlog', [\App\Http\Controllers\Admin\UserLogController::class, 'destroyAll'])->name('userlog.destroyall');
-
         // Menu Data Pengunjung
         Route::delete('/visitor/{visitor}', [\App\Http\Controllers\Admin\VisitorController::class, 'destroy'])->name('visitor.destroy');
         Route::delete('/visitor', [\App\Http\Controllers\Admin\VisitorController::class, 'destroyAll'])->name('visitor.destroyall');
 
-        // Menu Tree View 
+        // Menu Tree View
         Route::name('treeview.')->prefix('treeview')->group(function () {
             Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)->except(['create', 'show']);
             Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)->except(['create', 'show']);

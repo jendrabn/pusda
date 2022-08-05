@@ -37,7 +37,6 @@ class UserController extends Controller
         $validated = $request->validated();
         $validated['password'] =  Hash::make($request->password);
         $user = User::create($validated);
-        save_user_log('Menambahkan user baru dengan nama ' . $user->name);
 
         return redirect()->route('admin.users.index')->with('alert-success', 'Berhasil menambahkan user baru');
     }
@@ -61,7 +60,6 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        save_user_log('Mengubah data user ' . $user->name);
 
         return back()->with('alert-success', 'Data user berhasil diupdate');
     }
@@ -72,7 +70,6 @@ class UserController extends Controller
 
         $name = $user->name;
         $user = $user->delete();
-        save_user_log('Menghapus user ' . $name);
 
         return response()->json([
             'success' => true,

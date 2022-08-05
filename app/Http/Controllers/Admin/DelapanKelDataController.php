@@ -122,7 +122,6 @@ class DelapanKelDataController extends Controller
             $isi->isi = $request->get('tahun_' . $isi->tahun);
             $isi->save();
         }
-        save_user_log('Mengubah isi uraian tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Isi uraian tabel 8 kelompok data berhasil diupdate');
     }
@@ -130,7 +129,6 @@ class DelapanKelDataController extends Controller
     public function destroy(Uraian8KelData $uraian8KelData)
     {
         $uraian8KelData->delete();
-        save_user_log('Menghapus uraian tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Uraian tabel 8 kelompok data berhasil dihapus');
     }
@@ -146,7 +144,6 @@ class DelapanKelDataController extends Controller
         ]);
 
         $fitur8KelData->update($validated);
-        save_user_log('Mengubah fitur tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Fitur tabel 8 kelompok data berhasil diupdate');
     }
@@ -166,7 +163,6 @@ class DelapanKelDataController extends Controller
             'tabel_8keldata_id' => $tabel8KelData->id,
             'file_name' =>  $fileName
         ]);
-        save_user_log('Mengupload file pendukung tabel 8 kelompok data');
 
         return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil diupload');
     }
@@ -175,7 +171,6 @@ class DelapanKelDataController extends Controller
     {
         Storage::disk('public')->delete('file_pusda/' . $file8KelData->file_name);
         $file8KelData->delete();
-        save_user_log('Menghapus file pendukung tabel 8 kelompok data');
 
         return back()->with('alert-success', 'File pendukung tabel 8 kelompok data berhasil dihapus');
     }
@@ -185,7 +180,6 @@ class DelapanKelDataController extends Controller
         $path = 'file_pusda/' . $file8KelData->file_name;
 
         if (Storage::disk('public')->exists($path)) {
-            save_user_log('Mengunduh file pendukung tabel 8 Kelompok Data');
 
             return Storage::disk('public')->download($path);
         }
@@ -198,7 +192,6 @@ class DelapanKelDataController extends Controller
         $request->validate(['sumber_data' => ['required', 'exists:skpd,id']]);
         $uraian8KelData->skpd_id = $request->sumber_data;
         $uraian8KelData->save();
-        save_user_log('Mengubah sumber data uraian tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Sumber data uraian tabel 8 kelompok data berhasil diupdate');
     }
@@ -221,7 +214,6 @@ class DelapanKelDataController extends Controller
                 }
             }
         });
-        save_user_log('Menambahkan tahun tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Berhasil menambahkan tahun tabel 8 kelompok data');
     }
@@ -232,7 +224,6 @@ class DelapanKelDataController extends Controller
         $uraian8KelData->each(function ($uraian) use ($year) {
             $uraian->isi8KelData()->where('tahun', $year)->delete();
         });
-        save_user_log('Menghapus tahun tabel 8 kelompok data');
 
         return back()->with('alert-success', 'Berhasil menghapus tahun tabel 8 kelompok data');
     }
