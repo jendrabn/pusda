@@ -2,53 +2,43 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,  Auditable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    const ROLES = [
+        1 => 'Administrator',
+        2 => 'SKPD'
+    ];
+
     protected $fillable = [
         'skpd_id',
         'name',
         'username',
         'email',
-        'no_hp',
-        'alamat',
+        'phone',
+        'address',
         'avatar',
-        'level',
+        'role',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    protected $appends = ['role'];
 
 
     public function skpd()
@@ -56,37 +46,23 @@ class User extends Authenticatable
         return $this->belongsTo(Skpd::class, 'skpd_id');
     }
 
-    public function userLogs()
-    {
-        return $this->hasMany(UserLog::class, 'user_id');
-    }
-
-    /**
-     * Get (work with Storage Facade) avatar path.
-     * 
-     * @return string
-     */
-    public function getAvatarPathAttribute()
-    {
-        return str_replace('storage/', '', $this->avatar);
-    }
-
-    /**
-     * Provide profile url.
-     * 
-     * @return string
-     */
     public function getAvatarUrlAttribute()
     {
-        if (Storage::disk('public')->has($this->avatar_path)) {
-            return asset($this->avatar);
-        }
+        $avatar = $this->attributes['avatar'];
 
-        return asset('assets/img/avatar-default.png');
+        return $avatar && Storage::disk('public')->exists($avatar) ?
+            Storage::url($avatar) : asset('img/avatar-default.png');
     }
 
-    public function getRoleAttribute()
+    public function getRoleNameAttribute(): string
     {
-        return $this->level == 1 ? 'Administrator' : 'SKPD';
+        return self::ROLES[$this->attributes['role']];
+    }
+
+    public function setPasswordAttribute($input): void
+    {
+        if ($input) {
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+        }
     }
 }

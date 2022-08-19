@@ -11,7 +11,8 @@ class SkpdCategory extends Model
 
     protected $fillable = ['name'];
 
-    public function skpd(){
+    public function skpd()
+    {
         return $this->hasMany(Skpd::class, 'skpd_category_id');
     }
 }

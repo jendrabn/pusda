@@ -17,11 +17,6 @@ class Statistic extends Model
         return $this->whereDay('created_at', Carbon::today())->count();
     }
 
-    public function getWeekCountAttribute()
-    {
-        return $this->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
-    }
-
     public function getMonthCountAttribute()
     {
         return $this->whereMonth('created_at', Carbon::now()->month)->count();

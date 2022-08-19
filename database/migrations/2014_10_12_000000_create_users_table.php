@@ -20,10 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('no_hp', 15)->nullable();
-            $table->string('alamat')->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('address')->nullable();
             $table->string('avatar')->nullable();
-            $table->tinyInteger('level')->default(1);
+            $table->tinyInteger('role')->default(1)->comment('1 => Administrator, 2 => SKPD');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

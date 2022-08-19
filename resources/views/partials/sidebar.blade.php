@@ -1,8 +1,8 @@
   @php
     $home = '/';
-    if (Auth::user()->level === 1) {
+    if (Auth::user()->role === 1) {
         $home = route('admin.dashboard');
-    } elseif (Auth::user()->level === 1) {
+    } elseif (Auth::user()->role === 1) {
         $home = route('skpd.dashboard');
     }
   @endphp
@@ -14,9 +14,9 @@
     <a href="{{ $home }}">Pd</a>
   </div>
   <ul class="sidebar-menu">
-    @if (Auth::user()->level === 1)
+    @if (Auth::user()->role === 1)
       @include('partials.side-menu-admin')
-    @elseif (Auth::user()->level === 2)
+    @elseif (Auth::user()->role === 2)
       @include('partials.side-menu-skpd')
     @endif
 

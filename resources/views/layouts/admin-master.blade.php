@@ -22,7 +22,6 @@
     #dataTable_length select {
       min-width: 65px;
     }
-
   </style>
   @stack('styles')
 </head>

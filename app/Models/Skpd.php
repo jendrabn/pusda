@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Skpd extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $table = 'skpd';
 
@@ -20,6 +21,11 @@ class Skpd extends Model
     public function users()
     {
         return $this->hasMany(User::class, 'user_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(SkpdCategory::class, 'skpd_category_id');
     }
 
     public function tabelRpjmd()
@@ -40,11 +46,6 @@ class Skpd extends Model
     public function uraian8KelData()
     {
         return $this->hasMany(Uraian8KelData::class, 'skpd_id');
-    }
-
-    public function skpdCategory()
-    {
-        return $this->belongsTo(SkpdCategory::class, 'skpd_category_id');
     }
 
     public function sumberData()

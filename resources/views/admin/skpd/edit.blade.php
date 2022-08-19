@@ -1,73 +1,62 @@
-@extends('layouts.admin-master')
+@extends('layouts.admin')
 
-@section('title')
-  Edit SKPD
-@endsection
+@section('title', 'Edit SKPD')
 
 @section('content')
-  <section class="section-header">
-    <div class="section-header-back">
-      <a href="{{ route('admin.skpd.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+  <div class="card">
+    <div class="card-header">
+      Edit SKPD
     </div>
-    <h1>Edit SKPD</h1>
-    <div class="section-header-breadcrumb">
-      <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item active"> <a href="{{ route('admin.skpd.index', 1) }}">Data SKPD</a>
-      </div>
-      <div class="breadcrumb-item">Edit</div>
-    </div>
-  </section>
 
-  <section class="section-body">
-    @include('partials.alerts')
+    <div class="card-body">
+      <form method="POST" action="{{ route('admin.skpd.update', $skpd->id) }}">
+        @csrf
+        @method('PUT')
 
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="text-uppercase">Edit SKPD</h4>
-          </div>
-          <div class="card-body">
-            <form action="{{ route('admin.skpd.update', $skpd->id) }}" method="POST">
-              @csrf
-              @method('PUT')
-              <div class="form-group row mb-4">
-                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama <code>*</code></label>
-                <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="nama" value="{{ $skpd->nama }}" tabindex="1" autofocus>
-                </div>
-              </div>
-              <div class="form-group row mb-4">
-                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Singkatan <code>*</code></label>
-                <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="singkatan" value="{{ $skpd->singkatan }}" tabindex="2">
-                </div>
-              </div>
-              <div class="form-group row mb-4">
-                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori <code>*</code></label>
-                <div class="col-sm-12 col-md-7">
-                  <select name="skpd_category_id" id="" class="form-control select2" tabindex="3">
-                    <option value="none" disabled hidden>--Pilih Kategori--</option>
-                    @foreach ($categories as $id => $name)
-                      <option {{ $id === $skpd->skpd_category_id ? 'selected' : '' }} value="{{ $id }}">
-                        {{ $name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
-                <div class="col-sm-12 col-md-7">
-                  <div class=" d-flex justify-content-between align-items-center">
-                    <span><code>*</code> Wajib diisi</span>
-                    <button type="submit" class="btn btn-primary" tabindex="4">Simpan Perubahan</button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+        <div class="form-group">
+          <label class="required" for="skpd_kategori_id">Kategori</label>
+          <select class="form-control select2 {{ $errors->has('skpd_kategori_id') ? 'is-invalid' : '' }}"
+            name="skpd_kategori_id" id="skpd_kategori_id" required>
+            <option value="" selected>Please select</option>
+            @foreach ($categories as $id => $name)
+              <option value="{{ $id }}" {{ $id == $skpd->skpd_category_id ? 'selected' : '' }}>
+                {{ $name }}
+              </option>
+            @endforeach
+          </select>
+          @if ($errors->has('skpd_kategori_id'))
+            <span class="text-danger">{{ $errors->first('skpd_kategori_id') }}</span>
+          @endif
+          <span class="help-block"> </span>
         </div>
-      </div>
+
+        <div class="form-group">
+          <label class="required" for="nama">Nama</label>
+          <input class="form-control {{ $errors->has('nama') ? 'is-invalid' : '' }}" type="text" name="nama"
+            id="nama" value="{{ $skpd->nama }}" required>
+          @if ($errors->has('nama'))
+            <span class="text-danger">{{ $errors->first('nama') }}</span>
+          @endif
+          <span class="help-block"> </span>
+        </div>
+
+        <div class="form-group">
+          <label class="required" for="singkatan">singkatan</label>
+          <input class="form-control {{ $errors->has('singkatan') ? 'is-invalid' : '' }}" type="text" name="singkatan"
+            id="singkatan" value="{{ $skpd->singkatan }}" required>
+          @if ($errors->has('singkatan'))
+            <span class="text-danger">{{ $errors->first('singkatan') }}</span>
+          @endif
+          <span class="help-block"> </span>
+        </div>
+
+
+        <div class="form-group">
+          <button class="btn btn-danger" type="submit">
+            Save
+          </button>
+        </div>
+      </form>
     </div>
-  </section>
+  </div>
 @endsection

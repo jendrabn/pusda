@@ -7,29 +7,74 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\SkpdCategory;
+use App\Models\User;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class SkpdController extends Controller
 {
-    public function index(SkpdsDataTable $dataTable)
+    public function index(Request $request)
     {
 
-        $skpd = Skpd::latest()->get();
-        $categories = SkpdCategory::all()->pluck('name', 'id');
+        if ($request->ajax()) {
+            $query = Skpd::with(['category'])->select('skpd.*');
+            $table = DataTables::of($query);
 
-        return $dataTable->render('admin.skpd.index', compact('skpd', 'categories'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $crudRoutePart = 'skpd';
+
+                return view('partials.datatablesActions', compact(
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+
+            $table->editColumn('nama', function ($row) {
+                return $row->nama ? $row->nama : '';
+            });
+
+            $table->editColumn('singkatan', function ($row) {
+                return $row->singkatan ? $row->singkatan : '';
+            });
+
+            $table->editColumn('category', function ($row) {
+                return $row->category ? $row->category->name : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.skpd.index');
+    }
+
+    public function create()
+    {
+        $categories = SkpdCategory::pluck('name', 'id');
+        $roles  = User::ROLES;
+
+        return view('admin.skpd.create', compact('categories', 'roles'));
     }
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'nama' => ['required', 'string', 'max:100'],
             'singkatan' => ['required', 'string', 'max:100'],
-            'skpd_category_id' => ['required', 'numeric', 'exists:skpd_categories,id']
+            'skpd_kategori_id' => ['required', 'numeric', 'exists:skpd_categories,id']
         ]);
 
-        $skpd = Skpd::create($validated);
+        Skpd::create($request->all());
 
-        return back()->with('alert-success', 'Berhasil menambahkan SKPD baru');
+        return redirect()->route('admin.skpd.index');
     }
 
     public function edit(Skpd $skpd)
@@ -41,27 +86,29 @@ class SkpdController extends Controller
 
     public function update(Request $request, Skpd $skpd)
     {
-        $validated =  $this->validate($request, [
+
+        $request->validate([
             'nama' => ['required', 'string', 'max:100'],
             'singkatan' => ['required', 'string', 'max:100'],
-            'skpd_category_id' => ['required', 'numeric', 'exists:skpd_categories,id']
+            'skpd_kategori_id' => ['required', 'numeric', 'exists:skpd_categories,id']
         ]);
 
-        $skpd->update($validated);
+        $skpd->update($request->all());
 
-        return back()->with('alert-success', 'SKPD berhasil diupdate');
+        return redirect()->route('admin.skpd.index');
     }
 
     public function destroy(Request $request, Skpd $skpd)
     {
-        abort_if(!$request->ajax(), 404);
-
-        $name = $skpd->nama;
         $skpd->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil menghapus SKPD ' . $name
-        ], 200);
+        return back();
+    }
+
+    public function massDestroy(Request $request)
+    {
+        Skpd::whereIn('id', $request->ids)->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

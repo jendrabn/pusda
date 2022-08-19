@@ -1,90 +1,82 @@
-@extends('layouts.auth-master')
-@section('title', 'Login')
-
+@extends('layouts.app')
 @section('content')
-  @include('partials.alerts')
-
-  <div class="card">
-    <div class="card-header">
-      <h4 class="text-uppercase">Login</h4>
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo">
+        <a href="">
+          {{ config('app.name') }}
+        </a>
+      </div>
     </div>
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">
+          Login
+        </p>
 
-    <div class="card-body">
-      <form method="POST" action="{{ route('login') }}" id="form-login">
-        @csrf
-        <div class="form-group">
-          <label for="username">Username atau Email</label>
-          <input id="username" type="text" class="form-control" name="username" tabindex="1" required autofocus>
-        </div>
+        @if (session()->has('message'))
+          <p class="alert alert-info">
+            {{ session()->get('message') }}
+          </p>
+        @endif
 
-        <div class="form-group">
-          <div class="d-block">
-            <label for="password" class="control-label">Password</label>
-            <div class="float-right">
-              @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="text-small">
-                  Lupa Password?
-                </a>
-              @endif
-            </div>
-          </div>
+        <form action="{{ route('login') }}" method="POST">
+          @csrf
+
           <div class="form-group">
-            <div class="input-group">
-              <input type="password" class="form-control" id="password" name="password" tabindex="2" required>
-              <div class="input-group-append">
-                <div class="input-group-text" id="password-visible"><i class="fas fa-eye"></i></div>
+            <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}"
+              required autocomplete="username" autofocus placeholder="Username/Email" name="username"
+              value="{{ old('username', null) }}">
+
+            @if ($errors->has('username'))
+              <div class="invalid-feedback">
+                {{ $errors->first('username') }}
+              </div>
+            @endif
+          </div>
+
+          <div class="form-group">
+            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+              name="password" required placeholder="Password">
+
+            @if ($errors->has('password'))
+              <div class="invalid-feedback">
+                {{ $errors->first('password') }}
+              </div>
+            @endif
+          </div>
+
+
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <input type="checkbox" name="remember" id="remember">
+                <label for="remember">Remember Me</label>
               </div>
             </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block btn-flat">
+                Login
+              </button>
+            </div>
+            <!-- /.col -->
           </div>
-        </div>
+        </form>
 
-        <div class="form-group">
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me"
-              {{ old('remember') ? 'checked' : '' }}>
-            <label class="custom-control-label" for="remember-me">Ingat Saya</label>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4" id="btn-login">
-            Login
-          </button>
-        </div>
-      </form>
+        @if (Route::has('password.request'))
+          <p class="mb-1">
+            <a href="{{ route('password.request') }}">
+              Forgot Password?
+            </a>
+          </p>
+        @endif
+        <p class="mb-1">
+
+        </p>
+      </div>
+      <!-- /.login-card-body -->
     </div>
   </div>
-  @if (Route::has('register'))
-    <div class="mt-5 text-muted text-center">
-      Bulum punya akun? <a href="{{ route('register') }}">Buat Akun</a>
-    </div>
-  @endif
 @endsection
-
-
-@push('scripts')
-  <script>
-    $(function() {
-      $('#password-visible').on('click', function(event) {
-        const input = $('#password');
-        const icon = $(this).find('i');
-        if (input.attr('type') === 'password') {
-          input.attr('type', 'text');
-          icon.addClass('fa-eye-slash');
-          icon.removeClass('fa-eye');
-        } else {
-          input.attr('type', 'password');
-          icon.removeClass('fa-eye-slash');
-          icon.addClass('fa-eye');
-        }
-      });
-
-      $('#form-login').on('submit', function(e) {
-        $('#btn-login').addClass('btn-progress');
-        $('#username').attr('readonly', true);
-        $('#password').attr('readonly', true);
-      });
-
-    });
-  </script>
-@endpush

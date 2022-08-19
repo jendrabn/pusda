@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Fitur8KelData extends Model
 {
-    use HasFactory;
+    use HasFactory, Auditable;
 
     protected $table = 'fitur_8keldata';
 

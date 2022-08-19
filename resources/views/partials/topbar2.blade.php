@@ -38,7 +38,7 @@
         <a href="{{ route('profile') }}" class="dropdown-item has-icon">
           <i class="far fa-user"></i> Profil
         </a>
-        <a href="{{ route('change_password') }}" class="dropdown-item has-icon">
+        <a href="{{ route('changePassword') }}" class="dropdown-item has-icon">
           <i class="fas fa-key"></i> Ubah Password
         </a>
         <div class="dropdown-divider"></div>

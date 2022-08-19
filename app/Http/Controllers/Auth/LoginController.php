@@ -26,20 +26,9 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+
     protected $username;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -48,9 +37,9 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (Auth::user()->level === 1) {
+        if (Auth::user()->role == 1) {
             return route('admin.dashboard');
-        } else if (Auth::user()->level === 2) {
+        } else if (Auth::user()->role == 2) {
             return route('skpd.dashboard');
         }
 

@@ -2,7 +2,7 @@
 $skpd_categories = \App\Models\SkpdCategory::all()->pluck('name', 'id');
 @endphp
 
-<li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+<li class="{{ request()->routeIs('admin.dashboard') || request()->routeIs('skpd.dashboard') ? 'active' : '' }}">
   <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i>
     <span>Dashboard</span></a>
 </li>
@@ -87,15 +87,7 @@ $skpd_categories = \App\Models\SkpdCategory::all()->pluck('name', 'id');
   <a class="nav-link" href="{{ route('admin.users.index') }}"><i class="fas fa-users"></i>
     <span>User</span></a>
 </li>
-<li class="{{ request()->routeIs('admin.visitor') ? 'active' : '' }}">
-  <a class="nav-link" href="{{ route('admin.visitor') }}"><i class="fas fa-eye"></i>
-    <span>Pengunjung</span></a>
-</li>
 <li class="{{ request()->routeIs('admin.skpd.index') ? 'active' : '' }}">
   <a class="nav-link" href="{{ route('admin.skpd.index') }}"><i class="fas fa-briefcase"></i>
     <span>SKPD</span></a>
-</li>
-<li class="{{ request()->routeIs('admin.print_reports') ? 'active' : '' }}">
-  <a class="nav-link" href="{{ route('admin.print_reports') }}"><i class="fas fa-print"></i>
-    <span>Cetak Laporan</span></a>
 </li>

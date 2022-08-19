@@ -1,129 +1,144 @@
-@extends('layouts.admin-master')
+@extends('layouts.admin')
 
-@section('title')
-  SKPD
-@endsection
+
+@section('title', 'SKPD List')
 
 @section('content')
-  <div class="section-header">
-    <h1>SKPD</h1>
-    <div class="section-header-breadcrumb">
-      <div class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-      <div class="breadcrumb-item">SKPD</div>
+  <div style="margin-bottom: 10px;" class="row">
+    <div class="col-lg-12">
+      <a class="btn btn-success" href="{{ route('admin.skpd.create') }}">
+        Add SKPD
+      </a>
     </div>
   </div>
-  <div class="section-body">
-    @include('partials.alerts')
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card ">
-          <div class="card-header">
-            <h4>SKPD</h4>
-            <div class="card-header-action">
-              <a class="btn btn-primary btn-icon icon-left mr-2" data-toggle="modal" data-target="#modal-create">
-                <i class="fas fa-plus"></i> Tambah SKPD
-              </a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              {{ $dataTable->table(['class' => 'table table-striped table-bordered w-100']) }}
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      SKPD List
     </div>
-  </div>
 
-  <form action="" id="form-delete" method="POST" hidden>@csrf @method('DELETE')</form>
-@endsection
+    <div class="card-body">
+      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-skpd">
+        <thead>
+          <tr>
+            <th width="10">
 
-@section('outer')
-  <div class="modal fade" tabindex="-1" role="dialog" id="modal-create">
-    <div class="modal-dialog" role="document">
-      <form action="{{ route('admin.skpd.store') }}" method="POST">
-        @csrf
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Tambah SKPD</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="input-nama">Nama</label>
-              <input type="text" class="form-control" id="input-nama" name="nama" tabindex="1" autofocus>
-            </div>
-            <div class="form-group">
-              <label for="input-singkatan">Singkatan</label>
-              <input type="text" class="form-control" name="singkatan" name="input-singkatan" tabindex="2">
-            </div>
-            <div class="form-group mb-0">
-              <label for="input-kategori">Kategori</label>
-              <select name="skpd_category_id" class="form-control select2" id="input-kategori" tabindex="3">
-                <option value="none" disabled selected hidden>--Pilih Kategori--</option>
-                @foreach ($categories as $id => $name)
-                  <option value="{{ $id }}">{{ $name }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer bg-whitesmoke br">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <button type="submit" class="btn btn-primary" tabindex="4">Simpan</button>
-          </div>
-        </div>
-      </form>
+            </th>
+            <th>
+              ID
+            </th>
+            <th>
+              Nama
+            </th>
+            <th>
+              Singkatan
+            </th>
+            <th>
+              Kategori
+            </th>
+            <th>
+              &nbsp;
+            </th>
+          </tr>
+        </thead>
+      </table>
     </div>
   </div>
 @endsection
-
-@push('scripts')
-  <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-  {{ $dataTable->scripts() }}
+@section('scripts')
+  @parent
   <script>
     $(function() {
-      const skpdsTable = window.LaravelDataTables['skpds-table'];
+      let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+      let deleteButtonTrans = 'Delete selected';
+      let deleteButton = {
+        text: deleteButtonTrans,
+        url: "{{ route('admin.skpd.massDestroy') }}",
+        className: 'btn-danger',
+        action: function(e, dt, node, config) {
+          var ids = $.map(dt.rows({
+            selected: true
+          }).data(), function(entry) {
+            return entry.id
+          });
 
-      $('#skpds-table').on('click', '.btn-delete', function(e) {
-        const btn = $(this);
-        Swal.fire({
-          title: 'Ingin menghapus SKPD ?',
-          text: 'Semua menu treeview dan uraian yang terkait dengan SKPD tersebut akan dihapus!',
-          icon: 'warning',
-          showCancelButton: true,
-          cancelButtonColor: '#cdd3d8',
-          confirmButtonColor: '#6777ef',
-          confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url: $(this).data('url'),
-              type: 'DELETE',
-              dataType: 'json',
-              data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-              },
-              beforeSend() {
-                btn.addClass('btn-progress');
-              },
-              success: function(data) {
-                skpdsTable.ajax.reload();
-                Swal.fire('Dihapus!', data.message, 'success');
-                btn.removeClass('btn-progress');
-              },
-              error: function(error) {
-                const errorMessage = error.status + ': ' + error.statusText;
-                Swal.fire('Gagal!', errorMessage, 'error');
-                btn.removeClass('btn-progress');
-              }
-            });
+          if (ids.length === 0) {
+            alert('No rows selected')
+
+            return
           }
-        });
+
+          if (confirm('Are You Sure?')) {
+            $.ajax({
+                headers: {
+                  'x-csrf-token': _token
+                },
+                method: 'POST',
+                url: config.url,
+                data: {
+                  ids: ids,
+                  _method: 'DELETE'
+                }
+              })
+              .done(function() {
+                location.reload()
+              })
+          }
+        }
+      }
+      dtButtons.push(deleteButton)
+
+      let dtOverrideGlobals = {
+        buttons: dtButtons,
+        processing: true,
+        serverSide: true,
+        retrieve: true,
+        aaSorting: [],
+        ajax: "{{ route('admin.skpd.index') }}",
+        columns: [{
+            data: 'placeholder',
+            name: 'placeholder'
+          },
+          {
+            data: 'id',
+            name: 'id'
+          },
+          {
+            data: 'nama',
+            name: 'nama'
+          },
+          {
+            data: 'singkatan',
+            name: 'singkatan'
+          },
+          {
+            data: 'category',
+            name: 'category.name'
+          },
+          {
+            data: 'actions',
+            name: 'actions'
+          }
+        ],
+        orderCellsTop: true,
+        order: [
+          [1, 'desc']
+        ],
+        pageLength: 25,
+      };
+      let table = $('.datatable-skpd').DataTable(dtOverrideGlobals);
+      $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
+        $($.fn.dataTable.tables(true)).DataTable()
+          .columns.adjust();
       });
+
+      let visibleColumnsIndexes = null;
+
+      table.on('column-visibility.dt', function(e, settings, column, state) {
+        visibleColumnsIndexes = []
+        table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+        });
+      })
     });
   </script>
-@endpush
+@endsection
