@@ -11,4 +11,4 @@ const mix = require("laravel-mix");
  |
  */
 
-mix.sass("./resources/sass/guest/style.scss", "public/assets/guest/css");
+mix.sass("./resources/sass/front/style.scss", "public/css/front.min.css");

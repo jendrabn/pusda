@@ -1,14 +1,9 @@
 ## Quick Start
-- Clone or download this repo and place it into your server.
-- `composer install `
-- `cp .env.example .env `
-- Create database and modify .env with your DB name
-- `npm install `
-- For development run `npm run dev `
-- For production run `npm run prod `
-- `php artisan migrate `
-- `php artisan db:seed `
-- `php artisan key:generate `
-- `npm install && npm run dev `
-- `php artisan storage:link`
-- `php artisan serve `
+
+-   `composer install `
+-   `cp .env.example .env `
+-   `php artisan key:generate `
+-   `php artisan storage:link`
+-   `php artisan migrate `
+-   `php artisan db:seed `
+-   `npm install && npm run prod `

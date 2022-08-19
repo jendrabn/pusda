@@ -1,36 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'Home') &mdash; Pusat Data Kabupaten Situbondo</title>
-  <link rel="stylesheet" href="{{ asset('assets/guest/css/style.css') }}">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    table thead tr th {
-      vertical-align: middle;
-    }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-    .btn-info {
-      color: white
-    }
-
-    .action {
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: end;
-      align-items: center
-    }
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/front.min.css') }}">
   @yield('styles')
 </head>
 
 <body>
-
   <header>
     <div class="header__top d-none d-lg-block">
       <div class="container">
@@ -77,9 +65,23 @@
               <a class="nav-link {{ request()->routeIs('indikator.index') || request()->is('guest/indikator/*') ? 'active' : '' }}"
                 href="{{ route('indikator.index') }}">Indikator Kerja</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link " href="{{ route('login') }}">Login</a>
-            </li>
+
+            @if (auth()->check())
+              <li class="nav-item">
+                @php
+                  $role = auth()->user()->role;
+                @endphp
+                @if ($role == 1)
+                  <a class="nav-link " href="{{ route('admin.dashboard') }}">Dashboard</a>
+                @elseif($role == 2)
+                  <a class="nav-link " href="{{ route('admin-skpd.dashboard') }}">Dashboard</a>
+                @endif
+              </li>
+            @else
+              <li class="nav-item">
+                <a class="nav-link " href="{{ route('login') }}">Login</a>
+              </li>
+            @endif
             <li class="nav-item">
               <a class="nav-link" href="https://tawk.to/pusdasitubondo" target="_blank" rel=noreferrer>Live Chat</a>
             </li>
@@ -110,7 +112,7 @@
                   rel=noreferrer>Fakultas Ilmu Komputer
                   Universitas Jember</a></li>
               <li><a href="https://unej.ac.id/id" target="_blank" rel=noreferrer class="logo"><img class="img-fluid"
-                    src="{{ asset('assets/guest/img/logo-unej.png') }}" alt="Logo Universitas Jember"></a></li>
+                    src="{{ asset('img/logo-unej.png') }}" alt="Logo Universitas Jember"></a></li>
             </ul>
           </div>
           <div class="col-lg-4 footer__item">
@@ -139,8 +141,10 @@
     </div>
   </footer>
 
-  <script src="{{ asset('assets/guest/js/popper.min.js') }}"></script>
-  <script src="{{ asset('assets/guest/js/bootstrap.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"
+    integrity="sha256-sKuIOg+m9ZQb96MRaiHCMzLniSnMlTv1h1h4T74C8ls=" crossorigin="anonymous"></script>
   <script>
     initScrollTop();
 
@@ -263,8 +267,6 @@
     }
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0/dist/chart.min.js"
-    integrity="sha256-sKuIOg+m9ZQb96MRaiHCMzLniSnMlTv1h1h4T74C8ls=" crossorigin="anonymous"></script>
   @yield('scripts')
 </body>
 

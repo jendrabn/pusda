@@ -2,14 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Events\UserLogged;
 use App\Http\Controllers\Controller;
-use App\Models\UserLog;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -37,13 +31,15 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (Auth::user()->role == 1) {
-            return route('admin.dashboard');
-        } else if (Auth::user()->role == 2) {
-            return route('skpd.dashboard');
-        }
+        $role = auth()->user()->role ?? null;
 
-        return route('/');
+        if ($role == 1) {
+            return route('admin.dashboard');
+        } elseif ($role == 2) {
+            return route('admin-skpd.dashboard');
+        } else {
+            return route('/');
+        }
     }
 
     public function findUsername()
@@ -54,11 +50,6 @@ class LoginController extends Controller
         return $fieldType;
     }
 
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
     public function username()
     {
         return $this->username;

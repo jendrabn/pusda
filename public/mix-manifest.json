@@ -1,6 +1,3 @@
 {
-    "/assets/js/app.js": "/assets/js/app.js",
-    "/assets/css/style.css": "/assets/css/style.css",
-    "/assets/guest/css/style.css": "/assets/guest/css/style.css",
-    "/assets/css/components.css": "/assets/css/components.css"
+    "/css/front.min.css": "/css/front.min.css"
 }

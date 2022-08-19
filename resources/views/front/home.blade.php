@@ -10,14 +10,14 @@
           </div>
           <div class="card-body">
             <figure class="img__wrapper border-bottom pb-3">
-              <img class="img-fluid" src="{{ asset('assets/guest/img/bupati.jpg') }}" alt="Bupati">
+              <img class="img-fluid" src="{{ asset('img/bupati.jpg') }}" alt="Bupati">
               <figcaption>
                 <h5>Karna Suswandi</h5>
                 <p>Bupati Situbondo</p>
               </figcaption>
             </figure>
             <figure class="img__wrapper">
-              <img class="img-fluid" src="{{ asset('assets/guest/img/wakil-bupati.jpg') }}" alt="Wakil Bupati">
+              <img class="img-fluid" src="{{ asset('img/wakil-bupati.jpg') }}" alt="Wakil Bupati">
               <figcaption>
                 <h5>Khoirani</h5>
                 <p>Wakil Bupati Situbondo</p>
