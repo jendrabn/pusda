@@ -89,10 +89,26 @@ Route::group(['middleware' => ['auth']], function () {
 
         // Menu Tree View
         Route::group(['prefix' => 'treeview', 'as' => 'treeview.'], function () {
-            Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)->except(['create', 'show']);
-            Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)->except(['create', 'show']);
-            Route::resource('indikator', \App\Http\Controllers\Admin\TreeView\IndikatorController::class)->except(['create', 'show']);
-            Route::resource('bps', \App\Http\Controllers\Admin\TreeView\BpsController::class)->except(['create', 'show']);
+            Route::delete('/delapankeldata/massDestroy', [\App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class, 'massDestroy'])
+                ->name('delapankeldata.massDestroy');
+            Route::delete('/rpjmd/massDestroy', [\App\Http\Controllers\Admin\TreeView\RpjmdController::class, 'massDestroy'])
+                ->name('rpjmd.massDestroy');
+            Route::delete('/indikator/massDestroy', [\App\Http\Controllers\Admin\TreeView\IndikatorController::class, 'massDestroy'])
+                ->name('indikator.massDestroy');
+            Route::delete('/bps/massDestroy', [\App\Http\Controllers\Admin\TreeView\BpsController::class, 'massDestroy'])
+                ->name('bps.massDestroy');
+            Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)
+                ->parameter('delapankeldata', 'table')
+                ->except(['create', 'show']);
+            Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)
+                ->parameter('rpjmd', 'table')
+                ->except(['create', 'show']);
+            Route::resource('indikator', \App\Http\Controllers\Admin\TreeView\IndikatorController::class)
+                ->parameter('indikator', 'table')
+                ->except(['create', 'show']);
+            Route::resource('bps', \App\Http\Controllers\Admin\TreeView\BpsController::class)
+                ->parameter('bps', 'table')
+                ->except(['create', 'show']);
         });
 
         // Menu Form Uraian
@@ -100,38 +116,38 @@ Route::group(['middleware' => ['auth']], function () {
 
             // RPJMD
             Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => \App\Http\Controllers\Admin\Uraian\RpjmdController::class], function () {
-                Route::get('/{tabelRpjmd?}', 'index')->name('index');
-                Route::get('/{tabelRpjmd}/{uraianRpjmd}/edit', 'edit')->name('edit');
+                Route::get('/{table?}', 'index')->name('index');
+                Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
                 Route::post('/', 'store')->name('store');
-                Route::put('/{uraianRpjmd}', 'update')->name('update');
-                Route::delete('/{uraianRpjmd}', 'destroy')->name('destroy');
+                Route::put('/{uraian}', 'update')->name('update');
+                Route::delete('/{uraian}', 'destroy')->name('destroy');
             });
 
             // 8 Kel. Data
             Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => \App\Http\Controllers\Admin\Uraian\DelapanKelDataController::class], function () {
-                Route::get('/{tabel8KelData?}', 'index')->name('index');
-                Route::get('/{tabel8KelData}/{uraian8KelData}/edit', 'edit')->name('edit');
+                Route::get('/{table?}', 'index')->name('index');
+                Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
                 Route::post('/', 'store')->name('store');
-                Route::put('/{uraian8KelData}', 'update')->name('update');
-                Route::delete('/{uraian8KelData}', 'destroy')->name('destroy');
+                Route::put('/{uraian}', 'update')->name('update');
+                Route::delete('/{uraian}', 'destroy')->name('destroy');
             });
 
             // BPS
             Route::group(['prefix' => 'bps', 'as' => 'bps.', 'controller' => \App\Http\Controllers\Admin\Uraian\BpsController::class], function () {
-                Route::get('/{tabelBps?}', 'index')->name('index');
-                Route::get('/{tabelBps}/{uraianBps}/edit', 'edit')->name('edit');
+                Route::get('/{table?}', 'index')->name('index');
+                Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
                 Route::post('/', 'store')->name('store');
-                Route::put('/{uraianBps}', 'update')->name('update');
-                Route::delete('/{uraianBps}', 'destroy')->name('destroy');
+                Route::put('/{uraian}', 'update')->name('update');
+                Route::delete('/{uraian}', 'destroy')->name('destroy');
             });
 
             // Indikator
             Route::group(['prefix' => 'indikator', 'as' => 'indikator.', 'controller' => \App\Http\Controllers\Admin\Uraian\IndikatorController::class], function () {
-                Route::get('/{tabelIndikator?}', 'index')->name('index');
-                Route::get('/{tabelIndikator}/{uraianIndikator}/edit', 'edit')->name('edit');
+                Route::get('/{table?}', 'index')->name('index');
+                Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
                 Route::post('/', 'store')->name('store');
-                Route::put('/{uraianIndikator}', 'update')->name('update');
-                Route::delete('/{uraianIndikator}', 'destroy')->name('destroy');
+                Route::put('/{uraian}', 'update')->name('update');
+                Route::delete('/{uraian}', 'destroy')->name('destroy');
             });
         });
 

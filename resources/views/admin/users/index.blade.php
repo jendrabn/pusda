@@ -14,7 +14,7 @@
       User List
     </div>
     <div class="card-body">
-      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+      <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
         <thead>
           <tr>
             <th width="10">

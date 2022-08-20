@@ -1,4 +1,4 @@
-@extends('layouts.admin-master2')
+@extends('layouts.admin')
 
 @section('title')
   RPJMD
@@ -24,8 +24,8 @@
           <div class="card-body">
             <ul class="nav nav-pills" id="tab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table"
-                  aria-selected="true">Tabel RPJMD</a>
+                <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab"
+                  aria-controls="table" aria-selected="true">Tabel RPJMD</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="fitur-tab" data-toggle="tab" href="#fitur" role="tab" aria-controls="fitur"
@@ -43,8 +43,10 @@
                     data-target="#modal-add-year">
                     <i class="fas fa-calendar-alt"></i> Pengaturan Tahun
                   </button>
-                  @include('admin.isiuraian.partials.button_export', ['resource_name' => 'rpjmd', 'table_id' =>
-                  $tabelRpjmd->id])
+                  @include('admin.isiuraian.partials.button_export', [
+                      'resource_name' => 'rpjmd',
+                      'table_id' => $tabelRpjmd->id,
+                  ])
                 </div>
                 <div class="table-responsive">
                   <table class="table table-bordered table-hover" id="isi-uraian-table">
@@ -157,7 +159,8 @@
 
               <div class="tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
                 <div class="d-flex justify-content-end align-items-center mb-3">
-                  <button data-toggle="modal" data-target="#modal-file-upload" class="btn btn-success btn-icon icon-left">
+                  <button data-toggle="modal" data-target="#modal-file-upload"
+                    class="btn btn-success btn-icon icon-left">
                     <i class="fas fa-file-upload"></i>
                     Upload File
                   </button>
@@ -181,7 +184,8 @@
                               <a href="{{ route('admin.rpjmd.files.download', $file->id) }}" class="btn btn-info">
                                 <i class="fas fa-download"></i>
                               </a>
-                              <button data-id="{{ $file->id }}" type="button" class="btn btn-danger btn-delete-file">
+                              <button data-id="{{ $file->id }}" type="button"
+                                class="btn btn-danger btn-delete-file">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </div>
@@ -203,11 +207,17 @@
 
 @section('outer')
   @include('admin.isiuraian.partials.modal_graphic')
-  @include('admin.isiuraian.partials.modal_edit', ['action' => route('admin.rpjmd.update'), 'showKetersediaanData' =>
-  true])
-  @include('admin.isiuraian.partials.modal_file_upload', ['action' => route('admin.rpjmd.files.store', $tabelRpjmd->id) ])
-  @include('admin.isiuraian.partials.modal_add_year', ['resource_name' => 'rpjmd', 'tabel_id' =>
-  $tabelRpjmd->id])
+  @include('admin.isiuraian.partials.modal_edit', [
+      'action' => route('admin.rpjmd.update'),
+      'showKetersediaanData' => true,
+  ])
+  @include('admin.isiuraian.partials.modal_file_upload', [
+      'action' => route('admin.rpjmd.files.store', $tabelRpjmd->id),
+  ])
+  @include('admin.isiuraian.partials.modal_add_year', [
+      'resource_name' => 'rpjmd',
+      'tabel_id' => $tabelRpjmd->id,
+  ])
 @endsection
 
 @push('scripts')

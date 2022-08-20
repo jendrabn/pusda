@@ -3,7 +3,6 @@
       View
     </a>
   @endif
-
   @if (Route::has('admin.' . $crudRoutePart . '.edit'))
     <a class="btn btn-xs btn-info" href="{{ route('admin.' . $crudRoutePart . '.edit', $row->id) }}">
       Edit

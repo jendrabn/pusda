@@ -1,4 +1,4 @@
-@extends('front.layouts.app')
+@extends('layouts.appFront')
 @section('title', ' 8 Kelompok Data SKPD')
 @section('content')
   <div class="container">

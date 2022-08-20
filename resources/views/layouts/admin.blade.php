@@ -21,6 +21,7 @@
   <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
+  <link href="{{ asset('plugins/jstree/themes/default/style.min.css') }}" rel="stylesheet" />
 
   <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
@@ -108,8 +109,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+  <script src="{{ asset('plugins/jstree/jstree.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
   <script>
     $(function() {
@@ -225,6 +225,35 @@
       });
 
       $.fn.dataTable.ext.classes.sPageButton = '';
+
+      $('.jstreeMenu').jstree({
+        core: {
+          themes: {
+            responsive: false
+          },
+        },
+        types: {
+          default: {
+            icon: 'fa fa-folder text-warning'
+          },
+          file: {
+            icon: 'fa fa-file text-warning'
+          },
+        },
+        plugins: ["types"]
+      });
+
+      $('.jstreeMenu').on('select_node.jstree', function(e, data) {
+        var link = $('#' + data.selected).find('a');
+        if (link.attr("href") != "#" && link.attr("href") != "javascript:;" && link.attr("href") != "") {
+          if (link.attr("target") == "_blank") {
+            link.attr("href").target = "_blank";
+          }
+          document.location.href = link.attr("href");
+          return false;
+        }
+      });
+
     });
   </script>
   <script src="{{ asset('js/adminlte.min.js') }}"></script>

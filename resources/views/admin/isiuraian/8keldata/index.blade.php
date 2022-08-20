@@ -1,31 +1,19 @@
-@extends('layouts.admin-master2')
+@extends('layouts.admin')
 
-@section('title')
-  8 Kelompok Data
-@endsection
+@section('title', '8 Kel. Data')
 
 @section('content')
-  <section class="section-body">
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-header">
-            <h4>Pilih Menu Tree View</h4>
-          </div>
-          <div class="card-body overflow-auto" id="jstree">
-            @include('admin.isiuraian.8keldata.menu_tree')
-          </div>
-        </div>
-      </div>
+  <div class="card">
+    <div class="card-header text-uppercase">
+      Pilih Menu Tree View
     </div>
-  </section>
+    <div class="card-body jstreeMenu overflow-auto">
+      @include('admin.isiuraian.8keldata.menu_tree')
+    </div>
+  </div>
 @endsection
 
-@push('scripts')
-  <script src="{{ asset('assets/js/isi-uraian.js') }}"></script>
-  <script>
-    $(function() {
-      initTreeView(true, '#jstree');
-    });
-  </script>
-@endpush
+@section('scripts')
+  <script src="{{ asset('js/isiUraian.js') }}"></script>
+
+@endsection

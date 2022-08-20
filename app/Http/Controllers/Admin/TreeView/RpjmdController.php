@@ -5,59 +5,103 @@ namespace App\Http\Controllers\Admin\TreeView;
 use App\Http\Controllers\Controller;
 use App\Models\TabelRpjmd;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
+
 
 class RpjmdController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = TabelRpjmd::with(['parent', 'childs.childs.childs'])->get();
 
-        return view('admin.treeview.rpjmd', compact('categories'));
+        if ($request->ajax()) {
+            $query = TabelRpjmd::all();
+            $table = DataTables::of($query);
+
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $crudRoutePart = 'treeview.rpjmd';
+
+                return view('partials.datatablesActions', compact(
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('nama_menu', function ($row) {
+                return $row->nama_menu ? $row->nama_menu : '';
+            });
+            $table->editColumn('parent', function ($row) {
+                return $row->parent ? $row->parent->nama_menu : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+
+
+        $categories = TabelRpjmd::with(['parent', 'childs.childs.childs'])->get();
+        $crudRoutePart = 'rpjmd';
+        $title = 'RPJMD';
+
+        return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_rpjmd,id'],
-            'nama_menu' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string',]
         ]);
 
-        $validated['skpd_id'] = Auth::user()->skpd->id;
+        $request->request->add([
+            'skpd_id' => auth()->user()->skpd_id
+        ]);
 
-        TabelRpjmd::create($validated);
+        TabelRpjmd::create($request->all());
 
-        return back()->with('alert-success', 'Berhasil menambahkan data');
+        return back();
     }
 
-    public function edit($id)
+    public function edit(TabelRpjmd $table)
     {
-        $tabelRpjmd = TabelRpjmd::findOrFail($id);
         $categories = TabelRpjmd::with('parent')->get();
+        $crudRoutePart = 'rpjmd';
+        $title = 'RPJMD';
 
-        return view('admin.treeview.rpjmd_edit', compact('categories', 'tabelRpjmd'));
+        return view('admin.treeview.edit', compact('categories', 'table', 'crudRoutePart', 'title'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, TabelRpjmd $table)
     {
-        $tabelRpjmd = TabelRpjmd::findOrFail($id);
-
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_rpjmd,id'],
-            'nama_menu' => ['required', 'string',  'max:100']
+            'nama_menu' => ['required', 'string',]
         ]);
 
-        $tabelRpjmd->update($validated);
+        $table->update($request->all());
 
-        return back()->with('alert-success', 'Menu treeview RPJMD berhasil diupdate');
+        return back();
     }
 
-    public function destroy($id)
+    public function destroy(TabelRpjmd $table)
     {
-        $tabelRpjmd = TabelRpjmd::findOrFail($id);
-        $tabelRpjmd->delete();
+        $table->delete();
 
-        return back()->with('alert-success', 'Menu treeview RPJMD berhasil dihapus');
+        return back();
+    }
+
+    public function massDestroy(Request $request)
+    {
+        TabelRpjmd::whereIn('id', $request->ids)->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

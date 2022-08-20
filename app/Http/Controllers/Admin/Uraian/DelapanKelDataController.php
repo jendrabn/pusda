@@ -6,73 +6,76 @@ use App\Http\Controllers\Controller;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class DelapanKelDataController extends Controller
 {
-    public function index(Tabel8KelData $tabel8KelData = null)
+    public function index(Tabel8KelData $table = null)
     {
-        $skpd =  Auth::user()->skpd;
-        $categories = Tabel8KelData::with(['childs.childs.childs'])->get();
+        $uraian = null;
 
-        if ($tabel8KelData) {
+        $categories = Tabel8KelData::with(['childs.childs.childs'])->get();
+        $title = '8 Kel. Data';
+        $crudRoutePart = 'delapankeldata';
+
+        if ($table) {
             $uraian = Uraian8KelData::with('childs')
-                ->where('tabel_8keldata_id', $tabel8KelData->id)
+                ->where('tabel_8keldata_id', $table->id)
                 ->whereNull('parent_id')
                 ->orderBy('id')
                 ->get();
-
-            return view('admin.uraian.delapankeldata_create', compact('categories', 'uraian', 'tabel8KelData', 'skpd'));
         }
 
-        return view('admin.uraian.delapankeldata', compact('skpd', 'categories'));
+        return view('admin.uraian.index', compact('table', 'categories', 'title', 'crudRoutePart', 'uraian'));
     }
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-            'skpd_id' => ['nullable', 'numeric', 'exists:skpd,id'],
-            'tabel_8keldata_id' => ['required', 'numeric', 'exists:tabel_8keldata,id'],
+            'uraian' => ['required', 'string'],
+            'table_id' => ['required', 'numeric', 'exists:tabel_8keldata,id'],
         ]);
 
-        Uraian8KelData::create($validated);
+        Uraian8KelData::create([
+            'parent_id' => $request->parent_id,
+            'uraian' => $request->uraian,
+            'skpd_id' => auth()->user()->skpd_id,
+            'tabel_8keldata_id' => $request->table_id
+        ]);
 
-        return back()->with('alert-success', 'Berhasil menambahkan form menu uraian 8 kelompok data');
+        return back();
     }
 
-    public function edit(Tabel8KelData $tabel8KelData, Uraian8KelData $uraian8KelData)
+    public function edit(Tabel8KelData $table, Uraian8KelData $uraian)
     {
-        $skpd = Auth::user()->skpd;
         $categories = Tabel8KelData::all();
-        $uraian = Uraian8KelData::with('childs')
-            ->where('tabel_8keldata_id', $tabel8KelData->id)
+        $uraians = Uraian8KelData::with('childs')
+            ->where('tabel_8keldata_id', $table->id)
             ->whereNull('parent_id')
             ->orderBy('id')
             ->get();
+        $title = '8 Kel. Data';
+        $crudRoutePart = 'delapankeldata';
 
-        return view('admin.uraian.delapankeldata_edit', compact('categories', 'uraian', 'skpd', 'tabel8KelData', 'uraian8KelData'));
+        return view('admin.uraian.edit', compact('table', 'uraian', 'categories',  'uraians',  'title', 'crudRoutePart'));
     }
 
-    public function update(Request $request, Uraian8KelData $uraian8KelData)
+    public function update(Request $request, Uraian8KelData $uraian)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-            'skpd_id' => ['nullable', 'numeric', 'exists:skpd,id'],
-            'tabel_8keldata_id' => ['required', 'numeric', 'exists:tabel_8keldata,id'],
+            'uraian' => ['required', 'string'],
         ]);
 
-        $uraian8KelData->update($validated);
+        $uraian->update($request->all());
 
-        return back()->with('alert-success', 'Form menu Uraian 8 kelompok data berhasil diupdate');
+        return back();
     }
 
-    public function destroy(Uraian8KelData $uraian8KelData)
+    public function destroy(Uraian8KelData $uraian)
     {
-        $uraian8KelData->delete();
+        $uraian->delete();
 
-        return back()->with('alert-success', 'Form menu uraian 8 kelompok data berhasil dihapus');
+        return back();
     }
 }

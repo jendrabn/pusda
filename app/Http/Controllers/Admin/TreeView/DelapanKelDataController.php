@@ -5,59 +5,98 @@ namespace App\Http\Controllers\Admin\TreeView;
 use App\Http\Controllers\Controller;
 use App\Models\Tabel8KelData;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class DelapanKelDataController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Tabel8KelData::with(['parent', 'childs.childs.childs'])->get();
+        if ($request->ajax()) {
+            $query = Tabel8KelData::all();
+            $table = DataTables::of($query);
 
-        return view('admin.treeview.delapankeldata', compact('categories'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $crudRoutePart = 'treeview.delapankeldata';
+
+                return view('partials.datatablesActions', compact(
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('nama_menu', function ($row) {
+                return $row->nama_menu ? $row->nama_menu : '';
+            });
+            $table->editColumn('parent', function ($row) {
+                return $row->parent ? $row->parent->nama_menu : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+
+        $categories = Tabel8KelData::with(['parent', 'childs.childs.childs'])->get();
+        $crudRoutePart = 'delapankeldata';
+        $title = '8 Kel. Data';
+
+        return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-            'nama_menu' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string']
         ]);
 
-        $validated['skpd_id'] = Auth::user()->skpd->id;
+        $request->request->add(['skpd_id' => auth()->user()->skpd_id]);
 
-        Tabel8KelData::create($validated);
+        Tabel8KelData::create($request->all());
 
-        return back()->with('alert-success', 'Berhasil menambahkan menu treeview 8 kelompok data');
+        return back();
     }
 
-    public function edit($id)
+    public function edit(Tabel8KelData $table)
     {
-        $tabel8KelData = Tabel8KelData::findOrFail($id);
         $categories = Tabel8KelData::with('parent')->get();
+        $crudRoutePart = 'delapankeldata';
+        $title = 'Menu 8 Kel. Data';
 
-        return view('admin.treeview.delapankeldata_edit', compact('categories', 'tabel8KelData'));
+        return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Tabel8KelData $table)
     {
-        $tabel8KelData = Tabel8KelData::findOrFail($id);
-
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-            'nama_menu' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string']
         ]);
 
-        $tabel8KelData->update($validated);
+        $table->update($request->all());
 
-        return back()->with('alert-success', 'Menu treeview 8 kelompok data berhasil diupdate');
+        return back();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, Tabel8KelData $table)
     {
-        $tabel8KelData = Tabel8KelData::findOrFail($id);
-        $tabel8KelData->delete();
+        $table->delete();
 
-        return back()->with('alert-success', 'Menu treeview 8 kelompok data berhasil dihapus');
+        return back();
+    }
+
+    public function massDestroy(Request $request)
+    {
+        Tabel8KelData::whereIn('id', $request->ids)->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

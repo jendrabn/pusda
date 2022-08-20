@@ -1,4 +1,4 @@
-@extends('layouts.admin-master2')
+@extends('layouts.admin')
 
 @section('title')
   BPS

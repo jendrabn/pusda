@@ -5,56 +5,98 @@ namespace App\Http\Controllers\Admin\TreeView;
 use App\Http\Controllers\Controller;
 use App\Models\TabelIndikator;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
+
 
 class IndikatorController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
+        if ($request->ajax()) {
+            $query = TabelIndikator::all();
+            $table = DataTables::of($query);
 
-        return view('admin.treeview.indikator', compact('categories'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $crudRoutePart = 'treeview.indikator';
+
+                return view('partials.datatablesActions', compact(
+                    'crudRoutePart',
+                    'row'
+                ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('nama_menu', function ($row) {
+                return $row->nama_menu ? $row->nama_menu : '';
+            });
+            $table->editColumn('parent', function ($row) {
+                return $row->parent ? $row->parent->nama_menu : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder']);
+
+            return $table->make(true);
+        }
+
+
+        $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
+        $crudRoutePart = 'indikator';
+        $title = 'Indikator';
+
+        return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
 
     public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_indikator,id'],
-            'nama_menu' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string']
         ]);
 
-        TabelIndikator::create($validated);
+        TabelIndikator::create($request->all());
 
-        return back()->with('alert-success', 'Berhasil menambahkan menu treeview indikator');
+        return back();
     }
 
-    public function edit($id)
+    public function edit(TabelIndikator $table)
     {
-        $tabelIndikator = TabelIndikator::findOrFail($id);
         $categories = TabelIndikator::with('parent')->get();
+        $crudRoutePart = 'indikator';
+        $title = 'Indikator';
 
-        return view('admin.treeview.indikator_edit', compact('categories', 'tabelIndikator'));
+        return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, TabelIndikator $table)
     {
-        $tabelIndikator = TabelIndikator::findOrFail($id);
-
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-            'nama_menu' => ['required', 'string', 'max:100']
+            'nama_menu' => ['required', 'string']
         ]);
 
-        $tabelIndikator->update($validated);
+        $table->update($request->all());
 
-        return back()->with('alert-success', 'Menu treeview indikator berhasil diupdate');
+        return back();
     }
 
-    public function destroy($id)
+    public function destroy(TabelIndikator $table)
     {
-        $tabelIndikator = TabelIndikator::findOrFail($id);
-        $tabelIndikator->delete();
+        $table->delete();
 
-        return back()->with('alert-success', 'Menu treeview indikator berhasil dihapus');
+        return back();
+    }
+
+    public function massDestroy(Request $request)
+    {
+        TabelIndikator::whereIn('id', $request->ids)->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -10,66 +10,72 @@ use App\Models\UraianBps;
 class BpsController extends Controller
 {
 
-    public function index(TabelBps $tabelBps = null)
+    public function index(TabelBps $table = null)
     {
         $categories = TabelBps::with(['childs.childs.childs'])->get();
+        $title = 'Uraian Form Menu BPS';
+        $crudRoutePart = 'bps';
 
-        if ($tabelBps) {
-            $uraian = UraianBps::with('childs')
-                ->where('tabel_bps_id', $tabelBps->id)
-                ->whereNull('parent_id')
-                ->orderBy('id')
-                ->get();
-
-            return view('admin.uraian.bps_create', compact('categories', 'uraian', 'tabelBps'));
+        if (is_null($table)) {
+            return view('admin.uraian.index', compact('categories', 'title', 'crudRoutePart'));
         }
 
-        return view('admin.uraian.bps', compact('categories'));
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $this->validate($request, [
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-            'tabel_bps_id' => ['required', 'numeric', 'exists:tabel_bps,id'],
-        ]);
-
-        UraianBps::create($validated);
-
-        return back()->with('alert-success', 'Berhasil menambahkan form menu uraian BPS');
-    }
-
-    public function edit(TabelBps $tabelBps, UraianBps $uraianBps)
-    {
-        $categories = TabelBps::all();
         $uraian = UraianBps::with('childs')
-            ->where('tabel_Bps_id', $tabelBps->id)
+            ->where('tabel_bps_id', $table->id)
             ->whereNull('parent_id')
             ->orderBy('id')
             ->get();
 
-        return view('admin.uraian.bps_edit', compact('categories', 'uraian', 'tabelBps', 'uraianBps'));
+        return view('admin.uraian.create', compact('table', 'categories', 'title', 'crudRoutePart', 'uraian',));
     }
 
-    public function update(Request $request, UraianBps $uraianBps)
+    public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-            'skpd_id' => ['nullable', 'numeric', 'exists:skpd,id'],
-            'tabel_Bps_id' => ['required', 'numeric', 'exists:tabel_Bps,id'],
+            'uraian' => ['required', 'string'],
+            'table_id' => ['required', 'numeric', 'exists:tabel_bps,id'],
         ]);
 
-        $uraianBps->update($validated);
+        UraianBps::create([
+            'parent_id' => $request->parent_id,
+            'uraian' => $request->uraian,
+            'tabel_bps_id' => $request->table_id,
+        ]);
 
-        return back()->with('alert-success', 'Form menu uraian BPS berhasil diupdate');
+        return back();
     }
 
-    public function destroy(UraianBps $uraianBps)
+    public function edit(TabelBps $table, UraianBps $uraian)
     {
-        $uraianBps->delete();
+        $categories = TabelBps::all();
+        $uraians = UraianBps::with('childs')
+            ->where('tabel_Bps_id', $table->id)
+            ->whereNull('parent_id')
+            ->orderBy('id')
+            ->get();
+        $title = 'Uraian Form Menu BPS';
+        $crudRoutePart = 'bps';
 
-        return back()->with('alert-success', 'Form menu uraian BPS berhasil dihapus');
+        return view('admin.uraian.edit', compact('table', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
+    }
+
+    public function update(Request $request, UraianBps $uraian)
+    {
+        $request->validate([
+            'parent_id' => ['nullable', 'numeric'],
+            'uraian' => ['required', 'string'],
+        ]);
+
+        $uraian->update($request->all());
+
+        return back();
+    }
+
+    public function destroy(UraianBps $uraian)
+    {
+        $uraian->delete();
+
+        return back();
     }
 }

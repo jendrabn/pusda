@@ -9,67 +9,72 @@ use App\Models\UraianIndikator;
 
 class IndikatorController extends Controller
 {
-    public function index(TabelIndikator $tabelIndikator = null)
+    public function index(TabelIndikator $table = null)
     {
         $categories = TabelIndikator::with(['childs.childs.childs'])->get();
+        $title = 'Uraian Form Menu Indikator';
+        $crudRoutePart = 'indikator';
 
-        if ($tabelIndikator) {
-            $uraian = UraianIndikator::with('childs')
-                ->where('tabel_indikator_id', $tabelIndikator->id)
-                ->whereNull('parent_id')
-                ->orderBy('id')
-                ->get();
-
-            return view('admin.uraian.indikator_create', compact('categories', 'uraian', 'tabelIndikator'));
+        if (is_null($table)) {
+            return view('admin.uraian.index', compact('categories', 'title', 'crudRoutePart'));
         }
 
-        return view('admin.uraian.indikator', compact('categories'));
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $this->validate($request, [
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-            'tabel_indikator_id' => ['required', 'numeric', 'exists:tabel_indikator,id'],
-        ]);
-
-        UraianIndikator::create($validated);
-
-        return back()->with('alert-success', 'Berhasil menambahkan form menu uraian indikator');
-    }
-
-    public function edit(TabelIndikator $tabelIndikator, UraianIndikator $uraianIndikator)
-    {
-        $categories = TabelIndikator::all();
-
         $uraian = UraianIndikator::with('childs')
-            ->where('tabel_indikator_id', $tabelIndikator->id)
+            ->where('tabel_indikator_id', $table->id)
             ->whereNull('parent_id')
             ->orderBy('id')
             ->get();
 
-        return view('admin.uraian.indikator_edit', compact('categories', 'uraian', 'tabelIndikator', 'uraianIndikator'));
+        return view('admin.uraian.create', compact('table', 'categories', 'title', 'crudRoutePart', 'uraian'));
     }
 
-    public function update(Request $request, UraianIndikator $uraianIndikator)
+    public function store(Request $request)
     {
-        $validated = $this->validate($request, [
+        $request->validate([
             'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-
-            'tabel_indikator_id' => ['required', 'numeric', 'exists:tabel_indikator,id'],
+            'uraian' => ['required', 'string'],
+            'table_id' => ['required', 'numeric', 'exists:tabel_indikator,id'],
         ]);
 
-        $uraianIndikator->update($validated);
+        UraianIndikator::create([
+            'parent_id' => $request->parent_id,
+            'uraian' => $request->uraian,
+            'tabel_indikator_id' => $request->table_id,
+        ]);
 
-        return back()->with('alert-success', 'Form menu uraian indikator berhasil diupdate');
+        return back();
     }
 
-    public function destroy(UraianIndikator $uraianIndikator)
+    public function edit(TabelIndikator $table, UraianIndikator $uraian)
     {
-        $uraianIndikator->delete();
+        $categories = TabelIndikator::all();
+        $uraians = UraianIndikator::with('childs')
+            ->where('tabel_indikator_id', $table->id)
+            ->whereNull('parent_id')
+            ->orderBy('id')
+            ->get();
+        $title = 'Uraian Form Menu Indikator';
+        $crudRoutePart = 'indikator';
 
-        return back()->with('alert-success', 'Form menu uraian indikator berhasil dihapus');
+        return view('admin.uraian.indikator_edit', compact('table', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
+    }
+
+    public function update(Request $request, UraianIndikator $uraian)
+    {
+        $request->validate([
+            'parent_id' => ['nullable', 'numeric'],
+            'uraian' => ['required', 'string'],
+        ]);
+
+        $uraian->update($request->all());
+
+        return back();
+    }
+
+    public function destroy(UraianIndikator $uraian)
+    {
+        $uraian->delete();
+
+        return back();
     }
 }
