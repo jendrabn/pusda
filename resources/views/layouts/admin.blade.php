@@ -11,6 +11,7 @@
   <title>@yield('title', 'Home') &mdash; {{ config('app.name') }}</title>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
+
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
     rel="stylesheet" />
@@ -29,7 +30,7 @@
   @yield('styles')
 </head>
 
-<body class="hold-transition sidebar-mini" style="height: auto;">
+<body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light border-bottom">
@@ -43,39 +44,32 @@
     <!-- /.navbar -->
 
     @include('partials.menu')
-    <div class="content-wrapper" style="min-height: 917px;">
+
+    <div class="content-wrapper">
       <!-- Main content -->
-      <section class="content" style="padding-top: 20px">
-        @if (session('message'))
-          <div class="row mb-2">
-            <div class="col-lg-12">
-              <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+      <section class="content pt-3">
+        <div class="container-fluid">
+          @if (session('message'))
+            <div class="row mb-2">
+              <div class="col-lg-12">
+                <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+              </div>
             </div>
-          </div>
-        @endif
-        @if ($errors->count() > 0)
-          <div class="alert alert-danger">
-            <ul class="list-unstyled">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
-        @endif
-        @yield('content')
+          @endif
+          @if ($errors->count() > 0)
+            <div class="alert alert-danger">
+              <ul class="list-unstyled mb-0">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+          @yield('content')
+        </div>
       </section>
       <!-- /.content -->
     </div>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-      <div class="p-3">
-        <h5>Title</h5>
-        <p>Sidebar content</p>
-      </div>
-    </aside>
-    <!-- /.control-sidebar -->
 
     <footer class="main-footer">
       <div class="float-right d-none d-sm-block">

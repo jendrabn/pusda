@@ -3,71 +3,68 @@
 @section('title', 'Menu Treeview ' . $title)
 
 @section('content')
-
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
         <div class="card-header text-uppercase">
-          Tampilan Menu Treeview "{{ $title }}"
+          Tampilan Menu Treeview {{ $title }}
         </div>
-        <div class="card-body">
-          <div class="jstreeMenu overflow-auto">
-            <ul>
-              <li data-jstree='{"opened":true}'>
-                @if ($crudRoutePart === 'delapankeldata')
-                  8 Kelompok Data
-                @elseif ($crudRoutePart === 'rpjmd')
-                  RPJMD
-                @elseif ($crudRoutePart === 'indikator')
-                  Indikator
-                @elseif ($crudRoutePart === 'bps')
-                  BPS
-                @endif
+        <div class="card-body jstreeMenu overflow-auto">
+          <ul>
+            <li data-jstree='{"opened":true}'>
+              @if ($crudRoutePart === 'delapankeldata')
+                8 Kelompok Data
+              @elseif ($crudRoutePart === 'rpjmd')
+                RPJMD
+              @elseif ($crudRoutePart === 'indikator')
+                Indikator
+              @elseif ($crudRoutePart === 'bps')
+                BPS
+              @endif
 
-                @foreach ($categories as $category)
-                  @if ($category->childs->count())
-                    <ul>
-                      @foreach ($category->childs as $child)
-                        <li>
-                          {{ $child->nama_menu }}
-                          @if ($child->childs->count())
-                            <ul>
-                              @foreach ($child->childs as $child)
-                                <li> {{ $child->nama_menu }}
-                                  <ul>
-                                    @if ($child->childs->count())
-                                      @foreach ($child->childs as $child)
-                                        <li> {{ $child->nama_menu }}</li>
-                                      @endforeach
-                                    @endif
-                                  </ul>
-                                </li>
-                              @endforeach
-                            </ul>
-                          @endif
-                        </li>
-                      @endforeach
-                    </ul>
-                  @endif
-              </li>
-              @endforeach
-            </ul>
-          </div>
+              @foreach ($categories as $category)
+                @if ($category->childs->count())
+                  <ul>
+                    @foreach ($category->childs as $child)
+                      <li>
+                        {{ $child->nama_menu }}
+                        @if ($child->childs->count())
+                          <ul>
+                            @foreach ($child->childs as $child)
+                              <li> {{ $child->nama_menu }}
+                                <ul>
+                                  @if ($child->childs->count())
+                                    @foreach ($child->childs as $child)
+                                      <li> {{ $child->nama_menu }}</li>
+                                    @endforeach
+                                  @endif
+                                </ul>
+                              </li>
+                            @endforeach
+                          </ul>
+                        @endif
+                      </li>
+                    @endforeach
+                  </ul>
+                @endif
+            </li>
+            @endforeach
+          </ul>
         </div>
       </div>
     </div>
     <div class="col-lg-6">
       <div class="card">
         <div class="card-header text-uppercase">
-          Tambah Data Menu Treeview "{{ $title }}"
+          Tambah Data Menu Treeview {{ $title }}
         </div>
         <div class="card-body">
           <form action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}" method="POST">
             @csrf
+
             <div class="form-group">
               <label class="required" for="parent_id">Kategori</label>
-              <select name="parent_id" class="form-control select2" id="category">
-                <option value="">Parent</option>
+              <select name="parent_id" class="form-control select2" id="category" style="width: 100%">
                 @foreach ($categories as $category)
                   <option value="{{ $category->id }}">{{ $category->nama_menu }}</option>
                 @endforeach
@@ -92,7 +89,7 @@
 
   <div class="card">
     <div class="card-header text-uppercase">
-      Data Menu Treeview "{{ $title }}"
+      Data Menu Treeview {{ $title }}
     </div>
     <div class="card-body">
       <table class="table table-bordered table-striped table-hover datatable datatable-MenuTreeview">
@@ -194,7 +191,7 @@
         order: [
           [1, 'desc']
         ],
-        pageLength: 25,
+        pageLength: 50,
       };
       let table = $('.datatable-MenuTreeview').DataTable(dtOverrideGlobals);
       $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {

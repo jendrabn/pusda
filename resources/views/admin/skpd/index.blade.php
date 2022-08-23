@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
-
-@section('title', 'SKPD List')
+@section('title', 'SKPD')
 
 @section('content')
   <div style="margin-bottom: 10px;" class="row">

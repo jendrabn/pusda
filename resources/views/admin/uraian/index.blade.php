@@ -1,11 +1,9 @@
 @extends('layouts.admin')
-
 @section('title', 'Uraian Form Menu' . $title)
-
 @section('content')
   <div class="card">
     <div class="card-header text-uppercase">
-      Pilih Menu Treeview "{{ $title }}"
+      Pilih Menu Treeview {{ $title }}
     </div>
     <div class="card-body jstreeMenu overflow-auto">
       <ul>
@@ -57,7 +55,7 @@
   @if ($table)
     <div class="card">
       <div class="card-header text-uppercase">
-        Tambah Data Uraian Form Menu "{{ $table->nama_menu }}"
+        Tambah Data Uraian Form Menu {{ $table->nama_menu }}
       </div>
       <div class="card-body">
         <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store') }}" method="POST">
@@ -66,7 +64,7 @@
 
           <div class="form-group">
             <label class="required" for="parent_id">Kategori</label>
-            <select name="parent_id" class="form-control select2" id="parent_id">
+            <select name="parent_id" class="form-control select2" id="parent_id" style="width: 100%">
               <option value="">Parent</option>
               @foreach ($uraian as $item)
                 <option value="{{ $item->id }}">{{ $item->uraian }}</option>
@@ -86,7 +84,7 @@
 
     <div class="card">
       <div class="card-header text-uppercase">
-        Data Uraian Form "{{ $table->nama_menu }}"
+        Data Uraian Form {{ $table->nama_menu }}
       </div>
       <div class="card-body">
         <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian">
@@ -142,8 +140,6 @@
       </div>
     </div>
   @endif
-
-
 @endsection
 
 @section('scripts')
@@ -151,7 +147,7 @@
   <script>
     $(function() {
       $('.datatable-Uraian').DataTable({
-        pageLength: 25,
+        pageLength: 50,
       });
     });
   </script>

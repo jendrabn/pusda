@@ -12,7 +12,7 @@
 
         <div class="form-group">
           <label class="required" for="parent_id">Kategori</label>
-          <select name="parent_id" class="form-control select2">
+          <select name="parent_id" class="form-control select2" style="width: 100%">
             @foreach ($categories as $category)
               @if ($category->id !== $table->id)
                 <option {{ $table->parent->id == $category->id ? 'selected' : '' }} value="{{ $category->id }}">
@@ -28,7 +28,7 @@
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-danger">Save</button>
+          <button type="submit" class="btn btn-danger">Update</button>
         </div>
 
       </form>

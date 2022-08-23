@@ -81,21 +81,27 @@ class DelapanKelDataController extends Controller
             'nama_menu' => ['required', 'string']
         ]);
 
-        $table->update($request->all());
+        if ($table->id != 1) {
+            $table->update($request->all());
+        }
 
         return back();
     }
 
     public function destroy(Request $request, Tabel8KelData $table)
     {
-        $table->delete();
+        if ($table->id != 1) {
+            $table->delete();
+        }
 
         return back();
     }
 
     public function massDestroy(Request $request)
     {
-        Tabel8KelData::whereIn('id', $request->ids)->delete();
+        $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
+
+        Tabel8KelData::whereIn('id', $ids)->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

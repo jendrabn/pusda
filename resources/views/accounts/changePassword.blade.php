@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
-@section('title', 'Change Password')
+@section('title', 'Ubah Password')
 
 @section('content')
   <div class="card">
-    <div class="card-header">
-      Change Password
+    <div class="card-header text-uppercase">
+      Ubah Password
     </div>
-
     <div class="card-body">
       <form method="POST" action="{{ route('updatePassword') }}">
         @csrf
         @method('PUT')
+
         <div class="form-group">
           <label class="required" for="current_password">Password Sekarang</label>
           <input class="form-control {{ $errors->has('current_password') ? 'is-invalid' : '' }}" type="password"
@@ -19,8 +19,8 @@
           @if ($errors->has('current_password'))
             <span class="text-danger">{{ $errors->first('current_password') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
+
         <div class="form-group">
           <label class="required" for="password">Password</label>
           <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" type="password" name="password"
@@ -28,8 +28,8 @@
           @if ($errors->has('password'))
             <span class="text-danger">{{ $errors->first('password') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
+
         <div class="form-group">
           <label class="required" for="password_confirmation">Konfirmasi Password</label>
           <input class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" type="password"
@@ -37,11 +37,11 @@
           @if ($errors->has('password_confirmation'))
             <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
+
         <div class="form-group">
           <button class="btn btn-danger" type="submit">
-            Save
+            Update
           </button>
         </div>
       </form>

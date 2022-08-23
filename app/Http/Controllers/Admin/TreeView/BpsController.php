@@ -79,21 +79,27 @@ class BpsController extends Controller
             'nama_menu' => ['required', 'string']
         ]);
 
-        $table->update($request->all());
+        if ($table->id != 1) {
+            $table->update($request->all());
+        }
 
         return back();
     }
 
     public function destroy(TabelBps $table)
     {
-        $table->delete();
+        if ($table->id != 1) {
+            $table->delete();
+        }
 
         return back();
     }
 
     public function massDestroy(Request $request)
     {
-        TabelBps::whereIn('id', $request->ids)->delete();
+        $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
+
+        TabelBps::whereIn('id', $ids)->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

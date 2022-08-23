@@ -4,7 +4,7 @@
 
 @section('content')
   <div class="card">
-    <div class="card-header">
+    <div class="card-header text-uppercase">
       Create Users
     </div>
     <div class="card-body">
@@ -40,7 +40,7 @@
         <div class="form-group">
           <label class="required" for="skpd_id">SKPD</label>
           <select class="form-control select2 {{ $errors->has('skpd_id') ? 'is-invalid' : '' }}" name="skpd_id"
-            id="skpd_id">
+            id="skpd_id" style="width: 100%;">
             <option selected>Please Select</option>
             @foreach ($skpd as $id => $name)
               <option value="{{ $id }}" {{ $id == old('skpd_id') ? 'selected' : '' }}>
@@ -56,7 +56,7 @@
         <div class="form-group">
           <label class="required" for="role">Role</label>
           <select class="form-control select2 {{ $errors->has('role') ? 'is-invalid' : '' }}" name="role"
-            id="role">
+            id="role" style="width: 100%;">
             <option selected>Please Select</option>
             @foreach ($roles as $id => $role)
               <option value="{{ $id }}" {{ $id == old('role') ? 'selected' : '' }}>
@@ -89,9 +89,7 @@
 
         <div class="form-group">
           <label for="address">Alamat</label>
-          <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" name="address" id="address">
-            {{ old('address') }}
-        </textarea>
+          <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" name="address" id="address">{{ old('address') }}</textarea>
           @if ($errors->has('address'))
             <span class="text-danger">{{ $errors->first('address') }}</span>
           @endif

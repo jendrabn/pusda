@@ -1,17 +1,17 @@
 @extends('layouts.admin')
 
-@section('title', 'Profile')
+@section('title', 'Profil')
 
 @section('content')
   <div class="card">
-    <div class="card-header">
-      Profile
+    <div class="card-header text-uppercase">
+      Profil
     </div>
-
     <div class="card-body">
       <form method="POST" action="{{ route('updateProfile') }}" enctype="multipart/form-data">
         @method('PUT')
         @csrf
+
         <div class="form-group">
           <label class="required" for="name">Name</label>
           <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
@@ -19,7 +19,6 @@
           @if ($errors->has('name'))
             <span class="text-danger">{{ $errors->first('name') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -29,7 +28,6 @@
           @if ($errors->has('email'))
             <span class="text-danger">{{ $errors->first('email') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -39,7 +37,6 @@
           @if ($errors->has('username'))
             <span class="text-danger">{{ $errors->first('username') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -49,7 +46,6 @@
           @if ($errors->has('password'))
             <span class="text-danger">{{ $errors->first('password') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -59,7 +55,6 @@
           @if ($errors->has('phone'))
             <span class="text-danger">{{ $errors->first('phone') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -68,7 +63,6 @@
           @if ($errors->has('address'))
             <span class="text-danger">{{ $errors->first('address') }}</span>
           @endif
-          <span class="help-block"> </span>
         </div>
 
         <div class="form-group">
@@ -78,13 +72,12 @@
           @if ($errors->has('avatar'))
             <span class="text-danger">{{ $errors->first('avatar') }}</span>
           @endif
-          <span class="help-block"> </span>
+          <span class="help-block">Format JPG, JPEG atau PNG</span>
         </div>
-
 
         <div class="form-group">
           <button class="btn btn-danger" type="submit">
-            Save
+            Update
           </button>
         </div>
       </form>

@@ -15,5 +15,4 @@
 
 @section('scripts')
   <script src="{{ asset('js/isiUraian.js') }}"></script>
-
 @endsection

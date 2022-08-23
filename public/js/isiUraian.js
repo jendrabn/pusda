@@ -1,8 +1,3 @@
-// const $ = require('jquery');
-// const Chart = require('chart.js');
-// const Swal = require('sweetalert2').default;
-// const DataTable = require('datatables.net-bs4');
-
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",

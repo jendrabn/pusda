@@ -1,13 +1,10 @@
 @extends('layouts.admin')
-
 @section('title', 'Edit User')
-
 @section('content')
   <div class="card">
-    <div class="card-header">
+    <div class="card-header text-uppercase">
       Edit User
     </div>
-
     <div class="card-body">
       <form method="POST" action="{{ route('admin.users.update', [$user->id]) }}" enctype="multipart/form-data">
         @method('PUT')
@@ -42,7 +39,7 @@
         <div class="form-group">
           <label class="required" for="skpd_id">SKPD</label>
           <select class="form-control select2 {{ $errors->has('skpd_id') ? 'is-invalid' : '' }}" name="skpd_id"
-            id="skpd_id">
+            id="skpd_id" style="width: 100%">
             <option selected>Please Select</option>
             @foreach ($skpd as $id => $name)
               <option value="{{ $id }}" {{ $id == $user->skpd_id ? 'selected' : '' }}>
@@ -58,7 +55,7 @@
         <div class="form-group">
           <label class="required" for="role">Role</label>
           <select class="form-control select2 {{ $errors->has('role') ? 'is-invalid' : '' }}" name="role"
-            id="role">
+            id="role" style="width: 100%">
             <option selected>Please Select</option>
             @foreach ($roles as $id => $role)
               <option value="{{ $id }}" {{ $id == $user->role ? 'selected' : '' }}>
@@ -99,7 +96,7 @@
 
         <div class="form-group">
           <button class="btn btn-danger" type="submit">
-            Save
+            Update
           </button>
         </div>
       </form>

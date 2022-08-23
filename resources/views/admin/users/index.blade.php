@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title', 'Users')
 @section('content')
   <div style="margin-bottom: 10px;" class="row">
     <div class="col-lg-12">
@@ -10,7 +10,7 @@
   </div>
 
   <div class="card">
-    <div class="card-header">
+    <div class="card-header text-uppercase">
       User List
     </div>
     <div class="card-body">
@@ -119,7 +119,7 @@
         order: [
           [1, 'desc']
         ],
-        pageLength: 25,
+        pageLength: 50,
       };
       let table = $('.datatable-User').DataTable(dtOverrideGlobals);
       $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
