@@ -49,7 +49,7 @@ class RpjmdController extends Controller
 
         $categories = TabelRpjmd::with(['parent', 'childs.childs.childs'])->get();
         $crudRoutePart = 'rpjmd';
-        $title = 'RPJMD';
+        $title = 'Menu Treeview RPJMD';
 
         return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
@@ -74,7 +74,7 @@ class RpjmdController extends Controller
     {
         $categories = TabelRpjmd::with('parent')->get();
         $crudRoutePart = 'rpjmd';
-        $title = 'RPJMD';
+        $title = 'Menu Treeview RPJMD';
 
         return view('admin.treeview.edit', compact('categories', 'table', 'crudRoutePart', 'title'));
     }

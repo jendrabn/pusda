@@ -1,11 +1,9 @@
-@extends('layouts.admin')
-
-@section('title', 'Create User')
+@extends('layouts.admin', ['title' => 'Create User'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
-      Create Users
+    <div class="card-header">
+      Create User
     </div>
     <div class="card-body">
       <form method="POST" action="{{ route('admin.users.store') }}">

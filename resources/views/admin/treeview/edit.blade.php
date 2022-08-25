@@ -1,9 +1,9 @@
 @extends('layouts.admin')
-@section('title', 'Edit ' . $title)
+
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
-      Edit Menu Treeview {{ $title }}
+    <div class="card-header ">
+      Edit {{ $title }}
     </div>
     <div class="card-body">
       <form action="{{ route('admin.treeview.' . $crudRoutePart . '.update', $table->id) }}" method="POST">

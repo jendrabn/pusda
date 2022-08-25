@@ -1,10 +1,8 @@
-@extends('layouts.admin')
-
-@section('title', 'Create SKPD')
+@extends('layouts.admin', ['title' => 'Create SKPD])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Create SKPD
     </div>
 

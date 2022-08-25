@@ -48,7 +48,7 @@ class IndikatorController extends Controller
 
         $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
         $crudRoutePart = 'indikator';
-        $title = 'Indikator';
+        $title = 'Menu Treeview Indikator';
 
         return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
@@ -69,7 +69,7 @@ class IndikatorController extends Controller
     {
         $categories = TabelIndikator::with('parent')->get();
         $crudRoutePart = 'indikator';
-        $title = 'Indikator';
+        $title = 'Menu Treeview Indikator';
 
         return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
     }

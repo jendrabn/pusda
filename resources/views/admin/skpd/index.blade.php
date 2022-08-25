@@ -1,12 +1,10 @@
-@extends('layouts.admin')
-
-@section('title', 'SKPD')
+@extends('layouts.admin', ['title' => 'SKPD'])
 
 @section('content')
   <div style="margin-bottom: 10px;" class="row">
     <div class="col-lg-12">
       <a class="btn btn-success" href="{{ route('admin.skpd.create') }}">
-        Add SKPD
+        <i class="fa fa-plus"></i> Add SKPD
       </a>
     </div>
   </div>
@@ -16,27 +14,15 @@
     </div>
 
     <div class="card-body">
-      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-skpd">
+      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Skpd">
         <thead>
           <tr>
-            <th width="10">
-
-            </th>
-            <th>
-              ID
-            </th>
-            <th>
-              Nama
-            </th>
-            <th>
-              Singkatan
-            </th>
-            <th>
-              Kategori
-            </th>
-            <th>
-              &nbsp;
-            </th>
+            <th width="10"></th>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Singkatan</th>
+            <th>Kategori</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
       </table>
@@ -48,9 +34,9 @@
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-      let deleteButtonTrans = 'Delete selected';
+
       let deleteButton = {
-        text: deleteButtonTrans,
+        text: 'Delete selected',
         url: "{{ route('admin.skpd.massDestroy') }}",
         className: 'btn-danger',
         action: function(e, dt, node, config) {
@@ -122,9 +108,9 @@
         order: [
           [1, 'desc']
         ],
-        pageLength: 25,
+        pageLength: 50,
       };
-      let table = $('.datatable-skpd').DataTable(dtOverrideGlobals);
+      let table = $('.datatable-Skpd').DataTable(dtOverrideGlobals);
       $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
         $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

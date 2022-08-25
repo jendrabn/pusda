@@ -1,7 +1,4 @@
-@extends('layouts.admin')
-
-@section('title', 'Dashboard')
+@extends('layouts.admin', ['title' => 'Dashboard'])
 
 @section('content')
-
 @endsection

@@ -1,8 +1,8 @@
 @extends('layouts.admin')
-@section('title', 'Uraian Form Menu' . $title)
+
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Pilih Menu Treeview {{ $title }}
     </div>
     <div class="card-body jstreeMenu overflow-auto">
@@ -54,8 +54,8 @@
 
   @if ($table)
     <div class="card">
-      <div class="card-header text-uppercase">
-        Tambah Data Uraian Form Menu {{ $table->nama_menu }}
+      <div class="card-header ">
+        Tambah {{ $table->nama_menu }}
       </div>
       <div class="card-body">
         <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store') }}" method="POST">
@@ -83,8 +83,8 @@
     </div>
 
     <div class="card">
-      <div class="card-header text-uppercase">
-        Data Uraian Form {{ $table->nama_menu }}
+      <div class="card-header ">
+        Uraian Form {{ $table->nama_menu }} List
       </div>
       <div class="card-body">
         <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian">

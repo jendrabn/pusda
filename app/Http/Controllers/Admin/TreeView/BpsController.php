@@ -46,7 +46,7 @@ class BpsController extends Controller
 
         $categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
         $crudRoutePart = 'bps';
-        $title = 'BPS';
+        $title = 'Menu Treeview BPS';
 
         return view('admin.treeview.index', compact('categories', 'crudRoutePart', 'title'));
     }
@@ -67,7 +67,7 @@ class BpsController extends Controller
     {
         $categories = TabelBps::with('parent')->get();
         $crudRoutePart = 'bps';
-        $title = 'BPS';
+        $title = 'Menu Treeview BPS';
 
         return view('admin.treeview.edit', compact('table', 'categories', 'crudRoutePart', 'title'));
     }

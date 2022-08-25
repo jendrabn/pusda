@@ -1,10 +1,8 @@
-@extends('layouts.admin')
-
-@section('title', 'Profil')
+@extends('layouts.admin', ['title' => 'Profil'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Profil
     </div>
     <div class="card-body">

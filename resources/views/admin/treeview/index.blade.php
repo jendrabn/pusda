@@ -1,13 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Menu Treeview ' . $title)
-
 @section('content')
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
-        <div class="card-header text-uppercase">
-          Tampilan Menu Treeview {{ $title }}
+        <div class="card-header ">
+          Tampilan {{ $title }}
         </div>
         <div class="card-body jstreeMenu overflow-auto">
           <ul>
@@ -55,7 +53,7 @@
     </div>
     <div class="col-lg-6">
       <div class="card">
-        <div class="card-header text-uppercase">
+        <div class="card-header ">
           Tambah Data Menu Treeview {{ $title }}
         </div>
         <div class="card-body">
@@ -88,28 +86,18 @@
   </div>
 
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Data Menu Treeview {{ $title }}
     </div>
     <div class="card-body">
       <table class="table table-bordered table-striped table-hover datatable datatable-MenuTreeview">
         <thead>
           <tr>
-            <th width="10">
-
-            </th>
-            <th>
-              ID
-            </th>
-            <th>
-              Nama Menu
-            </th>
-            <th>
-              Parent
-            </th>
-            <th>
-              &nbsp;
-            </th>
+            <th width="10"></th>
+            <th>ID</th>
+            <th>Nama Menu</th>
+            <th>Parent</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
       </table>
@@ -122,9 +110,8 @@
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-      let deleteButtonTrans = 'Delete selected';
       let deleteButton = {
-        text: deleteButtonTrans,
+        text: 'Delete selected',
         url: "{{ route('admin.treeview.' . $crudRoutePart . '.massDestroy') }}",
         className: 'btn-danger',
         action: function(e, dt, node, config) {

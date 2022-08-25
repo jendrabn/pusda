@@ -1,44 +1,24 @@
-@extends('layouts.admin')
-
-@section('title', 'Audit Logs')
+@extends('layouts.admin', ['title' => 'Audit Logs'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Audit Log List
     </div>
 
     <div class="card-body">
-      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog">
+      <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog">
         <thead>
           <tr>
-            <th width="10">
-
-            </th>
-            <th>
-              ID
-            </th>
-            <th>
-              Description
-            </th>
-            <th>
-              Subject ID
-            </th>
-            <th>
-              Subject Type
-            </th>
-            <th>
-              User ID
-            </th>
-            <th>
-              Host
-            </th>
-            <th>
-              Created at
-            </th>
-            <th>
-              &nbsp;
-            </th>
+            <th width="10"></th>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Subject ID</th>
+            <th>Subject Type</th>
+            <th>User ID</th>
+            <th>Host</th>
+            <th>Created at</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
       </table>

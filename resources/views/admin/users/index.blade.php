@@ -1,40 +1,33 @@
-@extends('layouts.admin')
-@section('title', 'Users')
+@extends('layouts.admin', ['title' => 'Users'])
+
 @section('content')
   <div style="margin-bottom: 10px;" class="row">
     <div class="col-lg-12">
       <a class="btn btn-success" href="{{ route('admin.users.create') }}">
-        Add User
+        <i class="fa fa-plus"></i> Add User
       </a>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header">
       User List
     </div>
     <div class="card-body">
       <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
         <thead>
           <tr>
-            <th width="10">
-
-            </th>
-            <th>
-              ID
-            </th>
-            <th>
-              Name
-            </th>
-            <th>
-              Email
-            </th>
-            <th>
-              Role
-            </th>
-            <th>
-              &nbsp;
-            </th>
+            <th width="10"></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>SKPD</th>
+            <th>Role</th>
+            <th>Avatar</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
       </table>
@@ -46,9 +39,9 @@
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-      let deleteButtonTrans = 'Delete selected';
+
       let deleteButton = {
-        text: deleteButtonTrans,
+        text: 'Delete selected',
         url: "{{ route('admin.users.massDestroy') }}",
         className: 'btn-danger',
         action: function(e, dt, node, config) {
@@ -81,6 +74,7 @@
           }
         }
       }
+
       dtButtons.push(deleteButton)
 
       let dtOverrideGlobals = {
@@ -103,12 +97,37 @@
             name: 'name'
           },
           {
+            data: 'username',
+            name: 'username'
+          },
+          {
             data: 'email',
             name: 'email'
           },
           {
+            data: 'phone',
+            name: 'phone',
+            visible: false
+          },
+          {
+            data: 'address',
+            name: 'address',
+            visible: false
+          },
+          {
+            data: 'skpd',
+            name: 'skpd.nama',
+          },
+          {
             data: 'role',
             name: 'role'
+          },
+          {
+            data: 'avatar',
+            name: 'avatar',
+            sortable: false,
+            searchable: false,
+            visible: false
           },
           {
             data: 'actions',
@@ -121,6 +140,7 @@
         ],
         pageLength: 50,
       };
+
       let table = $('.datatable-User').DataTable(dtOverrideGlobals);
       $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
         $($.fn.dataTable.tables(true)).DataTable()
@@ -134,7 +154,8 @@
         table.columns(":visible").every(function(colIdx) {
           visibleColumnsIndexes.push(colIdx);
         });
-      })
+      });
+
     });
   </script>
 @endsection

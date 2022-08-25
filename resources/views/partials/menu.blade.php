@@ -89,8 +89,8 @@ if ($role == 1) {
             <ul class="nav nav-treeview">
               @foreach ($skpdCategories as $id => $name)
                 <li class="nav-item">
-                  <a href="{{ route('admin.delapankeldata.index', $id) }}"
-                    class="nav-link {{ request()->is('admin/delapankeldata/' . $id) ? 'active' : '' }}">
+                  <a href="{{ route('admin.delapankeldata.category', $id) }}"
+                    class="nav-link {{ request()->is('admin/delapankeldata/category/' . $id) ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ $name }}</p>
                   </a>

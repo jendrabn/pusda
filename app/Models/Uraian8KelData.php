@@ -17,6 +17,7 @@ class Uraian8KelData extends Model
      */
     protected $table = 'uraian_8keldata';
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -35,18 +36,6 @@ class Uraian8KelData extends Model
     protected $casts = [
         'ketersediaan_data' => 'boolean',
     ];
-
-    public function getKetersediaanDataTextAttribute()
-    {
-        $ketersediaanData = $this->ketersediaan_data;
-        if ($ketersediaanData === true) {
-            return 'Tersedia';
-        } else if ($ketersediaanData === false) {
-            return 'Tidak Tersedia';
-        } else {
-            return '';
-        }
-    }
 
     public function parent()
     {

@@ -1,10 +1,8 @@
-@extends('layouts.admin')
-
-@section('title', 'Audit Log')
+@extends('layouts.admin', ['title' => 'Show Audit Logs'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Show Audit Logs
     </div>
 

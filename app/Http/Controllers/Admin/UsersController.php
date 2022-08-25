@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = User::all();
+            $query = User::with('skpd')->select('users.*');
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -37,15 +37,31 @@ class UsersController extends Controller
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : '';
             });
+            $table->editColumn('username', function ($row) {
+                return $row->username ? $row->username : '';
+            });
             $table->editColumn('email', function ($row) {
                 return $row->email ? $row->email : '';
+            });
+            $table->editColumn('phone', function ($row) {
+                return $row->phone ? $row->phone : '';
+            });
+            $table->editColumn('address', function ($row) {
+                return $row->address ? $row->address : '';
+            });
+            $table->editColumn('skpd', function ($row) {
+                return $row->skpd ? $row->skpd->nama : '';
+            });
+
+            $table->editColumn('avatar', function ($row) {
+                return  $row->avatar ? '<img src="' . $row->avatar_url . '" width="50px" height="50px">' : '';
             });
 
             $table->editColumn('role', function ($row) {
                 return sprintf('<span class="label label-info label-many">%s</span>', $row->role_name);
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'role']);
+            $table->rawColumns(['actions', 'placeholder', 'role', 'avatar']);
 
             return $table->make(true);
         }

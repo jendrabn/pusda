@@ -1,10 +1,8 @@
-@extends('layouts.admin')
-
-@section('title', 'Ubah Password')
+@extends('layouts.admin', ['title' => 'Ubah Password'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
+    <div class="card-header ">
       Ubah Password
     </div>
     <div class="card-body">

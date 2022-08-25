@@ -32,7 +32,9 @@ class AccountController extends Controller
         $user->update($request->except('avatar'));
 
         if ($request->hasFile('avatar')) {
-            Storage::disk('public')->delete($user->avatar);
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
             $file = $request->file('avatar');
             $fileName = $user->username . '-' . $file->getClientOriginalName();
 

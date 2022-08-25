@@ -14,7 +14,7 @@ class DelapanKelDataController extends Controller
         $uraian = null;
 
         $categories = Tabel8KelData::with(['childs.childs.childs'])->get();
-        $title = '8 Kel. Data';
+        $title = 'Uraian Form Menu 8 Kelompok Data';
         $crudRoutePart = 'delapankeldata';
 
         if ($table) {
@@ -54,7 +54,7 @@ class DelapanKelDataController extends Controller
             ->whereNull('parent_id')
             ->orderBy('id')
             ->get();
-        $title = '8 Kel. Data';
+        $title = 'Uraian Form Menu 8 Kelompok Data';
         $crudRoutePart = 'delapankeldata';
 
         return view('admin.uraian.edit', compact('table', 'uraian', 'categories',  'uraians',  'title', 'crudRoutePart'));

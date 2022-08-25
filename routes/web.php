@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes([
     'register' => false,
     'verify' => false,
+    'reset' => false
 ]);
 
 Route::middleware('visitor')->group(function () {
@@ -153,16 +154,44 @@ Route::group(['middleware' => ['auth']], function () {
 
         // 8 Kel. Data
         Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => App\Http\Controllers\Admin\DelapanKelDataController::class], function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{tabel}', 'input')->name('input');
+            Route::get('/category/{category}', 'category')->name('category');
+            Route::get('/skpd/{skpd}', 'skpd')->name('skpd');
+
+            Route::put('/sumber-data/{uraian?}', 'updateSumberData')->name('updateSumberData');
+            Route::get('/{uraian}/edit', 'edit')->name('edit');
+            Route::get('/graphic/{uraian?}', 'graphic')->name('graphic');
+            Route::put('/{uraian}', 'update')->name('update_isi_uraian');
+            Route::delete('/{uraian}', 'destroy')->name('destroy');
+
+
+
+
+            // Fitur
+            Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+            // File
+            Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+            Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+            Route::get('/files/download/{file}', 'downloadFile')->name('files.download');
+            // Sumber Data
+            // Tahun
+            Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
+            Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
+        });
+
+        // 8 Kel. Data
+        Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => App\Http\Controllers\Admin\DelapanKelDataController::class], function () {
             Route::get('/{skpdCategory?}', 'index')->name('index');
             Route::get('/skpd/{skpd}', 'skpd')->name('skpd');
-            Route::get('/input/{tabel8KelData}/{skpd?}', 'input')->name('input');
-            Route::get('/{uraian8KelData}/edit', 'edit')->name('edit');
+            Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+            Route::get('/{uraian}/edit', 'edit')->name('edit');
             Route::put('/', 'update')->name('update');
             Route::delete('/{uraian8KelData}', 'destroy')->name('destroy');
             Route::put('/fitur/{fitur8KelData}', 'updateFitur')->name('update_fitur');
-            Route::post('/files/{tabel8KelData}', 'storeFile')->name('files.store');
-            Route::delete('/files/{file8KelData}', 'destroyFile')->name('files.destroy');
-            Route::get('/files/download/{file8KelData}', 'downloadFile')->name('files.download');
+            Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+            Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+            Route::get('/files/download/{file}', 'downloadFile')->name('files.download');
             Route::put('/sumber_data/{uraian8KelData}', 'updateSumberData');
             Route::post('/tahun/{tabel8KelData}', 'storeTahun')->name('store_tahun');
             Route::delete('/tahun/{tabel8KelData}/{tahun}', 'destroyTahun')->name('destroy_tahun');

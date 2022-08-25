@@ -1,11 +1,9 @@
-@extends('layouts.admin')
-
-@section('title', ' Edit Data Uraian Form Menu ' . $title)
+@extends('layouts.admin', ['title' => 'Edit ' . $title])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
-      Edit Data Uraian Form Menu {{ $table->nama_menu }}
+    <div class="card-header ">
+      Edit {{ $table->nama_menu }}
     </div>
     <div class="card-body">
       <form action="{{ route('admin.uraian.' . $crudRoutePart . '.update', $uraian->id) }}" method="POST">

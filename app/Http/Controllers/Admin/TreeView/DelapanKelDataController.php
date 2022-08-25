@@ -46,7 +46,7 @@ class DelapanKelDataController extends Controller
 
         $categories = Tabel8KelData::with(['parent', 'childs.childs.childs'])->get();
         $crudRoutePart = 'delapankeldata';
-        $title = '8 Kel. Data';
+        $title = 'Menu Treeview 8 Kel. Data';
 
         return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
     }
@@ -69,7 +69,7 @@ class DelapanKelDataController extends Controller
     {
         $categories = Tabel8KelData::with('parent')->get();
         $crudRoutePart = 'delapankeldata';
-        $title = 'Menu 8 Kel. Data';
+        $title = 'Menu Menu Treeview 8 Kel. Data';
 
         return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
     }

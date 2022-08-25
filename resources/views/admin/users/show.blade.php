@@ -1,12 +1,9 @@
-@extends('layouts.admin')
-
-
-@section('title', 'Show User')
+@extends('layouts.admin', ['title' => 'Show User'])
 
 @section('content')
   <div class="card">
-    <div class="card-header text-uppercase">
-      Show Users
+    <div class="card-header">
+      Show User
     </div>
 
     <div class="card-body">
