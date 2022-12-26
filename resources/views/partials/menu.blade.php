@@ -1,41 +1,50 @@
 @php
-$skpdCategories = \App\Models\SkpdCategory::pluck('name', 'id');
-$role = auth()->user()->role;
-$dashboardRoute;
+  $skpdCategories = \App\Models\SkpdCategory::pluck('name', 'id');
+  $role = auth()->user()->role;
+  $dashboardRoute;
 
-if ($role == 1) {
-    $dashboardRoute = route('admin.dashboard');
-} elseif ($role == 2) {
-    $dashboardRoute = route('admin-skpd.dashboard');
-}
+  if ($role == 1) {
+      $dashboardRoute = route('admin.dashboard');
+  } elseif ($role == 2) {
+      $dashboardRoute = route('admin-skpd.dashboard');
+  }
 @endphp
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="{{ $dashboardRoute }}" class="brand-link">
+  <a class="brand-link"
+     href="{{ $dashboardRoute }}">
     <span class="brand-text font-weight-light">
-      <img src="{{ asset('img/logo.png') }}" alt="Logo" class="img-fluid">
+      <img class="img-fluid"
+           src="{{ asset('img/logo.png') }}"
+           alt="Logo">
     </span>
   </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel d-flex mt-3 mb-3 pb-3">
       <div class="image">
-        <img src="{{ auth()->user()->avatar_url }}" class="img-circle elevation-2" alt="User Image">
+        <img class="img-circle elevation-2"
+             src="{{ auth()->user()->avatarUrl }}"
+             alt="User Image">
       </div>
       <div class="info">
-        <a href="{{ route('profile') }}" class="d-block">{{ auth()->user()->name }}</a>
+        <a class="d-block"
+           href="{{ route('profile') }}">{{ auth()->user()->name }}</a>
       </div>
     </div>
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview"
+          data-accordion="false"
+          role="menu">
         <li class="nav-item border-bottom mb-2">
-          <a href="{{ route('admin.dashboard') }}"
-            class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+             href="{{ route('admin.dashboard') }}">
             <i class="fas fa-tachometer-alt nav-icon"></i>
             <p>Dashboard</p>
           </a>
@@ -43,15 +52,16 @@ if ($role == 1) {
 
         @if ($role == 1)
           <li class="nav-item">
-            <a href="{{ route('admin.bps.index') }}"
-              class="nav-link {{ request()->routeIs('admin.bps.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.bps.*') ? 'active' : '' }}"
+               href="{{ route('admin.bps.index') }}">
               <i class="fas fa-th-large nav-icon"></i>
               <p>BPS</p>
             </a>
           </li>
 
           <li class="nav-item {{ request()->routeIs('admin.rpjmd.*') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ request()->routeIs('admin.rpjmd.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.rpjmd.*') ? 'active' : '' }}"
+               href="#">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 RPJMD
@@ -61,16 +71,16 @@ if ($role == 1) {
             <ul class="nav nav-treeview">
               @foreach ($skpdCategories as $id => $name)
                 <li class="nav-item">
-                  <a href="{{ route('admin.rpjmd.index', $id) }}"
-                    class="nav-link {{ request()->is('admin/rpjmd/' . $id) ? 'active' : '' }}">
+                  <a class="nav-link {{ request()->is('admin/rpjmd/' . $id) ? 'active' : '' }}"
+                     href="{{ route('admin.rpjmd.index', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ $name }}</p>
                   </a>
                 </li>
               @endforeach
               <li class="nav-item">
-                <a href="{{ route('admin.rpjmd.index') }}"
-                  class="nav-link {{ request()->is('admin/rpjmd') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->is('admin/rpjmd') ? 'active' : '' }}"
+                   href="{{ route('admin.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>RPJMD</p>
                 </a>
@@ -79,7 +89,8 @@ if ($role == 1) {
           </li>
 
           <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ request()->routeIs('admin.delapankeldata.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.delapankeldata.*') ? 'active' : '' }}"
+               href="#">
               <i class="nav-icon fas fa-book"></i>
               <p>
                 8 Kel. Data
@@ -89,16 +100,16 @@ if ($role == 1) {
             <ul class="nav nav-treeview">
               @foreach ($skpdCategories as $id => $name)
                 <li class="nav-item">
-                  <a href="{{ route('admin.delapankeldata.category', $id) }}"
-                    class="nav-link {{ request()->is('admin/delapankeldata/category/' . $id) ? 'active' : '' }}">
+                  <a class="nav-link {{ request()->is('admin/delapankeldata/category/' . $id) ? 'active' : '' }}"
+                     href="{{ route('admin.delapankeldata.category', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ $name }}</p>
                   </a>
                 </li>
               @endforeach
               <li class="nav-item">
-                <a href="{{ route('admin.delapankeldata.index') }}"
-                  class="nav-link {{ request()->is('admin/delapankeldata') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->is('admin/delapankeldata') ? 'active' : '' }}"
+                   href="{{ route('admin.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>8 Kel. Data</p>
                 </a>
@@ -107,25 +118,25 @@ if ($role == 1) {
           </li>
 
           <li class="nav-item border-bottom mb-2">
-            <a href="{{ route('admin.indikator.index') }}"
-              class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}"
+               href="{{ route('admin.indikator.index') }}">
               <i class="fas fa-layer-group nav-icon"></i>
               <p>Indikator</p>
             </a>
           </li>
 
           <li class="nav-item">
-            <a href="{{ route('admin.users.index') }}"
-              class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+               href="{{ route('admin.users.index') }}">
               <i class="fas fa-users nav-icon"></i>
               <p>Users</p>
             </a>
           </li>
 
           <li
-            class="nav-item {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'menu-open' : '' }}">
-            <a href="#"
-              class="nav-link {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'active' : '' }}">
+              class="nav-item {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'menu-open' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'active' : '' }}"
+               href="#">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Master Tabel
@@ -134,57 +145,57 @@ if ($role == 1) {
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('admin.treeview.delapankeldata.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.treeview.delapankeldata.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.treeview.delapankeldata.*') ? 'active' : '' }}"
+                   href="{{ route('admin.treeview.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu 8 Kel. Data</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.treeview.rpjmd.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.treeview.rpjmd.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.treeview.rpjmd.*') ? 'active' : '' }}"
+                   href="{{ route('admin.treeview.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu RPJMD</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.treeview.indikator.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.treeview.indikator.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.treeview.indikator.*') ? 'active' : '' }}"
+                   href="{{ route('admin.treeview.indikator.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu Indikator</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.treeview.bps.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.treeview.bps.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.treeview.bps.*') ? 'active' : '' }}"
+                   href="{{ route('admin.treeview.bps.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu BPS</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.uraian.delapankeldata.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.uraian.delapankeldata.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.uraian.delapankeldata.*') ? 'active' : '' }}"
+                   href="{{ route('admin.uraian.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form 8 Kel. Data</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.uraian.rpjmd.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.uraian.rpjmd.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.uraian.rpjmd.*') ? 'active' : '' }}"
+                   href="{{ route('admin.uraian.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form RPJMD</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.uraian.indikator.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.uraian.indikator.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.uraian.indikator.*') ? 'active' : '' }}"
+                   href="{{ route('admin.uraian.indikator.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form Indikator</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin.uraian.bps.index') }}"
-                  class="nav-link {{ request()->routeIs('admin.uraian.bps.*') ? 'active' : '' }}">
+                <a class="nav-link {{ request()->routeIs('admin.uraian.bps.*') ? 'active' : '' }}"
+                   href="{{ route('admin.uraian.bps.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form BPS</p>
                 </a>
@@ -193,16 +204,16 @@ if ($role == 1) {
           </li>
 
           <li class="nav-item border-bottom mb-2">
-            <a href="{{ route('admin.skpd.index') }}"
-              class="nav-link {{ request()->routeIs('admin.skpd.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('admin.skpd.*') ? 'active' : '' }}"
+               href="{{ route('admin.skpd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
               <p>SKPD</p>
             </a>
           </li>
 
-          <li class="nav-item  border-bottom mb-2">
-            <a href="{{ route('admin.audit-logs.index') }}"
-              class="nav-link {{ request()->is('admin/audit-logs') || request()->is('admin/audit-logs/*') ? 'active' : '' }}">
+          <li class="nav-item border-bottom mb-2">
+            <a class="nav-link {{ request()->is('admin/audit-logs') || request()->is('admin/audit-logs/*') ? 'active' : '' }}"
+               href="{{ route('admin.audit-logs.index') }}">
               <i class="nav-icon fas fa-file-alt">
               </i>
               <p>
@@ -214,15 +225,15 @@ if ($role == 1) {
 
         @if ($role == 2)
           <li class="nav-item">
-            <a href="{{ route('skpd.delapankeldata.index') }}"
-              class="nav-link {{ request()->routeIs('skpd.delapankeldata.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('skpd.delapankeldata.*') ? 'active' : '' }}"
+               href="{{ route('skpd.delapankeldata.index') }}">
               <i class="fas fa-book nav-icon"></i>
               <p>8 Kel. Data</p>
             </a>
           </li>
           <li class="nav-item border-bottom mb-2">
-            <a href="{{ route('skpd.rpjmd.index') }}"
-              class="nav-link {{ request()->routeIs('skpd.rpjmd.*') ? 'active' : '' }}">
+            <a class="nav-link {{ request()->routeIs('skpd.rpjmd.*') ? 'active' : '' }}"
+               href="{{ route('skpd.rpjmd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
               <p>RPJMD</p>
             </a>
@@ -230,21 +241,16 @@ if ($role == 1) {
         @endif
 
         <li class="nav-item">
-          <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
+          <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}"
+             href="{{ route('profile') }}">
             <i class="fas fa-user nav-icon"></i>
             <p>Profil</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('changePassword') }}"
-            class="nav-link {{ request()->routeIs('changePassword') ? 'active' : '' }}">
-            <i class="fas fa-key nav-icon"></i>
-            <p>Ubah Password</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link"
-            onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+          <a class="nav-link"
+             href="#"
+             onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
             <p>
               <i class="fas fa-sign-out-alt nav-icon">
               </i>

@@ -86,7 +86,7 @@
                     <td style="max-width: 200px;">
                       <select name="sumber_data" class="form-control sumber__data" data-id="{{ $child->id }}">
                         <option selected disabled hidden>Please Select</option>
-                        @foreach ($allSkpd as $id => $singkatan)
+                        @foreach ($skpds as $id => $singkatan)
                           <option @if ($id == $child->skpd_id) selected @endif value="{{ $id }}">
                             {{ $singkatan }}
                           </option>

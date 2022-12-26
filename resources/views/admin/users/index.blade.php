@@ -1,20 +1,22 @@
 @extends('layouts.admin', ['title' => 'Users'])
 
 @section('content')
-  <div style="margin-bottom: 10px;" class="row">
+  <div class="row"
+       style="margin-bottom: 10px;">
     <div class="col-lg-12">
-      <a class="btn btn-success" href="{{ route('admin.users.create') }}">
-        <i class="fa fa-plus"></i> Add User
+      <a class="btn btn-success"
+         href="{{ route('admin.users.create') }}">
+        Tambah User
       </a>
     </div>
   </div>
 
   <div class="card">
     <div class="card-header">
-      User List
+      Daftar User
     </div>
     <div class="card-body">
-      <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-User">
+      <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-User table">
         <thead>
           <tr>
             <th width="10"></th>

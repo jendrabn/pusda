@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -64,12 +65,10 @@ Route::group(['prefix' => 'exports', 'as' => 'exports.', 'controller' => \App\Ht
 
 Route::group(['middleware' => ['auth']], function () {
 
-    // Account
-    Route::group(['controller' => \App\Http\Controllers\AccountController::class], function () {
-        Route::get('/profile', 'profile')->name('profile');
-        Route::put('/profile', 'updateProfile')->name('updateProfile');
-        Route::get('/change-password', 'password')->name('changePassword');
-        Route::put('/change-password', 'updatePassword')->name('updatePassword');
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'index')->name('profile');
+        Route::put('/profile/profile-information', 'updateProfileInformation')->name('update_profile_information');
+        Route::put('/profile/password', 'updatePassword')->name('update_password');
     });
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['role:1']], function () {

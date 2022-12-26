@@ -10,12 +10,14 @@ use App\Models\Skpd;
 use App\Models\SkpdCategory;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
+use App\Traits\DelapanKelData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class DelapanKelDataController extends Controller
 {
+    use DelapanKelData;
 
     public function index(Request $request)
     {
@@ -40,7 +42,6 @@ class DelapanKelDataController extends Controller
         return view('admin.isiUraian.category', compact('category', 'title', 'crudRoutePart'));
     }
 
-
     public function input(Request $request,  Tabel8KelData $tabel)
     {
         $title = '8 Kelompok Data';
@@ -53,14 +54,13 @@ class DelapanKelDataController extends Controller
             ->groupBy('tabel_id')
             ->get();
 
-        $uraians = Uraian8KelData::getUraianByTableId($tabel->id);
+        $uraians = $this->getUraian($tabel->id);
         $fitur = Fitur8KelData::getFiturByTableId($tabel->id);
         $files = $tabel->file8KelData;
         $tahuns = $this->tahunList($tabel->id);
-        $allSkpd = Skpd::all()->pluck('singkatan', 'id');
+        $skpds = Skpd::pluck('singkatan', 'id');
 
-
-        return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'allSkpd', 'tabelIds', 'title', 'crudRoutePart'));
+        return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds', 'title', 'crudRoutePart'));
     }
 
     public function edit(Request $request, Uraian8KelData $uraian)
@@ -80,7 +80,6 @@ class DelapanKelDataController extends Controller
 
     public function update(Request $request, Uraian8KelData $uraian)
     {
-
         $tahuns = $uraian->isi8KelData()
             ->select('tahun')
             ->get()
@@ -211,19 +210,6 @@ class DelapanKelDataController extends Controller
         });
 
         return back();
-    }
-
-    private function tahunList($tabelId)
-    {
-        return
-            Isi8KelData::select('tahun')
-            ->whereHas('uraian8KelData', function ($q) use ($tabelId) {
-                $q->where('tabel_8keldata_id', '=', $tabelId);
-            })
-            ->groupBy('tahun')
-            ->orderBy('tahun')
-            ->get()
-            ->map(fn ($tahun) => $tahun->tahun);
     }
 
     public function graphic(Request $request, Uraian8KelData $uraian)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Auditable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,23 +47,48 @@ class User extends Authenticatable
         return $this->belongsTo(Skpd::class, 'skpd_id');
     }
 
-    public function getAvatarUrlAttribute()
+    public function avatarUrl(): Attribute
     {
-        $avatar = $this->attributes['avatar'];
+        return Attribute::make(get: function () {
+            // dd(Storage::disk('public')->exists('public/' . $this->attributes['avatar']));
+            if ($this->attributes['avatar']) {
+                return Storage::url($this->attributes['avatar']);
+            }
 
-        return $avatar && Storage::disk('public')->exists($avatar) ?
-            Storage::url($avatar) : asset('img/avatar-default.png');
+            return  asset('img/avatar-default.png');
+        });
     }
 
-    public function getRoleNameAttribute(): string
+
+    public function photo(): Attribute
     {
-        return self::ROLES[$this->attributes['role']];
+        return Attribute::make(get: function () {
+            $UiAvatarParams = [
+                'name' => ($this->attributes['name'])[0],
+                'size' => 150,
+                'background' => '465a65',
+                'color' => 'fefefe',
+                'length' => 2,
+                'font-size' => 0.5,
+                'rounded' => false,
+                'uppercase' => false,
+                'bold' => true,
+                'format' => 'png'
+            ];
+
+            return 'https://ui-avatars.com/api?' . http_build_query($UiAvatarParams);
+        });
     }
 
-    public function setPasswordAttribute($input): void
+    public function role_name(): Attribute
     {
-        if ($input) {
-            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
-        }
+        return Attribute::make(get: fn () => self::ROLES[$this->attributes['role']]);
     }
+
+    // public function setPasswordAttribute($input): void
+    // {
+    //     if ($input) {
+    //         $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+    //     }
+    // }
 }
