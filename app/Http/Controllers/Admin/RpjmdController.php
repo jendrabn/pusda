@@ -7,7 +7,7 @@ use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
 use App\Models\IsiRpjmd;
 use App\Models\Skpd;
-use App\Models\SkpdCategory;
+use App\Models\KategoriSkpd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
 use Illuminate\Http\Request;
@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Storage;
 
 class RpjmdController extends Controller
 {
-    public function index(SkpdCategory $skpdCategory = null)
+    public function index(KategoriSkpd $kategoriSkpd = null)
     {
-        if ($skpdCategory) {
-            return view('admin.isiuraian.rpjmd.category', compact('skpdCategory'));
+        if ($kategoriSkpd) {
+            return view('admin.isiuraian.rpjmd.category', compact('kategoriSkpd'));
         }
 
         $categories = TabelRpjmd::with('childs.childs.childs')->get();

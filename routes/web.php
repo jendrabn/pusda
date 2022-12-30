@@ -21,6 +21,8 @@ Auth::routes([
     'reset' => false
 ]);
 
+Route::get('/view/admin3', fn () => view('layouts.admin3'));
+
 Route::middleware('visitor')->group(function () {
     Route::get('/', \App\Http\Controllers\Front\HomeController::class)->name('home');
 
@@ -181,7 +183,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // 8 Kel. Data
         Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => App\Http\Controllers\Admin\DelapanKelDataController::class], function () {
-            Route::get('/{skpdCategory?}', 'index')->name('index');
+            Route::get('/{kategoriSkpd?}', 'index')->name('index');
             Route::get('/skpd/{skpd}', 'skpd')->name('skpd');
             Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
             Route::get('/{uraian}/edit', 'edit')->name('edit');
@@ -198,7 +200,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // RPJMD
         Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => App\Http\Controllers\Admin\RpjmdController::class], function () {
-            Route::get('/{skpdCategory?}', 'index')->name('index');
+            Route::get('/{kategoriSkpd?}', 'index')->name('index');
             Route::get('/skpd/{skpd}', 'skpd')->name('skpd');
             Route::get('/input/{tabelRpjmd}/{skpd?}', 'input')->name('input');
             Route::get('/{uraianRpjmd}/edit', 'edit')->name('edit');

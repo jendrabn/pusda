@@ -12,28 +12,31 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a class="brand-link" href="{{ $dashboardRoute }}">
-    <span class="brand-text font-weight-light">
-      <img class="img-fluid" src="{{ asset('img/logo.png') }}" alt="Logo">
+  <a class="brand-link" href="index3.html">
+    {{-- <img class="brand-image img-circle elevation-3" src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo"
+         style="opacity: 0.8" /> --}}
+    <span class="brand-text">
+      <img class="img-fluid" src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" />
     </span>
   </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <!-- Sidebar user (optional) -->
+    <!-- Sidebar user panel (optional) -->
     <div class="user-panel d-flex mt-3 mb-3 pb-3">
       <div class="image">
-        <img class="img-circle elevation-2" src="{{ auth()->user()->photo }}" alt="User Image">
+        <img class="img-circle elevation-2" src="{{ auth()->user()->photo_url }}" alt="User Image" />
       </div>
       <div class="info">
-        <a class="d-block" href="{{ route('profile') }}">{{ auth()->user()->name }}</a>
+        <a class="d-block"
+           href="{{ route('profile') }}">{{ Str::limit(Str::words(auth()->user()->name, 2, ''), 15, '.') }}</a>
       </div>
     </div>
 
     <!-- Sidebar Menu -->
-    <nav class="mt-2">
+    <nav>
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false" role="menu">
-        <li class="nav-item border-bottom mb-2">
+        <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
              href="{{ route('admin.dashboard') }}">
             <i class="fas fa-tachometer-alt nav-icon"></i>
@@ -106,7 +109,7 @@
             </ul>
           </li>
 
-          <li class="nav-item border-bottom mb-2">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}"
                href="{{ route('admin.indikator.index') }}">
               <i class="fas fa-layer-group nav-icon"></i>
@@ -192,7 +195,7 @@
             </ul>
           </li>
 
-          <li class="nav-item border-bottom mb-2">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.skpd.*') ? 'active' : '' }}"
                href="{{ route('admin.skpd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
@@ -200,7 +203,7 @@
             </a>
           </li>
 
-          <li class="nav-item border-bottom mb-2">
+          <li class="nav-item">
             <a class="nav-link {{ request()->is('admin/audit-logs') || request()->is('admin/audit-logs/*') ? 'active' : '' }}"
                href="{{ route('admin.audit-logs.index') }}">
               <i class="nav-icon fas fa-file-alt">
@@ -220,7 +223,7 @@
               <p>8 Kel. Data</p>
             </a>
           </li>
-          <li class="nav-item border-bottom mb-2">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('skpd.rpjmd.*') ? 'active' : '' }}"
                href="{{ route('skpd.rpjmd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
@@ -237,11 +240,23 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"
-             onclick="event.preventDefault(); document.getElementById('logoutform').submit();">
+             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <p>
               <i class="fas fa-sign-out-alt nav-icon">
               </i>
               <p>Logout</p>
+            </p>
+          </a>
+          <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
+            @csrf
+          </form>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Simple Link
+              <span class="right badge badge-danger">New</span>
             </p>
           </a>
         </li>

@@ -6,128 +6,96 @@
       Edit User
     </div>
     <div class="card-body">
-      <form method="POST"
-            action="{{ route('admin.users.update', [$user->id]) }}"
-            enctype="multipart/form-data">
-        @method('PUT')
+      <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
         @csrf
+        @method('PUT')
+
         <div class="form-group">
-          <label class="required"
-                 for="name">Name</label>
-          <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
-                 id="name"
-                 name="name"
-                 type="text"
+          <label class="required" for="name">Nama</label>
+          <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text"
                  value="{{ $user->name }}">
-          @if ($errors->has('name'))
-            <span class="text-danger">{{ $errors->first('name') }}</span>
-          @endif
+          @error('name')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <label class="required"
-                 for="email">Email</label>
-          <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                 id="email"
-                 name="email"
-                 type="email"
+          <label class="required" for="email">Email</label>
+          <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email"
                  value="{{ $user->email }}">
-          @if ($errors->has('email'))
-            <span class="text-danger">{{ $errors->first('email') }}</span>
-          @endif
+          @error('email')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <label class="required"
-                 for="username">Username</label>
-          <input class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}"
-                 id="username"
-                 name="username"
-                 type="text"
-                 value="{{ $user->username }}"
-                 required>
-          @if ($errors->has('username'))
-            <span class="text-danger">{{ $errors->first('username') }}</span>
-          @endif
+          <label class="required" for="username">Username</label>
+          <input class="form-control @error('username') is-invalid @enderror" id="username" name="username"
+                 type="text" value="{{ $user->username }}">
+          @error('username')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <label class="required"
-                 for="skpd_id">SKPD</label>
-          <select class="form-control select2 {{ $errors->has('skpd_id') ? 'is-invalid' : '' }}"
-                  id="skpd_id"
-                  name="skpd_id"
-                  style="width: 100%">
-            <option selected>Please Select</option>
+          <label class="required" for="skpd_id">SKPD</label>
+          <select class="form-control select2 @error('skpd_id') is-invalid @enderror" id="skpd_id" name="skpd_id">
+            <option selected disabled hidden>Pilih SKPD</option>
             @foreach ($skpd as $id => $name)
-              <option value="{{ $id }}"
-                      {{ $id == $user->skpd_id ? 'selected' : '' }}>
+              <option value="{{ $id }}" {{ $id == $user->skpd_id ? 'selected' : '' }}>
                 {{ $name }}
               </option>
             @endforeach
           </select>
-          @if ($errors->has('skpd_id'))
-            <span class="text-danger">{{ $errors->first('skpd_id') }}</span>
-          @endif
+          @error('skpd_id')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <label class="required"
-                 for="role">Role</label>
-          <select class="form-control select2 {{ $errors->has('role') ? 'is-invalid' : '' }}"
-                  id="role"
-                  name="role"
-                  style="width: 100%">
-            <option selected>Please Select</option>
+          <label class="required" for="role">Role</label>
+          <select class="form-control select2 @error('role') is-invalid @enderror" id="role" name="role">
+            <option selected disabled hidden>Pilih Role</option>
             @foreach ($roles as $id => $role)
-              <option value="{{ $id }}"
-                      {{ $id == $user->role ? 'selected' : '' }}>
+              <option value="{{ $id }}" {{ $id == $user->role ? 'selected' : '' }}>
                 {{ $role }}
               </option>
             @endforeach
           </select>
-          @if ($errors->has('role'))
-            <span class="text-danger">{{ $errors->first('role') }}</span>
-          @endif
+          @error('role')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                 id="password"
-                 name="password"
+          <input class="form-control @error('password') is-invalid @enderror" id="password" name="password"
                  type="password">
-          @if ($errors->has('password'))
-            <span class="text-danger">{{ $errors->first('password') }}</span>
-          @endif
+          @error('password')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
           <label for="phone">No. HP</label>
-          <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
-                 id="phone"
-                 name="phone"
-                 type="tel"
-                 value="{{ old('phone') }}">
-          @if ($errors->has('phone'))
-            <span class="text-danger">{{ $errors->first('phone') }}</span>
-          @endif
+          <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" type="tel"
+                 value="{{ $user->phone }}">
+          @error('phone')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
           <label for="address">Alamat</label>
-          <textarea class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}"
-                    id="address"
-                    name="address">{{ $user->address }}</textarea>
-          @if ($errors->has('address'))
-            <span class="text-danger">{{ $errors->first('address') }}</span>
-          @endif
+          <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address">{{ $user->address }}</textarea>
+          @error('address')
+            <span class="error invalid-feedback">{{ $message }}</span>
+          @enderror
         </div>
 
         <div class="form-group">
-          <button class="btn btn-danger"
-                  type="submit">
-            Update
+          <button class="btn btn-primary" type="submit">
+            Simpan
           </button>
         </div>
       </form>

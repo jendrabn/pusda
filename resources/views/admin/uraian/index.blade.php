@@ -2,10 +2,12 @@
 
 @section('content')
   <div class="card">
-    <div class="card-header ">
-      Pilih Menu Treeview {{ $title }}
+    <div class="card-header">
+      <h3 class="card-title">
+        Pilih Menu Treeview {{ $title }}
+      </h3>
     </div>
-    <div class="card-body jstreeMenu overflow-auto">
+    <div class="card-body jstree overflow-auto">
       <ul>
         <li data-jstree='{"opened":true}'>
           @if ($crudRoutePart === 'delapankeldata')
@@ -33,7 +35,7 @@
                                 @foreach ($child->childs as $child)
                                   <li @if (isset($table) && $table->id === $child->id) data-jstree='{ "selected" : true }' @endif>
                                     <a
-                                      href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
+                                       href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
                                   </li>
                                 @endforeach
                               @endif
@@ -54,17 +56,19 @@
 
   @if ($table)
     <div class="card">
-      <div class="card-header ">
-        Tambah {{ $table->nama_menu }}
+      <div class="card-header">
+        <h3 class="jstree">
+          Tambah {{ $table->nama_menu }}
+        </h3>
       </div>
       <div class="card-body">
         <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store') }}" method="POST">
           @csrf
-          <input type="hidden" name="table_id" value="{{ $table->id }}">
+          <input name="table_id" type="hidden" value="{{ $table->id }}">
 
           <div class="form-group">
             <label class="required" for="parent_id">Kategori</label>
-            <select name="parent_id" class="form-control select2" id="parent_id" style="width: 100%">
+            <select class="form-control select2" id="parent_id" name="parent_id" style="width: 100%">
               <option value="">Parent</option>
               @foreach ($uraian as $item)
                 <option value="{{ $item->id }}">{{ $item->uraian }}</option>
@@ -73,21 +77,23 @@
           </div>
           <div class="form-group">
             <label class="required" for="uraian">Uraian</label>
-            <input type="text" class="form-control" name="uraian" value="{{ old('uraian') }}">
+            <input class="form-control" name="uraian" type="text" value="{{ old('uraian') }}">
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-danger">Save</button>
+            <button class="btn btn-danger" type="submit">Save</button>
           </div>
         </form>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header ">
-        Uraian Form {{ $table->nama_menu }} List
+      <div class="card-header">
+        <h3 class="jstree">
+          Uraian Form {{ $table->nama_menu }} List
+        </h3>
       </div>
       <div class="card-body">
-        <table class="table table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian">
+        <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian table">
           <thead>
             <tr>
               <th width="10"></th>
@@ -104,14 +110,15 @@
                 <td>{{ $item->uraian }}</td>
                 <td>
                   <a class="btn btn-xs btn-info"
-                    href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$table->id, $item->id]) }}">
+                     href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$table->id, $item->id]) }}">
                     Edit
                   </a>
-                  <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
-                    onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+                  <form style="display: inline-block;"
+                        action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
+                        onsubmit="return confirm('Are You Sure?');">
                     @method('DELETE')
                     @csrf
-                    <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                    <input class="btn btn-xs btn-danger" type="submit" value="Delete">
                   </form>
                 </td>
               </tr>
@@ -122,14 +129,15 @@
                   <td style="text-indent: 1rem;">{{ $item->uraian }}</td>
                   <td>
                     <a class="btn btn-xs btn-info"
-                      href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$table->id, $item->id]) }}">
+                       href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$table->id, $item->id]) }}">
                       Edit
                     </a>
-                    <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
-                      onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+                    <form style="display: inline-block;"
+                          action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
+                          onsubmit="return confirm('Are You Sure?');">
                       @method('DELETE')
                       @csrf
-                      <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                      <input class="btn btn-xs btn-danger" type="submit" value="Delete">
                     </form>
                   </td>
                 </tr>

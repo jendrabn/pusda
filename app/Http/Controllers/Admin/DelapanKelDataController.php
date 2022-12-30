@@ -7,7 +7,7 @@ use App\Models\File8KelData;
 use App\Models\Fitur8KelData;
 use App\Models\Isi8KelData;
 use App\Models\Skpd;
-use App\Models\SkpdCategory;
+use App\Models\KategoriSkpd;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
 use App\Traits\DelapanKelData;
@@ -34,7 +34,7 @@ class DelapanKelDataController extends Controller
         return view('admin.isiuraian.index', compact('title', 'crudRoutePart', 'categories', 'skpd', 'tabelIds'));
     }
 
-    public function category(SkpdCategory $category)
+    public function category(KategoriSkpd $category)
     {
         $title = '8 Kelompok Data';
         $crudRoutePart = 'delapankeldata';

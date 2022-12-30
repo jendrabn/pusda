@@ -1,55 +1,61 @@
-@extends('layouts.admin', ['title' => 'Create SKPD])
+@extends('layouts.admin', ['title' => 'Tambah SKPD'])
 
 @section('content')
-  <div class="card">
-    <div class="card-header ">
-      Create SKPD
-    </div>
-
-    <div class="card-body">
-      <form method="POST" action="{{ route('admin.skpd.store') }}" enctype="multipart/form-data">
-        @csrf
-
-        <div class="form-group">
-          <label class="required" for="skpd_category_id">Kategori</label>
-          <select class="form-control select2 {{ $errors->has('skpd_category_id') ? 'is-invalid' : '' }}"
-            name="skpd_category_id" id="skpd_category_id" style="width: 100%">
-            <option value="" selected>Please select</option>
-            @foreach ($categories as $id => $name)
-              <option value="{{ $id }}" {{ $id == old('skpd_category_id') ? 'selected' : '' }}>
-                {{ $name }}
-              </option>
-            @endforeach
-          </select>
-          @if ($errors->has('skpd_category_id'))
-            <span class="text-danger">{{ $errors->first('skpd_category_id') }}</span>
-          @endif
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            Tambah SKPD
+          </h3>
         </div>
 
-        <div class="form-group">
-          <label class="required" for="nama">Nama</label>
-          <input class="form-control {{ $errors->has('nama') ? 'is-invalid' : '' }}" type="text" name="nama"
-            id="nama" value="{{ old('nama', '') }}">
-          @if ($errors->has('nama'))
-            <span class="text-danger">{{ $errors->first('nama') }}</span>
-          @endif
-        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ route('admin.skpd.store') }}">
+            @csrf
 
-        <div class="form-group">
-          <label class="required" for="singkatan">Singkatan</label>
-          <input class="form-control {{ $errors->has('singkatan') ? 'is-invalid' : '' }}" type="text" name="singkatan"
-            id="singkatan" value="{{ old('singkatan', '') }}">
-          @if ($errors->has('singkatan'))
-            <span class="text-danger">{{ $errors->first('singkatan') }}</span>
-          @endif
-        </div>
+            <div class="form-group">
+              <label class="required" for="kategori_skpd_id">Kategori</label>
+              <select class="form-control @error('kategori_skpd_id') is-invalid @enderror" id="kategori_skpd_id"
+                      name="kategori_skpd_id">
+                <option selected disabled hidden>Pilih Kategori</option>
+                @foreach ($categories as $id => $nama)
+                  <option value="{{ $id }}" {{ $id == old('kategori_skpd_id') ? 'selected' : '' }}>
+                    {{ $nama }}
+                  </option>
+                @endforeach
+              </select>
+              @error('kategori_skpd_id')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
 
-        <div class="form-group">
-          <button class="btn btn-danger" type="submit">
-            Save
-          </button>
+            <div class="form-group">
+              <label class="required" for="nama">Nama</label>
+              <input class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" type="text"
+                     value="{{ old('nama', '') }}">
+              @error('nama')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <div class="form-group">
+              <label class="required" for="singkatan">Singkatan</label>
+              <input class="form-control @error('singkatan') is-invalid @enderror" id="singkatan" name="singkatan"
+                     type="text" value="{{ old('singkatan', '') }}">
+              @error('singkatan')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit">
+                Simpan
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 @endsection

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserStoreRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
-use App\Models\User;;
-
+use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,46 +25,25 @@ class UsersController extends Controller
 
             $table->editColumn('actions', function ($row) {
                 $crudRoutePart = 'users';
-
                 return view('partials.datatablesActions', compact(
                     'crudRoutePart',
                     'row'
                 ));
             });
 
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('name', function ($row) {
-                return $row->name ? $row->name : '';
-            });
-            $table->editColumn('username', function ($row) {
-                return $row->username ? $row->username : '';
-            });
-            $table->editColumn('email', function ($row) {
-                return $row->email ? $row->email : '';
-            });
-            $table->editColumn('phone', function ($row) {
-                return $row->phone ? $row->phone : '';
-            });
-            $table->editColumn('address', function ($row) {
-                return $row->address ? $row->address : '';
-            });
-            $table->editColumn('skpd', function ($row) {
-                return $row->skpd ? $row->skpd->nama : '';
-            });
+            $table->editColumn('id', fn ($row) => $row->id ? $row->id : '');
+            $table->editColumn('name', fn ($row) =>  $row->name ? $row->name : '');
+            $table->editColumn('username', fn ($row) => $row->username ? $row->username : '');
+            $table->editColumn('email', fn ($row) => $row->email ? $row->email : '');
+            $table->editColumn('phone', fn ($row) => $row->phone ? $row->phone : '');
+            $table->editColumn('address', fn ($row) => $row->address ? $row->address : '');
+            $table->editColumn('skpd', fn ($row) => $row->skpd ? $row->skpd->nama : '');
+            $table->editColumn('photo', fn ($row) => sprintf('<img src="%s" width="50px" height="50px">', $row->photo_url));
+            $table->editColumn('role', fn ($row) => sprintf('<span class="badge badge-info">%s</span>', $row->role_name));
 
-            $table->editColumn('avatar', function ($row) {
-                return  $row->avatar ? '<img src="' . $row->avatar_url . '" width="50px" height="50px">' : '';
-            });
+            $table->rawColumns(['actions', 'placeholder', 'role', 'photo']);
 
-            $table->editColumn('role', function ($row) {
-                return sprintf('<span class="label label-info label-many">%s</span>', $row->role_name);
-            });
-
-            $table->rawColumns(['actions', 'placeholder', 'role', 'avatar']);
-
-            return $table->make(true);
+            return $table->toJson();
         }
 
         return view('admin.users.index');
@@ -82,23 +62,11 @@ class UsersController extends Controller
         return view('admin.users.create', compact('skpd',  'roles'));
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-
-        $request->validate([
-            'skpd_id' => ['required', 'numeric', 'exists:skpd,id'],
-            'name' => ['required', 'string', 'min:3', 'max:50'],
-            'username' => ['required', 'string', 'min:3', 'max:25', 'alpha_dash', 'unique:users,username'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['nullable', 'max:15', 'starts_with:+62,62,08'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'role' => ['required', 'in:1,2'],
-            'password' => ['required', 'string', 'min:3', 'max:50'],
-        ]);
-
         User::create($request->all());
 
-        return redirect()->route('admin.users.index');
+        return redirect(route('admin.users.index'))->with('alert-success', 'Successfully added User.');
     }
 
     public function edit(User $user)
@@ -109,30 +77,18 @@ class UsersController extends Controller
         return view('admin.users.edit', compact('skpd', 'user', 'roles'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-
-        $request->validate([
-            'skpd_id' => ['required', 'numeric', 'exists:skpd,id'],
-            'name' => ['required', 'string', 'max:50'],
-            'username' => ['required', 'string', 'max:25', 'alpha_dash', 'unique:users,username,' . $user->id],
-            'email' => ['required', 'string', 'email', 'max:50', 'unique:users,email,' . $user->id],
-            'phone' => ['nullable', 'max:15', 'starts_with:+62,62,08'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'role' => ['required', 'in:1,2'],
-            'password' => ['nullable', 'string', 'min:3', 'max:50'],
-        ]);
-
         $user->update($request->all());
 
-        return redirect()->route('admin.users.index');
+        return back()->with('alert-success', 'User successfully updated.');
     }
 
-    public function destroy(Request $request, User $user)
+    public function destroy(User $user)
     {
         $user->delete();
 
-        return back();
+        return back()->with('alert-success', 'User successfully deleted.');
     }
 
     public function massDestroy(Request $request)

@@ -27,7 +27,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'address',
-        'avatar',
+        'photo',
         'role',
         'password',
     ];
@@ -47,31 +47,22 @@ class User extends Authenticatable
         return $this->belongsTo(Skpd::class, 'skpd_id');
     }
 
-    public function avatarUrl(): Attribute
+    public function photoUrl(): Attribute
     {
         return Attribute::make(get: function () {
-            // dd(Storage::disk('public')->exists('public/' . $this->attributes['avatar']));
-            if ($this->attributes['avatar']) {
-                return Storage::url($this->attributes['avatar']);
+            if ($this->attributes['photo'] && Storage::disk('public')->exists($this->attributes['photo'])) {
+                return Storage::url($this->attributes['photo']);
             }
 
-            return  asset('img/avatar-default.png');
-        });
-    }
-
-
-    public function photo(): Attribute
-    {
-        return Attribute::make(get: function () {
             $UiAvatarParams = [
-                'name' => ($this->attributes['name'])[0],
+                'name' =>  $this->attributes['name'][0],
                 'size' => 150,
                 'background' => '465a65',
                 'color' => 'fefefe',
                 'length' => 2,
                 'font-size' => 0.5,
                 'rounded' => false,
-                'uppercase' => false,
+                'uppercase' => true,
                 'bold' => true,
                 'format' => 'png'
             ];
@@ -80,7 +71,7 @@ class User extends Authenticatable
         });
     }
 
-    public function role_name(): Attribute
+    public function roleName(): Attribute
     {
         return Attribute::make(get: fn () => self::ROLES[$this->attributes['role']]);
     }

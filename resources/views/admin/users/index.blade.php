@@ -1,11 +1,9 @@
 @extends('layouts.admin', ['title' => 'Users'])
 
 @section('content')
-  <div class="row"
-       style="margin-bottom: 10px;">
+  <div class="row" style="margin-bottom: 10px;">
     <div class="col-lg-12">
-      <a class="btn btn-success"
-         href="{{ route('admin.users.create') }}">
+      <a class="btn btn-success" href="{{ route('admin.users.create') }}">
         Tambah User
       </a>
     </div>
@@ -20,16 +18,39 @@
         <thead>
           <tr>
             <th width="10"></th>
+            <th>&nbsp;</th>
             <th>ID</th>
             <th>Name</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
             <th>SKPD</th>
             <th>Role</th>
-            <th>Avatar</th>
-            <th>&nbsp;</th>
+            <th>Foto</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
+            <td>
+              <input class="search" type="text" placeholder="Cari">
+            </td>
           </tr>
         </thead>
       </table>
@@ -91,6 +112,10 @@
             name: 'placeholder'
           },
           {
+            data: 'actions',
+            name: 'actions'
+          },
+          {
             data: 'id',
             name: 'id'
           },
@@ -107,16 +132,6 @@
             name: 'email'
           },
           {
-            data: 'phone',
-            name: 'phone',
-            visible: false
-          },
-          {
-            data: 'address',
-            name: 'address',
-            visible: false
-          },
-          {
             data: 'skpd',
             name: 'skpd.nama',
           },
@@ -125,16 +140,10 @@
             name: 'role'
           },
           {
-            data: 'avatar',
-            name: 'avatar',
-            sortable: false,
-            searchable: false,
-            visible: false
+            data: 'photo',
+            name: 'photo',
           },
-          {
-            data: 'actions',
-            name: 'Actions'
-          }
+
         ],
         orderCellsTop: true,
         order: [
@@ -150,6 +159,21 @@
       });
 
       let visibleColumnsIndexes = null;
+
+      $('.datatable thead').on('input', '.search', function() {
+        let strict = $(this).attr('strict') || false
+        let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+        let index = $(this).parent().index()
+        if (visibleColumnsIndexes !== null) {
+          index = visibleColumnsIndexes[index]
+        }
+
+        table
+          .column(index)
+          .search(value, strict)
+          .draw()
+      });
 
       table.on('column-visibility.dt', function(e, settings, column, state) {
         visibleColumnsIndexes = []

@@ -4,19 +4,19 @@
   @include('partials.menuTreeIsiUraian')
 
   <div class="card card-outline card-tabs">
-    <div class="card-header p-0 pt-1 border-bottom-0">
+    <div class="card-header border-bottom-0 p-0 pt-1">
       <ul class="nav nav-tabs" id="tab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="tabel-tab" data-toggle="pill" href="#tabel" role="tab" aria-controls="tabel"
-            aria-selected="true">Tabel {{ $title }}</a>
+             aria-selected="true">Tabel {{ $title }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="fitur-tab" data-toggle="pill" href="#fitur" role="tab" aria-controls="fitur"
-            aria-selected="false">Fitur {{ $title }}</a>
+             aria-selected="false">Fitur {{ $title }}</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="file-tab" data-toggle="pill" href="#file" role="tab" aria-controls="file"
-            aria-selected="false">File Pendukung
+             aria-selected="false">File Pendukung
             {{ $title }}</a>
         </li>
       </ul>
@@ -26,22 +26,22 @@
       <div class="tab-content" id="tabContent">
         <div class="tab-pane fade active show" id="tabel" role="tabpanel" aria-labelledby="tabel-tab">
           <div class="d-flex mb-2">
-            <button class="btn btn-primary btn-flat mr-2" type="button" data-toggle="modal" data-target="#modalTahun">
+            <button class="btn btn-primary btn-flat mr-2" data-toggle="modal" data-target="#modalTahun" type="button">
               <i class="fas fa-calendar-alt"></i> Pengaturan Tahun
             </button>
-            <button type="button" class="btn btn-success btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown">
+            <button class="btn btn-success btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" type="button">
               <i class="fas fa-file-download"></i> Exports
             </button>
             <div class="dropdown-menu">
               <a class="dropdown-item"
-                href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'csv']) }}">CSV</a>
+                 href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'csv']) }}">CSV</a>
               <a class="dropdown-item"
-                href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xls']) }}">XLS</a>
+                 href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xls']) }}">XLS</a>
               <a class="dropdown-item"
-                href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xlsx']) }}">XLSX</a>
+                 href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xlsx']) }}">XLSX</a>
             </div>
           </div>
-          <table class="table table-bordered table-striped table-hover table-sm" id="table__isiUraian">
+          <table class="table-bordered table-striped table-hover datatable w-100 table" id="table__isiUraian">
             <thead>
               <tr>
                 <th>#</th>
@@ -84,23 +84,24 @@
                       <td>{{ $child->isi8KelData->where('tahun', $tahun)->first()->isi }}</td>
                     @endforeach
                     <td style="max-width: 200px;">
-                      <select name="sumber_data" class="form-control sumber__data" data-id="{{ $child->id }}">
+                      <select class="form-control sumber__data" name="sumber_data" data-id="{{ $child->id }}">
                         <option selected disabled hidden>Please Select</option>
                         @foreach ($skpds as $id => $singkatan)
-                          <option @if ($id == $child->skpd_id) selected @endif value="{{ $id }}">
+                          <option value="{{ $id }}" @if ($id == $child->skpd_id) selected @endif>
                             {{ $singkatan }}
                           </option>
                         @endforeach
                       </select>
                     </td>
                     <td>
-                      <button data-id="{{ $child->id }}" class="btn btn-primary btn-xs btn__graphic">Grafik</button>
+                      <button class="btn btn-primary btn-xs btn__graphic" data-id="{{ $child->id }}">Grafik</button>
                       <a class="btn btn-xs btn-info" href="{{ route('admin.delapankeldata.edit', $child->id) }}">Edit</a>
-                      <form action="{{ route('admin.delapankeldata.destroy', $child->id) }}" method="POST"
-                        onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+                      <form style="display: inline-block;"
+                            action="{{ route('admin.delapankeldata.destroy', $child->id) }}" method="POST"
+                            onsubmit="return confirm('Are You Sure?');">
                         @method('DELETE')
                         @csrf
-                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                        <input class="btn btn-xs btn-danger" type="submit" value="Delete">
                       </form>
                     </td>
                   </tr>
@@ -115,38 +116,38 @@
             @method('PUT')
             <div class="form-group">
               <label for="deskripsi">Deskripsi</label>
-              <textarea name="deskripsi" id="deskripsi" class="form-control rounded-0">{{ $fitur->deskripsi }}</textarea>
+              <textarea class="form-control rounded-0" id="deskripsi" name="deskripsi">{{ $fitur->deskripsi }}</textarea>
             </div>
             <div class="form-group">
               <label for="analisis">Analisis</label>
-              <textarea name="analisis" id="analisis" class="form-control rounded-0">{{ $fitur->analisis }}</textarea>
+              <textarea class="form-control rounded-0" id="analisis" name="analisis">{{ $fitur->analisis }}</textarea>
             </div>
             <div class="form-group">
               <label for="permasalahan">Permasalahan</label>
-              <textarea name="permasalahan" id="permasalahan" class="form-control rounded-0">{{ $fitur->permasalahan }}</textarea>
+              <textarea class="form-control rounded-0" id="permasalahan" name="permasalahan">{{ $fitur->permasalahan }}</textarea>
             </div>
             <div class="form-group">
               <label for="solusi">Solusi atau Langkah-langkah Tindak Lanjut</label>
-              <textarea name="solusi" id="solusi" class="form-control rounded-0">{{ $fitur->solusi }}</textarea>
+              <textarea class="form-control rounded-0" id="solusi" name="solusi">{{ $fitur->solusi }}</textarea>
             </div>
             <div class="form-group">
               <label for="saran">Saran / Rekomendasi ke Gubernur atau Pusat</label>
-              <textarea name="saran" id="saran" class="form-control rounded-0">{{ $fitur->saran }}</textarea>
+              <textarea class="form-control rounded-0" id="saran" name="saran">{{ $fitur->saran }}</textarea>
             </div>
             <div class="form-group">
-              <button type="submit" id="submit" class="btn btn-danger">Update</button>
+              <button class="btn btn-danger" id="submit" type="submit">Update</button>
             </div>
           </form>
         </div>
         <div class="tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
           <div class="mb-3 border p-3">
             <form action="{{ route('admin.' . $crudRoutePart . '.files.store', $tabel->id) }}" method="POST"
-              enctype="multipart/form-data">
+                  enctype="multipart/form-data">
               @csrf
 
               <div class="custom-file">
-                <input type="file" class="custom-file-input {{ $errors->has('file_document') ? 'is-invalid' : '' }}"
-                  id="file_document" name="file_document">
+                <input class="custom-file-input {{ $errors->has('file_document') ? 'is-invalid' : '' }}"
+                       id="file_document" name="file_document" type="file">
                 <label class="custom-file-label" for="file_document">
                   Tambah File Pendukung {{ $title }}
                 </label>
@@ -156,12 +157,12 @@
                 <span class="help-block">Maks 25MB</span>
               </div>
               <div class="form-group mt-3 mb-0">
-                <button type="submit" class="btn btn-danger">Save</button>
+                <button class="btn btn-danger" type="submit">Save</button>
               </div>
             </form>
           </div>
 
-          <table class="table table-bordered table-striped table-hover">
+          <table class="table-bordered table-striped table-hover table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -176,12 +177,13 @@
                   <td>{{ str_replace('files/', '', $file->file_name) }}</td>
                   <td>
                     <a class="btn btn-xs btn-success"
-                      href="{{ route('admin.delapankeldata.files.download', $file->id) }}">Download</a>
-                    <form action="{{ route('admin.delapankeldata.files.destroy', $file->id) }}" method="POST"
-                      onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+                       href="{{ route('admin.delapankeldata.files.download', $file->id) }}">Download</a>
+                    <form style="display: inline-block;"
+                          action="{{ route('admin.delapankeldata.files.destroy', $file->id) }}" method="POST"
+                          onsubmit="return confirm('Are You Sure?');">
                       @method('DELETE')
                       @csrf
-                      <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                      <input class="btn btn-xs btn-danger" type="submit" value="Delete">
                     </form>
                   </td>
                 </tr>
@@ -193,12 +195,12 @@
     </div>
   </div>
 
-  <div class="modal fade show" id="modal__chart" aria-modal="true" role="dialog">
+  <div class="modal fade show" id="modal__chart" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Grafik</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button class="close" data-dismiss="modal" type="button" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -206,8 +208,8 @@
           <canvas id="chart__isiUraian" width="100%" height="100%"></canvas>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default mr-2" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" id="btn__chartDownload">
+          <button class="btn btn-default mr-2" data-dismiss="modal" type="button">Close</button>
+          <button class="btn btn-success" id="btn__chartDownload" type="button">
             <i class="fas fa-download"></i> Download
           </button>
         </div>
@@ -215,12 +217,12 @@
     </div>
   </div>
 
-  <div class="modal fade show" id="modalTahun" aria-modal="true" role="dialog">
+  <div class="modal fade show" id="modalTahun" role="dialog" aria-modal="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Pengaturan Tahun</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button class="close" data-dismiss="modal" type="button" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -229,8 +231,8 @@
             @csrf
             <div class="form-group mb-3">
               <label for="tahun">Tambah Tahun</label>
-              <select name="tahun[]" id="tahun" class="form-control select2" multiple="multiple"
-                style="width: 100%">
+              <select class="form-control select2" id="tahun" name="tahun[]" style="width: 100%"
+                      multiple="multiple">
                 @php
                   $tahunOptions = array_filter(range(2015, 2025), function ($year) use ($tahuns) {
                       return !in_array($year, $tahuns->toArray());
@@ -245,7 +247,7 @@
               <button class="btn btn-danger" type="submit">Save</button>
             </div>
           </form>
-          <table class="table table-bordered table-striped table-hover table-sm">
+          <table class="table-bordered table-striped table-hover table-sm table">
             <thead>
               <tr>
                 <th>Tahun</th>
@@ -257,11 +259,12 @@
                 <tr>
                   <td>{{ $tahunear }}</td>
                   <td>
-                    <form action="{{ route('admin.' . $crudRoutePart . '.destroy_tahun', [$tabel->id, $tahunear]) }}"
-                      method="POST" onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+                    <form style="display: inline-block;"
+                          action="{{ route('admin.' . $crudRoutePart . '.destroy_tahun', [$tabel->id, $tahunear]) }}"
+                          method="POST" onsubmit="return confirm('Are You Sure?');">
                       @method('DELETE')
                       @csrf
-                      <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                      <input class="btn btn-xs btn-danger" type="submit" value="Delete">
                     </form>
                   </td>
                 </tr>
@@ -270,22 +273,21 @@
           </table>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>
   </div>
 
-  <form action="" id="form__updateSumberData" method="POST" hidden>
+  <form id="form__updateSumberData" action="" method="POST" hidden>
     @csrf
     @method('PUT')
-    <input type="text" name="sumber_data">
+    <input name="sumber_data" type="text">
   </form>
 @endsection
 
 @section('scripts')
   @parent
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
   <script>
     $(function() {
 

@@ -30,7 +30,7 @@ class ProfileInformationUpdateRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
             'phone' => ['nullable', 'max:15', 'starts_with:+62,62,08'],
             'address' => ['nullable', 'string', 'max:255'],
-            '_avatar' => ['nullable', 'mimes:png,jpg,jpeg', 'max:1024'],
+            '_photo' => ['nullable', 'mimes:png,jpg,jpeg', 'max:1024'],
         ];
     }
 
@@ -42,13 +42,13 @@ class ProfileInformationUpdateRequest extends FormRequest
     protected function passedValidation()
     {
 
-        if ($this->hasFile('_avatar')) {
-            if (auth()->user()->avatar) {
-                Storage::disk('public')->delete(auth()->user()->avatar);
+        if ($this->hasFile('_photo')) {
+            if (auth()->user()->photo) {
+                Storage::disk('public')->delete(auth()->user()->photo);
             }
 
             $this->merge([
-                'avatar' =>  $this->file('_avatar')->storePublicly('images/avatars', 'public')
+                'photo' =>  $this->file('_photo')->storePublicly('images/photos', 'public')
             ]);
         }
     }

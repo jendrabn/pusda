@@ -15,7 +15,7 @@ class Skpd extends Model
     protected $fillable = [
         'nama',
         'singkatan',
-        'skpd_category_id'
+        'kategori_skpd_id'
     ];
 
     public function users()
@@ -23,9 +23,9 @@ class Skpd extends Model
         return $this->hasMany(User::class, 'user_id');
     }
 
-    public function category()
+    public function kategori()
     {
-        return $this->belongsTo(SkpdCategory::class, 'skpd_category_id');
+        return $this->belongsTo(KategoriSkpd::class, 'kategori_skpd_id');
     }
 
     public function tabelRpjmd()

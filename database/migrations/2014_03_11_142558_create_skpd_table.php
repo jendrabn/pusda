@@ -15,12 +15,10 @@ class CreateSkpdTable extends Migration
     {
         Schema::create('skpd', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('skpd_category_id')->nullable();
             $table->string('nama');
             $table->string('singkatan');
+            $table->foreignId('kategori_skpd_id')->nullable()->constrained('kategori_skpd');
             $table->timestamps();
-
-            $table->foreign('skpd_category_id')->references('id')->on('skpd_categories');
         });
     }
 

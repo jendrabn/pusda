@@ -18,13 +18,13 @@ class ProfileController extends Controller
     {
         auth()->user()->update($request->all());
 
-        return back()->with('message', 'Profil successfully updated.');
+        return back()->with('alert-success', 'Profil successfully updated.');
     }
 
     public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
     {
-        auth()->user()->update($request->only('password'));
+        auth()->user()->update($request->all());
 
-        return back()->with('message', 'Password successfully updated.');
+        return back()->with('alert-success', 'Password successfully updated.');
     }
 }

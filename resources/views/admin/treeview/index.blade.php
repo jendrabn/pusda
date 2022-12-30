@@ -4,10 +4,12 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="card">
-        <div class="card-header ">
-          Tampilan {{ $title }}
+        <div class="card-header">
+          <h3 class="card-title">
+            Tampilan {{ $title }}
+          </h3>
         </div>
-        <div class="card-body jstreeMenu overflow-auto">
+        <div class="card-body jstree overflow-auto">
           <ul>
             <li data-jstree='{"opened":true}'>
               @if ($crudRoutePart === 'delapankeldata')
@@ -53,8 +55,10 @@
     </div>
     <div class="col-lg-6">
       <div class="card">
-        <div class="card-header ">
-          Tambah Data Menu Treeview {{ $title }}
+        <div class="card-header">
+          <h3 class="card-title">
+            Tambah Data Menu Treeview {{ $title }}
+          </h3>
         </div>
         <div class="card-body">
           <form action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}" method="POST">
@@ -62,7 +66,7 @@
 
             <div class="form-group">
               <label class="required" for="parent_id">Kategori</label>
-              <select name="parent_id" class="form-control select2" id="category" style="width: 100%">
+              <select class="form-control select2" id="category" name="parent_id">
                 @foreach ($categories as $category)
                   <option value="{{ $category->id }}">{{ $category->nama_menu }}</option>
                 @endforeach
@@ -71,12 +75,12 @@
 
             <div class="form-group">
               <label class="required" for="nama_menu">Nama Menu</label>
-              <input class="form-control" type="text" name="nama_menu" value="{{ old('nama_menu') }}">
+              <input class="form-control" name="nama_menu" type="text" value="{{ old('nama_menu') }}">
             </div>
 
             <div class="form-group">
-              <button class="btn btn-danger" type="submit">
-                Save
+              <button class="btn btn-primary" type="submit">
+                Simpan
               </button>
             </div>
           </form>
@@ -86,18 +90,27 @@
   </div>
 
   <div class="card">
-    <div class="card-header ">
-      Data Menu Treeview {{ $title }}
+    <div class="card-header">
+      <h3 class="card-title">
+        Data Menu Treeview {{ $title }}
+      </h3>
     </div>
     <div class="card-body">
-      <table class="table table-bordered table-striped table-hover datatable datatable-MenuTreeview">
+      <table class="table-bordered table-striped table-hover datatable datatable-MenuTreeview table">
         <thead>
           <tr>
             <th width="10"></th>
+            <th>&nbsp;</th>
             <th>ID</th>
             <th>Nama Menu</th>
             <th>Parent</th>
-            <th>&nbsp;</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td>&nbsp;</td>
+            <td><input class="search" type="text" placeholder="Cari"></td>
+            <td><input class="search" type="text" placeholder="Cari"></td>
+            <td><input class="search" type="text" placeholder="Cari"></td>
           </tr>
         </thead>
       </table>
@@ -106,7 +119,6 @@
 @endsection
 
 @section('scripts')
-  @parent
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -158,6 +170,10 @@
             name: 'placeholder'
           },
           {
+            data: 'actions',
+            name: 'Actions'
+          },
+          {
             data: 'id',
             name: 'id'
           },
@@ -169,10 +185,6 @@
             data: 'parent',
             name: 'parent.nama_menu'
           },
-          {
-            data: 'actions',
-            name: 'Actions'
-          }
         ],
         orderCellsTop: true,
         order: [
@@ -187,6 +199,21 @@
       });
 
       let visibleColumnsIndexes = null;
+
+      $('.datatable thead').on('input', '.search', function() {
+        let strict = $(this).attr('strict') || false
+        let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+        let index = $(this).parent().index()
+        if (visibleColumnsIndexes !== null) {
+          index = visibleColumnsIndexes[index]
+        }
+
+        table
+          .column(index)
+          .search(value, strict)
+          .draw()
+      });
 
       table.on('column-visibility.dt', function(e, settings, column, state) {
         visibleColumnsIndexes = []

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSkpdCategoriesTable extends Migration
+class CreateKategoriSkpdTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateSkpdCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('skpd_categories', function (Blueprint $table) {
+        Schema::create('kategori_skpd', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->timestamps();
+            $table->string('nama');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateSkpdCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('skpd_categories');
+        Schema::dropIfExists('kategori_skpd');
     }
 }

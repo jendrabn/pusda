@@ -1,28 +1,37 @@
 @extends('layouts.admin', ['title' => 'SKPD'])
 
 @section('content')
-  <div style="margin-bottom: 10px;" class="row">
+  <div class="row" style="margin-bottom: 10px;">
     <div class="col-lg-12">
       <a class="btn btn-success" href="{{ route('admin.skpd.create') }}">
-        <i class="fa fa-plus"></i> Add SKPD
+        Tambah SKPD
       </a>
     </div>
   </div>
   <div class="card">
     <div class="card-header">
-      SKPD List
+      <h3 class="card-title">
+        Daftar SKPD
+      </h3>
     </div>
-
     <div class="card-body">
-      <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Skpd">
+      <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-skpd table">
         <thead>
           <tr>
             <th width="10"></th>
+            <th>&nbsp;</th>
             <th>ID</th>
             <th>Nama</th>
             <th>Singkatan</th>
             <th>Kategori</th>
-            <th>&nbsp;</th>
+          </tr>
+          <tr>
+            <td width="10"></td>
+            <td>&nbsp;</td>
+            <td> <input class="search" type="text" placeholder="Cari"></td>
+            <td> <input class="search" type="text" placeholder="Cari"></td>
+            <td> <input class="search" type="text" placeholder="Cari"></td>
+            <td> <input class="search" type="text" placeholder="Cari"></td>
           </tr>
         </thead>
       </table>
@@ -30,13 +39,12 @@
   </div>
 @endsection
 @section('scripts')
-  @parent
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-
+      let deleteButtonTrans = 'Delete selected';
       let deleteButton = {
-        text: 'Delete selected',
+        text: deleteButtonTrans,
         url: "{{ route('admin.skpd.massDestroy') }}",
         className: 'btn-danger',
         action: function(e, dt, node, config) {
@@ -52,7 +60,7 @@
             return
           }
 
-          if (confirm('Are You Sure?')) {
+          if (confirm('Are You Sure ?')) {
             $.ajax({
                 headers: {
                   'x-csrf-token': _token
@@ -84,6 +92,10 @@
             name: 'placeholder'
           },
           {
+            data: 'actions',
+            name: 'actions',
+          },
+          {
             data: 'id',
             name: 'id'
           },
@@ -96,13 +108,9 @@
             name: 'singkatan'
           },
           {
-            data: 'category',
-            name: 'category.name'
+            data: 'kategori',
+            name: 'kategori.nama'
           },
-          {
-            data: 'actions',
-            name: 'actions'
-          }
         ],
         orderCellsTop: true,
         order: [
@@ -110,14 +118,27 @@
         ],
         pageLength: 50,
       };
-      let table = $('.datatable-Skpd').DataTable(dtOverrideGlobals);
+      let table = $('.datatable-skpd').DataTable(dtOverrideGlobals);
       $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
         $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
       });
 
       let visibleColumnsIndexes = null;
+      $('.datatable thead').on('input', '.search', function() {
+        let strict = $(this).attr('strict') || false
+        let value = strict && this.value ? "^" + this.value + "$" : this.value
 
+        let index = $(this).parent().index()
+        if (visibleColumnsIndexes !== null) {
+          index = visibleColumnsIndexes[index]
+        }
+
+        table
+          .column(index)
+          .search(value, strict)
+          .draw()
+      });
       table.on('column-visibility.dt', function(e, settings, column, state) {
         visibleColumnsIndexes = []
         table.columns(":visible").every(function(colIdx) {
