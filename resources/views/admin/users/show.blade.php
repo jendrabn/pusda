@@ -13,8 +13,16 @@
             Back to list
           </a>
         </div>
-        <table class="table table-bordered table-striped">
+        <table class="table-bordered table-striped table">
           <tbody>
+            <tr>
+              <th>
+                Foto Profil
+              </th>
+              <td>
+                <img src="{{ $user->photo_url }}" alt="Foto User" width="150px" height="150px">
+              </td>
+            </tr>
             <tr>
               <th>
                 ID
@@ -25,10 +33,26 @@
             </tr>
             <tr>
               <th>
-                Name
+                SKPD
+              </th>
+              <td>
+                {{ $user->skpd->nama }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Nama
               </th>
               <td>
                 {{ $user->name }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Username
+              </th>
+              <td>
+                {{ $user->username }}
               </td>
             </tr>
             <tr>
@@ -41,10 +65,50 @@
             </tr>
             <tr>
               <th>
+                No. HP
+              </th>
+              <td>
+                {{ $user->phone }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Alamat
+              </th>
+              <td>
+                {{ $user->address }}
+              </td>
+            </tr>
+            <tr>
+              <th>
                 Role
               </th>
               <td>
-                {{ $user->role }}
+                {{ $user->role_name }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Email verified at
+              </th>
+              <td>
+                {{ $user->email_verified_at }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Created at
+              </th>
+              <td>
+                {{ $user->created_at }}
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Updated at
+              </th>
+              <td>
+                {{ $user->updated_at }}
               </td>
             </tr>
           </tbody>

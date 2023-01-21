@@ -25,14 +25,14 @@
             <th>Singkatan</th>
             <th>Kategori</th>
           </tr>
-          <tr>
+          {{-- <tr>
             <td width="10"></td>
             <td>&nbsp;</td>
             <td> <input class="search" type="text" placeholder="Cari"></td>
             <td> <input class="search" type="text" placeholder="Cari"></td>
             <td> <input class="search" type="text" placeholder="Cari"></td>
             <td> <input class="search" type="text" placeholder="Cari"></td>
-          </tr>
+          </tr> --}}
         </thead>
       </table>
     </div>

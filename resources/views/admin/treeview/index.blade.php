@@ -57,7 +57,7 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
-            Tambah Data Menu Treeview {{ $title }}
+            Tambah {{ $title }}
           </h3>
         </div>
         <div class="card-body">
@@ -92,7 +92,7 @@
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">
-        Data Menu Treeview {{ $title }}
+        Daftar {{ $title }}
       </h3>
     </div>
     <div class="card-body">
@@ -105,13 +105,13 @@
             <th>Nama Menu</th>
             <th>Parent</th>
           </tr>
-          <tr>
+          {{-- <tr>
             <td></td>
             <td>&nbsp;</td>
             <td><input class="search" type="text" placeholder="Cari"></td>
             <td><input class="search" type="text" placeholder="Cari"></td>
             <td><input class="search" type="text" placeholder="Cari"></td>
-          </tr>
+          </tr> --}}
         </thead>
       </table>
     </div>

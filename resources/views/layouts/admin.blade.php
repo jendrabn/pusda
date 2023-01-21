@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
         rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet" />
+  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
   <link type="text/css"
         href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-colvis-2.3.3/b-html5-2.3.3/b-print-2.3.3/sl-1.5.0/datatables.min.css"
         rel="stylesheet" />
@@ -45,19 +46,12 @@
     @include('partials.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="min-height:  917px">
 
       <!-- Main content -->
-      <div class="content">
-        <div class="container-fluid" style="padding-top: 20px">
-          @if (session('alert-success'))
-            <div class="alert alert-success" style="margin-bottom: 20px">
-              <h5><i class="icon fas fa-check"></i> Success!</h5>
-              {{ session('alert-success') }}
-            </div>
-          @endif
-          @yield('content')
-        </div>
+      <div class="content" style="padding-top: 20px">
+        <x-alerts />
+        @yield('content')
         <!-- /.container-fluid -->
       </div>
       <!-- /.content -->
@@ -67,10 +61,10 @@
     <!-- Main Footer -->
     <footer class="main-footer">
       <!-- To the right -->
-      <div class="d-none d-sm-inline float-right">Anything you want</div>
+      <div class="d-none d-sm-inline float-right">Version 2</div>
       <!-- Default to the left -->
-      <strong>Copyright &copy; 2014-2021
-        <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+      <strong>Copyright &copy; 2017-{{ date('Y') }}
+        <a href="#">Pusat Data Kab. Situbondo</a>. </strong>
       All rights reserved.
     </footer>
   </div>

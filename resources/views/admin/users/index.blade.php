@@ -27,7 +27,7 @@
             <th>Role</th>
             <th>Foto</th>
           </tr>
-          <tr>
+          {{-- <tr>
             <td></td>
             <td></td>
             <td>
@@ -51,7 +51,7 @@
             <td>
               <input class="search" type="text" placeholder="Cari">
             </td>
-          </tr>
+          </tr> --}}
         </thead>
       </table>
     </div>

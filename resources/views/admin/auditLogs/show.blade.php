@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="card">
-    <div class="card-header ">
+    <div class="card-header">
       Show Audit Logs
     </div>
 
@@ -13,7 +13,7 @@
             Back to list
           </a>
         </div>
-        <table class="table table-bordered table-striped">
+        <table class="table-bordered table-striped table">
           <tbody>
             <tr>
               <th>
@@ -59,7 +59,7 @@
               <th>
                 Properties
               </th>
-              <td>
+              <td style="">
                 {{ $auditLog->properties }}
               </td>
             </tr>

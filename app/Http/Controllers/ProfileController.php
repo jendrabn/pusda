@@ -9,22 +9,22 @@ use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
-    public function index(): View
-    {
-        return view('profile', ['user' => auth()->user()]);
-    }
+  public function index(): View
+  {
+    return view('profile', ['user' => auth()->user()]);
+  }
 
-    public function updateProfileInformation(ProfileInformationUpdateRequest $request): RedirectResponse
-    {
-        auth()->user()->update($request->all());
+  public function updateProfileInformation(ProfileInformationUpdateRequest $request): RedirectResponse
+  {
+    auth()->user()->update($request->all());
 
-        return back()->with('alert-success', 'Profil successfully updated.');
-    }
+    return back()->with('success-message', 'Profil berhasil diupdate.');
+  }
 
-    public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
-    {
-        auth()->user()->update($request->all());
+  public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
+  {
+    auth()->user()->update($request->all());
 
-        return back()->with('alert-success', 'Password successfully updated.');
-    }
+    return back()->with('success-message', 'Password berhasil diupdate.');
+  }
 }

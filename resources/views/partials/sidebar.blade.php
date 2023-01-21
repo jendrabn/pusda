@@ -52,8 +52,8 @@
               <p>BPS</p>
             </a>
           </li>
-
-          <li class="nav-item {{ request()->routeIs('admin.rpjmd.*') ? 'menu-open' : '' }}">
+          {{--
+          <li class="nav-item {{ request()->routeIs('admin.rpjmd.*') ? 'menu-is-opening menu-open' : '' }}">
             <a class="nav-link {{ request()->routeIs('admin.rpjmd.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
@@ -79,9 +79,9 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
 
-          <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-open' : '' }}">
+          {{-- <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-is-opening menu-open' : '' }}">
             <a class="nav-link {{ request()->routeIs('admin.delapankeldata.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -107,7 +107,7 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}"
@@ -126,7 +126,7 @@
           </li>
 
           <li
-              class="nav-item {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'menu-open' : '' }}">
+              class="nav-item {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'menu-is-opening menu-open' : '' }}">
             <a class="nav-link {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'active' : '' }}"
                href="#">
               <i class="nav-icon fas fa-table"></i>
@@ -135,7 +135,8 @@
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview">
+            <ul
+                class="nav nav-treeview {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'd-block' : '' }}">
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.treeview.delapankeldata.*') ? 'active' : '' }}"
                    href="{{ route('admin.treeview.delapankeldata.index') }}">
@@ -250,15 +251,6 @@
           <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
           </form>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="nav-icon fas fa-th"></i>
-            <p>
-              Simple Link
-              <span class="right badge badge-danger">New</span>
-            </p>
-          </a>
         </li>
       </ul>
     </nav>
