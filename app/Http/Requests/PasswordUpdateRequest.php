@@ -2,31 +2,31 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class PasswordUpdateRequest extends FormRequest
 {
-  /**
-   * Determine if the user is authorized to make this request.
-   *
-   * @return bool
-   */
+
   public function authorize()
   {
-    return true;
+    return in_array(auth()->user()->role, array_keys(User::ROLES));
   }
 
-  /**
-   * Get the validation rules that apply to the request.
-   *
-   * @return array<string, mixed>
-   */
   public function rules()
   {
     return [
       'current_password' => ['required', 'string', 'current_password'],
       'password' => ['required', 'string', Password::min(6)->mixedCase(), 'confirmed'],
+    ];
+  }
+
+  public function attributes()
+  {
+    return [
+      'current_password' => 'password saat ini',
+      'password' => 'password baru'
     ];
   }
 }

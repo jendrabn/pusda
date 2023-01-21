@@ -20,7 +20,7 @@
                 Foto Profil
               </th>
               <td>
-                <img src="{{ $user->photo_url }}" alt="Foto User" width="150px" height="150px">
+                <img src="{{ $user->photo_url }}" alt="{{ $user->name }}" width="75" height="75">
               </td>
             </tr>
             <tr>
@@ -60,15 +60,15 @@
                 Email
               </th>
               <td>
-                {{ $user->email }}
+                <a href="mailto:{{ $user->email }}"> {{ $user->email }}</a>
               </td>
             </tr>
             <tr>
               <th>
-                No. HP
+                No. HP/WhatsApp
               </th>
               <td>
-                {{ $user->phone }}
+                <a href="https://api.whatsapp.com/send?phone={{ $user->phone }}">{{ $user->phone }}</a>
               </td>
             </tr>
             <tr>
@@ -89,28 +89,13 @@
             </tr>
             <tr>
               <th>
-                Email verified at
-              </th>
-              <td>
-                {{ $user->email_verified_at }}
-              </td>
-            </tr>
-            <tr>
-              <th>
                 Created at
               </th>
               <td>
                 {{ $user->created_at }}
               </td>
             </tr>
-            <tr>
-              <th>
-                Updated at
-              </th>
-              <td>
-                {{ $user->updated_at }}
-              </td>
-            </tr>
+
           </tbody>
         </table>
         <div class="form-group">

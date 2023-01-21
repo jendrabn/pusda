@@ -2,26 +2,18 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileInformationUpdateRequest extends FormRequest
 {
-  /**
-   * Determine if the user is authorized to make this request.
-   *
-   * @return bool
-   */
+
   public function authorize()
   {
-    return true;
+    return in_array(auth()->user()->role, array_keys(User::ROLES));;
   }
 
-  /**
-   * Get the validation rules that apply to the request.
-   *
-   * @return array<string, mixed>
-   */
   public function rules()
   {
     return [
@@ -34,14 +26,18 @@ class ProfileInformationUpdateRequest extends FormRequest
     ];
   }
 
-  /**
-   * Handle a passed validation attempt.
-   *
-   * @return void
-   */
+  public function attributes()
+  {
+    return [
+      'name' => 'nama lengkap',
+      'phone' => 'no. hp/whatsapp',
+      'address' => 'alamat rumah',
+      '_photo' => 'foto profil'
+    ];
+  }
+
   protected function passedValidation()
   {
-
     if ($this->hasFile('_photo')) {
       if (auth()->user()->photo) {
         Storage::disk('public')->delete(auth()->user()->photo);

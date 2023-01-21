@@ -25,14 +25,10 @@
             <th>Email</th>
             <th>SKPD</th>
             <th>Role</th>
-            <th>Foto</th>
           </tr>
           {{-- <tr>
             <td></td>
             <td></td>
-            <td>
-              <input class="search" type="text" placeholder="Cari">
-            </td>
             <td>
               <input class="search" type="text" placeholder="Cari">
             </td>
@@ -138,11 +134,7 @@
           {
             data: 'role',
             name: 'role'
-          },
-          {
-            data: 'photo',
-            name: 'photo',
-          },
+          }
 
         ],
         orderCellsTop: true,

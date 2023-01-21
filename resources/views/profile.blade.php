@@ -46,7 +46,7 @@
               @enderror
             </div>
             <div class="form-group">
-              <label for="phone">No. HP/Whatsapp</label>
+              <label for="phone">No. HP/WhatsApp</label>
               <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone"
                      type="tel" value="{{ $user->phone }}">
               @error('phone')
@@ -63,17 +63,17 @@
             <div class="form-group">
               <label for="_photo">Foto Profil</label>
               <div class="custom-file">
-                <input class="custom-file-input" id="_avatar" name="_photo" type="file" accept=".png,.jpg,.jpeg">
+                <input class="custom-file-input @error('_photo') is-invalid @enderror" id="_photo" name="_photo"
+                       type="file" accept=".png,.jpg,.jpeg">
                 <label class="custom-file-label" for="_photo">Choose file</label>
+                @error('_photo')
+                  <span class="error invalid-feedback">{{ $message }}</span>
+                @enderror
               </div>
-              @error('_photo')
-                <span class="error invalid-feedback">{{ $message }}</span>
-              @enderror
-              <span class="help-block">format jpg,jpeg & png; ukuran maksimal 1 mb</span>
             </div>
             <div class="form-group">
               <button class="btn btn-primary" type="submit">
-                Update
+                <i class="fas fa-save"></i> Update
               </button>
             </div>
           </form>
@@ -92,7 +92,7 @@
             @csrf
             @method('PUT')
             <div class="form-group">
-              <label class="required" for="current_password">Password Sekarang</label>
+              <label class="required" for="current_password">Password Saat Ini</label>
               <input class="form-control @error('current_password') is-invalid @enderror" id="current_password"
                      name="current_password" type="password">
               @error('current_password')
@@ -113,7 +113,7 @@
             </div>
             <div class="form-group">
               <button class="btn btn-primary" type="submit">
-                Update
+                <i class="fas fa-save"></i> Update
               </button>
             </div>
           </form>
