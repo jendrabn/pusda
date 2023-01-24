@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,15 +32,11 @@ class LoginController extends Controller
 
   public function redirectTo()
   {
-    $role = auth()->user()->role ?? null;
-
-    if ($role == 1) {
-      return route('admin.dashboard');
-    } elseif ($role == 2) {
-      return route('admin-skpd.dashboard');
-    } else {
-      return route('/');
-    }
+    return match (auth()->user()->role) {
+      User::ROLE_ADMIN => route('admin.dashboard'),
+      User::ROLE_SKPD =>  route('admin-skpd.dashboard'),
+      default => route('home')
+    };
   }
 
   public function username()
