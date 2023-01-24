@@ -11,7 +11,7 @@ class ProfileInformationUpdateRequest extends FormRequest
 
   public function authorize()
   {
-    return in_array(auth()->user()->role, array_keys(User::ROLES));;
+    return in_array(auth()->user()->role, User::ROLES);
   }
 
   public function rules()
@@ -22,7 +22,8 @@ class ProfileInformationUpdateRequest extends FormRequest
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
       'phone' => ['nullable', 'max:15', 'starts_with:+62,62,08'],
       'address' => ['nullable', 'string', 'max:255'],
-      '_photo' => ['nullable', 'mimes:png,jpg,jpeg', 'max:1024'],
+      'photo' => ['nullable', 'mimes:png,jpg,jpeg', 'max:1024'],
+      'birth_date' => ['nullable', 'date']
     ];
   }
 
@@ -32,20 +33,8 @@ class ProfileInformationUpdateRequest extends FormRequest
       'name' => 'nama lengkap',
       'phone' => 'no. hp/whatsapp',
       'address' => 'alamat rumah',
-      '_photo' => 'foto profil'
+      'photo' => 'foto profil',
+      'birth_date' => 'tanggal lahir'
     ];
-  }
-
-  protected function passedValidation()
-  {
-    if ($this->hasFile('_photo')) {
-      if (auth()->user()->photo) {
-        Storage::disk('public')->delete(auth()->user()->photo);
-      }
-
-      $this->merge([
-        'photo' =>  $this->file('_photo')->storePublicly('user_photos', 'public')
-      ]);
-    }
   }
 }

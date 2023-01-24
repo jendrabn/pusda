@@ -11,96 +11,95 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BpsController extends Controller
 {
-    public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = TabelBps::all();
-            $table = DataTables::of($query);
+  public function index(Request $request)
+  {
+    if ($request->ajax()) {
+      $model = TabelBps::with('parent')->select('tabel_bps.*');
+      $table = DataTables::eloquent($model);
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+      $table->addColumn('placeholder', '&nbsp;');
+      $table->addColumn('actions', '&nbsp;');
+      $table->editColumn('actions', function ($row) {
+        $crudRoutePart = 'treeview.bps';
 
-            $table->editColumn('actions', function ($row) {
-                $crudRoutePart = 'treeview.bps';
+        return view('partials.datatablesActions', compact(
+          'crudRoutePart',
+          'row'
+        ));
+      });
 
-                return view('partials.datatablesActions', compact(
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
+      $table->editColumn('parent', fn ($row) => $row->parent ? $row->parent->nama_menu : '');
+      $table->rawColumns(['actions', 'placeholder']);
 
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('nama_menu', function ($row) {
-                return $row->nama_menu ? $row->nama_menu : '';
-            });
-            $table->editColumn('parent', function ($row) {
-                return $row->parent ? $row->parent->nama_menu : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        $categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
-        $crudRoutePart = 'bps';
-        $title = 'Menu Treeview BPS';
-
-        return view('admin.treeview.index', compact('categories', 'crudRoutePart', 'title'));
+      return $table->toJson();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
-            'nama_menu' => ['required', 'string']
-        ]);
+    $categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
+    $title = 'Menu Treeview BPS';
+    $crudRoutePart = 'bps';
 
-        TabelBps::create($request->all());
+    return view('admin.treeview.index', compact('categories', 'crudRoutePart', 'title'));
+  }
 
-        return back();
+  public function store(Request $request)
+  {
+    $request->validate([
+      'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
+      'nama_menu' => ['required', 'string']
+    ]);
+
+    TabelBps::create($request->all());
+
+    return back()->with('success-message', 'Saved.');
+  }
+
+  public function edit(TabelBps $tabel)
+  {
+    $categories = TabelBps::with('parent')->get();
+    $title = 'Menu Treeview BPS';
+    $crudRoutePart = 'bps';
+
+    return view('admin.treeview.edit', compact('tabel', 'categories', 'crudRoutePart', 'title'));
+  }
+
+  public function update(Request $request, TabelBps $tabel)
+  {
+    $request->validate([
+      'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
+      'nama_menu' => ['required', 'string']
+    ]);
+
+    if (intval($tabel->id) !== 1) {
+      $tabel->update($request->all());
+
+      return back()->with('success-message', 'Updated.');
     }
 
-    public function edit(TabelBps $table)
-    {
-        $categories = TabelBps::with('parent')->get();
-        $crudRoutePart = 'bps';
-        $title = 'Menu Treeview BPS';
+    return back()->with('error-message', 'Cannot Updated.');
+  }
 
-        return view('admin.treeview.edit', compact('table', 'categories', 'crudRoutePart', 'title'));
+  public function destroy(TabelBps $tabel)
+  {
+    if (intval($tabel->id) !== 1) {
+      $tabel->delete();
+
+      return back()->with('success-message', 'Deleted.');
     }
 
-    public function update(Request $request, TabelBps $table)
-    {
-        $request->validate([
-            'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
-            'nama_menu' => ['required', 'string']
-        ]);
+    return back()->with('error-message', 'Cannot Deleted.');
+  }
 
-        if ($table->id != 1) {
-            $table->update($request->all());
-        }
+  public function massDestroy(Request $request)
+  {
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*', ['integer', 'exists:tabel_bps,id']
+    ]);
 
-        return back();
-    }
+    $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
 
-    public function destroy(TabelBps $table)
-    {
-        if ($table->id != 1) {
-            $table->delete();
-        }
+    TabelBps::whereIn('id', $ids)->delete();
 
-        return back();
-    }
-
-    public function massDestroy(Request $request)
-    {
-        $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
-
-        TabelBps::whereIn('id', $ids)->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+    return response(null, Response::HTTP_NO_CONTENT);
+  }
 }

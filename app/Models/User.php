@@ -15,9 +15,13 @@ class User extends Authenticatable
 {
   use HasFactory, Notifiable,  Auditable;
 
-  const ROLES = [
-    1 => 'Administrator',
-    2 => 'SKPD'
+
+  public const ROLE_ADMIN = 'Administrator';
+  public const ROLE_SKPD = 'SKPD';
+
+  public const ROLES = [
+    'Administrator',
+    'SKPD'
   ];
 
   protected $fillable = [
@@ -28,6 +32,7 @@ class User extends Authenticatable
     'phone',
     'address',
     'photo',
+    'birth_date',
     'role',
     'password',
   ];
@@ -41,43 +46,18 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
-
   public function skpd()
   {
     return $this->belongsTo(Skpd::class, 'skpd_id');
   }
 
-  public function photoUrl(): Attribute
+  public function photo(): Attribute
   {
-    return Attribute::get(function () {
-      if ($this->attributes['photo'] && Storage::disk('public')->exists($this->attributes['photo'])) {
-        return Storage::url($this->attributes['photo']);
-      }
-
-      $UiAvatarParams = [
-        'name' =>  $this->attributes['name'][0],
-        'size' => 150,
-        'background' => '465a65',
-        'color' => 'fefefe',
-        'length' => 2,
-        'font-size' => 0.5,
-        'rounded' => false,
-        'uppercase' => true,
-        'bold' => true,
-        'format' => 'png'
-      ];
-
-      return 'https://ui-avatars.com/api?' . http_build_query($UiAvatarParams);
-    });
-  }
-
-  public function roleName(): Attribute
-  {
-    return Attribute::make(get: fn () => self::ROLES[$this->attributes['role']]);
+    return Attribute::get(fn ($value) => $value && Storage::disk('public')->exists($value) ? Storage::url($value) : '/img/default-avatar.jpg');
   }
 
   public function password(): Attribute
   {
-    return Attribute::set(fn ($input) => $input && Hash::needsRehash($input) ? Hash::make($input) : $input);
+    return Attribute::set(fn ($value) => $value && Hash::needsRehash($value) ? Hash::make($value) : $value);
   }
 }

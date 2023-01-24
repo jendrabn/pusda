@@ -8,101 +8,97 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class IndikatorController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = TabelIndikator::all();
-            $table = DataTables::of($query);
+  public function index(Request $request)
+  {
+    if ($request->ajax()) {
+      $model = TabelIndikator::with('parent')->select('tabel_indikator.*');
+      $table = DataTables::eloquent($model);
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+      $table->addColumn('placeholder', '&nbsp;');
+      $table->addColumn('actions', '&nbsp;');
+      $table->editColumn('actions', function ($row) {
+        $crudRoutePart = 'treeview.indikator';
 
-            $table->editColumn('actions', function ($row) {
-                $crudRoutePart = 'treeview.indikator';
+        return view('partials.datatablesActions', compact(
+          'crudRoutePart',
+          'row'
+        ));
+      });
+      $table->editColumn('parent', fn ($row) =>  $row->parent ? $row->parent->nama_menu : '');
+      $table->rawColumns(['actions', 'placeholder']);
 
-                return view('partials.datatablesActions', compact(
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('nama_menu', function ($row) {
-                return $row->nama_menu ? $row->nama_menu : '';
-            });
-            $table->editColumn('parent', function ($row) {
-                return $row->parent ? $row->parent->nama_menu : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-
-        $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
-        $crudRoutePart = 'indikator';
-        $title = 'Menu Treeview Indikator';
-
-        return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
+      return $table->toJson();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'parent_id' =>  ['required', 'numeric', 'exists:tabel_indikator,id'],
-            'nama_menu' => ['required', 'string']
-        ]);
+    $categories = TabelIndikator::with(['parent', 'childs.childs.childs'])->get();
+    $title = 'Menu Treeview Indikator';
+    $crudRoutePart = 'indikator';
 
-        TabelIndikator::create($request->all());
+    return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
+  }
 
-        return back();
+  public function store(Request $request)
+  {
+    $request->validate([
+      'parent_id' =>  ['required', 'integer', 'exists:tabel_indikator,id'],
+      'nama_menu' => ['required', 'string', 'max:200']
+    ]);
+
+    TabelIndikator::create($request->all());
+
+    return back()->with('success-message', 'Saved.');
+  }
+
+  public function edit(TabelIndikator $tabel)
+  {
+    $categories = TabelIndikator::with('parent')->get();
+    $title = 'Menu Treeview Indikator';
+    $crudRoutePart = 'indikator';
+
+    return view('admin.treeview.edit', compact('categories', 'tabel', 'title', 'crudRoutePart'));
+  }
+
+  public function update(Request $request, TabelIndikator $tabel)
+  {
+    $request->validate([
+      'parent_id' =>  ['required', 'integer', 'exists:tabel_indikator,id'],
+      'nama_menu' => ['required', 'string', 'max:200']
+    ]);
+
+    if (intval($tabel->id) !== 1) {
+      $tabel->update($request->all());
+
+      return back()->with('success-message', 'Updated.');
     }
 
-    public function edit(TabelIndikator $table)
-    {
-        $categories = TabelIndikator::with('parent')->get();
-        $crudRoutePart = 'indikator';
-        $title = 'Menu Treeview Indikator';
+    return back()->with('error-message', 'Cannot Updated.');
+  }
 
-        return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
+  public function destroy(TabelIndikator $tabel)
+  {
+    if (intval($tabel->id) !== 1) {
+      $tabel->delete();
+
+      return back()->with('success-message', 'Deleted.');
     }
 
-    public function update(Request $request, TabelIndikator $table)
-    {
-        $request->validate([
-            'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-            'nama_menu' => ['required', 'string']
-        ]);
+    return back()->with('error-message', 'Cannot Deleted.');
+  }
 
-        if ($table->id != 1) {
-            $table->update($request->all());
-        }
+  public function massDestroy(Request $request)
+  {
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*', ['integer', 'exists:tabel_indikator.id']
+    ]);
 
-        return back();
-    }
+    $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();
 
-    public function destroy(TabelIndikator $table)
-    {
-        if ($table->id != 1) {
-            $table->delete();
-        }
+    TabelIndikator::whereIn('id', $ids)->delete();
 
-        return back();
-    }
-
-    public function massDestroy(Request $request)
-    {
-        $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
-
-        TabelIndikator::whereIn('id', $ids)->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+    return response(null, Response::HTTP_NO_CONTENT);
+  }
 }

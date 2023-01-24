@@ -9,10 +9,10 @@
     </a>
   @endif
   @if (Route::has('admin.' . $crudRoutePart . '.destroy'))
-    <form action="{{ route('admin.' . $crudRoutePart . '.destroy', $row->id) }}" method="POST"
-      onsubmit="return confirm('Are You Sure?');" style="display: inline-block;">
+    <form style="display: inline-block;" action="{{ route('admin.' . $crudRoutePart . '.destroy', $row->id) }}"
+          method="POST" onsubmit="return confirm('Are You Sure?');">
       @method('DELETE')
       @csrf
-      <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+      <input class="btn btn-xs btn-danger" type="submit" value="Delete">
     </form>
   @endif

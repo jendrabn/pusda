@@ -96,11 +96,3 @@ div.dt-button-collection {
     padding: 0;
 }
 
-.buttons-columnVisibility {
-    display: block;
-}
-
-.buttons-columnVisibility.active {
-    background-color: rgba(128, 128, 128, 0.1);
-    font-weight: bolder;
-}

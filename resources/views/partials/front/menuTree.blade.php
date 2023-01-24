@@ -12,7 +12,7 @@
                   @foreach ($child->childs as $child)
                     <li>
                       <a class="text-decoration-none"
-                        href="{{ route('' . $routePart . '.table', $child->id) }}">{{ $child->nama_menu }}</a>
+                         href="{{ route('' . $routePart . '.table', $child->id) }}">{{ $child->nama_menu }}</a>
                     </li>
                   @endforeach
                 </ul>

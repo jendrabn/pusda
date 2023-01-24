@@ -6,6 +6,45 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
+            Tambah {{ $title }}
+          </h3>
+        </div>
+        <div class="card-body">
+          <form action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}" method="POST">
+            @csrf
+            <div class="form-group">
+              <label class="required" for="parent_id">Kategori</label>
+              <select class="form-control select2 @error('parent_id') is-invalid @enderror" id="category"
+                      name="parent_id">
+                @foreach ($categories as $item)
+                  <option value="{{ $item->id }}">{{ $item->nama_menu }}</option>
+                @endforeach
+              </select>
+              @error('parent_id')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label class="required" for="nama_menu">Nama Menu</label>
+              <input class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" type="text"
+                     value="{{ old('nama_menu') }}">
+              @error('nama_menu')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-save"></i> Simpan
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
             Tampilan {{ $title }}
           </h3>
         </div>
@@ -50,40 +89,6 @@
             </li>
             @endforeach
           </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">
-            Tambah {{ $title }}
-          </h3>
-        </div>
-        <div class="card-body">
-          <form action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}" method="POST">
-            @csrf
-
-            <div class="form-group">
-              <label class="required" for="parent_id">Kategori</label>
-              <select class="form-control select2" id="category" name="parent_id">
-                @foreach ($categories as $category)
-                  <option value="{{ $category->id }}">{{ $category->nama_menu }}</option>
-                @endforeach
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="required" for="nama_menu">Nama Menu</label>
-              <input class="form-control" name="nama_menu" type="text" value="{{ old('nama_menu') }}">
-            </div>
-
-            <div class="form-group">
-              <button class="btn btn-primary" type="submit">
-                Simpan
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </div>
@@ -171,7 +176,7 @@
           },
           {
             data: 'actions',
-            name: 'Actions'
+            name: 'actions'
           },
           {
             data: 'id',

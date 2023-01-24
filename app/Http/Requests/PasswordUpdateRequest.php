@@ -11,7 +11,7 @@ class PasswordUpdateRequest extends FormRequest
 
   public function authorize()
   {
-    return in_array(auth()->user()->role, array_keys(User::ROLES));
+    return in_array(auth()->user()->role, User::ROLES);
   }
 
   public function rules()

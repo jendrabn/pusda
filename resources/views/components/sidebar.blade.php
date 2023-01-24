@@ -1,23 +1,7 @@
-@php
-  $skpdCategories = \App\Models\KategoriSkpd::pluck('nama', 'id');
-  $role = auth()->user()->role;
-  $dashboardRoute;
-
-  if ($role == 1) {
-      $dashboardRoute = route('admin.dashboard');
-  } elseif ($role == 2) {
-      $dashboardRoute = route('admin-skpd.dashboard');
-  }
-@endphp
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a class="brand-link" href="index3.html">
-    {{-- <img class="brand-image img-circle elevation-3" src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo"
-         style="opacity: 0.8" /> --}}
-    <span class="brand-text">
-      <img class="img-fluid" src="{{ asset('img/logo.png') }}" alt="AdminLTE Logo" />
-    </span>
+  <a class="brand-link" href="javascript:;">
+    <img class="brand-text img-fluid" src="{{ asset('img/logo.png') }}" alt="Logo" />
   </a>
 
   <!-- Sidebar -->
@@ -25,7 +9,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel d-flex mt-3 mb-3 pb-3">
       <div class="image">
-        <img class="img-circle elevation-2" src="{{ auth()->user()->photo_url }}" alt="User Image" />
+        <img class="img-circle elevation-2" src="{{ auth()->user()->photo }}" alt="User Image" />
       </div>
       <div class="info">
         <a class="d-block"
@@ -36,15 +20,15 @@
     <!-- Sidebar Menu -->
     <nav>
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" data-accordion="false" role="menu">
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-             href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-tachometer-alt nav-icon"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
 
-        @if ($role == 1)
+        @role('Administrator')
+          <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+               href="{{ route('admin.dashboard') }}">
+              <i class="fas fa-tachometer-alt nav-icon"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.bps.*') ? 'active' : '' }}"
                href="{{ route('admin.bps.index') }}">
@@ -52,7 +36,7 @@
               <p>BPS</p>
             </a>
           </li>
-          {{--
+
           <li class="nav-item {{ request()->routeIs('admin.rpjmd.*') ? 'menu-is-opening menu-open' : '' }}">
             <a class="nav-link {{ request()->routeIs('admin.rpjmd.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-briefcase"></i>
@@ -62,12 +46,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @foreach ($skpdCategories as $id => $name)
+              @foreach (\App\Models\KategoriSkpd::pluck('nama', 'id') as $id => $nama)
                 <li class="nav-item">
                   <a class="nav-link {{ request()->is('admin/rpjmd/' . $id) ? 'active' : '' }}"
                      href="{{ route('admin.rpjmd.index', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>{{ $name }}</p>
+                    <p>{{ $nama }}</p>
                   </a>
                 </li>
               @endforeach
@@ -79,9 +63,8 @@
                 </a>
               </li>
             </ul>
-          </li> --}}
-
-          {{-- <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-is-opening menu-open' : '' }}">
+          </li>
+          <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-is-opening menu-open' : '' }}">
             <a class="nav-link {{ request()->routeIs('admin.delapankeldata.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -90,12 +73,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @foreach ($skpdCategories as $id => $name)
+              @foreach (\App\Models\KategoriSkpd::pluck('nama', 'id') as $id => $nama)
                 <li class="nav-item">
                   <a class="nav-link {{ request()->is('admin/delapankeldata/category/' . $id) ? 'active' : '' }}"
                      href="{{ route('admin.delapankeldata.category', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>{{ $name }}</p>
+                    <p>{{ $nama }}</p>
                   </a>
                 </li>
               @endforeach
@@ -107,7 +90,7 @@
                 </a>
               </li>
             </ul>
-          </li> --}}
+          </li>
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}"
@@ -214,9 +197,16 @@
               </p>
             </a>
           </li>
-        @endif
+        @endrole
 
-        @if ($role == 2)
+        @role('SKPD')
+          <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+               href="{{ route('admin.dashboard') }}">
+              <i class="fas fa-tachometer-alt nav-icon"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('skpd.delapankeldata.*') ? 'active' : '' }}"
                href="{{ route('skpd.delapankeldata.index') }}">
@@ -231,7 +221,7 @@
               <p>RPJMD</p>
             </a>
           </li>
-        @endif
+        @endrole
 
         <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}" href="{{ route('profile') }}">
@@ -242,15 +232,12 @@
         <li class="nav-item">
           <a class="nav-link" href="#"
              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <p>
-              <i class="fas fa-sign-out-alt nav-icon">
-              </i>
-              <p>Logout</p>
-            </p>
+            <i class="fas fa-sign-out-alt nav-icon"></i>
+            <p>Logout</p>
+            <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
+              @csrf
+            </form>
           </a>
-          <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-          </form>
         </li>
       </ul>
     </nav>

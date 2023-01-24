@@ -17,7 +17,13 @@ class ProfileController extends Controller
 
   public function updateProfileInformation(ProfileInformationUpdateRequest $request): RedirectResponse
   {
-    auth()->user()->update($request->all());
+    auth()->user()->update($request->validated());
+
+    if ($request->hasFile('photo')) {
+      auth()->user()->update(['photo' =>  $request->file('photo')->storePublicly('user_photos', 'public')]);
+
+      Storage::disk('public')->delete(auth()->user()->photo);
+    }
 
     return back()->with('success-message', 'Profil berhasil diupdate.');
   }

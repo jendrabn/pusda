@@ -17,31 +17,26 @@ class UsersController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $query = User::with(['skpd'])->select('users.*');
-      $table = Datatables::of($query);
+      $model = User::with(['skpd'])->select(sprintf('%s.*', (new User())->getTable()));
+      $table = Datatables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
       $table->addColumn('actions', '&nbsp;');
 
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'users';
+
         return view('partials.datatablesActions', compact(
           'crudRoutePart',
           'row'
         ));
       });
 
-      $table->editColumn('id', fn ($row) => $row->id ? $row->id : '');
-      $table->editColumn('name', fn ($row) =>  $row->name ? $row->name : '');
-      $table->editColumn('username', fn ($row) => $row->username ? $row->username : '');
       $table->editColumn('email', fn ($row) => $row->email ? sprintf('<a href="mailto:%s">%s</a>', $row->email, $row->email) : '');
-      $table->editColumn('phone', fn ($row) => $row->phone ? $row->phone : '');
-      $table->editColumn('address', fn ($row) => $row->address ? $row->address : '');
-      $table->editColumn('skpd', fn ($row) => $row->skpd ? $row->skpd->nama : '');
       $table->editColumn('photo', fn ($row) => sprintf('<img src="%s" width="50px" height="50px">', $row->photo_url));
-      $table->editColumn('role', fn ($row) => sprintf('<span class="badge badge-info">%s</span>', $row->role_name));
+      $table->editColumn('role', fn ($row) => sprintf('<span class="badge badge-info">%s</span>', $row->role));
 
-      $table->rawColumns(['actions', 'placeholder', 'role', 'photo', 'email']);
+      $table->rawColumns(['actions', 'placeholder', 'email', 'photo', 'role']);
 
       return $table->toJson();
     }

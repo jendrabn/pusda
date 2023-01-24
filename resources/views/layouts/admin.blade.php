@@ -20,7 +20,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css"
         rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" rel="stylesheet">
+  <link href="{{ asset('plugins/jstree/themes/default/style.css') }}" rel="stylesheet">
   <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 </head>
@@ -43,7 +43,7 @@
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    @include('partials.sidebar')
+    <x-sidebar />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="min-height:  917px">
@@ -59,14 +59,7 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
-      <!-- To the right -->
-      <div class="d-none d-sm-inline float-right">Version 2</div>
-      <!-- Default to the left -->
-      <strong>Copyright &copy; 2017-{{ date('Y') }}
-        <a href="#">Pusat Data Kab. Situbondo</a>. </strong>
-      All rights reserved.
-    </footer>
+    <x-footer />
   </div>
   <!-- ./wrapper -->
 
@@ -83,7 +76,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+  <script src="{{ asset('plugins/jstree/jstree.min.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js">
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>

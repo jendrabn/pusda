@@ -6,7 +6,7 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
-            Informasi Profil
+            Profil
           </h3>
         </div>
         <div class="card-body">
@@ -15,7 +15,7 @@
             @csrf
             <div class="form-group">
               <label for="role">Role</label>
-              <input class="form-control" id="role" type="text" value="{{ $user->role_name }}" readonly>
+              <input class="form-control" id="role" type="text" value="{{ $user->role }}" readonly>
             </div>
             <div class="form-group">
               <label for="role">SKPD</label>
@@ -61,12 +61,20 @@
               @enderror
             </div>
             <div class="form-group">
-              <label for="_photo">Foto Profil</label>
+              <label for="birth_date">Tanggal Lahir</label>
+              <input class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date"
+                     type="date" value="{{ $user->birth_date }}">
+              @error('birth_date')
+                <span class="error invalid-feedback">{{ $message }}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label for="photo">Foto Profil</label>
               <div class="custom-file">
-                <input class="custom-file-input @error('_photo') is-invalid @enderror" id="_photo" name="_photo"
+                <input class="custom-file-input @error('photo') is-invalid @enderror" id="photo" name="photo"
                        type="file" accept=".png,.jpg,.jpeg">
-                <label class="custom-file-label" for="_photo">Choose file</label>
-                @error('_photo')
+                <label class="custom-file-label" for="photo">Choose file</label>
+                @error('photo')
                   <span class="error invalid-feedback">{{ $message }}</span>
                 @enderror
               </div>

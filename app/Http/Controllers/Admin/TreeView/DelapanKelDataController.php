@@ -10,16 +10,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DelapanKelDataController extends Controller
 {
-
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $query = Tabel8KelData::all();
-      $table = DataTables::of($query);
+      $model = Tabel8KelData::with('parent')->select('tabel_8keldata.*');
+      $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
       $table->addColumn('actions', '&nbsp;');
-
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'treeview.delapankeldata';
 
@@ -28,76 +26,78 @@ class DelapanKelDataController extends Controller
           'row'
         ));
       });
-
-      $table->editColumn('id', fn ($row) =>  $row->id ? $row->id : '');
-      $table->editColumn('nama_menu', fn ($row) =>  $row->nama_menu ? $row->nama_menu : '');
       $table->editColumn('parent', fn ($row) =>   $row->parent ? $row->parent->nama_menu : '');
-
       $table->rawColumns(['actions', 'placeholder']);
 
       return $table->toJson();
     }
 
-    $categories = Tabel8KelData::with(['parent', 'childs.childs.childs'])->get();
-    $crudRoutePart = 'delapankeldata';
+    $categories = Tabel8KelData::with(['parent', 'childs.childs'])->get();
     $title = 'Menu Treeview 8 Kel. Data';
+    $crudRoutePart = 'delapankeldata';
 
     return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
   }
 
   public function store(Request $request)
   {
+    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+
     $request->validate([
       'parent_id' =>  ['required', 'integer', 'exists:tabel_8keldata,id'],
-      'nama_menu' => ['required', 'string']
+      'nama_menu' => ['required', 'string', 'max:200'],
+      'skpd_id' => ['required', 'integer', 'exists:skpd,id']
     ]);
-
-    $request->request->add(['skpd_id' => auth()->user()->skpd_id]);
 
     Tabel8KelData::create($request->all());
 
-    return back()->with('alert-success', 'Successfully added menu treeview 8 kel. data.');
+    return back()->with('success-message', 'Saved.');
   }
 
-  public function edit(Tabel8KelData $table)
+  public function edit(Tabel8KelData $tabel)
   {
     $categories = Tabel8KelData::with('parent')->get();
-    $crudRoutePart = 'delapankeldata';
     $title = 'Menu Treeview 8 Kel. Data';
+    $crudRoutePart = 'delapankeldata';
 
-    return view('admin.treeview.edit', compact('categories', 'table', 'title', 'crudRoutePart'));
+    return view('admin.treeview.edit', compact('categories', 'tabel', 'title', 'crudRoutePart'));
   }
 
-  public function update(Request $request, Tabel8KelData $table)
+  public function update(Request $request, Tabel8KelData $tabel)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'numeric', 'exists:tabel_8keldata,id'],
-      'nama_menu' => ['required', 'string']
+      'parent_id' =>  ['required', 'integer', 'exists:tabel_8keldata,id'],
+      'nama_menu' => ['required', 'string', 'max:200']
     ]);
 
-    if ($table->id != 1) {
-      $table->update($request->all());
+    if (intval($tabel->id) !== 1) {
+      $tabel->update($request->all());
 
-      return redirect()->route('admin.treeview.delapankeldata.index')
-        ->with('alert-success', 'Menu treeview 8 kel. data successfully updated.');
+      return back()->with('success-message', 'Updated.');
     }
 
-    return back()->with('alert-fail', 'Menu "Parent" with ID 1 cannot updated.');
+    return back()->with('error-message', 'Cannot Updated.');
   }
 
-  public function destroy(Request $request, Tabel8KelData $table)
+  public function destroy(Tabel8KelData $tabel)
   {
-    if ($table->id != 1) {
-      $table->delete();
-      return back()->with('alert-success', 'Menu treeview 8 kel. data successfully deleted.');
+    if (intval($tabel->id) !== 1) {
+      $tabel->delete();
+
+      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('alert-fail', 'Menu "Parent" with ID 1 cannot deleted.');
+    return back()->with('error-message', 'Cannot Deleted.');
   }
 
   public function massDestroy(Request $request)
   {
-    $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*', ['integer', 'exists:tabel_8keldata,id']
+    ]);
+
+    $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();
 
     Tabel8KelData::whereIn('id', $ids)->delete();
 

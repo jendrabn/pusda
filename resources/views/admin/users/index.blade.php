@@ -128,7 +128,7 @@
             name: 'email'
           },
           {
-            data: 'skpd',
+            data: 'skpd.nama',
             name: 'skpd.nama',
           },
           {

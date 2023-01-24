@@ -20,7 +20,7 @@
                 Foto Profil
               </th>
               <td>
-                <img src="{{ $user->photo_url }}" alt="{{ $user->name }}" width="75" height="75">
+                <img src="{{ $user->photo }}" alt="{{ $user->name }}" width="75" height="75">
               </td>
             </tr>
             <tr>
