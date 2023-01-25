@@ -6,75 +6,87 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelIndikator;
 use App\Models\UraianIndikator;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndikatorController extends Controller
 {
-    public function index(TabelIndikator $table = null)
-    {
-        $categories = TabelIndikator::with(['childs.childs.childs'])->get();
-        $title = 'Uraian Form Menu Indikator';
-        $crudRoutePart = 'indikator';
+  public function index(TabelIndikator $tabel = null)
+  {
+    $uraian = null;
+    $categories = TabelIndikator::with('childs.childs.childs')->get();
+    $title = 'Uraian Form Menu Indikator';
+    $crudRoutePart = 'indikator';
 
-        if (is_null($table)) {
-            return view('admin.uraian.index', compact('categories', 'title', 'crudRoutePart'));
-        }
-
-        $uraian = UraianIndikator::with('childs')
-            ->where('tabel_indikator_id', $table->id)
-            ->whereNull('parent_id')
-            ->orderBy('id')
-            ->get();
-
-        return view('admin.uraian.create', compact('table', 'categories', 'title', 'crudRoutePart', 'uraian'));
+    if ($tabel) {
+      $uraian = UraianIndikator::with('childs')
+        ->where('tabel_indikator_id', $tabel->id)
+        ->whereNull('parent_id')
+        ->orderBy('id')
+        ->get();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string'],
-            'table_id' => ['required', 'numeric', 'exists:tabel_indikator,id'],
-        ]);
+    return view('admin.uraian.index', compact('tabel', 'categories', 'title', 'crudRoutePart', 'uraian'));
+  }
 
-        UraianIndikator::create([
-            'parent_id' => $request->parent_id,
-            'uraian' => $request->uraian,
-            'tabel_indikator_id' => $request->table_id,
-        ]);
+  public function store(Request $request, TabelIndikator $tabel)
+  {
+    // Kebanyakan ID SKPD null
+    $request->merge([
+      'skpd_id' => auth()->user()->skpd_id
+    ]);
 
-        return back();
-    }
+    $request->validate([
+      'parent_id' => ['nullable', 'integer'],
+      'uraian' => ['required', 'string', 'max:255'],
+    ]);
 
-    public function edit(TabelIndikator $table, UraianIndikator $uraian)
-    {
-        $categories = TabelIndikator::all();
-        $uraians = UraianIndikator::with('childs')
-            ->where('tabel_indikator_id', $table->id)
-            ->whereNull('parent_id')
-            ->orderBy('id')
-            ->get();
-        $title = 'Uraian Form Menu Indikator';
-        $crudRoutePart = 'indikator';
+    $tabel->uraianIndikator()->create($request->all());
 
-        return view('admin.uraian.indikator_edit', compact('table', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
-    }
+    return back()->with('success-message', 'Saved.');
+  }
 
-    public function update(Request $request, UraianIndikator $uraian)
-    {
-        $request->validate([
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string'],
-        ]);
+  public function edit(TabelIndikator $tabel, UraianIndikator $uraian)
+  {
+    $categories = TabelIndikator::all();
+    $uraians = UraianIndikator::with('childs')
+      ->where('tabel_indikator_id', $tabel->id)
+      ->whereNull('parent_id')
+      ->orderBy('id')
+      ->get();
+    $title = 'Uraian Form Menu Indikator';
+    $crudRoutePart = 'indikator';
 
-        $uraian->update($request->all());
+    return view('admin.uraian.edit', compact('tabel', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
+  }
 
-        return back();
-    }
+  public function update(Request $request, UraianIndikator $uraian)
+  {
+    $request->validate([
+      'parent_id' => ['nullable', 'integer'],
+      'uraian' => ['required', 'string', 'max:255'],
+    ]);
 
-    public function destroy(UraianIndikator $uraian)
-    {
-        $uraian->delete();
+    $uraian->update($request->all());
 
-        return back();
-    }
+    return back()->with('success-message', 'Updated.');
+  }
+
+  public function destroy(UraianIndikator $uraian)
+  {
+    $uraian->delete();
+
+    return back()->with('success-message', 'Deleted.');
+  }
+
+  public function massDestroy(Request $request)
+  {
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*' => ['integer', 'exists:uraian_indikator,id']
+    ]);
+
+    UraianIndikator::whereIn('id', $request->ids)->delete();
+
+    return response(null, Response::HTTP_NO_CONTENT);
+  }
 }

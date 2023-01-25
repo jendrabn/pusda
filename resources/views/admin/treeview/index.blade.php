@@ -15,7 +15,7 @@
             <div class="form-group">
               <label class="required" for="parent_id">Kategori</label>
               <select class="form-control select2 @error('parent_id') is-invalid @enderror" id="category"
-                      name="parent_id">
+                name="parent_id">
                 @foreach ($categories as $item)
                   <option value="{{ $item->id }}">{{ $item->nama_menu }}</option>
                 @endforeach
@@ -27,7 +27,7 @@
             <div class="form-group">
               <label class="required" for="nama_menu">Nama Menu</label>
               <input class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" type="text"
-                     value="{{ old('nama_menu') }}">
+                value="{{ old('nama_menu') }}">
               @error('nama_menu')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror

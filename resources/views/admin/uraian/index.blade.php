@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
   <div class="row">
     <div class="col-lg-6">
       @if ($tabel)
@@ -12,31 +11,38 @@
             </h3>
           </div>
           <div class="card-body">
-            <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store') }}" method="POST">
+            <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store', $tabel->id) }}" method="POST">
               @csrf
-              <input name="table_id" type="hidden" value="{{ $tabel->id }}">
-
               <div class="form-group">
                 <label class="required" for="parent_id">Kategori</label>
-                <select class="form-control select2" id="parent_id" name="parent_id" style="width: 100%">
+                <select class="form-control select2 @error('parent_id') is-invalid @enderror" id="parent_id"
+                  name="parent_id" style="width: 100%">
                   <option value="">Parent</option>
                   @foreach ($uraian as $item)
                     <option value="{{ $item->id }}">{{ $item->uraian }}</option>
                   @endforeach
                 </select>
+                @error('parent_id')
+                  <span class="error invalid-feedback">{{ $message }}</span>
+                @enderror
               </div>
               <div class="form-group">
                 <label class="required" for="uraian">Uraian</label>
-                <input class="form-control" name="uraian" type="text" value="{{ old('uraian') }}">
+                <input class="form-control @error('uraian') is-invalid @enderror" name="uraian" type="text"
+                  value="{{ old('uraian') }}">
+                @error('uraian')
+                  <span class="error invalid-feedback">{{ $message }}</span>
+                @enderror
               </div>
               <div class="form-group">
-                <button class="btn btn-danger" type="submit">Save</button>
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-save"></i> Simpan
+                </button>
               </div>
             </form>
           </div>
         </div>
       @endif
-
     </div>
     <div class="col-lg-6">
       <div class="card">
@@ -73,7 +79,7 @@
                                     @foreach ($child->childs as $child)
                                       <li @if (isset($tabel) && $tabel->id === $child->id) data-jstree='{ "selected" : true }' @endif>
                                         <a
-                                           href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
+                                          href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
                                       </li>
                                     @endforeach
                                   @endif
@@ -97,12 +103,12 @@
   @if ($tabel)
     <div class="card">
       <div class="card-header">
-        <h3 class="jstree">
-          Uraian Form {{ $tabel->nama_menu }} List
+        <h3 class="card-title">
+          Daftar Uraian Form {{ $tabel->nama_menu }}
         </h3>
       </div>
       <div class="card-body">
-        <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian table">
+        <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-uraian table">
           <thead>
             <tr>
               <th width="10"></th>
@@ -119,12 +125,12 @@
                 <td>{{ $item->uraian }}</td>
                 <td>
                   <a class="btn btn-xs btn-info"
-                     href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
+                    href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
                     Edit
                   </a>
                   <form style="display: inline-block;"
-                        action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
-                        onsubmit="return confirm('Are You Sure?');">
+                    action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
+                    onsubmit="return confirm('Are You Sure?');">
                     @method('DELETE')
                     @csrf
                     <input class="btn btn-xs btn-danger" type="submit" value="Delete">
@@ -135,15 +141,15 @@
                 <tr>
                   <td></td>
                   <td>{{ $item->id }}</td>
-                  <td style="text-indent: 1rem;">{{ $item->uraian }}</td>
+                  <td style="text-indent: 2rem;">{{ $item->uraian }}</td>
                   <td>
                     <a class="btn btn-xs btn-info"
-                       href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
+                      href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
                       Edit
                     </a>
                     <form style="display: inline-block;"
-                          action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
-                          onsubmit="return confirm('Are You Sure?');">
+                      action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}" method="POST"
+                      onsubmit="return confirm('Are You Sure?');">
                       @method('DELETE')
                       @csrf
                       <input class="btn btn-xs btn-danger" type="submit" value="Delete">
@@ -160,12 +166,66 @@
 @endsection
 
 @section('scripts')
-  @parent
   <script>
     $(function() {
-      $('.datatable-Uraian').DataTable({
-        pageLength: 50,
+      let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+
+      let deleteButton = {
+        text: 'Delete selected',
+        url: "{{ route('admin.uraian.' . $crudRoutePart . '.massDestroy') }}",
+        className: 'btn-danger',
+        action: function(e, dt, node, config) {
+          var ids = $.map(dt.rows({
+            selected: true
+          }).data(), function(entry) {
+            return entry[1]
+          });
+
+          if (ids.length === 0) {
+            alert('No rows selected')
+            return
+          }
+
+          if (confirm('Are You Sure?')) {
+            $.ajax({
+                headers: {
+                  'x-csrf-token': _token
+                },
+                method: 'POST',
+                url: config.url,
+                data: {
+                  ids: ids,
+                  _method: 'DELETE'
+                }
+              })
+              .done(function() {
+                location.reload()
+              })
+          }
+        }
+      }
+
+      dtButtons.push(deleteButton)
+
+      let dtOverrideGlobals = {
+        buttons: dtButtons
+      };
+
+      let table = $('.datatable-uraian').DataTable(dtOverrideGlobals);
+      $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
+        $($.fn.dataTable.tables(true)).DataTable()
+          .columns.adjust();
       });
+
+      let visibleColumnsIndexes = null;
+
+      table.on('column-visibility.dt', function(e, settings, column, state) {
+        visibleColumnsIndexes = []
+        table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+        });
+      });
+
     });
   </script>
 @endsection

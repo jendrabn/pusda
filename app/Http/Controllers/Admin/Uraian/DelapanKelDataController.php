@@ -29,17 +29,20 @@ class DelapanKelDataController extends Controller
     return view('admin.uraian.index', compact('tabel', 'categories', 'title', 'crudRoutePart', 'uraian'));
   }
 
-  public function store(Request $request)
+  public function store(Request $request, Tabel8KelData $tabel)
   {
-    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+    // Kebanyakan ID SKPD tidak null
+    $request->merge([
+      'skpd_id' => auth()->user()->skpd_id
+    ]);
 
     $request->validate([
       'parent_id' => ['nullable', 'integer'],
-      'uraian' => ['required', 'string', 'max:200'],
-      'tabel_id' => ['required', 'integer', 'exists:tabel_8keldata,id'],
+      'uraian' => ['required', 'string', 'max:255'],
+      'skpd_id' => ['required', 'integer', 'exists:skpd,id']
     ]);
 
-    Uraian8KelData::create($request->all());
+    $tabel->uraian8KelData()->create($request->all());
 
     return back()->with('success-message', 'Saved.');
   }
@@ -62,7 +65,7 @@ class DelapanKelDataController extends Controller
   {
     $request->validate([
       'parent_id' => ['nullable', 'integer'],
-      'uraian' => ['required', 'string', 'max:200'],
+      'uraian' => ['required', 'string', 'max:255'],
     ]);
 
     $uraian->update($request->all());

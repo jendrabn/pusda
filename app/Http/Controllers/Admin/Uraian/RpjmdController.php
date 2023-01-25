@@ -6,78 +6,88 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RpjmdController extends Controller
 {
 
-    public function index(TabelRpjmd $table = null)
-    {
-        $categories = TabelRpjmd::with(['childs.childs.childs'])->get();
-        $title = 'Uraian Form Menu RPJMD';
-        $crudRoutePart = 'rpjmd';
+  public function index(TabelRpjmd $tabel = null)
+  {
+    $uraian = null;
+    $categories = TabelRpjmd::with('childs.childs.childs')->get();
+    $title = 'Uraian Form Menu RPJMD';
+    $crudRoutePart = 'rpjmd';
 
-        if (is_null($table)) {
-            return view('admin.uraian.index', compact('categories', 'title', 'crudRoutePart'));
-        }
-
-        $uraian = UraianRpjmd::with('childs')
-            ->where('tabel_rpjmd_id', $table->id)
-            ->whereNull('parent_id')
-            ->orderBy('id')
-            ->get();
-
-        return view('admin.uraian.create', compact('table', 'categories', 'title', 'crudRoutePart', 'uraian'));
+    if ($tabel) {
+      $uraian = UraianRpjmd::with('childs')
+        ->where('tabel_rpjmd_id', $tabel->id)
+        ->whereNull('parent_id')
+        ->orderBy('id')
+        ->get();
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string'],
-            'table_id' => ['required', 'numeric', 'exists:tabel_rpjmd,id'],
-        ]);
+    return view('admin.uraian.index', compact('tabel', 'categories', 'title', 'crudRoutePart', 'uraian'));
+  }
 
-        UraianRpjmd::create([
-            'parent_id' => $request->parent_id,
-            'uraian' => $request->uraian,
-            'skpd_id' => auth()->user()->skpd_id,
-            'tabel_rpjmd_id' => $request->table_id,
-        ]);
+  public function store(Request $request, TabelRpjmd $tabel)
+  {
+    // Kebanyakan ID SKPD  null
+    $request->merge([
+      'skpd_id' => auth()->user()->skpd_id
+    ]);
 
-        return back();
-    }
+    $request->validate([
+      'parent_id' => ['nullable', 'integer'],
+      'uraian' => ['required', 'string', 'max:255'],
+    ]);
 
-    public function edit(TabelRpjmd $table, UraianRpjmd $uraian)
-    {
-        $categories = TabelRpjmd::where('skpd_id', auth()->user()->skpd_id)->get();
-        $uraians = UraianRpjmd::with('childs')
-            ->where('tabel_rpjmd_id', $table->id)
-            ->whereNull('parent_id')
-            ->orderBy('id')
-            ->get();
-        $title = 'Uraian Form Menu RPJMD';
-        $crudRoutePart = 'rpjmd';
+    $tabel->uraianRpjmd()->create($request->all());
 
-        return view('admin.uraian.edit', compact('table', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
-    }
+    return back()->with('success-message', 'Saved.');
+  }
 
-    public function update(Request $request, UraianRpjmd $uraian)
-    {
-        $request->validate([
-            'parent_id' => ['nullable', 'numeric'],
-            'uraian' => ['required', 'string', 'max:200'],
-        ]);
+  public function edit(TabelRpjmd $tabel, UraianRpjmd $uraian)
+  {
+    $categories = TabelRpjmd::where('skpd_id', auth()->user()->skpd_id)->get();
+    $uraians = UraianRpjmd::with('childs')
+      ->where('tabel_rpjmd_id', $tabel->id)
+      ->whereNull('parent_id')
+      ->orderBy('id')
+      ->get();
+    $title = 'Uraian Form Menu RPJMD';
+    $crudRoutePart = 'rpjmd';
 
-        $uraian->update($request->all());
+    return view('admin.uraian.edit', compact('tabel', 'uraian', 'categories', 'uraians', 'title', 'crudRoutePart'));
+  }
 
-        return back();
-    }
+  public function update(Request $request, UraianRpjmd $uraian)
+  {
+    $request->validate([
+      'parent_id' => ['nullable', 'integer'],
+      'uraian' => ['required', 'string', 'max:255'],
+    ]);
 
-    public function destroy(Request $request, UraianRpjmd $uraian)
-    {
-        $uraian->delete();
+    $uraian->update($request->all());
 
-        return back();
-    }
+    return back()->with('success-message', 'Updated.');
+  }
+
+  public function destroy(UraianRpjmd $uraian)
+  {
+    $uraian->delete();
+
+    return back()->with('success-message', 'Deleted.');
+  }
+
+  public function massDestroy(Request $request)
+  {
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*' => ['integer', 'exists:uraian_rpjmd,id']
+    ]);
+
+    UraianRpjmd::whereIn('id', $request->ids)->delete();
+
+    return response(null, Response::HTTP_NO_CONTENT);
+  }
 }

@@ -10,6 +10,11 @@
           </h3>
         </div>
         <div class="card-body">
+          <div class="form-group">
+            <a class="btn btn-default" href="{{ route('admin.treeview.' . $crudRoutePart . '.index') }}">
+              Back to list
+            </a>
+          </div>
           <form action="{{ route('admin.treeview.' . $crudRoutePart . '.update', $tabel->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -31,7 +36,7 @@
             <div class="form-group">
               <label class="required">Nama Menu</label>
               <input class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" type="text"
-                     value="{{ $tabel->nama_menu }}">
+                value="{{ $tabel->nama_menu }}">
               @error('nama_menu')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
