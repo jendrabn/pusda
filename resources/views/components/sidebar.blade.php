@@ -37,7 +37,7 @@
             </a>
           </li>
 
-          <li class="nav-item {{ request()->routeIs('admin.rpjmd.*') ? 'menu-is-opening menu-open' : '' }}">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.rpjmd.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
@@ -64,7 +64,7 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item {{ request()->routeIs('admin.delapankeldata.*') ? 'menu-is-opening menu-open' : '' }}">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.delapankeldata.*') ? 'active' : '' }}" href="#">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -108,8 +108,7 @@
             </a>
           </li>
 
-          <li
-              class="nav-item {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'menu-is-opening menu-open' : '' }}">
+          <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'active' : '' }}"
                href="#">
               <i class="nav-icon fas fa-table"></i>

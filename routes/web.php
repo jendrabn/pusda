@@ -21,7 +21,7 @@ Auth::routes([
   'reset' => false
 ]);
 
-Route::get('/view/admin3', fn () => view('layouts.admin3'));
+// Route::get('/view/admin3', fn () => view('layouts.admin3'));
 
 Route::middleware('visitor')->group(function () {
   Route::get('/', \App\Http\Controllers\Front\HomeController::class)->name('home');
@@ -118,8 +118,8 @@ Route::group(['middleware' => ['auth']], function () {
 
       // RPJMD
       Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => \App\Http\Controllers\Admin\Uraian\RpjmdController::class], function () {
-        Route::get('/{table?}', 'index')->name('index');
-        Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
+        Route::get('/{tabel?}', 'index')->name('index');
+        Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
         Route::post('/', 'store')->name('store');
         Route::put('/{uraian}', 'update')->name('update');
         Route::delete('/{uraian}', 'destroy')->name('destroy');
@@ -127,8 +127,8 @@ Route::group(['middleware' => ['auth']], function () {
 
       // 8 Kel. Data
       Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => \App\Http\Controllers\Admin\Uraian\DelapanKelDataController::class], function () {
-        Route::get('/{table?}', 'index')->name('index');
-        Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
+        Route::get('/{tabel?}', 'index')->name('index');
+        Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
         Route::post('/', 'store')->name('store');
         Route::put('/{uraian}', 'update')->name('update');
         Route::delete('/{uraian}', 'destroy')->name('destroy');
@@ -136,8 +136,8 @@ Route::group(['middleware' => ['auth']], function () {
 
       // BPS
       Route::group(['prefix' => 'bps', 'as' => 'bps.', 'controller' => \App\Http\Controllers\Admin\Uraian\BpsController::class], function () {
-        Route::get('/{table?}', 'index')->name('index');
-        Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
+        Route::get('/{tabel?}', 'index')->name('index');
+        Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
         Route::post('/', 'store')->name('store');
         Route::put('/{uraian}', 'update')->name('update');
         Route::delete('/{uraian}', 'destroy')->name('destroy');
@@ -145,8 +145,8 @@ Route::group(['middleware' => ['auth']], function () {
 
       // Indikator
       Route::group(['prefix' => 'indikator', 'as' => 'indikator.', 'controller' => \App\Http\Controllers\Admin\Uraian\IndikatorController::class], function () {
-        Route::get('/{table?}', 'index')->name('index');
-        Route::get('/{table}/{uraian}/edit', 'edit')->name('edit');
+        Route::get('/{tabel?}', 'index')->name('index');
+        Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
         Route::post('/', 'store')->name('store');
         Route::put('/{uraian}', 'update')->name('update');
         Route::delete('/{uraian}', 'destroy')->name('destroy');
