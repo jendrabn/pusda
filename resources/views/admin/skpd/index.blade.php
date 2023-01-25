@@ -4,7 +4,7 @@
   <div class="row" style="margin-bottom: 10px;">
     <div class="col-lg-12">
       <a class="btn btn-success" href="{{ route('admin.skpd.create') }}">
-        Tambah SKPD
+        <i class="fas fa-plus"></i> Tambah SKPD
       </a>
     </div>
   </div>

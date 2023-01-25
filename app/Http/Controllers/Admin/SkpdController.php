@@ -8,82 +8,90 @@ use App\Http\Requests\Admin\SkpdUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
-use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class SkpdController extends Controller
 {
-    public function index(Request $request)
-    {
+  public function index(Request $request)
+  {
+    if ($request->ajax()) {
+      $model = Skpd::with('kategori')->select('skpd.*');
+      $table = DataTables::eloquent($model);
 
-        if ($request->ajax()) {
-            $query = Skpd::with(['kategori'])->select('skpd.*');
-            $table = DataTables::of($query);
+      $table->addColumn('placeholder', '&nbsp;');
+      $table->addColumn('actions', '&nbsp;');
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+      $table->editColumn('actions', function ($row) {
+        $crudRoutePart = 'skpd';
+        return view('partials.datatablesActions', compact(
+          'crudRoutePart',
+          'row'
+        ));
+      });
+      $table->editColumn('kategori', fn ($row) => $row->kategori ? $row->kategori->nama : '');
+      $table->rawColumns(['actions', 'placeholder']);
 
-            $table->editColumn('actions', function ($row) {
-                $crudRoutePart = 'skpd';
-                return view('partials.datatablesActions', compact(
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
-
-            $table->editColumn('id', fn ($row) => $row->id ? $row->id : '');
-            $table->editColumn('nama', fn ($row) => $row->nama ? $row->nama : '');
-            $table->editColumn('singkatan', fn ($row) => $row->singkatan ? $row->singkatan : '');
-            $table->editColumn('kategori', fn ($row) => $row->kategori ? $row->kategori->nama : '');
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->toJson();
-        }
-
-        return view('admin.skpd.index');
+      return $table->toJson();
     }
 
-    public function create()
-    {
-        $categories = KategoriSkpd::pluck('nama', 'id');
-        $roles  = User::ROLES;
+    return view('admin.skpd.index');
+  }
 
-        return view('admin.skpd.create', compact('categories', 'roles'));
+  public function create()
+  {
+    $categories = KategoriSkpd::pluck('nama', 'id');
+
+    return view('admin.skpd.create', compact('categories'));
+  }
+
+  public function store(SkpdStoreRequest $request)
+  {
+    Skpd::create($request->all());
+
+    return back()->with('success-message', 'Saved.');
+  }
+
+  public function edit(Skpd $skpd)
+  {
+    $categories = KategoriSkpd::pluck('nama', 'id');
+
+    return view('admin.skpd.edit', compact('skpd', 'categories'));
+  }
+
+  public function update(SkpdUpdateRequest $request, Skpd $skpd)
+  {
+    if (intval($skpd->id) !== 1) {
+      $skpd->update($request->all());
+
+      return back()->with('success-message', 'Updated.');
     }
 
-    public function store(SkpdStoreRequest $request)
-    {
-        Skpd::create($request->all());
+    return back()->with('error-message', 'Cannot Updated.');
+  }
 
-        return redirect(route('admin.skpd.index'))->with('alert-success', 'Successfully added SKPD.');
+  public function destroy(Skpd $skpd)
+  {
+    if (intval($skpd->id) !== 1) {
+      $skpd->delete();
+
+      return back()->with('success-message', 'Deleted.');
     }
 
-    public function edit(Skpd $skpd)
-    {
-        $categories = KategoriSkpd::all()->pluck('nama', 'id');
+    return back()->with('error-message', 'Cannot Deleted.');
+  }
 
-        return view('admin.skpd.edit', compact('skpd', 'categories'));
-    }
+  public function massDestroy(Request $request)
+  {
+    $request->validate([
+      'ids' => ['required', 'array'],
+      'ids.*' => ['integer', 'exists:skpd,id']
+    ]);
 
-    public function update(SkpdUpdateRequest $request, Skpd $skpd)
-    {
-        $skpd->update($request->all());
+    $ids = collect($request->ids)->filter(fn ($id) => intval($id) !== 1)->toArray();
 
-        return back()->with('alert-success', 'SKPD successfully updated.');
-    }
+    Skpd::whereIn('id', $ids)->delete();
 
-    public function destroy(Skpd $skpd)
-    {
-        $skpd->delete();
-
-        return back()->with('alert-success', 'SKPD successfully deleted.');
-    }
-
-    public function massDestroy(Request $request)
-    {
-        Skpd::whereIn('id', $request->ids)->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+    return response(null, Response::HTTP_NO_CONTENT);
+  }
 }

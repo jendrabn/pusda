@@ -4,14 +4,14 @@
   <div class="row" style="margin-bottom: 10px;">
     <div class="col-lg-12">
       <a class="btn btn-success" href="{{ route('admin.users.create') }}">
-        Tambah User
+        <i class="fas fa-plus"></i> Tambah User
       </a>
     </div>
   </div>
 
   <div class="card">
     <div class="card-header">
-      Daftar User
+      <h3 class="card-title">Daftar User</h3>
     </div>
     <div class="card-body">
       <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-User table">

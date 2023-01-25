@@ -96,11 +96,6 @@
 
         </tbody>
       </table>
-      <div class="form-group">
-        <a class="btn btn-default" href="{{ route('admin.users.index') }}">
-          Back to list
-        </a>
-      </div>
     </div>
   </div>
 @endsection

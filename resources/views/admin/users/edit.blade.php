@@ -5,16 +5,23 @@
     <div class="col-lg-7">
       <div class="card">
         <div class="card-header">
-          Edit User
+          <h3 class="card-title">
+            Edit User
+          </h3>
         </div>
         <div class="card-body">
+          <div class="form-group">
+            <a class="btn btn-default" href="{{ route('admin.users.index') }}">
+              Back to list
+            </a>
+          </div>
           <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
             @csrf
             @method('PUT')
             <div class="form-group">
               <label class="required" for="name">Nama</label>
               <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text"
-                     value="{{ $user->name }}">
+                value="{{ $user->name }}">
               @error('name')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
@@ -22,7 +29,7 @@
             <div class="form-group">
               <label class="required" for="email">Email</label>
               <input class="form-control @error('email') is-invalid @enderror" id="email" name="email"
-                     type="email" value="{{ $user->email }}">
+                type="email" value="{{ $user->email }}">
               @error('email')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
@@ -30,7 +37,7 @@
             <div class="form-group">
               <label class="required" for="username">Username</label>
               <input class="form-control @error('username') is-invalid @enderror" id="username" name="username"
-                     type="text" value="{{ $user->username }}">
+                type="text" value="{{ $user->username }}">
               @error('username')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
@@ -66,7 +73,7 @@
             <div class="form-group">
               <label for="password">Password</label>
               <input class="form-control @error('password') is-invalid @enderror" id="password" name="password"
-                     type="password">
+                type="password">
               @error('password')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
@@ -74,7 +81,7 @@
             <div class="form-group">
               <label for="phone">No. HP/WhatsApp</label>
               <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone"
-                     type="tel" value="{{ $user->phone }}">
+                type="tel" value="{{ $user->phone }}">
               @error('phone')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
