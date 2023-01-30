@@ -9,55 +9,55 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AuditLogsController extends Controller
 {
-    public function index(Request $request)
-    {
+  public function index(Request $request)
+  {
 
-        if ($request->ajax()) {
-            $query = AuditLog::query()->select(sprintf('%s.*', (new AuditLog())->table));
-            $table = Datatables::of($query);
+    if ($request->ajax()) {
+      $model = AuditLog::query()->select(sprintf('%s.*', (new AuditLog())->table));
+      $table = Datatables::eloquent($model);
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+      $table->addColumn('placeholder', '&nbsp;');
+      $table->addColumn('actions', '&nbsp;');
 
-            $table->editColumn('actions', function ($row) {
-                $crudRoutePart = 'audit-logs';
+      $table->editColumn('actions', function ($row) {
+        $crudRoutePart = 'audit-logs';
 
-                return view('partials.datatablesActions', compact(
-                    'crudRoutePart',
-                    'row'
-                ));
-            });
+        return view('partials.datatablesActions', compact(
+          'crudRoutePart',
+          'row'
+        ));
+      });
 
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('description', function ($row) {
-                return $row->description ? $row->description : '';
-            });
-            $table->editColumn('subject_id', function ($row) {
-                return $row->subject_id ? $row->subject_id : '';
-            });
-            $table->editColumn('subject_type', function ($row) {
-                return $row->subject_type ? $row->subject_type : '';
-            });
-            $table->editColumn('user_id', function ($row) {
-                return $row->user_id ? $row->user_id : '';
-            });
-            $table->editColumn('host', function ($row) {
-                return $row->host ? $row->host : '';
-            });
+      $table->editColumn('id', function ($row) {
+        return $row->id ? $row->id : '';
+      });
+      $table->editColumn('description', function ($row) {
+        return $row->description ? $row->description : '';
+      });
+      $table->editColumn('subject_id', function ($row) {
+        return $row->subject_id ? $row->subject_id : '';
+      });
+      $table->editColumn('subject_type', function ($row) {
+        return $row->subject_type ? $row->subject_type : '';
+      });
+      $table->editColumn('user_id', function ($row) {
+        return $row->user_id ? $row->user_id : '';
+      });
+      $table->editColumn('host', function ($row) {
+        return $row->host ? $row->host : '';
+      });
 
-            $table->rawColumns(['actions', 'placeholder']);
+      $table->rawColumns(['actions', 'placeholder']);
 
-            return $table->make(true);
-        }
-
-        return view('admin.auditLogs.index');
+      return $table->toJson();
     }
 
-    public function show(AuditLog $auditLog)
-    {
+    return view('admin.auditLogs.index');
+  }
 
-        return view('admin.auditLogs.show', compact('auditLog'));
-    }
+  public function show(AuditLog $auditLog)
+  {
+
+    return view('admin.auditLogs.show', compact('auditLog'));
+  }
 }

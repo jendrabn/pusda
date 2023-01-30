@@ -8,17 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class FileRpjmd extends Model
 {
-    use HasFactory, Auditable;
+  use HasFactory, Auditable;
 
-    protected $table = 'file_rpjmd';
+  protected $table = 'file_rpjmd';
 
-    protected $fillable = [
-        'tabel_rpjmd_id',
-        'file_name'
-    ];
+  protected $fillable = [
+    'tabel_rpjmd_id',
+    'nama',
+    'path'
+  ];
 
-    public function tabelRpjmd()
-    {
-        return $this->belongsTo(TabelRpjmd::class, 'tabel_rpjmd_id');
-    }
+  public function tabelRpjmd()
+  {
+    return $this->belongsTo(TabelRpjmd::class, 'tabel_rpjmd_id');
+  }
 }

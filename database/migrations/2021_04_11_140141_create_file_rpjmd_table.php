@@ -6,28 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFileRpjmdTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('file_rpjmd', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tabel_rpjmd_id')->constrained('tabel_rpjmd')->onDelete('cascade');
-            $table->string('file_name', 100);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('file_rpjmd', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('tabel_rpjmd_id')->constrained('tabel_rpjmd')->onDelete('cascade');
+      $table->string('nama');
+      $table->string('path');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('file_rpjmd');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('file_rpjmd');
+  }
 }

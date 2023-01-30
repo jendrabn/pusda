@@ -60,8 +60,8 @@
               <label class="required" for="role">Role</label>
               <select class="form-control select2 @error('role') is-invalid @enderror" id="role" name="role">
                 <option selected disabled hidden>Pilih Role</option>
-                @foreach ($roles as $id => $role)
-                  <option value="{{ $id }}" {{ $id == $user->role ? 'selected' : '' }}>
+                @foreach ($roles as $role)
+                  <option value="{{ $role }}" {{ $role === $user->role ? 'selected' : '' }}>
                     {{ $role }}
                   </option>
                 @endforeach

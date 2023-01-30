@@ -5,222 +5,231 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\File8KelData;
 use App\Models\Fitur8KelData;
-use App\Models\Isi8KelData;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
-use App\Traits\DelapanKelData;
+use App\Services\DelapanKelDataService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class DelapanKelDataController extends Controller
 {
-    use DelapanKelData;
 
-    public function index(Request $request)
-    {
-        $title = '8 Kelompok Data';
-        $crudRoutePart = 'delapankeldata';
-        $skpd = Skpd::find($request->skpd);
-        $categories = Tabel8KelData::all();
-        $tabelIds = $skpd?->uraian8KelData()
-            ->select('tabel_8keldata_id as tabel_id')
-            ->where('skpd_id', $request->skpd)
-            ->groupBy('tabel_id')
-            ->get();
+  private DelapanKelDataService $service;
 
-        return view('admin.isiuraian.index', compact('title', 'crudRoutePart', 'categories', 'skpd', 'tabelIds'));
+
+  public function __construct(DelapanKelDataService $service)
+  {
+    $this->service = $service;
+
+    View::share([
+      'crudRoutePart' => 'delapankeldata',
+      'title' => '8 Kelompok Data'
+    ]);
+  }
+
+  public function index(Request $request)
+  {
+    $skpd = Skpd::find($request->skpd);
+    $categories = $this->service->getCategories();
+    $tabelIds = $skpd?->uraian8KelData()
+      ->select('tabel_8keldata_id as tabel_id')
+      ->where('skpd_id', $request->skpd)
+      ->groupBy('tabel_id')
+      ->get();
+
+    return view('admin.isiUraian.index', compact('categories', 'skpd', 'tabelIds'));
+  }
+
+  public function category(KategoriSkpd $category)
+  {
+    return view('admin.isiUraian.category', compact('category'));
+  }
+
+  public function input(Request $request,  Tabel8KelData $tabel)
+  {
+    $tahuns = $this->service->getAllTahun($tabel);
+    $uraians = $tabel->uraian8KelData()->with('childs.isi8KelData')->whereNull('parent_id')->get();
+    $skpd = Skpd::find($request->skpd);
+    $skpds = Skpd::pluck('singkatan', 'id');
+    $categories = $this->service->getCategories();
+
+    $tabelIds = $skpd?->uraian8KelData()
+      ->select('tabel_8keldata_id as tabel_id')
+      ->where('skpd_id', $request->skpd)
+      ->groupBy('tabel_id')
+      ->get();
+
+    $fitur = $tabel->fitur8KelData()->firstOrCreate([]);
+    $files = $tabel->file8KelData;
+
+    return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
+  }
+
+  public function edit(Request $request, Uraian8KelData $uraian)
+  {
+    $isi = $this->service->getIsiByUraianId($uraian);
+    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tabelId = $uraian->tabel_8keldata_id;
+
+    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+  }
+
+  public function update(Request $request, Uraian8KelData $uraian)
+  {
+    $isi = $this->service->getIsiByUraianId($uraian);
+    $tahuns = $isi->map(fn ($item) => $item->tahun);
+
+    $rules = [
+      'uraian' => ['required', 'string'],
+      'satuan' => ['required', 'string'],
+      'ketersediaan_data' => ['required', 'boolean'],
+    ];
+
+    foreach ($tahuns as $tahun) {
+      $rules['tahun_' . $tahun] = ['required', 'integer'];
     }
 
-    public function category(KategoriSkpd $category)
-    {
-        $title = '8 Kelompok Data';
-        $crudRoutePart = 'delapankeldata';
+    $this->validate($request, $rules);
 
-        return view('admin.isiUraian.category', compact('category', 'title', 'crudRoutePart'));
+    DB::beginTransaction();
+
+    try {
+      $uraian->update($request->all());
+
+      $isi->each(function ($item) use ($request) {
+        $item->isi = $request->get('tahun_' . $item->tahun);
+        $item->save();
+      });
+
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
 
-    public function input(Request $request,  Tabel8KelData $tabel)
-    {
-        $title = '8 Kelompok Data';
-        $crudRoutePart = 'delapankeldata';
-        $skpd = Skpd::find($request->skpd);
-        $categories = Tabel8KelData::all();
-        $tabelIds = $skpd?->uraian8KelData()
-            ->select('tabel_8keldata_id as tabel_id')
-            ->where('skpd_id', $request->skpd)
-            ->groupBy('tabel_id')
-            ->get();
+    return back()->with('success-message', 'Updated.');
+  }
 
-        $uraians = $this->getUraian($tabel->id);
-        $fitur = Fitur8KelData::getFiturByTableId($tabel->id);
-        $files = $tabel->file8KelData;
-        $tahuns = $this->tahunList($tabel->id);
-        $skpds = Skpd::pluck('singkatan', 'id');
+  public function destroy(Uraian8KelData $uraian)
+  {
+    $uraian->delete();
 
-        return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds', 'title', 'crudRoutePart'));
-    }
+    return back()->with('success-message', 'Deleted.');
+  }
 
-    public function edit(Request $request, Uraian8KelData $uraian)
-    {
-        $isi = $uraian->isi8KelData()
-            ->orderByDesc('tahun')
-            ->groupBy('tahun')
-            ->get(['tahun', 'isi']);
+  public function updateFitur(Request $request, Fitur8KelData $fitur)
+  {
+    $request->validate([
+      'deskripsi' => ['nullable', 'string', 'max:255'],
+      'analisis'  => ['nullable', 'string', 'max:255'],
+      'permasalahan'  => ['nullable', 'string', 'max:255'],
+      'solusi'  => ['nullable', 'string', 'max:255'],
+      'saran'  => ['nullable', 'string', 'max:255']
+    ]);
 
-        $title = '8 Kelompok Data';
-        $crudRoutePart = 'delapankeldata';
-        $tahuns = $this->tahunList($uraian->tabel_8keldata_id);
+    $fitur->update($request->all());
 
-        return view('admin.isiUraian.edit', compact('uraian', 'isi', 'title', 'crudRoutePart', 'tahuns'));
-    }
+    return back()->with('success-message', 'Updated');
+  }
 
+  public function storeFile(Request $request, Tabel8KelData $tabel)
+  {
+    $request->validate([
+      'document' => ['required', 'max:10240'],
+    ]);
 
-    public function update(Request $request, Uraian8KelData $uraian)
-    {
-        $tahuns = $uraian->isi8KelData()
-            ->select('tahun')
-            ->get()
-            ->map(fn ($tahun) => $tahun->tahun);
+    $file = $request->file('document');
 
-        $rules = [
-            'uraian' => ['required', 'string'],
-            'satuan' => ['required', 'string'],
-            'ketersediaan_data' => ['required', 'boolean'],
-        ];
+    $tabel->file8KelData()->create([
+      'nama' => $file->getClientOriginalName(),
+      'path' => $file->storePublicly('file_pendukung', 'public')
+    ]);
 
-        foreach ($tahuns as $tahun) {
-            $rules['tahun_' . $tahun] = ['required', 'numeric'];
-        }
+    return back()->with('success-message', 'Saved.');
+  }
 
-        $this->validate($request, $rules);
+  public function destroyFile(File8KelData $file)
+  {
+    Storage::disk('public')->delete($file->path);
 
-        $uraian->update([
-            'uraian' => $request->uraian,
-            'satuan' =>  $request->satuan,
-            'ketersediaan_data' => $request->ketersediaan_data
-        ]);
+    $file->delete();
 
-        $isi = Isi8KelData::where('uraian_8keldata_id', $uraian->id)->get()->sortBy('tahun');
+    return back()->with('success-message', 'Deleted.');
+  }
 
-        foreach ($isi as $item) {
-            $isi = Isi8KelData::find($item->id);
-            $isi->isi = $request->get('tahun_' . $isi->tahun);
-            $isi->save();
-        }
+  public function downloadFile(File8KelData $file)
+  {
+    return Storage::disk('public')->download($file->path, $file->nama);
+  }
 
-        return back();
-    }
+  public function updateSumberData(Request $request, Uraian8KelData $uraian)
+  {
+    $request->validate(['skpd_id' => ['required', 'integer', 'exists:skpd,id']]);
 
-    public function destroy(Uraian8KelData $uraian)
-    {
-        $uraian->delete();
+    $uraian->skpd_id = $request->skpd_id;
+    $uraian->save();
 
-        return back();
-    }
+    return response()->json([], Response::HTTP_NO_CONTENT);
+  }
 
-    public function updateFitur(Request $request, Fitur8KelData $fitur)
-    {
-        $request->validate([
-            'deskripsi' => ['nullable', 'string'],
-            'analisis'  => ['nullable', 'string'],
-            'permasalahan'  => ['nullable', 'string'],
-            'solusi'  => ['nullable', 'string'],
-            'saran'  => ['nullable', 'string']
-        ]);
+  public function storeTahun(Request $request, Tabel8KelData $tabel)
+  {
+    $request->validate([
+      'tahun' => ['required', 'integer', 'min:2010', 'max:2030'],
+    ]);
 
-        $fitur->update($request->all());
+    DB::beginTransaction();
 
-        return back();
-    }
+    try {
+      $tabel->uraian8KelData()->with('isi8KelData')->get()
+        ->each(function ($uraian) use ($request) {
+          if ($uraian->parent_id) {
+            $isi  = $uraian->isi8KelData->where('tahun', $request->tahun)->first();
 
-    public function storeFile(Request $request, Tabel8KelData $tabel)
-    {
-        $request->validate([
-            'file_document' => ['required', 'max:25600', 'mimes:pdf,doc,docx,xlsx,xls,csv'],
-        ]);
-
-        $file = $request->file('file_document');
-        $fileName = date('dmyhis') . '-' . $file->getClientOriginalName();
-
-        File8KelData::create([
-            'tabel_8keldata_id' => $tabel->id,
-            'file_name' =>  $file->storeAs('files', $fileName)
-        ]);
-
-        return back();
-    }
-
-    public function destroyFile(File8KelData $file)
-    {
-
-        Storage::delete($file->file_name);
-
-        $file->delete();
-
-        return back();
-    }
-
-    public function downloadFile(File8KelData $file)
-    {
-        return Storage::download($file->file_name);
-    }
-
-    public function updateSumberData(Request $request, Uraian8KelData $uraian)
-    {
-        $request->validate(['sumber_data' => ['required', 'exists:skpd,id']]);
-
-        $uraian->skpd_id = $request->sumber_data;
-        $uraian->save();
-
-        return back();
-    }
-
-    public function storeTahun(Request $request, Tabel8KelData $tabel)
-    {
-        $request->validate(['tahun' => ['required', 'array']]);
-
-        $tabel->uraian8KelData->each(function ($uraian) use ($request) {
-            foreach ($request->tahun as $tahun) {
-                if ($uraian->parent_id) {
-                    $isi8KelData = Isi8KelData::where('uraian_8keldata_id', $uraian->id)
-                        ->where('tahun', $tahun)
-                        ->first();
-
-                    if (is_null($isi8KelData)) {
-                        Isi8KelData::create([
-                            'uraian_8keldata_id' => $uraian->id,
-                            'tahun' => $tahun,
-                            'isi' => 0
-                        ]);
-                    }
-                }
+            if (is_null($isi)) {
+              $uraian->isi8KelData()->create([
+                'tahun' => $request->tahun,
+                'isi' => 0
+              ]);
             }
+          }
         });
 
-        return back();
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
 
-    public function destroyTahun(Tabel8KelData $tabel, $tahun)
-    {
-        $tabel->uraian8KelData->each(function ($uraian) use ($tahun) {
-            $uraian->isi8KelData()->where('tahun', $tahun)->delete();
-        });
+    return back()->with('success-message', 'Saved.');
+  }
 
-        return back();
+  public function destroyTahun(Tabel8KelData $tabel, int $tahun)
+  {
+    DB::beginTransaction();
+
+    try {
+      $tabel->uraian8KelData->each(fn ($uraian) => $uraian->isi8KelData()->where('tahun', $tahun)->delete());
+
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
 
-    public function graphic(Request $request, Uraian8KelData $uraian)
-    {
-        abort_unless($request->ajax(), Response::HTTP_NOT_FOUND);
+    return back()->with('success-message', 'Deleted.');
+  }
 
-        $data = [
-            'uraian' => $uraian?->uraian,
-            'isi' => $uraian?->isi8KelData()->orderByDesc('tahun')->groupBy('tahun')->get(['tahun', 'isi'])
-        ];
-
-        return response()->json($data, Response::HTTP_OK);
-    }
+  public function chart(Uraian8KelData $uraian)
+  {
+    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
+  }
 }

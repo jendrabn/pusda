@@ -25,13 +25,13 @@ class ProfileController extends Controller
       Storage::disk('public')->delete(auth()->user()->photo);
     }
 
-    return back()->with('success-message', 'Profil berhasil diupdate.');
+    return back()->with('success-message', 'Profile Updated.');
   }
 
   public function updatePassword(PasswordUpdateRequest $request): RedirectResponse
   {
     auth()->user()->update($request->all());
 
-    return back()->with('success-message', 'Password berhasil diupdate.');
+    return back()->with('success-message', 'Password Updated.');
   }
 }

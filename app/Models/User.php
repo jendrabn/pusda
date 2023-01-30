@@ -15,13 +15,12 @@ class User extends Authenticatable
 {
   use HasFactory, Notifiable,  Auditable;
 
-
   public const ROLE_ADMIN = 'Administrator';
   public const ROLE_SKPD = 'SKPD';
 
   public const ROLES = [
-    'Administrator',
-    'SKPD'
+    self::ROLE_ADMIN,
+    self::ROLE_SKPD
   ];
 
   protected $fillable = [

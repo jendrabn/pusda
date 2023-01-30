@@ -25,10 +25,10 @@
                                       <li @if (isset($tabel) && $tabel->id == $child->id) data-jstree='{ "selected" : true }' @endif>
                                         @if (isset($skpd) && $skpd)
                                           <a
-                                             href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
+                                            href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
                                         @else
                                           <a
-                                             href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
+                                            href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
                                         @endif
                                       </li>
                                     @endif
@@ -36,7 +36,7 @@
                                 @else
                                   <li @if (isset($tabel) && $tabel->id === $child->id) data-jstree='{ "selected" : true }' @endif>
                                     <a
-                                       href="{{ route('admin.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
+                                      href="{{ route('admin.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
                                   </li>
                                 @endif
                               @endforeach

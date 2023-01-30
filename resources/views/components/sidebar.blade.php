@@ -13,7 +13,7 @@
       </div>
       <div class="info">
         <a class="d-block"
-           href="{{ route('profile') }}">{{ Str::limit(Str::words(auth()->user()->name, 2, ''), 15, '.') }}</a>
+          href="{{ route('profile') }}">{{ Str::limit(Str::words(auth()->user()->name, 2, ''), 15, '.') }}</a>
       </div>
     </div>
 
@@ -24,14 +24,14 @@
         @role('Administrator')
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-               href="{{ route('admin.dashboard') }}">
+              href="{{ route('admin.dashboard') }}">
               <i class="fas fa-tachometer-alt nav-icon"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.bps.*') ? 'active' : '' }}"
-               href="{{ route('admin.bps.index') }}">
+              href="{{ route('admin.bps.index') }}">
               <i class="fas fa-th-large nav-icon"></i>
               <p>BPS</p>
             </a>
@@ -49,7 +49,7 @@
               @foreach (\App\Models\KategoriSkpd::pluck('nama', 'id') as $id => $nama)
                 <li class="nav-item">
                   <a class="nav-link {{ request()->is('admin/rpjmd/' . $id) ? 'active' : '' }}"
-                     href="{{ route('admin.rpjmd.index', $id) }}">
+                    href="{{ route('admin.rpjmd.index', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ $nama }}</p>
                   </a>
@@ -57,7 +57,7 @@
               @endforeach
               <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/rpjmd') ? 'active' : '' }}"
-                   href="{{ route('admin.rpjmd.index') }}">
+                  href="{{ route('admin.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>RPJMD</p>
                 </a>
@@ -76,7 +76,7 @@
               @foreach (\App\Models\KategoriSkpd::pluck('nama', 'id') as $id => $nama)
                 <li class="nav-item">
                   <a class="nav-link {{ request()->is('admin/delapankeldata/category/' . $id) ? 'active' : '' }}"
-                     href="{{ route('admin.delapankeldata.category', $id) }}">
+                    href="{{ route('admin.delapankeldata.category', $id) }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>{{ $nama }}</p>
                   </a>
@@ -84,7 +84,7 @@
               @endforeach
               <li class="nav-item">
                 <a class="nav-link {{ request()->is('admin/delapankeldata') ? 'active' : '' }}"
-                   href="{{ route('admin.delapankeldata.index') }}">
+                  href="{{ route('admin.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>8 Kel. Data</p>
                 </a>
@@ -94,7 +94,7 @@
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.indikator.*') ? 'active' : '' }}"
-               href="{{ route('admin.indikator.index') }}">
+              href="{{ route('admin.indikator.index') }}">
               <i class="fas fa-layer-group nav-icon"></i>
               <p>Indikator</p>
             </a>
@@ -102,7 +102,7 @@
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-               href="{{ route('admin.users.index') }}">
+              href="{{ route('admin.users.index') }}">
               <i class="fas fa-users nav-icon"></i>
               <p>Users</p>
             </a>
@@ -110,7 +110,7 @@
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'active' : '' }}"
-               href="#">
+              href="#">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Master Tabel
@@ -118,59 +118,59 @@
               </p>
             </a>
             <ul
-                class="nav nav-treeview {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'd-block' : '' }}">
+              class="nav nav-treeview {{ request()->routeIs('admin.treeview.*') || request()->routeIs('admin.uraian.*') ? 'd-block' : '' }}">
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.treeview.delapankeldata.*') ? 'active' : '' }}"
-                   href="{{ route('admin.treeview.delapankeldata.index') }}">
+                  href="{{ route('admin.treeview.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu 8 Kel. Data</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.treeview.rpjmd.*') ? 'active' : '' }}"
-                   href="{{ route('admin.treeview.rpjmd.index') }}">
+                  href="{{ route('admin.treeview.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu RPJMD</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.treeview.indikator.*') ? 'active' : '' }}"
-                   href="{{ route('admin.treeview.indikator.index') }}">
+                  href="{{ route('admin.treeview.indikator.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu Indikator</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.treeview.bps.*') ? 'active' : '' }}"
-                   href="{{ route('admin.treeview.bps.index') }}">
+                  href="{{ route('admin.treeview.bps.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu BPS</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.uraian.delapankeldata.*') ? 'active' : '' }}"
-                   href="{{ route('admin.uraian.delapankeldata.index') }}">
+                  href="{{ route('admin.uraian.delapankeldata.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form 8 Kel. Data</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.uraian.rpjmd.*') ? 'active' : '' }}"
-                   href="{{ route('admin.uraian.rpjmd.index') }}">
+                  href="{{ route('admin.uraian.rpjmd.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form RPJMD</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.uraian.indikator.*') ? 'active' : '' }}"
-                   href="{{ route('admin.uraian.indikator.index') }}">
+                  href="{{ route('admin.uraian.indikator.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form Indikator</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.uraian.bps.*') ? 'active' : '' }}"
-                   href="{{ route('admin.uraian.bps.index') }}">
+                  href="{{ route('admin.uraian.bps.index') }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Form BPS</p>
                 </a>
@@ -180,7 +180,7 @@
 
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.skpd.*') ? 'active' : '' }}"
-               href="{{ route('admin.skpd.index') }}">
+              href="{{ route('admin.skpd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
               <p>SKPD</p>
             </a>
@@ -188,7 +188,7 @@
 
           <li class="nav-item">
             <a class="nav-link {{ request()->is('admin/audit-logs') || request()->is('admin/audit-logs/*') ? 'active' : '' }}"
-               href="{{ route('admin.audit-logs.index') }}">
+              href="{{ route('admin.audit-logs.index') }}">
               <i class="nav-icon fas fa-file-alt">
               </i>
               <p>
@@ -201,21 +201,21 @@
         @role('SKPD')
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-               href="{{ route('admin.dashboard') }}">
+              href="{{ route('admin.dashboard') }}">
               <i class="fas fa-tachometer-alt nav-icon"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('skpd.delapankeldata.*') ? 'active' : '' }}"
-               href="{{ route('skpd.delapankeldata.index') }}">
+              href="{{ route('skpd.delapankeldata.index') }}">
               <i class="fas fa-book nav-icon"></i>
               <p>8 Kel. Data</p>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('skpd.rpjmd.*') ? 'active' : '' }}"
-               href="{{ route('skpd.rpjmd.index') }}">
+              href="{{ route('skpd.rpjmd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
               <p>RPJMD</p>
             </a>
@@ -230,7 +230,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"
-             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt nav-icon"></i>
             <p>Logout</p>
             <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">

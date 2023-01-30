@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateRequest extends FormRequest
@@ -30,7 +31,7 @@ class UserUpdateRequest extends FormRequest
       'email' => ['required', 'string', 'email', 'max:50', 'unique:users,email,' . $this->user->id],
       'phone' => ['nullable', 'max:15', 'starts_with:+62,62,08'],
       'address' => ['nullable', 'string', 'max:255'],
-      'role' => ['required', 'in:1,2'],
+      'role' => ['required', 'in:' . implode(',', User::ROLES)],
       'password' => ['nullable', 'string', 'min:3', 'max:50'],
     ];
   }

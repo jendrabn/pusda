@@ -1,9 +1,8 @@
-@extends('layouts.admin-master')
+@extends('layouts.admin', ['title' => 'Dashboard'])
 
 @section('title')
   Dashboard
 @endsection
-
 
 @push('styles')
   <style>
@@ -11,7 +10,6 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-
     }
 
     .stat .display .number {
@@ -27,7 +25,6 @@
       color: #cbd4e0;
       font-size: 26px;
     }
-
   </style>
 @endpush
 
@@ -47,9 +44,9 @@
                 <div class="icon"><i class="fas fa-book text-info"></i></div>
               </div>
               <p class="title mb-2">ASSET ( DALAM MILYAR )</p>
-              <div class="pt-3 border-top">
+              <div class="border-top pt-3">
                 <div class="progress">
-                  <div class="progress-bar bg-info" role="progressbar" data-width="75%" aria-valuenow="75"
+                  <div class="progress-bar bg-info" data-width="75%" role="progressbar" aria-valuenow="75"
                     aria-valuemin="0" aria-valuemax="100">75%</div>
                 </div>
               </div>
@@ -66,9 +63,9 @@
                 <div class="icon"><i class="fas fa-layer-group text-danger"></i></div>
               </div>
               <p class="title mb-2">INVESTASI ( DALAM MILYAR )</p>
-              <div class="pt-3 border-top">
+              <div class="border-top pt-3">
                 <div class="progress">
-                  <div class="progress-bar bg-danger" role="progressbar" data-width="75%" aria-valuenow="75"
+                  <div class="progress-bar bg-danger" data-width="75%" role="progressbar" aria-valuenow="75"
                     aria-valuemin="0" aria-valuemax="100">75%</div>
                 </div>
               </div>
@@ -85,9 +82,9 @@
                 <div class="icon"><i class="fas fa-briefcase text-warning"></i></div>
               </div>
               <p class="title mb-2">BARANG BARU</p>
-              <div class="pt-3 border-top">
+              <div class="border-top pt-3">
                 <div class="progress">
-                  <div class="progress-bar bg-warning" role="progressbar" data-width="75%" aria-valuenow="75"
+                  <div class="progress-bar bg-warning" data-width="75%" role="progressbar" aria-valuenow="75"
                     aria-valuemin="0" aria-valuemax="100">75%</div>
                 </div>
               </div>
@@ -104,9 +101,9 @@
                 <div class="icon"><i class="fas fa-th-large text-success"></i></div>
               </div>
               <p class="title mb-2">PENGGUNA APLIKASI</p>
-              <div class="pt-3 border-top">
+              <div class="border-top pt-3">
                 <div class="progress">
-                  <div class="progress-bar bg-success" role="progressbar" data-width="75%" aria-valuenow="75"
+                  <div class="progress-bar bg-success" data-width="75%" role="progressbar" aria-valuenow="75"
                     aria-valuemin="0" aria-valuemax="100">75%</div>
                 </div>
               </div>

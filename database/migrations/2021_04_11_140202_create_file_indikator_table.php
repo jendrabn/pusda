@@ -6,28 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFileIndikatorTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('file_indikator', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tabel_indikator_id')->constrained('tabel_indikator')->onDelete('cascade');
-            $table->string('file_name', 100);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('file_indikator', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('tabel_indikator_id')->constrained('tabel_indikator')->onDelete('cascade');
+      $table->string('nama');
+      $table->string('path');
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('file_indikator');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('file_indikator');
+  }
 }

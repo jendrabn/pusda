@@ -13,7 +13,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UsersController extends Controller
 {
-
   public function index(Request $request)
   {
     if ($request->ajax()) {
@@ -61,7 +60,7 @@ class UsersController extends Controller
   {
     User::create($request->all());
 
-    return redirect(route('admin.users.index'))->with('alert-success', 'Successfully added User.');
+    return redirect(route('admin.users.index'))->with('success-message', 'Saved.');
   }
 
   public function edit(User $user)
@@ -76,14 +75,14 @@ class UsersController extends Controller
   {
     $user->update($request->all());
 
-    return back()->with('alert-success', 'User successfully updated.');
+    return back()->with('success-message', 'Updated.');
   }
 
   public function destroy(User $user)
   {
     $user->delete();
 
-    return back()->with('alert-success', 'User successfully deleted.');
+    return back()->with('success-message', 'Deleted.');
   }
 
   public function massDestroy(Request $request)

@@ -3,88 +3,61 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Uraian8KelData extends Model
 {
-    use HasFactory, Auditable;
+  use HasFactory, Auditable;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'uraian_8keldata';
+  protected $table = 'uraian_8keldata';
 
+  protected $fillable = [
+    'id',
+    'parent_id',
+    'skpd_id',
+    'tabel_8keldata_id',
+    'uraian',
+    'satuan',
+    'ketersediaan_data',
+  ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'id',
-        'parent_id',
-        'skpd_id',
-        'tabel_8keldata_id',
-        'uraian',
-        'satuan',
-        'ketersediaan_data',
-    ];
+  protected $casts = [
+    'ketersediaan_data' => 'boolean',
+  ];
 
-    protected $casts = [
-        'ketersediaan_data' => 'boolean',
-    ];
+  public function parent()
+  {
+    return $this->belongsTo(self::class, 'parent_id');
+  }
 
-    public function parent()
-    {
-        return $this->belongsTo(self::class, 'parent_id');
-    }
+  public function childs()
+  {
+    return $this->hasMany(self::class, 'parent_id');
+  }
 
-    public function childs()
-    {
-        return $this->hasMany(self::class, 'parent_id');
-    }
+  public function skpd()
+  {
+    return $this->belongsTo(Skpd::class, 'skpd_id');
+  }
 
-    public function skpd()
-    {
-        return $this->belongsTo(Skpd::class, 'skpd_id');
-    }
+  public function tabel8KelData()
+  {
+    return $this->belongsTo(Tabel8KelData::class, 'tabel_8keldata_id');
+  }
 
-    public function tabel8KelData()
-    {
-        return $this->belongsTo(Tabel8KelData::class, 'tabel_8keldata_id');
-    }
+  public function isi8KelData()
+  {
+    return $this->hasMany(Isi8KelData::class, 'uraian_8keldata_id');
+  }
 
-    public function isi8KelData()
-    {
-        return $this->hasMany(Isi8KelData::class, 'uraian_8keldata_id');
-    }
-
-    public static function getUraianByTableId($id)
-    {
-        $uraian8KelData = self::with('isi8KelData')->where('tabel_8keldata_id', $id)->get();
-
-        $years = Isi8KelData::getYears($id);
-
-        $uraian8KelData->each(function ($uraian) use ($years) {
-            if ($uraian->parent_id) {
-                foreach ($years as $year) {
-                    $isi = $uraian->isi8KelData->where('tahun', $year)->first();
-                    if (is_null($isi)) {
-                        Isi8KelData::create([
-                            'uraian_8keldata_id' => $uraian->id,
-                            'tahun' => $year,
-                            'isi' => 0
-                        ]);
-                    }
-                }
-            }
-        });
-
-        $uraian8KelData = self::with('childs.isi8KelData')->where('tabel_8keldata_id', $id)->whereNull('parent_id')->get();
-
-        return $uraian8KelData;
-    }
+  public function StrKetersediaanData(): Attribute
+  {
+    return Attribute::get(fn () => match ($this->attributes['ketersediaan_data']) {
+      1 => 'Tersedia',
+      0 => 'Tidak Tersedia',
+      default => null
+    });
+  }
 }

@@ -5,225 +5,230 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
-use App\Models\IsiRpjmd;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
+use App\Services\RpjmdService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class RpjmdController extends Controller
 {
-    public function index(KategoriSkpd $kategoriSkpd = null)
-    {
-        if ($kategoriSkpd) {
-            return view('admin.isiuraian.rpjmd.category', compact('kategoriSkpd'));
-        }
 
-        $categories = TabelRpjmd::with('childs.childs.childs')->get();
+  private RpjmdService $service;
 
-        return view('admin.isiuraian.rpjmd.index', compact('categories'));
+  public function __construct(RpjmdService $service)
+  {
+    $this->service = $service;
+
+    View::share([
+      'crudRoutePart' => 'rpjmd',
+      'title' => 'RPJMD'
+    ]);
+  }
+
+  public function index(Request $request)
+  {
+    $skpd = Skpd::find($request->skpd);
+    $categories = $this->service->getCategories();
+    $tabelIds = $skpd?->uraianRpjmd()
+      ->select('tabel_rpjmd_id as tabel_id')
+      ->where('skpd_id', $request->skpd)
+      ->groupBy('tabel_id')
+      ->get();
+
+    return view('admin.isiUraian.index', compact('categories', 'skpd', 'tabelIds'));
+  }
+
+  public function category(KategoriSkpd $category)
+  {
+    return view('admin.isiUraian.category', compact('category'));
+  }
+
+  public function input(Request $request,  TabelRpjmd $tabel)
+  {
+    $tahuns = $this->service->getAllTahun($tabel);
+    $uraians = $tabel->uraianRpjmd()->with('childs.isiRpjmd')->whereNull('parent_id')->get();
+    $skpd = Skpd::find($request->skpd);
+    $skpds = Skpd::pluck('singkatan', 'id');
+    $categories = $this->service->getCategories();
+
+    $tabelIds = $skpd?->uraianRpjmd()
+      ->select('tabel_rpjmd_id as tabel_id')
+      ->where('skpd_id', $request->skpd)
+      ->groupBy('tabel_id')
+      ->get();
+
+    $fitur = $tabel->fiturRpjmd()->firstOrcreate([]);
+    $files = $tabel->fileRpjmd;
+
+    return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
+  }
+
+  public function edit(Request $request, UraianRpjmd $uraian)
+  {
+    $isi = $this->service->getIsiByUraianId($uraian);
+    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tabelId = $uraian->tabel_rpjmd_id;
+
+    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+  }
+
+  public function update(Request $request, UraianRpjmd $uraian)
+  {
+    $isi = $this->service->getIsiByUraianId($uraian);
+    $tahuns = $isi->map(fn ($item) => $item->tahun);
+
+    $rules = [
+      'uraian' => ['required', 'string'],
+      'satuan' => ['required', 'string'],
+      'ketersediaan_data' => ['required', 'boolean'],
+    ];
+
+    foreach ($tahuns as $tahun) {
+      $rules['tahun_' . $tahun] = ['required', 'integer'];
     }
 
-    public function input(Request $request, TabelRpjmd $tabelRpjmd, Skpd $skpd = null)
-    {
-        $tabelRpjmdIds = null;
+    $this->validate($request, $rules);
 
-        if ($skpd) {
-            $tabelRpjmdIds = $skpd->uraianRpjmd()
-                ->select('tabel_rpjmd_id')
-                ->groupBy('tabel_rpjmd_id')
-                ->get();
-        }
+    DB::beginTransaction();
 
-        $categories = TabelRpjmd::with('childs.childs.childs')->get();
-        $uraianRpjmd = UraianRpjmd::getUraianByTableId($tabelRpjmd->id);
-        $fiturRpjmd = FiturRpjmd::getFiturByTableId($tabelRpjmd->id);
-        $files = $tabelRpjmd->fileRpjmd;
-        $years = IsiRpjmd::getYears($tabelRpjmd->id);
-        $allSkpd = Skpd::all()->pluck('singkatan', 'id');
+    try {
+      $uraian->update($request->all());
 
-        return view('admin.isiuraian.rpjmd.input', compact('tabelRpjmd', 'categories', 'uraianRpjmd',  'fiturRpjmd', 'files', 'years', 'allSkpd', 'tabelRpjmdIds'));
+      $isi->each(function ($item) use ($request) {
+        $item->isi = $request->get('tahun_' . $item->tahun);
+        $item->save();
+      });
+
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
 
-    public function skpd(Skpd $skpd)
-    {
-        $tabelRpjmdIds = $skpd->uraianRpjmd()
-            ->select('tabel_rpjmd_id')
-            ->groupBy('tabel_rpjmd_id')
-            ->get();
+    return back()->with('success-message', 'Updated.');
+  }
 
-        $categories =  TabelRpjmd::with('childs.childs.childs')->get();
+  public function destroy(UraianRpjmd $uraian)
+  {
+    $uraian->delete();
 
-        return view('admin.isiuraian.rpjmd.index', compact('categories', 'skpd', 'tabelRpjmdIds'));
-    }
+    return back()->with('success-message', 'Deleted.');
+  }
 
-    public function edit(Request $request, UraianRpjmd $uraianRpjmd)
-    {
-        abort_if(!$request->ajax(), 404);
+  public function updateFitur(Request $request, FiturRpjmd $fitur)
+  {
+    $request->validate([
+      'deskripsi' => ['nullable', 'string', 'max:255'],
+      'analisis'  => ['nullable', 'string', 'max:255'],
+      'permasalahan'  => ['nullable', 'string', 'max:255'],
+      'solusi'  => ['nullable', 'string', 'max:255'],
+      'saran'  => ['nullable', 'string', 'max:255']
+    ]);
 
-        $isiRpjmd = $uraianRpjmd->isiRpjmd()
-            ->orderByDesc('tahun')
-            ->groupBy('tahun')
-            ->get(['tahun', 'isi']);
+    $fitur->update($request->all());
 
-        $response = [
-            'uraian_id' => $uraianRpjmd->id,
-            'uraian_parent_id' => $uraianRpjmd->parent_id,
-            'uraian' => $uraianRpjmd->uraian,
-            'satuan' => $uraianRpjmd->satuan,
-            'isi' =>  $isiRpjmd,
-            'ketersediaan_data' => $uraianRpjmd->ketersediaan_data
-        ];
+    return back()->with('success-message', 'Updated');
+  }
 
-        return response()->json($response);
-    }
+  public function storeFile(Request $request, TabelRpjmd $tabel)
+  {
+    $request->validate([
+      'document' => ['required', 'max:10240'],
+    ]);
 
-    public function update(Request $request)
-    {
-        $uraianRpjmd = UraianRpjmd::findOrFail($request->uraian_id);
+    $file = $request->file('document');
 
-        $years = $uraianRpjmd->isiRpjmd()
-            ->select('tahun')
-            ->get()
-            ->map(fn ($year) => $year->tahun);
+    $tabel->fileRpjmd()->create([
+      'nama' => $file->getClientOriginalName(),
+      'path' => $file->storePublicly('file_pendukung', 'public')
+    ]);
 
-        $rules = [
-            'uraian' => ['required', 'string'],
-            'satuan' => ['required', 'string'],
-            'ketersediaan_data' => ['required', 'integer'],
-        ];
+    return back()->with('success-message', 'Saved.');
+  }
 
-        $customMessages = [];
+  public function destroyFile(FileRpjmd $file)
+  {
+    Storage::disk('public')->delete($file->path);
 
-        foreach ($years as $year) {
-            $key = 'tahun_' . $year;
-            $rules[$key] = ['required', 'numeric'];
-            $customMessages[$key . '.required'] = "Data tahun {$year} wajib diisi";
-            $customMessages[$key . '.numeric'] = "Data tahun {$year} harus berupa angka";
-        }
+    $file->delete();
 
-        $this->validate($request, $rules, $customMessages);
+    return back()->with('success-message', 'Deleted.');
+  }
 
-        $uraianRpjmd->update([
-            'uraian' => $request->uraian,
-            'satuan' =>  $request->satuan,
-            'ketersediaan_data' => $request->ketersediaan_data
-        ]);
+  public function downloadFile(FileRpjmd $file)
+  {
+    return Storage::disk('public')->download($file->path, $file->nama);
+  }
 
-        $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $request->uraian_id)
-            ->get()
-            ->sortBy('tahun');
+  public function updateSumberData(Request $request, UraianRpjmd $uraian)
+  {
+    $request->validate(['skpd_id' => ['required', 'integer', 'exists:skpd,id']]);
 
-        foreach ($isiRpjmd as $value) {
-            $isi = IsiRpjmd::find($value->id);
-            $isi->isi = $request->get('tahun_' . $isi->tahun);
-            $isi->save();
-        }
+    $uraian->skpd_id = $request->skpd_id;
+    $uraian->save();
 
-        return back()->with('alert-success', 'Isi uraian tabel RPJMD berhasil diupdate');
-    }
+    return response()->json([], Response::HTTP_NO_CONTENT);
+  }
 
-    public function destroy(UraianRpjmd $uraianRpjmd)
-    {
-        $uraianRpjmd->delete();
+  public function storeTahun(Request $request, TabelRpjmd $tabel)
+  {
+    $request->validate([
+      'tahun' => ['required', 'integer', 'min:2010', 'max:2030'],
+    ]);
 
-        return back()->with('alert-success', 'Uraian tabel RPJMD berhasil dihapus');
-    }
+    DB::beginTransaction();
 
-    public function updateFitur(Request $request, FiturRpjmd $fiturRpjmd)
-    {
-        $validated =    $this->validate($request, [
-            'deskripsi' => ['nullable', 'string'],
-            'analisis'  => ['nullable', 'string'],
-            'permasalahan'  => ['nullable', 'string'],
-            'solusi'  => ['nullable', 'string'],
-            'saran'  => ['nullable', 'string']
-        ]);
+    try {
+      $tabel->uraianRpjmd()->with('isiRpjmd')->get()
+        ->each(function ($uraian) use ($request) {
+          if ($uraian->parent_id) {
+            $isi  = $uraian->isiRpjmd->where('tahun', $request->tahun)->first();
 
-        $fiturRpjmd->update($validated);
-
-        return back()->with('alert-success', 'Fitur tabel RPJMD berhasil diupdate');
-    }
-
-    public function storeFile(Request $request, TabelRpjmd $tabelRpjmd)
-    {
-        $request->validate([
-            'file_document' => ['required', 'max:10000', 'mimes:pdf,doc,docx,xlsx,xls,csv'],
-        ]);
-
-        $file = $request->file('file_document');
-        $latestFileId = FileRpjmd::latest()->first()->id ?? '0';
-        $fileName = $latestFileId  . '_' .  $file->getClientOriginalName();
-        $file->storeAs('file_pusda', $fileName, 'public');
-
-        FileRpjmd::create([
-            'tabel_rpjmd_id' => $tabelRpjmd->id,
-            'file_name' =>  $fileName
-        ]);
-
-        return back()->with('alert-success', 'Berhasil menambahkan file pendukung tabel RPJMD');
-    }
-
-    public function destroyFile(FileRpjmd $fileRpjmd)
-    {
-        Storage::disk('public')->delete('file_pusda/' . $fileRpjmd->file_name);
-        $fileRpjmd->delete();
-
-        return back()->with('alert-success', 'File pendukung tabel RPJMD berhasil dihapus');
-    }
-
-    public function downloadFile(FileRpjmd $fileRpjmd)
-    {
-        $path = 'file_pusda/' . $fileRpjmd->file_name;
-
-        if (Storage::disk('public')->exists($path)) {
-
-            return Storage::disk('public')->download($path);
-        }
-
-        return back()->with('alert-danger', 'File pendukung tidak ditemukan atau sudah terhapus');
-    }
-
-    public function updateSumberData(Request $request, UraianRpjmd $uraianRpjmd)
-    {
-        $request->validate(['sumber_data' => ['required', 'exists:skpd,id']]);
-        $uraianRpjmd->skpd_id = $request->sumber_data;
-        $uraianRpjmd->save();
-
-        return back()->with('alert-success', 'Sumber data uraian tabel RPJMD berhasil diupdate');
-    }
-
-    public function storeTahun(Request $request, TabelRpjmd $tabelRpjmd)
-    {
-        $request->validate(['tahun' => ['required', 'array']]);
-
-        $tabelRpjmd->uraianRpjmd->each(function ($uraian) use ($request) {
-            foreach ($request->tahun as $tahun) {
-                if ($uraian->parent_id) {
-                    $isiRpjmd = IsiRpjmd::where('uraian_rpjmd_id', $uraian->id)->where('tahun', $tahun)->first();
-                    if (is_null($isiRpjmd)) {
-                        IsiRpjmd::create([
-                            'uraian_rpjmd_id' => $uraian->id,
-                            'tahun' => $tahun,
-                            'isi' => 0
-                        ]);
-                    }
-                }
+            if (is_null($isi)) {
+              $uraian->isiRpjmd()->create([
+                'tahun' => $request->tahun,
+                'isi' => 0
+              ]);
             }
+          }
         });
 
-        return back()->with('alert-success', 'Berhasil menambahkan tahun tabel RPJMD');
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
 
-    public function destroyTahun(TabelRpjmd $tabelRpjmd, $year)
-    {
-        $uraianRpjmd = $tabelRpjmd->uraianRpjmd;
-        $uraianRpjmd->each(function ($uraian) use ($year) {
-            $uraian->isiRpjmd()->where('tahun', $year)->delete();
-        });
+    return back()->with('success-message', 'Saved.');
+  }
 
-        return back()->with('alert-success', 'Berhasil menghapus tahun tabel RPJMD');
+  public function destroyTahun(TabelRpjmd $tabel, int $tahun)
+  {
+    DB::beginTransaction();
+
+    try {
+      $tabel->uraianRpjmd->each(fn ($uraian) => $uraian->isiRpjmd()->where('tahun', $tahun)->delete());
+
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return back()->with('error-message', $e->getMessage());
     }
+
+    return back()->with('success-message', 'Deleted.');
+  }
+
+  public function chart(UraianRpjmd $uraian)
+  {
+    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
+  }
 }
