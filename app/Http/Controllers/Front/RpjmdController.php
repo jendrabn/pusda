@@ -3,47 +3,44 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\FiturRpjmd;
-use App\Models\IsiRpjmd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
+use App\Services\RpjmdService;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class RpjmdController extends Controller
 {
-    public function index()
-    {
-        $categories = TabelRpjmd::with('childs.childs.childs')->where('parent_id', 1)->get();
 
-        return view('front.rpjmd', compact('categories'));
-    }
-    public function table($id)
-    {
-        $tabelRpjmd = TabelRpjmd::findOrFail($id);
-        $uraianRpjmd = UraianRpjmd::getUraianByTableId($id);
-        $fiturRpjmd = FiturRpjmd::getFiturByTableId($id);
-        $years = IsiRpjmd::getYears($id);
+  private RpjmdService $service;
 
-        return view('front.tables.rpjmd', compact('tabelRpjmd', 'uraianRpjmd',  'fiturRpjmd',  'years'));
-    }
+  public function __construct(RpjmdService $service)
+  {
+    $this->service = $service;
 
-    public function getUraianForChart($id)
-    {
-        $uraianRpjmd = UraianRpjmd::findOrFail($id);
-        $isiRpjmd = $uraianRpjmd
-            ->isiRpjmd()
-            ->orderByDesc('tahun')
-            ->groupBy('tahun')
-            ->get(['tahun', 'isi']);
+    View::share([
+      'routePart' => 'rpjmd',
+      'title' => 'RPJMD'
+    ]);
+  }
 
-        $response = [
-            'uraian_id' => $uraianRpjmd->id,
-            'uraian_parent_id' => $uraianRpjmd->parent_id,
-            'uraian' => $uraianRpjmd->uraian,
-            'satuan' => $uraianRpjmd->satuan,
-            'isi' =>  $isiRpjmd,
-            'ketersedian_data' => $uraianRpjmd->ketersediaan_data
-        ];
+  public function index()
+  {
+    $categories = TabelRpjmd::with('childs.childs.childs')->where('parent_id', 1)->get();
 
-        return response()->json($response);
-    }
+    return view('front.index', compact('categories'));
+  }
+  public function tabel(TabelRpjmd $tabel)
+  {
+    $uraians = $tabel->uraianRpjmd()->with('childs.isiRpjmd')->whereNull('parent_id')->get();
+    $fitur = $tabel->fiturRpjmd()->firstOrcreate([]);
+    $tahuns = $this->service->getAllTahun($tabel);
+
+    return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));
+  }
+
+  public function chart(UraianRpjmd $uraian)
+  {
+    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
+  }
 }

@@ -28,32 +28,31 @@ Route::middleware('visitor')->group(function () {
 
   Route::group(['prefix' => 'bps', 'as' => 'bps.', 'controller' => \App\Http\Controllers\Front\BpsController::class], function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{id}', 'table')->name('table');
-    Route::get('/chart_data/{id}', 'getUraianForChart');
-    Route::get('/chart_summary/{id}', 'getSummaryUraianForChart');
+    Route::get('/{tabel}', 'tabel')->name('tabel');
+    Route::get('/chart/{uraian}', 'chart')->name('chart');
   });
 
   Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => \App\Http\Controllers\Front\RpjmdController::class], function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{id}', 'table')->name('table');
-    Route::get('/chart_data/{id}', 'getUraianForChart');
+    Route::get('/{tabel}', 'tabel')->name('tabel');
+    Route::get('/chart/{uraian}', 'chart')->name('chart');
   });
 
   Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => \App\Http\Controllers\Front\DelapanKelDataController::class], function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{id}', 'table')->name('table');
-    Route::get('/chart_data/{id}', 'getUraianForChart');
+    Route::get('/{tabel}', 'tabel')->name('tabel');
+    Route::get('/chart/{uraian}', 'chart')->name('chart');
   });
 
   Route::group(['prefix' => 'indikator', 'as' => 'indikator.', 'controller' => \App\Http\Controllers\Front\IndikatorController::class], function () {
     Route::get('/', 'index')->name('index');
-    Route::get('/{id}', 'table')->name('table');
-    Route::get('/chart_data/{id}', 'getUraianForChart');
+    Route::get('/{tabel}', 'tabel')->name('tabel');
+    Route::get('/chart/{uraian}', 'chart')->name('chart');
   });
 
   Route::group(['controller' => \App\Http\Controllers\Front\SkpdController::class], function () {
     Route::get('/skpd', 'index')->name('skpd');
-    Route::get('/skpd/{id}', 'delapankeldata')->name('delapankeldata.skpd');
+    Route::get('/skpd/{skpd}', 'menu')->name('delapankeldata.skpd');
   });
 });
 

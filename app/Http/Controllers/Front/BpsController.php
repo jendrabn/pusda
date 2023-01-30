@@ -3,72 +3,44 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\FiturBps;
-use App\Models\IsiBps;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
+use App\Services\BpsService;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class BpsController extends Controller
 {
-    public function index()
-    {
-        $categories = TabelBps::with('childs.childs.childs')->where('parent_id', 1)->get();
+  private BpsService $service;
 
-        return view('front.bps', compact('categories'));
-    }
+  public function __construct(BpsService $service)
+  {
+    $this->service = $service;
 
-    public function table($id)
-    {
-        $tabelBps = TabelBps::findOrFail($id);
-        $uraianBps = UraianBps::getUraianByTableId($id);
-        $fiturBps = FiturBps::getFiturByTableId($id);
-        $years = IsiBps::getYears($id);
+    View::share([
+      'routePart' => 'bps',
+      'title' => 'BPS'
+    ]);
+  }
 
-        return view('front.tables.bps', compact('tabelBps', 'uraianBps',  'fiturBps',  'years'));
-    }
+  public function index()
+  {
+    $categories = TabelBps::with('childs.childs.childs')->where('parent_id', 1)->get();
 
-    public function getUraianForChart($id)
-    {
-        $uraianBps = UraianBps::findOrFail($id);
-        $isiBps = $uraianBps
-            ->isiBps()
-            ->orderByDesc('tahun')
-            ->groupBy('tahun')
-            ->get(['tahun', 'isi']);
+    return view('front.index', compact('categories'));
+  }
 
-        $response = [
-            'uraian_id' => $uraianBps->id,
-            'uraian_parent_id' => $uraianBps->parent_id,
-            'uraian' => $uraianBps->uraian,
-            'satuan' => $uraianBps->satuan,
-            'isi' =>  $isiBps,
-            'ketersedian_data' => $uraianBps->ketersediaan_data
-        ];
+  public function tabel(TabelBps $tabel)
+  {
+    $uraians = $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
+    $fitur = $tabel->fiturBps()->firstOrCreate([]);
+    $tahuns =  $this->service->getAllTahun($tabel);
 
-        return response()->json($response);
-    }
+    return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));
+  }
 
-    public function getSummaryUraianForChart($id)
-    {
-        $tabel = TabelBps::findOrFail($id);
-        $years = IsiBps::getYears($id);
-
-        $label = [];
-        $data = [];
-
-        foreach ($years as $year) {
-            $totalIsi = IsiBps::whereHas('uraianBps.tabelBps', function ($q) use ($id) {
-                $q->where('id', $id);
-            })->where('tahun', $year)->sum('isi');
-
-            array_push($label, $year);
-            array_push($data, $totalIsi);
-        }
-
-        return response()->json([
-            'nama' => $tabel->nama_menu,
-            'label' => $label,
-            'data' => $data
-        ]);
-    }
+  public function chart(UraianBps $uraian)
+  {
+    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
+  }
 }

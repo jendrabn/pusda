@@ -7,10 +7,10 @@ use App\Models\Statistic;
 
 class HomeController extends Controller
 {
-    public function __invoke()
-    {
-        $statistic = new Statistic();
+  public function __invoke()
+  {
+    $statistic = new Statistic();
 
-        return view('front.home', compact('statistic'));
-    }
+    return view('front.home', compact('statistic'));
+  }
 }

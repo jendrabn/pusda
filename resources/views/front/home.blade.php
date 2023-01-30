@@ -4,8 +4,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        <div class="card shadow-lg mb-4">
-          <div class="card-header bg-white card-header__lg">
+        <div class="card mb-4 shadow-lg">
+          <div class="card-header card-header__lg bg-white">
             <h4 class="card-header__title">Kepala Daerah</h4>
           </div>
           <div class="card-body">
@@ -28,7 +28,7 @@
       </div>
       <div class="col-lg-9">
         <div class="card mb-4">
-          <div class="card-header bg-white card-header__lg">
+          <div class="card-header card-header__lg bg-white">
             <h4 class="card-header__title">Sambutan Kepala Daerah</h4>
           </div>
           <div class="card-body">
@@ -65,7 +65,7 @@
         </div>
 
         <div class="card mb-4">
-          <div class="card-header bg-white card-header__lg">
+          <div class="card-header card-header__lg bg-white">
             <h4 class="card-header__title">Pusat Data Kabupaten Situbondo</h4>
           </div>
           <div class="card-body">
@@ -94,7 +94,7 @@
         </div>
 
         <div class="card mb-4">
-          <div class="card-header bg-white card-header__lg">
+          <div class="card-header card-header__lg bg-white">
             <h4 class="card-header__title">Statistik Pengunjung Website</h4>
           </div>
           <div class="card-body">
