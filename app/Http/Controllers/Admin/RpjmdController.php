@@ -52,7 +52,7 @@ class RpjmdController extends Controller
   public function input(Request $request,  TabelRpjmd $tabel)
   {
     $tahuns = $this->service->getAllTahun($tabel);
-    $uraians = $tabel->uraianRpjmd()->with('childs.isiRpjmd')->whereNull('parent_id')->get();
+    $uraians = $this->service->getAllUraianByTabelId($tabel);
     $skpd = Skpd::find($request->skpd);
     $skpds = Skpd::pluck('singkatan', 'id');
     $categories = $this->service->getCategories();
@@ -71,7 +71,7 @@ class RpjmdController extends Controller
 
   public function edit(Request $request, UraianRpjmd $uraian)
   {
-    $isi = $this->service->getIsiByUraianId($uraian);
+    $isi = $this->service->getAllIsiByUraianId($uraian);
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_rpjmd_id;
 
@@ -80,7 +80,7 @@ class RpjmdController extends Controller
 
   public function update(Request $request, UraianRpjmd $uraian)
   {
-    $isi = $this->service->getIsiByUraianId($uraian);
+    $isi = $this->service->getAllIsiByUraianId($uraian);
     $tahuns = $isi->map(fn ($item) => $item->tahun);
 
     $rules = [

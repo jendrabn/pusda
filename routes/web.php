@@ -57,11 +57,11 @@ Route::middleware('visitor')->group(function () {
 });
 
 // Export isi uraian
-Route::group(['prefix' => 'exports', 'as' => 'exports.', 'controller' => \App\Http\Controllers\ExportController::class], function () {
-  Route::get('/rpjmd/{tabelRpjmd}', 'exportRpjmd')->name('rpjmd');
-  Route::get('/bps/{tabelBps}', 'exportBps')->name('bps');
-  Route::get('/delapankeldata/{tabel8KelData}', 'export8KelData')->name('delapankeldata');
-  Route::get('/indikator/{tabelIndikator}', 'exportIndikator')->name('indikator');
+Route::group(['prefix' => 'exports', 'as' => 'exports.', 'controller' => \App\Http\Controllers\ExportsController::class], function () {
+  Route::get('/rpjmd/{tabel}', 'exportRpjmd')->name('rpjmd');
+  Route::get('/bps/{tabel}', 'exportBps')->name('bps');
+  Route::get('/delapankeldata/{tabel}', 'export8KelData')->name('delapankeldata');
+  Route::get('/indikator/{tabel}', 'exportIndikator')->name('indikator');
 });
 
 Route::group(['middleware' => ['auth']], function () {

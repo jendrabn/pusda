@@ -36,5 +36,10 @@ namespace App\Services {
     {
       return $uraian->isiIndikator()->whereNotNull('tahun')->orderBy('tahun', 'asc')->get();
     }
+
+    public function getAllUraianByTabelId(TabelIndikator $tabel)
+    {
+      return $tabel->uraianIndikator()->with('childs.isiIndikator')->whereNull('parent_id')->get();
+    }
   }
 }

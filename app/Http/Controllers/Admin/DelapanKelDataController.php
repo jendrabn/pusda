@@ -53,17 +53,15 @@ class DelapanKelDataController extends Controller
   public function input(Request $request,  Tabel8KelData $tabel)
   {
     $tahuns = $this->service->getAllTahun($tabel);
-    $uraians = $tabel->uraian8KelData()->with('childs.isi8KelData')->whereNull('parent_id')->get();
+    $uraians = $this->service->getAllUraianByTabelId($tabel);
     $skpd = Skpd::find($request->skpd);
     $skpds = Skpd::pluck('singkatan', 'id');
     $categories = $this->service->getCategories();
-
     $tabelIds = $skpd?->uraian8KelData()
       ->select('tabel_8keldata_id as tabel_id')
       ->where('skpd_id', $request->skpd)
       ->groupBy('tabel_id')
       ->get();
-
     $fitur = $tabel->fitur8KelData()->firstOrCreate([]);
     $files = $tabel->file8KelData;
 
@@ -72,7 +70,7 @@ class DelapanKelDataController extends Controller
 
   public function edit(Request $request, Uraian8KelData $uraian)
   {
-    $isi = $this->service->getIsiByUraianId($uraian);
+    $isi = $this->service->getAllIsiByUraianId($uraian);
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_8keldata_id;
 
@@ -81,7 +79,7 @@ class DelapanKelDataController extends Controller
 
   public function update(Request $request, Uraian8KelData $uraian)
   {
-    $isi = $this->service->getIsiByUraianId($uraian);
+    $isi = $this->service->getAllIsiByUraianId($uraian);
     $tahuns = $isi->map(fn ($item) => $item->tahun);
 
     $rules = [

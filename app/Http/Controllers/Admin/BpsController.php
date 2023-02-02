@@ -38,7 +38,7 @@ class BpsController extends Controller
   public function input(TabelBps $tabel)
   {
     $tahuns = $this->service->getAllTahun($tabel);
-    $uraians = $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
+    $uraians = $this->service->getAllUraianByTabelId($tabel);
     $categories = $this->service->getCategories();
     $fitur = $tabel->fiturBps()->firstOrCreate([]);
     $files = $tabel->fileBps;

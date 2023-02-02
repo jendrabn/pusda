@@ -1,5 +1,5 @@
-@extends('layouts.appFront')
-@section('title', 'Home')
+@extends('layouts.front', ['title' => 'Home'])
+
 @section('content')
   <div class="container">
     <div class="row">
@@ -102,19 +102,19 @@
               <div class="row">
                 <div class="col-lg-3 count">
                   <h5>Hari ini</h5>
-                  <p>{{ $statistic->day_count }}</p>
+                  <p>{{ $visitor->day_count }}</p>
                 </div>
                 <div class="col-lg-3 count">
                   <h5>Bulan ini</h5>
-                  <p>{{ $statistic->month_count }}</p>
+                  <p>{{ $visitor->month_count }}</p>
                 </div>
                 <div class="col-lg-3 count">
                   <h5>Tahun ini</h5>
-                  <p>{{ $statistic->year_count }}</p>
+                  <p>{{ $visitor->year_count }}</p>
                 </div>
                 <div class="col-lg-3 count">
                   <h5>Semua</h5>
-                  <p>{{ $statistic->all_count }}</p>
+                  <p>{{ $visitor->all_count }}</p>
                 </div>
               </div>
             </div>

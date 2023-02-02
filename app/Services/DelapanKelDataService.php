@@ -32,8 +32,13 @@ class DelapanKelDataService
     ];
   }
 
-  public function getIsiByUraianId(Uraian8KelData $uraian)
+  public function getAllIsiByUraianId(Uraian8KelData $uraian)
   {
     return $uraian->isi8KelData()->whereNotNull('tahun')->orderBy('tahun', 'asc')->get();
+  }
+
+  public function getAllUraianByTabelId(Tabel8KelData $tabel)
+  {
+    return $tabel->uraian8KelData()->with('childs.isi8KelData')->whereNull('parent_id')->get();
   }
 }

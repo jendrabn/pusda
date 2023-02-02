@@ -32,8 +32,13 @@ class RpjmdService
     ];
   }
 
-  public function getIsiByUraianId(UraianRpjmd $uraian)
+  public function getAllIsiByUraianId(UraianRpjmd $uraian)
   {
     return  $uraian->isiRpjmd()->whereNotNull('tahun')->orderBy('tahun', 'asc')->get();
+  }
+
+  public function getAllUraianByTabelId(TabelRpjmd $tabel)
+  {
+    return  $tabel->uraianRpjmd()->with('childs.isiRpjmd')->whereNull('parent_id')->get();
   }
 }

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Statistic;
+use App\Models\Visitor;
 
 class HomeController extends Controller
 {
   public function __invoke()
   {
-    $statistic = new Statistic();
+    $visitor = new Visitor();
 
-    return view('front.home', compact('statistic'));
+    return view('front.home', compact('visitor'));
   }
 }

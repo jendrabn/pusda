@@ -36,4 +36,9 @@ class BpsService
   {
     return  $uraian->isiBps()->whereNotNull('tahun')->orderBy('tahun', 'asc')->get();
   }
+
+  public function getAllUraianByTabelId(TabelBps $tabel)
+  {
+    return $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
+  }
 }

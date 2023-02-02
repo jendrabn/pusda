@@ -40,7 +40,7 @@ class IndikatorController extends Controller
   public function input(TabelIndikator $tabel)
   {
     $tahuns = $this->service->getAllTahun($tabel);
-    $uraians = $tabel->uraianIndikator()->with('childs.isiIndikator')->whereNull('parent_id')->get();
+    $uraians = $this->service->getAllUraianByTabelId($tabel);
     $categories = $this->service->getCategories();
     $fitur = $tabel->fiturIndikator()->firstOrCreate([]);
     $files = $tabel->fileIndikator;

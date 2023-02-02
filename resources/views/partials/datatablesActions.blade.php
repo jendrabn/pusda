@@ -10,7 +10,7 @@
   @endif
   @if (Route::has('admin.' . $crudRoutePart . '.destroy'))
     <form style="display: inline-block;" action="{{ route('admin.' . $crudRoutePart . '.destroy', $row->id) }}"
-          method="POST" onsubmit="return confirm('Are You Sure?');">
+      method="POST" onsubmit="return confirm('Are You Sure?');">
       @method('DELETE')
       @csrf
       <input class="btn btn-xs btn-danger" type="submit" value="Delete">
