@@ -23,20 +23,37 @@
                                   @foreach ($tabelIds as $item)
                                     @if ($child->id === $item->tabel_id)
                                       <li @if (isset($tabel) && $tabel->id == $child->id) data-jstree='{ "selected" : true }' @endif>
-                                        @if (isset($skpd) && $skpd)
-                                          <a
-                                            href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
-                                        @else
-                                          <a
-                                            href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
-                                        @endif
+                                        @role(App\Models\User::ROLE_ADMIN)
+                                          @if (isset($skpd) && $skpd)
+                                            <a
+                                              href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
+                                          @else
+                                            <a
+                                              href="{{ route('admin.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
+                                          @endif
+                                        @endrole
+                                        @role(App\Models\User::ROLE_SKPD)
+                                          @if (isset($skpd) && $skpd)
+                                            <a
+                                              href="{{ route('admin_skpd.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
+                                          @else
+                                            <a
+                                              href="{{ route('admin_skpd.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
+                                          @endif
+                                        @endrole
                                       </li>
                                     @endif
                                   @endforeach
                                 @else
                                   <li @if (isset($tabel) && $tabel->id === $child->id) data-jstree='{ "selected" : true }' @endif>
-                                    <a
-                                      href="{{ route('admin.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
+                                    @role(App\Models\User::ROLE_ADMIN)
+                                      <a
+                                        href="{{ route('admin.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
+                                    @endrole
+                                    @role(App\Models\User::ROLE_SKPD)
+                                      <a
+                                        href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
+                                    @endrole
                                   </li>
                                 @endif
                               @endforeach

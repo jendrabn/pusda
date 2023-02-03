@@ -200,22 +200,22 @@
 
         @role('SKPD')
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-              href="{{ route('admin.dashboard') }}">
+            <a class="nav-link {{ request()->routeIs('admin_skpd.dashboard') ? 'active' : '' }}"
+              href="{{ route('admin_skpd.dashboard') }}">
               <i class="fas fa-tachometer-alt nav-icon"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('skpd.delapankeldata.*') ? 'active' : '' }}"
-              href="{{ route('skpd.delapankeldata.index') }}">
+            <a class="nav-link {{ request()->routeIs('admin_skpd.delapankeldata.*') ? 'active' : '' }}"
+              href="{{ route('admin_skpd.delapankeldata.index') }}">
               <i class="fas fa-book nav-icon"></i>
               <p>8 Kel. Data</p>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('skpd.rpjmd.*') ? 'active' : '' }}"
-              href="{{ route('skpd.rpjmd.index') }}">
+            <a class="nav-link {{ request()->routeIs('admin_skpd.rpjmd.*') ? 'active' : '' }}"
+              href="{{ route('admin_skpd.rpjmd.index') }}">
               <i class="fas fa-briefcase nav-icon"></i>
               <p>RPJMD</p>
             </a>

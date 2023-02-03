@@ -21,8 +21,6 @@ Auth::routes([
   'reset' => false
 ]);
 
-// Route::get('/view/admin3', fn () => view('layouts.admin3'));
-
 Route::middleware('visitor')->group(function () {
   Route::get('/', \App\Http\Controllers\Front\HomeController::class)->name('home');
 
@@ -243,33 +241,47 @@ Route::group(['middleware' => ['auth']], function () {
     });
   });
 
-  Route::group(['prefix' => 'admin-skpd', 'as' => 'admin-skpd.', 'middleware' => ['role:SKPD']], function () {
+  Route::group(['prefix' => 'admin-skpd', 'as' => 'admin_skpd.', 'middleware' => ['role:SKPD']], function () {
     Route::get('/', App\Http\Controllers\Skpd\DashboardController::class)->name('dashboard');
 
     // 8 Kel. Data
     Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => App\Http\Controllers\Skpd\DelapanKelDataController::class], function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/{tabel8KelData}', 'input')->name('input');
-      Route::get('/{uraian8KelData}/edit', 'edit')->name('edit');
-      Route::put('/', 'update')->name('update');
-      Route::delete('/{uraian8KelData}', 'destroy')->name('destroy');
-      Route::put('/fitur/{fitur8KelData}', 'updateFitur')->name('update_fitur');
-      Route::post('/files/{tabel8KelData}', 'storeFile')->name('files.store');
-      Route::delete('/files/{file8KelData}', 'destroyFile')->name('files.destroy');
-      Route::get('/files/download/{file8KelData}', 'downloadFile')->name('files.download');
+      Route::get('/{category?}', 'index')->name('index');
+      Route::get('/category/{category}', 'category')->name('category');
+      Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+      Route::get('/{uraian}/edit', 'edit')->name('edit');
+      Route::put('/{uraian}', 'update')->name('update');
+      Route::delete('/{uraian}', 'destroy')->name('destroy');
+      // fitur
+      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      // file pendukung
+      Route::get('/files/{file}', 'downloadFile')->name('files.download');
+      Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+      Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+      // sumber data
+      Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+      // chart
+      Route::get('/chart/{uraian}', 'chart')->name('chart');
     });
 
     // RPJMD
     Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => App\Http\Controllers\Skpd\RpjmdController::class], function () {
-      Route::get('/', 'index')->name('index');
-      Route::get('/{tabelRpjmd}', 'input')->name('input');
-      Route::get('/{uraianRpjmd}/edit', 'edit')->name('edit');
-      Route::put('/', 'update')->name('update');
-      Route::delete('/{uraianRpjmd}', 'destroy')->name('destroy');
-      Route::put('/fitur/{fiturRpjmd}', 'updateFitur')->name('update_fitur');
-      Route::post('/files/{tabelRpjmd}', 'storeFile')->name('files.store');
-      Route::delete('/files/{fileRpjmd}', 'destroyFile')->name('files.destroy');
-      Route::get('/files/download/{fileRpjmd}', 'downloadFile')->name('files.download');
+      Route::get('/{category?}', 'index')->name('index');
+      Route::get('/category/{category?}', 'category')->name('category');
+      Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+      Route::get('/{uraian}/edit', 'edit')->name('edit');
+      Route::put('/{uraian}', 'update')->name('update');
+      Route::delete('/{uraian}', 'destroy')->name('destroy');
+      // fitur
+      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      // file pendukung
+      Route::get('/files/{file}', 'downloadFile')->name('files.download');
+      Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+      Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+      // sumber data
+      Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+      // chart
+      Route::get('/chart/{uraian}', 'chart')->name('chart');
     });
   });
 });

@@ -21,7 +21,6 @@ class DelapanKelDataController extends Controller
 
   private DelapanKelDataService $service;
 
-
   public function __construct(DelapanKelDataService $service)
   {
     $this->service = $service;

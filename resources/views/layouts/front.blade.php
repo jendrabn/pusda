@@ -75,7 +75,7 @@
                   <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
                 @endrole
                 @role('SKPD')
-                  <a class="nav-link" href="{{ route('admin-skpd.dashboard') }}">Dashboard</a>
+                  <a class="nav-link" href="{{ route('admin_skpd.dashboard') }}">Dashboard</a>
                 @endrole
               @else
                 <a class="nav-link" href="{{ route('login') }}">Login</a>

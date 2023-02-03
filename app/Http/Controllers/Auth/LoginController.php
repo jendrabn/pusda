@@ -34,7 +34,7 @@ class LoginController extends Controller
   {
     return match (auth()->user()->role) {
       User::ROLE_ADMIN => route('admin.dashboard'),
-      User::ROLE_SKPD =>  route('admin-skpd.dashboard'),
+      User::ROLE_SKPD =>  route('admin_skpd.dashboard'),
       default => route('home')
     };
   }

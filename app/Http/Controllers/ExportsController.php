@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\IsiUraianExport;
+use App\Http\Requests\ExportRequest;
 use App\Models\Tabel8KelData;
 use App\Models\TabelBps;
 use App\Models\TabelIndikator;
@@ -18,14 +19,7 @@ use Illuminate\Support\Str;
 class ExportsController extends Controller
 {
 
-  public function __construct(Request $request)
-  {
-    $request->validate([
-      'format' => ['required', 'in:xlsx,csv,xls']
-    ]);
-  }
-
-  public function export8KelData(Tabel8KelData $tabel)
+  public function export8KelData(ExportRequest $request, Tabel8KelData $tabel)
   {
     $service = new DelapanKelDataService();
     $uraians = $service->getAllUraianByTabelId($tabel);
@@ -37,7 +31,7 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportRpjmd(TabelRpjmd $tabel)
+  public function exportRpjmd(ExportRequest $request, TabelRpjmd $tabel)
   {
     $service = new RpjmdService();
     $uraians = $service->getAllUraianByTabelId($tabel);
@@ -49,7 +43,7 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportBps(TabelBps $tabel)
+  public function exportBps(ExportRequest $request, TabelBps $tabel)
   {
     $service = new BpsService();
     $uraians = $service->getAllUraianByTabelId($tabel);
@@ -61,7 +55,7 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportIndikator(TabelIndikator $tabel)
+  public function exportIndikator(ExportRequest $request, TabelIndikator $tabel)
   {
     $service = new IndikatorService();
     $uraians = $service->getAllUraianByTabelId($tabel);
