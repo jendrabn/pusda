@@ -1,7 +1,9 @@
 <div class="d-flex mb-3">
+  @admin
   <button class="btn btn-primary btn-flat mr-1" data-toggle="modal" data-target="#modalTahun" type="button">
     <i class="fas fa-calendar-alt"></i> Pengaturan Tahun
   </button>
+  @endadmin
 
   <div class="btn-group">
     <button class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown" type="button">
@@ -77,7 +79,7 @@
           @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
             <td style="max-width: 200px;">
               <select class="form-control sumber-data" name="sumber_data"
-                data-url="{{ route('admin.' . $crudRoutePart . '.update_sumber_data', $child->id) }}">
+                data-url="@admin{{ route('admin.' . $crudRoutePart . '.update_sumber_data', $child->id) }}@endadmin @skpd{{ route('admin_skpd.' . $crudRoutePart . '.update_sumber_data', $child->id) }}@endskpd">
                 <option selected disabled hidden></option>
                 @foreach ($skpds as $id => $nama)
                   <option value="{{ $id }}" {{ $id === $child->skpd_id ? 'selected' : '' }}>
@@ -88,20 +90,38 @@
             </td>
           @endif
           <td>
-            <button class="btn btn-primary btn-xs btn-show-chart"
-              data-url="{{ route('admin.' . $crudRoutePart . '.chart', $child->id) }}">
-              Grafik
-            </button>
-            <a class="btn btn-xs btn-info" href="{{ route('admin.' . $crudRoutePart . '.edit', $child->id) }}">
-              Edit
-            </a>
-            <form style="display: inline-block;"
-              action="{{ route('admin.' . $crudRoutePart . '.destroy', $child->id) }}" method="POST"
-              onsubmit="return confirm('Are You Sure?');">
-              @method('DELETE')
-              @csrf
-              <input class="btn btn-xs btn-danger" type="submit" value="Delete">
-            </form>
+            @admin
+              <button class="btn btn-primary btn-xs btn-show-chart"
+                data-url="{{ route('admin.' . $crudRoutePart . '.chart', $child->id) }}">
+                Grafik
+              </button>
+              <a class="btn btn-xs btn-info" href="{{ route('admin.' . $crudRoutePart . '.edit', $child->id) }}">
+                Edit
+              </a>
+              <form style="display: inline-block;"
+                action="{{ route('admin.' . $crudRoutePart . '.destroy', $child->id) }}" method="POST"
+                onsubmit="return confirm('Are You Sure?');">
+                @method('DELETE')
+                @csrf
+                <input class="btn btn-xs btn-danger" type="submit" value="Delete">
+              </form>
+            @endadmin
+            @skpd
+              <button class="btn btn-primary btn-xs btn-show-chart"
+                data-url="{{ route('admin_skpd.' . $crudRoutePart . '.chart', $child->id) }}">
+                Grafik
+              </button>
+              <a class="btn btn-xs btn-info" href="{{ route('admin_skpd.' . $crudRoutePart . '.edit', $child->id) }}">
+                Edit
+              </a>
+              <form style="display: inline-block;"
+                action="{{ route('admin_skpd.' . $crudRoutePart . '.destroy', $child->id) }}" method="POST"
+                onsubmit="return confirm('Are You Sure?');">
+                @method('DELETE')
+                @csrf
+                <input class="btn btn-xs btn-danger" type="submit" value="Delete">
+              </form>
+            @endskpd
           </td>
         </tr>
       @endforeach

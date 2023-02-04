@@ -1,7 +1,8 @@
 <div class="row">
   <div class="col-lg-7">
-    <form action="{{ route('admin.' . $crudRoutePart . '.files.store', $tabel->id) }}" method="POST"
-      enctype="multipart/form-data">
+    <form
+      action="@admin{{ route('admin.' . $crudRoutePart . '.files.store', $tabel->id) }}@endadmin @skpd{{ route('admin_skpd.' . $crudRoutePart . '.files.store', $tabel->id) }}@endskpd"
+      method="POST" enctype="multipart/form-data">
       @csrf
       <div class="form-group">
         <label class="required" for="document">File Pendukung</label>
@@ -40,15 +41,28 @@
         <td>{{ $file->nama }}</td>
         <td>{{ $file->created_at }}</td>
         <td>
-          <a class="btn btn-xs btn-success"
-            href="{{ route('admin.' . $crudRoutePart . '.files.download', $file->id) }}">Download</a>
-          <form style="display: inline-block;"
-            action="{{ route('admin.' . $crudRoutePart . '.files.destroy', $file->id) }}" method="POST"
-            onsubmit="return confirm('Are You Sure?');">
-            @method('DELETE')
-            @csrf
-            <input class="btn btn-xs btn-danger" type="submit" value="Delete">
-          </form>
+          @admin
+            <a class="btn btn-xs btn-success"
+              href="{{ route('admin.' . $crudRoutePart . '.files.download', $file->id) }}">Download</a>
+            <form style="display: inline-block;"
+              action="{{ route('admin.' . $crudRoutePart . '.files.destroy', $file->id) }}" method="POST"
+              onsubmit="return confirm('Are You Sure?');">
+              @method('DELETE')
+              @csrf
+              <input class="btn btn-xs btn-danger" type="submit" value="Delete">
+            </form>
+          @endadmin
+          @skpd
+            <a class="btn btn-xs btn-success"
+              href="{{ route('admin_skpd.' . $crudRoutePart . '.files.download', $file->id) }}">Download</a>
+            <form style="display: inline-block;"
+              action="{{ route('admin_skpd.' . $crudRoutePart . '.files.destroy', $file->id) }}" method="POST"
+              onsubmit="return confirm('Are You Sure?');">
+              @method('DELETE')
+              @csrf
+              <input class="btn btn-xs btn-danger" type="submit" value="Delete">
+            </form>
+          @endskpd
         </td>
       </tr>
     @endforeach

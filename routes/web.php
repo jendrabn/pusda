@@ -248,7 +248,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'delapankeldata', 'as' => 'delapankeldata.', 'controller' => App\Http\Controllers\Skpd\DelapanKelDataController::class], function () {
       Route::get('/{category?}', 'index')->name('index');
       Route::get('/category/{category}', 'category')->name('category');
-      Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+      Route::get('/input/{tabel}', 'input')->name('input');
       Route::get('/{uraian}/edit', 'edit')->name('edit');
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
@@ -268,7 +268,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'rpjmd', 'as' => 'rpjmd.', 'controller' => App\Http\Controllers\Skpd\RpjmdController::class], function () {
       Route::get('/{category?}', 'index')->name('index');
       Route::get('/category/{category?}', 'category')->name('category');
-      Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+      Route::get('/input/{tabel}', 'input')->name('input');
       Route::get('/{uraian}/edit', 'edit')->name('edit');
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');

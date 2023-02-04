@@ -33,13 +33,8 @@
                                           @endif
                                         @endrole
                                         @role(App\Models\User::ROLE_SKPD)
-                                          @if (isset($skpd) && $skpd)
-                                            <a
-                                              href="{{ route('admin_skpd.' . $crudRoutePart . '.input', [$child->id, 'skpd' => $skpd->id]) }}">{{ $child->nama_menu }}</a>
-                                          @else
-                                            <a
-                                              href="{{ route('admin_skpd.' . $crudRoutePart . '.input', [$child->id]) }}">{{ $child->nama_menu }}</a>
-                                          @endif
+                                        <a
+                                        href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
                                         @endrole
                                       </li>
                                     @endif

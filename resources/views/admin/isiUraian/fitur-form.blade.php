@@ -1,4 +1,6 @@
-<form action="{{ route('admin.' . $crudRoutePart . '.update_fitur', $fitur->id) }}" method="POST">
+<form
+  action="@admin{{ route('admin.' . $crudRoutePart . '.update_fitur', $fitur->id) }}@endadmin @skpd{{ route('admin_skpd.' . $crudRoutePart . '.update_fitur', $fitur->id) }}@endskpd"
+  method="POST">
   @csrf
   @method('PUT')
   <div class="form-group">
