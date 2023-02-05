@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\View;
 
 class RpjmdController extends Controller
 {
-
   use RpjmdTrait;
 
   private RpjmdService $service;

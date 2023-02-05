@@ -4,21 +4,13 @@ namespace App\Http\Controllers\Skpd;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\DelapanKelDataTrait;
-use App\Models\File8KelData;
-use App\Models\Fitur8KelData;
 use App\Models\Skpd;
 use App\Models\Tabel8KelData;
-use App\Models\Uraian8KelData;
 use App\Services\DelapanKelDataService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class DelapanKelDataController extends Controller
 {
-
   use DelapanKelDataTrait;
 
   private DelapanKelDataService $service;
