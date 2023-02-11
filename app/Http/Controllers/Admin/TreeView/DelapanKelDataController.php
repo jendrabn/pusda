@@ -13,7 +13,7 @@ class DelapanKelDataController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $model = Tabel8KelData::with('parent')->select('tabel_8keldata.*');
+      $model = Tabel8KelData::query()->with('parent')->select(sprintf('%s.*', (new Tabel8KelData())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -44,8 +44,8 @@ class DelapanKelDataController extends Controller
     $request->merge(['skpd_id' => auth()->user()->skpd_id]);
 
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_8keldata,id'],
-      'nama_menu' => ['required', 'string', 'max:200'],
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new Tabel8KelData())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255'],
       'skpd_id' => ['required', 'integer', 'exists:skpd,id']
     ]);
 
@@ -66,35 +66,31 @@ class DelapanKelDataController extends Controller
   public function update(Request $request, Tabel8KelData $tabel)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_8keldata,id'],
-      'nama_menu' => ['required', 'string', 'max:200']
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new Tabel8KelData())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->update($request->all());
-
-      return back()->with('success-message', 'Updated.');
     }
 
-    return back()->with('error-message', 'Cannot Updated.');
+    return back()->with('success-message', 'Updated.');
   }
 
   public function destroy(Tabel8KelData $tabel)
   {
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->delete();
-
-      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('error-message', 'Cannot Deleted.');
+    return back()->with('success-message', 'Deleted.');
   }
 
   public function massDestroy(Request $request)
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*', ['integer', 'exists:tabel_8keldata,id']
+      'ids.*', ['integer', sprintf('exists:%s,id', (new Tabel8KelData())->getTable())]
     ]);
 
     $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();

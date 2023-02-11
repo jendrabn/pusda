@@ -1,4 +1,4 @@
-@extends('layouts.admin', ['title' => 'Tambah User'])
+@extends('layouts.admin', ['title' => 'Edit User'])
 
 @section('content')
   <div class="row">
@@ -6,47 +6,53 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">
-            Tambah User
+            Edit User
           </h3>
         </div>
         <div class="card-body">
           <div class="form-group">
             <a class="btn btn-default" href="{{ route('admin.users.index') }}">
-              Back to list
+              <i class="fas fa-backward"></i> Back to list
             </a>
           </div>
-          <form method="POST" action="{{ route('admin.users.store') }}">
+          <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
             @csrf
+            @method('PUT')
+
             <div class="form-group">
-              <label class="required" for="name">Nama Lengkap</label>
+              <label class="required" for="name">Nama</label>
               <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text"
-                value="{{ old('name') }}">
+                value="{{ $user->name }}" required autofocus>
               @error('name')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <label class="required" for="email">Email</label>
               <input class="form-control @error('email') is-invalid @enderror" id="email" name="email"
-                type="email" value="{{ old('email') }}">
+                type="email" value="{{ $user->email }}" required>
               @error('email')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <label class="required" for="username">Username</label>
               <input class="form-control @error('username') is-invalid @enderror" id="username" name="username"
-                type="text" value="{{ old('username') }}">
+                type="text" value="{{ $user->username }}" required>
               @error('username')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <label class="required" for="skpd_id">SKPD</label>
-              <select class="form-control select2 @error('skpd_id') is-invalid @enderror" id="skpd_id" name="skpd_id">
+              <select class="form-control select2 @error('skpd_id') is-invalid @enderror" id="skpd_id" name="skpd_id"
+                required>
                 <option selected disabled hidden>Pilih SKPD</option>
                 @foreach ($skpd as $id => $name)
-                  <option value="{{ $id }}" {{ $id == old('skpd_id') ? 'selected' : '' }}>
+                  <option value="{{ $id }}" {{ $id === $user->skpd_id ? 'selected' : '' }}>
                     {{ $name }}
                   </option>
                 @endforeach
@@ -55,12 +61,13 @@
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <label class="required" for="role">Role</label>
-              <select class="form-control select2 @error('role') is-invalid @enderror" id="role" name="role">
+              <select class="form-control @error('role') is-invalid @enderror" id="role" name="role" required>
                 <option selected disabled hidden>Pilih Role</option>
-                @foreach ($roles as $id => $role)
-                  <option value="{{ $id }}" {{ $id == old('role') ? 'selected' : '' }}>
+                @foreach (App\Models\User::ROLES as $role)
+                  <option value="{{ $role }}" {{ $role === $user->role ? 'selected' : '' }}>
                     {{ $role }}
                   </option>
                 @endforeach
@@ -69,34 +76,40 @@
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
-              <label class="required" for="password">Password</label>
+              <label for="password">Password</label>
               <input class="form-control @error('password') is-invalid @enderror" id="password" name="password"
                 type="password">
               @error('password')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
+              <small class="form-text text-muted">Kosongkan jika password tidak ingin diubah.</small>
             </div>
+
             <div class="form-group">
               <label for="phone">No. HP/WhatsApp</label>
               <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone"
-                type="tel" value="{{ old('phone') }}">
+                type="tel" value="{{ $user->phone }}">
               @error('phone')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <label for="address">Alamat</label>
-              <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address">{{ old('address') }}</textarea>
+              <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address">{{ $user->address }}</textarea>
               @error('address')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
               <button class="btn btn-primary" type="submit">
-                <i class="fas fa-save"></i> Simpan
+                <i class="fas fa-save"></i> Update
               </button>
             </div>
+
           </form>
         </div>
       </div>

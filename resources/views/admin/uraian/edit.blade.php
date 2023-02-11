@@ -12,7 +12,7 @@
         <div class="card-body">
           <div class="form-group">
             <a class="btn btn-default" href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $tabel->id) }}">
-              Back to list
+              <i class="fas fa-backward"></i> Back to list
             </a>
           </div>
           <form action="{{ route('admin.uraian.' . $crudRoutePart . '.update', $uraian->id) }}" method="POST">

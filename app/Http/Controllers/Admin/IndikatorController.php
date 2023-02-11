@@ -8,6 +8,7 @@ use App\Models\FiturIndikator;
 use App\Models\TabelIndikator;
 use App\Models\UraianIndikator;
 use App\Services\IndikatorService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -87,7 +88,7 @@ class IndikatorController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Updated.');
@@ -172,7 +173,7 @@ class IndikatorController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Saved.');
@@ -189,7 +190,7 @@ class IndikatorController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Deleted.');

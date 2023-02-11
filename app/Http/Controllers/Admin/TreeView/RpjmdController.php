@@ -15,7 +15,7 @@ class RpjmdController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $model = TabelRpjmd::with('parent')->select('tabel_rpjmd.*');
+      $model = TabelRpjmd::query()->with('parent')->select(sprintf('%s.*', (new TabelRpjmd())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -47,8 +47,8 @@ class RpjmdController extends Controller
     $request->merge(['skpd_id' => auth()->user()->skpd_id]);
 
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_rpjmd,id'],
-      'nama_menu' => ['required', 'string', 'max:200'],
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelRpjmd())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255'],
       'skpd_id' => ['required', 'integer', 'exists:skpd,id']
     ]);
 
@@ -69,35 +69,31 @@ class RpjmdController extends Controller
   public function update(Request $request, TabelRpjmd $tabel)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_rpjmd,id'],
-      'nama_menu' => ['required', 'string', 'max:200']
+      'parent_id' =>  ['required', 'integer',     sprintf('exists:%s,id', (new TabelRpjmd())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->update($request->all());
-
-      return back()->with('success-message', 'Updated.');
     }
 
-    return back()->with('error-message', 'Cannot Updated.');
+    return back()->with('success-message', 'Updated.');
   }
 
   public function destroy(TabelRpjmd $tabel)
   {
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->delete();
-
-      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('error-message', 'Cannot Deleted.');
+    return back()->with('success-message', 'Deleted.');
   }
 
   public function massDestroy(Request $request)
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*', ['integer', 'exists:tabel_rpjmd,id']
+      'ids.*', ['integer',     sprintf('exists:%s,id', (new TabelRpjmd())->getTable())]
     ]);
 
     $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();

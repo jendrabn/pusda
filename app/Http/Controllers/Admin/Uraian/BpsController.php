@@ -84,7 +84,7 @@ class BpsController extends Controller
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*' => ['integer', 'exists:uraian_bps,id']
+      'ids.*' => ['integer', sprintf('exists:%s,id', (new UraianBps())->getTable())]
     ]);
 
     UraianBps::whereIn('id', $request->ids)->delete();

@@ -6,9 +6,8 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class PasswordUpdateRequest extends FormRequest
+class UpdatePasswordRequest extends FormRequest
 {
-
   public function authorize()
   {
     return in_array(auth()->user()->role, User::ROLES);

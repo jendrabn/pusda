@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class BpsController extends Controller
 {
+
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $model = TabelBps::with('parent')->select('tabel_bps.*');
+      $model = TabelBps::query()->with('parent')->select(sprintf('%s.*', (new TabelBps())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -27,7 +27,6 @@ class BpsController extends Controller
           'row'
         ));
       });
-
       $table->editColumn('parent', fn ($row) => $row->parent ? $row->parent->nama_menu : '');
       $table->rawColumns(['actions', 'placeholder']);
 
@@ -44,8 +43,8 @@ class BpsController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
-      'nama_menu' => ['required', 'string']
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelBps())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
     TabelBps::create($request->all());
@@ -65,38 +64,34 @@ class BpsController extends Controller
   public function update(Request $request, TabelBps $tabel)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'numeric', 'exists:tabel_bps,id'],
-      'nama_menu' => ['required', 'string']
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelBps())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->update($request->all());
-
-      return back()->with('success-message', 'Updated.');
     }
 
-    return back()->with('error-message', 'Cannot Updated.');
+    return back()->with('success-message', 'Updated.');
   }
 
   public function destroy(TabelBps $tabel)
   {
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->delete();
-
-      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('error-message', 'Cannot Deleted.');
+    return back()->with('success-message', 'Deleted.');
   }
 
   public function massDestroy(Request $request)
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*', ['integer', 'exists:tabel_bps,id']
+      'ids.*', ['integer', sprintf('exists:%s,id', (new TabelBps())->getTable())]
     ]);
 
-    $ids = collect($request->ids)->filter(fn ($val, $key) => $val != 1)->toArray();
+    $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();
 
     TabelBps::whereIn('id', $ids)->delete();
 

@@ -14,7 +14,7 @@ class IndikatorController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $model = TabelIndikator::with('parent')->select('tabel_indikator.*');
+      $model = TabelIndikator::query()->with('parent')->select(sprintf('%s.*', (new TabelIndikator())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -43,8 +43,8 @@ class IndikatorController extends Controller
   public function store(Request $request)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_indikator,id'],
-      'nama_menu' => ['required', 'string', 'max:200']
+      'parent_id' =>  ['required', 'integer',  sprintf('exists:%s,id', (new TabelIndikator())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
     TabelIndikator::create($request->all());
@@ -64,35 +64,31 @@ class IndikatorController extends Controller
   public function update(Request $request, TabelIndikator $tabel)
   {
     $request->validate([
-      'parent_id' =>  ['required', 'integer', 'exists:tabel_indikator,id'],
-      'nama_menu' => ['required', 'string', 'max:200']
+      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelIndikator())->getTable())],
+      'nama_menu' => ['required', 'string', 'max:255']
     ]);
 
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->update($request->all());
-
-      return back()->with('success-message', 'Updated.');
     }
 
-    return back()->with('error-message', 'Cannot Updated.');
+    return back()->with('success-message', 'Updated.');
   }
 
   public function destroy(TabelIndikator $tabel)
   {
-    if (intval($tabel->id) !== 1) {
+    if ($tabel->id !== 1) {
       $tabel->delete();
-
-      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('error-message', 'Cannot Deleted.');
+    return back()->with('success-message', 'Deleted.');
   }
 
   public function massDestroy(Request $request)
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*', ['integer', 'exists:tabel_indikator.id']
+      'ids.*', ['integer',  sprintf('exists:%s,id', (new TabelIndikator())->getTable())]
     ]);
 
     $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();

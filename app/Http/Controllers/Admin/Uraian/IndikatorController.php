@@ -82,7 +82,7 @@ class IndikatorController extends Controller
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*' => ['integer', 'exists:uraian_indikator,id']
+      'ids.*' => ['integer', sprintf('exists:%s,id', (new UraianIndikator())->getTable())]
     ]);
 
     UraianIndikator::whereIn('id', $request->ids)->delete();

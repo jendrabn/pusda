@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\SkpdStoreRequest;
-use App\Http\Requests\Admin\SkpdUpdateRequest;
+use App\Http\Requests\Admin\MassDestroySkpdRequest;
+use App\Http\Requests\Admin\StoreSkpdRequest;
+use App\Http\Requests\Admin\UpdateSkpdRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
@@ -16,7 +17,7 @@ class SkpdController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $model = Skpd::with('kategori')->select('skpd.*');
+      $model = Skpd::query()->with('kategori')->select(sprintf('%s.*', (new Skpd())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -24,11 +25,13 @@ class SkpdController extends Controller
 
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'skpd';
+
         return view('partials.datatablesActions', compact(
           'crudRoutePart',
           'row'
         ));
       });
+
       $table->editColumn('kategori', fn ($row) => $row->kategori ? $row->kategori->nama : '');
       $table->rawColumns(['actions', 'placeholder']);
 
@@ -45,11 +48,11 @@ class SkpdController extends Controller
     return view('admin.skpd.create', compact('categories'));
   }
 
-  public function store(SkpdStoreRequest $request)
+  public function store(StoreSkpdRequest $request)
   {
-    Skpd::create($request->all());
+    Skpd::create($request->validated());
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'SKPD successfully saved.');
   }
 
   public function edit(Skpd $skpd)
@@ -59,35 +62,26 @@ class SkpdController extends Controller
     return view('admin.skpd.edit', compact('skpd', 'categories'));
   }
 
-  public function update(SkpdUpdateRequest $request, Skpd $skpd)
+  public function update(UpdateSkpdRequest $request, Skpd $skpd)
   {
-    if (intval($skpd->id) !== 1) {
-      $skpd->update($request->all());
-
-      return back()->with('success-message', 'Updated.');
+    if ($skpd->id !== 1) {
+      $skpd->update($request->validated());
     }
 
-    return back()->with('error-message', 'Cannot Updated.');
+    return back()->with('success-message', 'SKPD successfully updated.');
   }
 
   public function destroy(Skpd $skpd)
   {
-    if (intval($skpd->id) !== 1) {
+    if ($skpd->id !== 1) {
       $skpd->delete();
-
-      return back()->with('success-message', 'Deleted.');
     }
 
-    return back()->with('error-message', 'Cannot Deleted.');
+    return back()->with('success-message', 'SKPD successfully deleted.');
   }
 
-  public function massDestroy(Request $request)
+  public function massDestroy(MassDestroySkpdRequest $request)
   {
-    $request->validate([
-      'ids' => ['required', 'array'],
-      'ids.*' => ['integer', 'exists:skpd,id']
-    ]);
-
     $ids = collect($request->ids)->filter(fn ($id) => intval($id) !== 1)->toArray();
 
     Skpd::whereIn('id', $ids)->delete();

@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Storage;
 
-class ProfileInformationUpdateRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
 
   public function authorize()
@@ -32,7 +31,7 @@ class ProfileInformationUpdateRequest extends FormRequest
     return [
       'name' => 'nama lengkap',
       'phone' => 'no. hp/whatsapp',
-      'address' => 'alamat rumah',
+      'address' => 'alamat',
       'photo' => 'foto profil',
       'birth_date' => 'tanggal lahir'
     ];

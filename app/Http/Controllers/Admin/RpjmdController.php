@@ -7,6 +7,7 @@ use App\Models\Skpd;
 use App\Models\KategoriSkpd;
 use App\Models\TabelRpjmd;
 use App\Services\RpjmdService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -90,7 +91,7 @@ class RpjmdController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Saved.');
@@ -107,7 +108,7 @@ class RpjmdController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Deleted.');

@@ -8,7 +8,7 @@
     <div class="card-body">
       <div class="form-group">
         <a class="btn btn-default" href="{{ route('admin.users.index') }}">
-          Back to list
+          <i class="fas fa-backward"></i> Back to list
         </a>
       </div>
       <table class="table-bordered table-striped table">
@@ -18,7 +18,8 @@
               Foto Profil
             </th>
             <td>
-              <img src="{{ $user->photo }}" alt="{{ $user->name }}" width="75" height="75">
+              <img class="profile-user-img img-fluid img-circle" src="{{ $user->photo }}" alt="{{ $user->name }}"
+                width="75" height="75">
             </td>
           </tr>
           <tr>
@@ -82,7 +83,7 @@
               Role
             </th>
             <td>
-              {{ $user->role_name }}
+              {{ $user->role }}
             </td>
           </tr>
           <tr>

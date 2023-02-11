@@ -1,6 +1,4 @@
-@php
-  $fullcolspan = 3 + count($tahuns);
-@endphp
+@php $fullcolspan = 3 + count($tahuns); @endphp
 
 <table>
   <thead>
@@ -10,13 +8,11 @@
       <th>Satuan</th>
       @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
         <th>Ketersedian Data</th>
-      @endif
-      @foreach ($tahuns as $tahun)
-        <th>{{ $tahun }}</th>
-      @endforeach
-      @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
-        <th>Sumber Data</th>
-      @endif
+        @endif @foreach ($tahuns as $tahun)
+          <th>{{ $tahun }}</th>
+          @endforeach @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
+            <th>Sumber Data</th>
+          @endif
     </tr>
   </thead>
   <tbody>
@@ -32,21 +28,19 @@
           <th>{{ $uraian->satuan }}</th>
           @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
             <th>{{ $uraian->str_ketersediaan_data }}</th>
-          @endif
-          @foreach ($tahuns as $tahun)
-            @if ($crudRoutePart === 'delapankeldata')
-              <th>{{ $uraian->isi8KelData->where('tahun', $tahun)->first()->isi }}</th>
-            @elseif ($crudRoutePart === 'rpjmd')
-              <th>{{ $uraian->isiRpjmd->where('tahun', $tahun)->first()->isi }}</th>
-            @elseif ($crudRoutePart === 'bps')
-              <th>{{ $uraian->isiBps->where('tahun', $tahun)->first()->isi }}</th>
-            @elseif ($crudRoutePart === 'indikator')
-              <th>{{ $uraian->isiIndikator->where('tahun', $tahun)->first()->isi }}</th>
-            @endif
-          @endforeach
-          @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
-            <th>{{ $uraian->skpd?->nama }}</th>
-          @endif
+            @endif @foreach ($tahuns as $tahun)
+              @if ($crudRoutePart === 'delapankeldata')
+                <th>{{ $uraian->isi8KelData->where('tahun', $tahun)->first()->isi }}</th>
+              @elseif ($crudRoutePart === 'rpjmd')
+                <th>{{ $uraian->isiRpjmd->where('tahun', $tahun)->first()->isi }}</th>
+              @elseif ($crudRoutePart === 'bps')
+                <th>{{ $uraian->isiBps->where('tahun', $tahun)->first()->isi }}</th>
+              @elseif ($crudRoutePart === 'indikator')
+                <th>{{ $uraian->isiIndikator->where('tahun', $tahun)->first()->isi }}</th>
+              @endif
+              @endforeach @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
+                <th>{{ $uraian->skpd?->nama }}</th>
+              @endif
         </tr>
       @endforeach
     @endforeach
@@ -59,7 +53,7 @@
       <td colspan="{{ $fullcolspan }}">Deskripsi:</td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}"> {{ $fitur->deskripsi ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur->deskripsi ?? '-' }}</td>
     </tr>
     {{-- Border --}}
 
@@ -92,7 +86,9 @@
       <td colspan="{{ $fullcolspan }}"></td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">Solusi atau Langkah-langkah Tindak Lanjut:</td>
+      <td colspan="{{ $fullcolspan }}">
+        Solusi atau Langkah-langkah Tindak Lanjut:
+      </td>
     </tr>
     <tr>
       <td colspan="{{ $fullcolspan }}">{{ $fitur->solusi ?? '-' }}</td>
@@ -104,7 +100,9 @@
       <td colspan="{{ $fullcolspan }}"></td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">Saran / Rekomendasi ke Gubernur atau Pusat:</td>
+      <td colspan="{{ $fullcolspan }}">
+        Saran / Rekomendasi ke Gubernur atau Pusat:
+      </td>
     </tr>
     <tr>
       <td colspan="{{ $fullcolspan }}">{{ $fitur->saran ?? '-' }}</td>

@@ -12,7 +12,7 @@
         <div class="card-body">
           <div class="form-group">
             <a class="btn btn-default" href="{{ route('admin.treeview.' . $crudRoutePart . '.index') }}">
-              Back to list
+              <i class="fas fa-backward"></i> Back to list
             </a>
           </div>
           <form action="{{ route('admin.treeview.' . $crudRoutePart . '.update', $tabel->id) }}" method="POST">
@@ -21,10 +21,12 @@
             <div class="form-group">
               <label class="required" for="parent_id">Kategori</label>
               <select class="form-control select2 @error('parent_id') is-invalid @enderror" name="parent_id">
+                <option selected disabled hidden>Pilih Kategori</option>
                 @foreach ($categories as $category)
                   @if ($category->id !== $tabel->id)
                     <option value="{{ $category->id }}" {{ $tabel->parent?->id == $category->id ? 'selected' : '' }}>
-                      {{ $category->nama_menu }}</option>
+                      {{ $category->nama_menu }}
+                    </option>
                   @endif
                 @endforeach
               </select>

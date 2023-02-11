@@ -83,7 +83,7 @@ class RpjmdController extends Controller
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*' => ['integer', 'exists:uraian_rpjmd,id']
+      'ids.*' => ['integer', sprintf('exists:%s,id', (new UraianRpjmd())->getTable())]
     ]);
 
     UraianRpjmd::whereIn('id', $request->ids)->delete();

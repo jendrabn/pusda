@@ -8,6 +8,7 @@ use App\Models\FiturBps;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
 use App\Services\BpsService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -84,8 +85,7 @@ class BpsController extends Controller
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Updated.');
@@ -170,8 +170,7 @@ class BpsController extends Controller
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Saved.');
@@ -187,8 +186,7 @@ class BpsController extends Controller
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-
-      return back()->with('error-message', $e->getMessage());
+      throw new Exception($e->getMessage());
     }
 
     return back()->with('success-message', 'Deleted.');

@@ -12,8 +12,8 @@
           @csrf
           <div class="form-group">
             <label class="required" for="tahun">Tambah Tahun</label>
-            <input class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun"
-              type="number" min="2010" max="2030">
+            <input class="form-control @error('tahun') is-invalid @enderror input-tahun" id="date" name="tahun"
+              type="number">
             @error('tahun')
               <span class="error invalid-feedback">{{ $message }}</span>
             @enderror
@@ -53,3 +53,14 @@
     </div>
   </div>
 </div>
+
+@push('scripts')
+  <script>
+    $(function() {
+      console.log('OKKK')
+      $('.input-tahun').datetimepicker({
+        format: 'YYYY',
+      });
+    });
+  </script>
+@endpush

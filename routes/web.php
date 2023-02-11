@@ -54,7 +54,7 @@ Route::middleware('visitor')->group(function () {
   });
 });
 
-// Export isi uraian
+// Exports isi uraian
 Route::group(['prefix' => 'exports', 'as' => 'exports.', 'controller' => \App\Http\Controllers\ExportsController::class], function () {
   Route::get('/rpjmd/{tabel}', 'exportRpjmd')->name('rpjmd');
   Route::get('/bps/{tabel}', 'exportBps')->name('bps');
@@ -79,8 +79,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('audit-logs', \App\Http\Controllers\Admin\AuditLogsController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
     // Users
-    Route::delete('/users/massDestroy', [\App\Http\Controllers\Admin\UsersController::class, 'massDestroy'])->name('users.massDestroy');
-    Route::resource('users', \App\Http\Controllers\Admin\UsersController::class);
+    Route::delete('/users/massDestroy', [\App\Http\Controllers\Admin\UserController::class, 'massDestroy'])->name('users.massDestroy');
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
 
     // SKPD
     Route::delete('/skpd/massDestroy', [\App\Http\Controllers\Admin\SkpdController::class, 'massDestroy'])->name('skpd.massDestroy');
@@ -88,26 +88,27 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Menu Tree View
     Route::group(['prefix' => 'treeview', 'as' => 'treeview.'], function () {
+      Route::delete('/delapankeldata/massDestroy', [\App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class, 'massDestroy'])
+        ->name('delapankeldata.massDestroy');
+      Route::delete('/rpjmd/massDestroy', [\App\Http\Controllers\Admin\TreeView\RpjmdController::class, 'massDestroy'])
+        ->name('rpjmd.massDestroy');
+      Route::delete('/bps/massDestroy', [\App\Http\Controllers\Admin\TreeView\BpsController::class, 'massDestroy'])
+        ->name('bps.massDestroy');
+      Route::delete('/indikator/massDestroy', [\App\Http\Controllers\Admin\TreeView\IndikatorController::class, 'massDestroy'])
+        ->name('indikator.massDestroy');
+
       Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)
         ->parameter('delapankeldata', 'tabel')
         ->except(['create', 'show']);
-      Route::delete('/delapankeldata/massDestroy', [\App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class, 'massDestroy'])
-        ->name('delapankeldata.massDestroy');
       Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)
         ->parameter('rpjmd', 'tabel')
         ->except(['create', 'show']);
-      Route::delete('/rpjmd/massDestroy', [\App\Http\Controllers\Admin\TreeView\RpjmdController::class, 'massDestroy'])
-        ->name('rpjmd.massDestroy');
       Route::resource('indikator', \App\Http\Controllers\Admin\TreeView\IndikatorController::class)
         ->parameter('indikator', 'tabel')
         ->except(['create', 'show']);
-      Route::delete('/indikator/massDestroy', [\App\Http\Controllers\Admin\TreeView\IndikatorController::class, 'massDestroy'])
-        ->name('indikator.massDestroy');
       Route::resource('bps', \App\Http\Controllers\Admin\TreeView\BpsController::class)
         ->parameter('bps', 'tabel')
         ->except(['create', 'show']);
-      Route::delete('/bps/massDestroy', [\App\Http\Controllers\Admin\TreeView\BpsController::class, 'massDestroy'])
-        ->name('bps.massDestroy');
     });
 
     // Menu Form Uraian

@@ -84,7 +84,7 @@ class DelapanKelDataController extends Controller
   {
     $request->validate([
       'ids' => ['required', 'array'],
-      'ids.*' => ['integer', 'exists:uraian_8keldata,id']
+      'ids.*' => ['integer', sprintf('exists:%s,id', (new Uraian8KelData())->getTable())]
     ]);
 
     Uraian8KelData::whereIn('id', $request->ids)->delete();
