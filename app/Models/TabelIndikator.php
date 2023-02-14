@@ -31,7 +31,7 @@ class TabelIndikator extends Model
 
   public function fiturIndikator()
   {
-    return $this->hasMany(FiturIndikator::class, 'tabel_indikator_id');
+    return $this->hasOne(FiturIndikator::class, 'tabel_indikator_id');
   }
 
   public function fileIndikator()

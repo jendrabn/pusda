@@ -164,7 +164,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');
@@ -187,7 +187,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');
@@ -209,7 +209,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');
@@ -229,7 +229,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');
@@ -254,7 +254,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');
@@ -274,7 +274,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::put('/{uraian}', 'update')->name('update');
       Route::delete('/{uraian}', 'destroy')->name('destroy');
       // fitur
-      Route::put('/fitur/{fitur}', 'updateFitur')->name('update_fitur');
+      Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
       // file pendukung
       Route::get('/files/{file}', 'downloadFile')->name('files.download');
       Route::post('/files/{tabel}', 'storeFile')->name('files.store');

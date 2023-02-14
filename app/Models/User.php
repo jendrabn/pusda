@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use App\Traits\Auditable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -59,5 +60,15 @@ class User extends Authenticatable
   public function password(): Attribute
   {
     return Attribute::set(fn ($value) => $value && Hash::needsRehash($value) ? Hash::make($value) : $value);
+  }
+
+  public function isAdministrator(): bool
+  {
+    return $this->attributes['role'] === self::ROLE_ADMIN;
+  }
+
+  public function isSkpd(): bool
+  {
+    return $this->attributes['role'] === self::ROLE_SKPD;
   }
 }

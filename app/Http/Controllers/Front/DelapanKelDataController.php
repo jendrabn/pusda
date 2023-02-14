@@ -36,7 +36,7 @@ class DelapanKelDataController extends Controller
   public function tabel(Tabel8KelData $tabel)
   {
     $uraians = $this->service->getAllUraianByTabelId($tabel);
-    $fitur = $tabel->fitur8KelData()->firstOrCreate([]);
+    $fitur = $tabel->fitur8KelData;
     $tahuns = $this->service->getAllTahun($tabel);
 
     return view('front.tabel', compact('tabel',  'uraians',  'fitur',  'tahuns'));

@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\RpjmdTrait;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
 use App\Models\TabelRpjmd;
 use App\Services\RpjmdService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class RpjmdController extends Controller
 {
+
+  use RpjmdTrait;
+
   private RpjmdService $service;
 
   public function __construct(RpjmdService $service)
@@ -36,12 +39,12 @@ class RpjmdController extends Controller
       ->groupBy('tabel_id')
       ->get();
 
-    return view('admin.isiUraian.index', compact('categories', 'skpd', 'tabelIds'));
+    return view('admin.isi-uraian.index', compact('categories', 'skpd', 'tabelIds'));
   }
 
   public function category(KategoriSkpd $category)
   {
-    return view('admin.isiUraian.category', compact('category'));
+    return view('admin.isi-uraian.category', compact('category'));
   }
 
   public function input(Request $request,  TabelRpjmd $tabel)
@@ -58,10 +61,10 @@ class RpjmdController extends Controller
       ->groupBy('tabel_id')
       ->get();
 
-    $fitur = $tabel->fiturRpjmd()->firstOrcreate([]);
+    $fitur = $tabel->fiturRpjmd;
     $files = $tabel->fileRpjmd;
 
-    return view('admin.isiuraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
+    return view('admin.isi-uraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
   }
 
   public function storeTahun(Request $request, TabelRpjmd $tabel)
@@ -71,19 +74,14 @@ class RpjmdController extends Controller
     ]);
 
     DB::beginTransaction();
-
     try {
       $tabel->uraianRpjmd()->with('isiRpjmd')->get()
         ->each(function ($uraian) use ($request) {
           if ($uraian->parent_id) {
-            $isi  = $uraian->isiRpjmd->where('tahun', $request->tahun)->first();
-
-            if (is_null($isi)) {
-              $uraian->isiRpjmd()->create([
-                'tahun' => $request->tahun,
-                'isi' => 0
-              ]);
-            }
+            $uraian->isiRpjmd()->where('tahun', $request->tahun)->firstOrCreate([
+              'tahun' => $request->tahun,
+              'isi' => 0
+            ]);
           }
         });
 
@@ -91,16 +89,15 @@ class RpjmdController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyTahun(TabelRpjmd $tabel, int $tahun)
   {
     DB::beginTransaction();
-
     try {
       $tabel->uraianRpjmd->each(fn ($uraian) => $uraian->isiRpjmd()->where('tahun', $tahun)->delete());
 
@@ -108,9 +105,9 @@ class RpjmdController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 }

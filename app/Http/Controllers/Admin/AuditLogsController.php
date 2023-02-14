@@ -13,7 +13,7 @@ class AuditLogsController extends Controller
   {
 
     if ($request->ajax()) {
-      $model = AuditLog::query()->select(sprintf('%s.*', (new AuditLog())->table));
+      $model = AuditLog::query()->select(sprintf('%s.*', (new AuditLog())->getTable()));
       $table = Datatables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -28,36 +28,23 @@ class AuditLogsController extends Controller
         ));
       });
 
-      $table->editColumn('id', function ($row) {
-        return $row->id ? $row->id : '';
-      });
-      $table->editColumn('description', function ($row) {
-        return $row->description ? $row->description : '';
-      });
-      $table->editColumn('subject_id', function ($row) {
-        return $row->subject_id ? $row->subject_id : '';
-      });
-      $table->editColumn('subject_type', function ($row) {
-        return $row->subject_type ? $row->subject_type : '';
-      });
-      $table->editColumn('user_id', function ($row) {
-        return $row->user_id ? $row->user_id : '';
-      });
-      $table->editColumn('host', function ($row) {
-        return $row->host ? $row->host : '';
-      });
+      $table->editColumn('id', fn ($row) => $row->id ? $row->id : '');
+      $table->editColumn('description', fn ($row) => $row->description ? $row->description : '');
+      $table->editColumn('subject_id', fn ($row) => $row->subject_id ? $row->subject_id : '');
+      $table->editColumn('subject_type', fn ($row) => $row->subject_type ? $row->subject_type : '');
+      $table->editColumn('user_id', fn ($row) => $row->user_id ? $row->user_id : '');
+      $table->editColumn('host', fn ($row) => $row->host ? $row->host : '');
 
       $table->rawColumns(['actions', 'placeholder']);
 
       return $table->toJson();
     }
 
-    return view('admin.auditLogs.index');
+    return view('admin.audit-logs.index');
   }
 
   public function show(AuditLog $auditLog)
   {
-
-    return view('admin.auditLogs.show', compact('auditLog'));
+    return view('admin.audit-logs.show', compact('auditLog'));
   }
 }

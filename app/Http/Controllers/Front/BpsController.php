@@ -33,7 +33,7 @@ class BpsController extends Controller
   public function tabel(TabelBps $tabel)
   {
     $uraians = $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
-    $fitur = $tabel->fiturBps()->firstOrCreate([]);
+    $fitur = $tabel->fiturBps;
     $tahuns =  $this->service->getAllTahun($tabel);
 
     return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));

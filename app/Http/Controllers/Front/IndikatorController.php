@@ -33,7 +33,7 @@ class IndikatorController extends Controller
   public function tabel(TabelIndikator $tabel)
   {
     $uraians = $tabel->uraianIndikator()->with('childs.isiIndikator')->whereNull('parent_id')->get();
-    $fitur = $tabel->fiturIndikator()->firstOrCreate([]);
+    $fitur = $tabel->fiturIndikator;
     $tahuns = $this->service->getAllTahun($tabel);
 
     return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));

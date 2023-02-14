@@ -53,7 +53,7 @@ class UraianRpjmd extends Model
     return $this->hasMany(IsiRpjmd::class, 'uraian_rpjmd_id');
   }
 
-  public function StrKetersediaanData(): Attribute
+  public function LabelKetersediaanData(): Attribute
   {
     return Attribute::get(fn () => match ($this->attributes['ketersediaan_data']) {
       1 => 'Tersedia',

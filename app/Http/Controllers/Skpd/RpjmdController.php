@@ -13,11 +13,11 @@ class RpjmdController extends Controller
 {
   use RpjmdTrait;
 
-  private RpjmdService $service;
+  private RpjmdService $rpjmdService;
 
-  public function __construct(RpjmdService $service)
+  public function __construct(RpjmdService $rpjmdService)
   {
-    $this->service = $service;
+    $this->rpjmdService = $rpjmdService;
 
     View::share([
       'crudRoutePart' => 'rpjmd',
@@ -28,13 +28,13 @@ class RpjmdController extends Controller
   public function index()
   {
     $skpd = auth()->user()->skpd;
-    $categories = $this->service->getCategories();
+    $categories = $this->rpjmdService->getCategories();
     $tabelIds = $skpd->uraianRpjmd()
       ->select('tabel_rpjmd_id as tabel_id')
       ->groupBy('tabel_id')
       ->get();
 
-    return view('admin.isiUraian.index', compact('skpd', 'tabelIds', 'categories'));
+    return view('skpd.isi-uraian.index', compact('skpd', 'tabelIds', 'categories'));
   }
 
   public function input(TabelRpjmd $tabel)
@@ -45,11 +45,11 @@ class RpjmdController extends Controller
       ->select('tabel_rpjmd_id as tabel_id')
       ->groupBy('tabel_id')
       ->get();
-    $categories = $this->service->getCategories();
-    $uraians = $this->service->getAllUraianByTabelId($tabel);
-    $fitur = $tabel->fiturRpjmd()->firstOrCreate([]);
+    $categories = $this->rpjmdService->getCategories();
+    $uraians = $this->rpjmdService->getAllUraianByTabelId($tabel);
+    $fitur = $tabel->fiturRpjmd;
     $files = $tabel->fileRpjmd;
-    $tahuns = $this->service->getAllTahun($tabel);
+    $tahuns = $this->rpjmdService->getAllTahun($tabel);
 
     return view('admin.isiUraian.input', compact('tabel', 'skpd', 'skpds',  'categories', 'uraians',  'fitur', 'files', 'tahuns'));
   }

@@ -27,7 +27,7 @@
           <th>{{ $uraian->uraian }}</th>
           <th>{{ $uraian->satuan }}</th>
           @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
-            <th>{{ $uraian->str_ketersediaan_data }}</th>
+            <th>{{ $uraian->label_ketersediaan_data }}</th>
             @endif @foreach ($tahuns as $tahun)
               @if ($crudRoutePart === 'delapankeldata')
                 <th>{{ $uraian->isi8KelData->where('tahun', $tahun)->first()->isi }}</th>
@@ -53,7 +53,7 @@
       <td colspan="{{ $fullcolspan }}">Deskripsi:</td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">{{ $fitur->deskripsi ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur?->deskripsi }}</td>
     </tr>
     {{-- Border --}}
 
@@ -65,7 +65,7 @@
       <td colspan="{{ $fullcolspan }}">Analisis:</td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">{{ $fitur->analisis ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur?->analisis }}</td>
     </tr>
     {{-- Border --}}
 
@@ -77,7 +77,7 @@
       <td colspan="{{ $fullcolspan }}">Permasalahan:</td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">{{ $fitur->permasalahan ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur?->permasalahan }}</td>
     </tr>
     {{-- Border --}}
 
@@ -91,7 +91,7 @@
       </td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">{{ $fitur->solusi ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur?->solusi }}</td>
     </tr>
     {{-- Border --}}
 
@@ -105,7 +105,7 @@
       </td>
     </tr>
     <tr>
-      <td colspan="{{ $fullcolspan }}">{{ $fitur->saran ?? '-' }}</td>
+      <td colspan="{{ $fullcolspan }}">{{ $fitur?->saran }}</td>
     </tr>
     {{-- Border --}}
   </tbody>

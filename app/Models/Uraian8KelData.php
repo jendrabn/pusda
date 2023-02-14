@@ -52,12 +52,12 @@ class Uraian8KelData extends Model
     return $this->hasMany(Isi8KelData::class, 'uraian_8keldata_id');
   }
 
-  public function StrKetersediaanData(): Attribute
+  public function LabelKetersediaanData(): Attribute
   {
     return Attribute::get(fn () => match ($this->attributes['ketersediaan_data']) {
       1 => 'Tersedia',
       0 => 'Tidak Tersedia',
-      default => null
+      default => ''
     });
   }
 }

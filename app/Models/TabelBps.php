@@ -31,7 +31,7 @@ class TabelBps extends Model
 
   public function fiturBps()
   {
-    return $this->hasMany(FiturBps::class, 'tabel_Bps_id');
+    return $this->hasOne(FiturBps::class, 'tabel_Bps_id');
   }
 
   public function fileBps()

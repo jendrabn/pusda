@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FileBps;
-use App\Models\FiturBps;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
 use App\Services\BpsService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +31,7 @@ class BpsController extends Controller
   {
     $categories = $this->service->getCategories();
 
-    return view('admin.isiUraian.index', compact('categories'));
+    return view('admin.isi-uraian.index', compact('categories'));
   }
 
   public function input(TabelBps $tabel)
@@ -41,10 +39,10 @@ class BpsController extends Controller
     $tahuns = $this->service->getAllTahun($tabel);
     $uraians = $this->service->getAllUraianByTabelId($tabel);
     $categories = $this->service->getCategories();
-    $fitur = $tabel->fiturBps()->firstOrCreate([]);
+    $fitur = $tabel->fiturBps;
     $files = $tabel->fileBps;
 
-    return view('admin.isiuraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isi-uraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 
   public function edit(Request $request, UraianBps $uraian)
@@ -53,7 +51,7 @@ class BpsController extends Controller
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_bps_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, UraianBps $uraian)
@@ -73,7 +71,6 @@ class BpsController extends Controller
     $this->validate($request, $rules);
 
     DB::beginTransaction();
-
     try {
       $uraian->update($request->all());
 
@@ -85,20 +82,21 @@ class BpsController extends Controller
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-      throw new Exception($e->getMessage());
+
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Updated.');
+    return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianBps $uraian)
   {
     $uraian->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, FiturBps $fitur)
+  public function updateFitur(Request $request, TabelBps $tabel)
   {
     $request->validate([
       'deskripsi' => ['nullable', 'string', 'max:255'],
@@ -108,7 +106,7 @@ class BpsController extends Controller
       'saran'  => ['nullable', 'string', 'max:255']
     ]);
 
-    $fitur->update($request->all());
+    $tabel->fiturBps()->updateOrCreate([], $request->all());
 
     return back()->with('success-message', 'Updated.');
   }
@@ -136,7 +134,7 @@ class BpsController extends Controller
 
     $file->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function downloadFile(FileBps $file)
@@ -151,45 +149,41 @@ class BpsController extends Controller
     ]);
 
     DB::beginTransaction();
-
     try {
       $tabel->uraianBps()->with('isiBps')->get()
         ->each(function ($uraian) use ($request) {
           if ($uraian->parent_id) {
-            $isi  = $uraian->isiBps->where('tahun', $request->tahun)->first();
-
-            if (is_null($isi)) {
-              $uraian->isiBps()->create([
-                'tahun' => $request->tahun,
-                'isi' => 0
-              ]);
-            }
+            $uraian->isiBps()->where('tahun', $request->tahun)->firstOrCreate([
+              'tahun' => $request->tahun,
+              'isi' => 0
+            ]);
           }
         });
 
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-      throw new Exception($e->getMessage());
+
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyTahun(TabelBps $tabel, int $tahun)
   {
     DB::beginTransaction();
-
     try {
-      $tabel->uraian8KelData->each(fn ($uraian) => $uraian->isi8KelData()->where('tahun', $tahun)->delete());
+      $tabel->uraianBps->each(fn ($uraian) => $uraian->isiBps()->where('tahun', $tahun)->delete());
 
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-      throw new Exception($e->getMessage());
+
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function chart(UraianBps $uraian)

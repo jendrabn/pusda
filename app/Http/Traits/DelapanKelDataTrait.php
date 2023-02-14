@@ -6,6 +6,7 @@ use App\Models\File8KelData;
 use App\Models\Fitur8KelData;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
+use App\Models\User;
 use App\Services\DelapanKelDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,15 @@ trait DelapanKelDataTrait
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_8keldata_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    $viewPath = match (request()->user()->role) {
+      User::ROLE_ADMIN => 'admin.isi-uraian.edit',
+      User::ROLE_SKPD => 'skpd.isi-uraian.edit',
+      default => null
+    };
+
+    abort_if(!$viewPath, Response::HTTP_NOT_FOUND);
+
+    return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, Uraian8KelData $uraian)
@@ -48,7 +57,6 @@ trait DelapanKelDataTrait
     $this->validate($request, $rules);
 
     DB::beginTransaction();
-
     try {
       $uraian->update($request->all());
 
@@ -61,21 +69,22 @@ trait DelapanKelDataTrait
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Updated.');
+    return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(Uraian8KelData $uraian)
   {
     $uraian->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, Fitur8KelData $fitur)
+  public function updateFitur(Request $request, Tabel8KelData $tabel)
   {
+
     $request->validate([
       'deskripsi' => ['nullable', 'string', 'max:255'],
       'analisis'  => ['nullable', 'string', 'max:255'],
@@ -84,9 +93,9 @@ trait DelapanKelDataTrait
       'saran'  => ['nullable', 'string', 'max:255']
     ]);
 
-    $fitur->update($request->all());
+    $tabel->fitur8KelData()->updateOrCreate([], $request->all());
 
-    return back()->with('success-message', 'Updated');
+    return back()->with('success-message', 'Successfully Updated');
   }
 
   public function storeFile(Request $request, Tabel8KelData $tabel)
@@ -102,7 +111,7 @@ trait DelapanKelDataTrait
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyFile(File8KelData $file)
@@ -111,7 +120,7 @@ trait DelapanKelDataTrait
 
     $file->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function downloadFile(File8KelData $file)
@@ -126,7 +135,7 @@ trait DelapanKelDataTrait
     $uraian->skpd_id = $request->skpd_id;
     $uraian->save();
 
-    return response()->json([], Response::HTTP_NO_CONTENT);
+    return response()->json(status: Response::HTTP_NO_CONTENT);
   }
 
   public function chart(Uraian8KelData $uraian)

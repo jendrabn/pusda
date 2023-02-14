@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FileIndikator;
-use App\Models\FiturIndikator;
 use App\Models\TabelIndikator;
 use App\Models\UraianIndikator;
 use App\Services\IndikatorService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,7 +20,6 @@ class IndikatorController extends Controller
 
   public function __construct(IndikatorService $service)
   {
-
     $this->service = $service;
 
     View::share([
@@ -35,7 +32,7 @@ class IndikatorController extends Controller
   {
     $categories = $this->service->getCategories();
 
-    return view('admin.isiUraian.index', compact('categories'));
+    return view('admin.isi-uraian.index', compact('categories'));
   }
 
   public function input(TabelIndikator $tabel)
@@ -43,10 +40,10 @@ class IndikatorController extends Controller
     $tahuns = $this->service->getAllTahun($tabel);
     $uraians = $this->service->getAllUraianByTabelId($tabel);
     $categories = $this->service->getCategories();
-    $fitur = $tabel->fiturIndikator()->firstOrCreate([]);
+    $fitur = $tabel->fiturIndikator;
     $files = $tabel->fileIndikator;
 
-    return view('admin.isiuraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isi-uraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 
   public function edit(Request $request, UraianIndikator $uraian)
@@ -55,7 +52,7 @@ class IndikatorController extends Controller
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_indikator_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, UraianIndikator $uraian)
@@ -88,32 +85,34 @@ class IndikatorController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Updated.');
+    return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianIndikator $uraian)
   {
     $uraian->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, FiturIndikator $fitur)
+  public function updateFitur(Request $request, TabelIndikator $tabel)
   {
-    $validated = $this->validate($request, [
-      'deskripsi' => ['nullable', 'string', 'max:255'],
-      'analisis'  => ['nullable', 'string', 'max:255'],
-      'permasalahan'  => ['nullable', 'string', 'max:255'],
-      'solusi'  => ['nullable', 'string', 'max:255'],
-      'saran'  => ['nullable', 'string', 'max:255']
+    $request->validate([
+      [
+        'deskripsi' => ['nullable', 'string', 'max:255'],
+        'analisis'  => ['nullable', 'string', 'max:255'],
+        'permasalahan'  => ['nullable', 'string', 'max:255'],
+        'solusi'  => ['nullable', 'string', 'max:255'],
+        'saran'  => ['nullable', 'string', 'max:255']
+      ]
     ]);
 
-    $fitur->update($validated);
+    $tabel->fiturIndikator()->updateOrCreate([], $request->all());
 
-    return back()->with('success-message', 'Updated.');
+    return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function storeFile(Request $request, TabelIndikator $tabel)
@@ -129,7 +128,7 @@ class IndikatorController extends Controller
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyFile(FileIndikator $file)
@@ -138,7 +137,7 @@ class IndikatorController extends Controller
 
     $file->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function downloadFile(FileIndikator $file)
@@ -153,19 +152,14 @@ class IndikatorController extends Controller
     ]);
 
     DB::beginTransaction();
-
     try {
       $tabel->uraianIndikator()->with('isiIndikator')->get()
         ->each(function ($uraian) use ($request) {
           if ($uraian->parent_id) {
-            $isi  = $uraian->isiIndikator->where('tahun', $request->tahun)->first();
-
-            if (is_null($isi)) {
-              $uraian->isiIndikator()->create([
-                'tahun' => $request->tahun,
-                'isi' => 0
-              ]);
-            }
+            $uraian->isiIndikator()->where('tahun', $request->tahun)->firstOrCreate([
+              'tahun' => $request->tahun,
+              'isi' => 0
+            ]);
           }
         });
 
@@ -173,27 +167,26 @@ class IndikatorController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyTahun(TabelIndikator $tabel, int $tahun)
   {
     DB::beginTransaction();
-
     try {
-      $tabel->uraian8KelData->each(fn ($uraian) => $uraian->isi8KelData()->where('tahun', $tahun)->delete());
+      $tabel->uraianIndikator->each(fn ($uraian) => $uraian->isiIndikator()->where('tahun', $tahun)->delete());
 
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function chart(UraianIndikator $uraian)

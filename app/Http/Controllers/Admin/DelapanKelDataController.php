@@ -8,7 +8,6 @@ use App\Models\Skpd;
 use App\Models\KategoriSkpd;
 use App\Models\Tabel8KelData;
 use App\Services\DelapanKelDataService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -39,12 +38,12 @@ class DelapanKelDataController extends Controller
       ->groupBy('tabel_id')
       ->get();
 
-    return view('admin.isiUraian.index', compact('categories', 'skpd', 'tabelIds'));
+    return view('admin.isi-uraian.index', compact('categories', 'skpd', 'tabelIds'));
   }
 
   public function category(KategoriSkpd $category)
   {
-    return view('admin.isiUraian.category', compact('category'));
+    return view('admin.isi-uraian.category', compact('category'));
   }
 
   public function input(Request $request,  Tabel8KelData $tabel)
@@ -59,12 +58,11 @@ class DelapanKelDataController extends Controller
       ->where('skpd_id', $request->skpd)
       ->groupBy('tabel_id')
       ->get();
-    $fitur = $tabel->fitur8KelData()->firstOrCreate([]);
+    $fitur = $tabel->fitur8KelData;
     $files = $tabel->file8KelData;
 
-    return view('admin.isiUraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
+    return view('admin.isi-uraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
   }
-
 
   public function storeTahun(Request $request, Tabel8KelData $tabel)
   {
@@ -73,35 +71,30 @@ class DelapanKelDataController extends Controller
     ]);
 
     DB::beginTransaction();
-
     try {
       $tabel->uraian8KelData()->with('isi8KelData')->get()
         ->each(function ($uraian) use ($request) {
           if ($uraian->parent_id) {
-            $isi  = $uraian->isi8KelData->where('tahun', $request->tahun)->first();
-
-            if (is_null($isi)) {
-              $uraian->isi8KelData()->create([
-                'tahun' => $request->tahun,
-                'isi' => 0
-              ]);
-            }
+            $uraian->isi8KelData()->where('tahun', $request->tahun)->firstOrCreate([
+              'tahun' => $request->tahun,
+              'isi' => 0
+            ]);
           }
         });
 
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
-      throw new Exception($e->getMessage());
+
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyTahun(Tabel8KelData $tabel, int $tahun)
   {
     DB::beginTransaction();
-
     try {
       $tabel->uraian8KelData->each(fn ($uraian) => $uraian->isi8KelData()->where('tahun', $tahun)->delete());
 
@@ -109,9 +102,9 @@ class DelapanKelDataController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
 
-      throw new Exception($e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 }

@@ -6,6 +6,7 @@ use App\Models\FileRpjmd;
 use App\Models\FiturRpjmd;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
+use App\Models\User;
 use App\Services\RpjmdService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,15 @@ trait RpjmdTrait
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_rpjmd_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    $viewPath = match (request()->user()->role) {
+      User::ROLE_ADMIN => 'admin.isi-uraian.edit',
+      User::ROLE_SKPD => 'skpd.isi-uraian.edit',
+      default => null
+    };
+
+    abort_if(!$viewPath, Response::HTTP_NOT_FOUND);
+
+    return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, UraianRpjmd $uraian)
@@ -49,7 +58,6 @@ trait RpjmdTrait
     $this->validate($request, $rules);
 
     DB::beginTransaction();
-
     try {
       $uraian->update($request->all());
 
@@ -62,20 +70,20 @@ trait RpjmdTrait
     } catch (\Exception $e) {
       DB::rollBack();
 
-      return back()->with('error-message', $e->getMessage());
+      throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Updated.');
+    return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianRpjmd $uraian)
   {
     $uraian->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, FiturRpjmd $fitur)
+  public function updateFitur(Request $request, TabelRpjmd $tabel)
   {
     $request->validate([
       'deskripsi' => ['nullable', 'string', 'max:255'],
@@ -85,9 +93,9 @@ trait RpjmdTrait
       'saran'  => ['nullable', 'string', 'max:255']
     ]);
 
-    $fitur->update($request->all());
+    $tabel->fiturRpjmd()->updateOrCreate([], $request->all());
 
-    return back()->with('success-message', 'Updated');
+    return back()->with('success-message', 'Successfully Updated');
   }
 
   public function storeFile(Request $request, TabelRpjmd $tabel)
@@ -103,7 +111,7 @@ trait RpjmdTrait
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
-    return back()->with('success-message', 'Saved.');
+    return back()->with('success-message', 'Successfully Saved.');
   }
 
   public function destroyFile(FileRpjmd $file)
@@ -112,7 +120,7 @@ trait RpjmdTrait
 
     $file->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    return back()->with('success-message', 'Successfully Deleted.');
   }
 
   public function downloadFile(FileRpjmd $file)
@@ -127,7 +135,7 @@ trait RpjmdTrait
     $uraian->skpd_id = $request->skpd_id;
     $uraian->save();
 
-    return response()->json([], Response::HTTP_NO_CONTENT);
+    return response()->json(status: Response::HTTP_NO_CONTENT);
   }
 
   public function chart(UraianRpjmd $uraian)

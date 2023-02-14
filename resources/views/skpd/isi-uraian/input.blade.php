@@ -25,29 +25,43 @@
     <div class="card-body">
       <div class="tab-content" id="tabContent">
         <div class="tab-pane fade active show" id="tabel">
-          @include('admin.isiUraian.tabel')
+          @include('skpd.isi-uraian.tabel')
         </div>
         <div class="tab-pane fade" id="fitur">
-          @include('admin.isiUraian.fitur-form')
+          @include('skpd.isi-uraian.fitur-form')
         </div>
         <div class="tab-pane fade" id="file">
-          @include('admin.isiUraian.file-pendukung')
+          @include('skpd.isi-uraian.file-pendukung')
         </div>
       </div>
     </div>
   </div>
-  @include('admin.isiUraian.tahun-modal')
-  @include('admin.isiUraian.chart-modal')
+  @include('skpd.isi-uraian.chart-modal')
 @endsection
 
 @section('scripts')
   <script>
-    let table = $(".datatable-isiuraian").DataTable({
-      ordering: false,
+    let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
+
+    $.extend(true, $.fn.dataTable.defaults, {
+      orderCellsTop: true,
+      order: [
+        [1, 'desc']
+      ],
+      pageLength: 100,
+    });
+
+    let table = $('.datatable-isiuraian:not(.ajaxTable)').DataTable({
+      buttons: dtButtons,
+      ordering: false
+    })
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
+      $($.fn.dataTable.tables(true)).DataTable()
+        .columns.adjust();
     });
 
     $(".datatable-isiuraian").on("change", "select.sumber-data", function(e) {
-      console.log($(this).data('url'));
       $.ajax({
         headers: {
           'x-csrf-token': _token

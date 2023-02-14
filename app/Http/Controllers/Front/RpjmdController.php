@@ -33,7 +33,7 @@ class RpjmdController extends Controller
   public function tabel(TabelRpjmd $tabel)
   {
     $uraians = $tabel->uraianRpjmd()->with('childs.isiRpjmd')->whereNull('parent_id')->get();
-    $fitur = $tabel->fiturRpjmd()->firstOrcreate([]);
+    $fitur = $tabel->fiturRpjmd;
     $tahuns = $this->service->getAllTahun($tabel);
 
     return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));

@@ -34,7 +34,7 @@ class DelapanKelDataController extends Controller
       ->groupBy('tabel_id')
       ->get();
 
-    return view('admin.isiUraian.index', compact('skpd', 'tabelIds', 'categories'));
+    return view('skpd.isi-uraian.index', compact('skpd', 'tabelIds', 'categories'));
   }
 
   public function input(Tabel8KelData $tabel)
@@ -49,9 +49,9 @@ class DelapanKelDataController extends Controller
 
     $uraians = $this->service->getAllUraianByTabelId($tabel);
     $tahuns = $this->service->getAllTahun($tabel);
-    $fitur = $tabel->fitur8KelData()->firstOrCreate([]);
+    $fitur = $tabel->fitur8KelData;
     $files = $tabel->file8KelData;
 
-    return view('admin.isiUraian.input', compact('tabel', 'skpd', 'skpds',  'categories', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('skpd.isi-uraian.input', compact('tabel', 'skpd', 'skpds',  'categories', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 }

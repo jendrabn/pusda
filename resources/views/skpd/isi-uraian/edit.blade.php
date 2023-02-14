@@ -7,15 +7,13 @@
         <div class="card-header">Edit {{ $title }}</div>
         <div class="card-body">
           <div class="form-group">
-            <a class="btn btn-default"
-              href="@admin{{ route('admin.' . $crudRoutePart . '.input', $tabelId) }}@endadmin @skpd{{ route('admin_skpd.' . $crudRoutePart . '.input', $tabelId) }}@endskpd">
-              Back to list
+            <a class="btn btn-default" href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $tabelId) }}">
+              <i class="fas fa-backward"></i> Back to list
             </a>
           </div>
 
           <form
-            action="@admin{{ route('admin.' . $crudRoutePart . '.update', $uraian->id) }}@endadmin @skpd{{ route('admin_skpd.' . $crudRoutePart . '.update', $uraian->id) }}@endskpd"
-            method="POST">
+            action="{{ route('admin_skpd.' . $crudRoutePart . '.update', $uraian->id) }}" method="POST">
             @csrf
             @method('PUT')
             {{-- <input type="hidden" name="uraian_id" value="{{ $uraian->id }}">

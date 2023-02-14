@@ -36,7 +36,7 @@ class Tabel8KelData extends Model
 
   public function fitur8KelData()
   {
-    return $this->hasMany(Fitur8KelData::class, 'tabel_8keldata_id');
+    return $this->hasOne(Fitur8KelData::class, 'tabel_8keldata_id');
   }
 
   public function file8KelData()
