@@ -5,24 +5,33 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta http-equiv="X-UA-Compatible"
+    content="ie=edge">
+  <meta name="csrf-token"
+    content="{{ csrf_token() }}">
 
   <title>{{ $title }} | {{ config('app.name') }}</title>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
     rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet" />
-  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    rel="stylesheet" />
+  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+    rel="stylesheet">
   <link type="text/css"
     href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-colvis-2.3.3/b-html5-2.3.3/b-print-2.3.3/sl-1.5.0/datatables.min.css"
     rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+    rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css"
     rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css" rel="stylesheet">
-  <link href="{{ asset('plugins/jstree/themes/default/style.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet" />
-  <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css"
+    rel="stylesheet">
+  <link href="{{ asset('plugins/jstree/themes/default/style.css') }}"
+    rel="stylesheet">
+  <link href="{{ asset('css/adminlte.min.css') }}"
+    rel="stylesheet" />
+  <link href="{{ asset('css/custom.css') }}"
+    rel="stylesheet">
   @yield('styles')
   @stack('styles')
 </head>
@@ -34,7 +43,10 @@
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+          <a class="nav-link"
+            data-widget="pushmenu"
+            href="#"
+            role="button"><i class="fas fa-bars"></i></a>
         </li>
       </ul>
 
@@ -48,10 +60,12 @@
     <x-sidebar />
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper" style="min-height:  917px">
+    <div class="content-wrapper"
+      style="min-height:  917px">
 
       <!-- Main content -->
-      <div class="content" style="padding-top: 20px">
+      <div class="content"
+        style="padding-top: 20px">
         <x-alerts />
         @yield('content')
         <!-- /.container-fluid -->
