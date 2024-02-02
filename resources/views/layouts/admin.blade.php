@@ -28,8 +28,10 @@
     rel="stylesheet">
   <link href="{{ asset('plugins/jstree/themes/default/style.css') }}"
     rel="stylesheet">
-  <link href="{{ asset('css/adminlte.min.css') }}"
-    rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
+    rel="stylesheet">
+
   <link href="{{ asset('css/custom.css') }}"
     rel="stylesheet">
   @yield('styles')
@@ -57,7 +59,36 @@
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <x-sidebar />
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a class="brand-link"
+        href="javascript:;">
+        <img class="brand-text img-fluid"
+          src="{{ asset('img/logo.png') }}"
+          alt="Logo" />
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel d-flex mt-3 mb-3 pb-3">
+          <div class="image">
+            <img class="img-circle elevation-2"
+              src="{{ auth()->user()->photo }}"
+              alt="User Image" />
+          </div>
+          <div class="info">
+            <a class="d-block"
+              href="{{ route('profile') }}">{{ Str::limit(Str::words(auth()->user()->name, 2, ''), 15, '.') }}</a>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        @include('partials.menu')
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"
@@ -66,7 +97,32 @@
       <!-- Main content -->
       <div class="content"
         style="padding-top: 20px">
-        <x-alerts />
+
+        @if (session('success-message'))
+          <div class="alert alert-success">
+            <h5><i class="icon fas fa-check"></i> Success</h5>
+            {{ session('success-message') }}
+          </div>
+        @endif
+
+        @if (session('error-message'))
+          <div class="alert alert-danger">
+            <h5><i class="icon fas fa-ban"></i> Error!</h5>
+            {{ session('error-message') }}
+          </div>
+        @endif
+
+        {{-- @if ($errors->any())
+        <div class="alert alert-danger">
+          <h5><i class="icon fas fa-ban"></i> Error!</h5>
+          <ul>
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif --}}
+
         @yield('content')
         <!-- /.container-fluid -->
       </div>
@@ -75,7 +131,15 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <x-footer />
+    <footer class="main-footer">
+      <!-- To the right -->
+      <div class="d-none d-sm-inline float-right">Version 2</div>
+      <!-- Default to the left -->
+      <strong>Copyright &copy; 2017-{{ date('Y') }}
+        <a href="#">Pusat Data Kab. Situbondo</a>. </strong>
+      All rights reserved.
+    </footer>
+
   </div>
   <!-- ./wrapper -->
 
@@ -322,7 +386,8 @@
     });
   </script>
 
-  <script src="{{ asset('js/adminlte.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
   @yield('scripts')
   @stack('scripts')
 </body>
