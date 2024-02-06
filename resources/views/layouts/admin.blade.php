@@ -10,53 +10,49 @@
   <meta name="csrf-token"
     content="{{ csrf_token() }}">
 
-  <title>{{ $title }} | {{ config('app.name') }}</title>
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
-    rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-    rel="stylesheet" />
-  <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
-    rel="stylesheet">
-  <link type="text/css"
-    href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-colvis-2.3.3/b-html5-2.3.3/b-print-2.3.3/sl-1.5.0/datatables.min.css"
-    rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
-    rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.css"
-    rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css"
-    rel="stylesheet">
-  <link href="{{ asset('plugins/jstree/themes/default/style.css') }}"
-    rel="stylesheet">
+  <title>{{ config('app.name') }}</title>
 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css"
+    rel="stylesheet" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
     rel="stylesheet">
-
-  <link href="{{ asset('css/custom.css') }}"
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
+    rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+    rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+    rel="stylesheet" />
+  <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css"
+    rel="stylesheet" />
+  <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css"
+    rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css"
+    rel="stylesheet" />
+  <link href="{{ asset('plugins/jstree/themes/default/style.css') }}"
     rel="stylesheet">
+  <link href="{{ asset('css/custom.css') }}"
+    rel="stylesheet" />
   @yield('styles')
-  @stack('styles')
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="sidebar-mini layout-fixed"
+  style="height: auto;">
   <div class="wrapper">
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link"
             data-widget="pushmenu"
-            href="#"
-            role="button"><i class="fas fa-bars"></i></a>
+            href="#"><i class="fa fa-bars"></i></a>
         </li>
       </ul>
-
-      <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-      </ul>
     </nav>
-    <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -90,215 +86,88 @@
       <!-- /.sidebar -->
     </aside>
 
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"
-      style="min-height:  917px">
-
+      style="min-height: 917px;">
       <!-- Main content -->
-      <div class="content"
+      <section class="content"
         style="padding-top: 20px">
-
-        @if (session('success-message'))
-          <div class="alert alert-success">
-            <h5><i class="icon fas fa-check"></i> Success</h5>
-            {{ session('success-message') }}
+        @if (session('message'))
+          <div class="row mb-2">
+            <div class="col-lg-12">
+              <div class="alert alert-success"
+                role="alert">{{ session('message') }}</div>
+            </div>
           </div>
         @endif
-
-        @if (session('error-message'))
+        @if ($errors->count() > 0)
           <div class="alert alert-danger">
-            <h5><i class="icon fas fa-ban"></i> Error!</h5>
-            {{ session('error-message') }}
+            <ul class="list-unstyled">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
           </div>
         @endif
-
-        {{-- @if ($errors->any())
-        <div class="alert alert-danger">
-          <h5><i class="icon fas fa-ban"></i> Error!</h5>
-          <ul>
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif --}}
-
         @yield('content')
-        <!-- /.container-fluid -->
-      </div>
+      </section>
       <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
 
-    <!-- Main Footer -->
     <footer class="main-footer">
-      <!-- To the right -->
-      <div class="d-none d-sm-inline float-right">Version 2</div>
-      <!-- Default to the left -->
-      <strong>Copyright &copy; 2017-{{ date('Y') }}
-        <a href="#">Pusat Data Kab. Situbondo</a>. </strong>
-      All rights reserved.
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 3.0.0-alpha
+      </div>
+      <strong> &copy;</strong> {{ trans('global.allRightsReserved') }}
     </footer>
-
+    <form id="logoutform"
+      style="display: none;"
+      action="{{ route('logout') }}"
+      method="POST">
+      {{ csrf_field() }}
+    </form>
   </div>
-  <!-- ./wrapper -->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"></script>
-  <script src="	https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-
-  <!-- Datatable -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+  <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+  <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
   <script
-    src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.13.1/b-2.3.3/b-colvis-2.3.3/b-html5-2.3.3/b-print-2.3.3/sl-1.5.0/datatables.min.js">
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
   </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <script src="{{ asset('plugins/jstree/jstree.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-
+  <script src="	https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+  <script src="{{ asset('plugins/jstree/jstree.min.js') }}"></script>
+  <script src="{{ asset('js/main.js') }}"></script>
   <script>
     $(function() {
-      bsCustomFileInput.init();
-
-      window._token = $('meta[name="csrf-token"]').attr("content");
-
-      $.ajaxSetup({
-        headers: {
-          'x-csrf-token': _token
-        }
-      });
-
-      $(".jstree").jstree({
-        core: {
-          themes: {
-            responsive: false,
-          },
-        },
-        types: {
-          default: {
-            icon: "fa fa-folder text-warning",
-          },
-          file: {
-            icon: "fa fa-file text-warning",
-          },
-        },
-        plugins: ["types"],
-      });
-
-      $(".jstree").on("select_node.jstree", function(e, data) {
-        var link = $("#" + data.selected).find("a");
-        if (
-          link.attr("href") != "#" &&
-          link.attr("href") != "javascript:;" &&
-          link.attr("href") != ""
-        ) {
-          if (link.attr("target") == "_blank") {
-            link.attr("href").target = "_blank";
-          }
-          document.location.href = link.attr("href");
-          return false;
-        }
-      });
-
-      moment.updateLocale("en", {
-        week: {
-          dow: 1
-        }, // Monday is the first day of the week
-      });
-
-      $(".date").datetimepicker({
-        format: "DD-MM-YYYY",
-        locale: "en",
-        icons: {
-          up: "fas fa-chevron-up",
-          down: "fas fa-chevron-down",
-          previous: "fas fa-chevron-left",
-          next: "fas fa-chevron-right",
-        },
-      });
-
-      $(".datetime").datetimepicker({
-        format: "DD-MM-YYYY HH:mm:ss",
-        locale: "en",
-        sideBySide: true,
-        icons: {
-          up: "fas fa-chevron-up",
-          down: "fas fa-chevron-down",
-          previous: "fas fa-chevron-left",
-          next: "fas fa-chevron-right",
-        },
-      });
-
-      $(".timepicker").datetimepicker({
-        format: "HH:mm:ss",
-        icons: {
-          up: "fas fa-chevron-up",
-          down: "fas fa-chevron-down",
-          previous: "fas fa-chevron-left",
-          next: "fas fa-chevron-right",
-        },
-      });
-
-      $(".select-all").click(function() {
-        let $select2 = $(this).parent().siblings(".select2");
-        $select2.find("option").prop("selected", "selected");
-        $select2.trigger("change");
-      });
-
-      $(".deselect-all").click(function() {
-        let $select2 = $(this).parent().siblings(".select2");
-        $select2.find("option").prop("selected", "");
-        $select2.trigger("change");
-      });
-
-      $(".select2").select2();
-
-      $(".treeview").each(function() {
-        var shouldExpand = false;
-        $(this)
-          .find("li")
-          .each(function() {
-            if ($(this).hasClass("active")) {
-              shouldExpand = true;
-            }
-          });
-        if (shouldExpand) {
-          $(this).addClass("active");
-        }
-      });
-
-      $('a[data-widget^="pushmenu"]').click(function() {
-        setTimeout(function() {
-          $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-        }, 300);
-      });
-
       $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
         className: 'btn'
       })
-
       $.extend(true, $.fn.dataTable.defaults, {
         language: {
-          url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/id.json'
+          url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json'
         },
         columnDefs: [{
-            orderable: false,
-            className: 'select-checkbox',
-            targets: 0
-          },
-          {
-            orderable: false,
-            searchable: false,
-            targets: 1
-          }
-        ],
+          orderable: false,
+          className: 'select-checkbox',
+          targets: 0
+        }, {
+          orderable: false,
+          searchable: false,
+          targets: -1
+        }],
         select: {
           style: 'multi+shift',
           selector: 'td:first-child'
@@ -382,14 +251,10 @@
       });
 
       $.fn.dataTable.ext.classes.sPageButton = '';
-
     });
   </script>
-
   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-
   @yield('scripts')
-  @stack('scripts')
 </body>
 
 </html>
