@@ -32,7 +32,7 @@ class IndikatorController extends Controller
   {
     $categories = $this->service->getCategories();
 
-    return view('admin.isi-uraian.index', compact('categories'));
+    return view('admin.isiUraian.index', compact('categories'));
   }
 
   public function input(TabelIndikator $tabel)
@@ -43,7 +43,7 @@ class IndikatorController extends Controller
     $fitur = $tabel->fiturIndikator;
     $files = $tabel->fileIndikator;
 
-    return view('admin.isi-uraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isiUraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 
   public function edit(Request $request, UraianIndikator $uraian)
@@ -52,7 +52,7 @@ class IndikatorController extends Controller
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_indikator_id;
 
-    return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, UraianIndikator $uraian)
@@ -88,12 +88,16 @@ class IndikatorController extends Controller
       throw new \Exception($e->getMessage());
     }
 
+    toastr()->addSuccess('');
+
     return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianIndikator $uraian)
   {
     $uraian->delete();
+
+    toastr()->addSuccess('');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
@@ -112,6 +116,8 @@ class IndikatorController extends Controller
 
     $tabel->fiturIndikator()->updateOrCreate([], $request->all());
 
+    toastr()->addSuccess('');
+
     return back()->with('success-message', 'Successfully Updated.');
   }
 
@@ -128,6 +134,8 @@ class IndikatorController extends Controller
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
+    toastr()->addSuccess('');
+
     return back()->with('success-message', 'Successfully Saved.');
   }
 
@@ -136,6 +144,8 @@ class IndikatorController extends Controller
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
+
+    toastr()->addSuccess('');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
@@ -170,6 +180,8 @@ class IndikatorController extends Controller
       throw new \Exception($e->getMessage());
     }
 
+    toastr()->addSuccess('');
+
     return back()->with('success-message', 'Successfully Saved.');
   }
 
@@ -185,6 +197,7 @@ class IndikatorController extends Controller
 
       throw new \Exception($e->getMessage());
     }
+    toastr()->addSuccess('');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }

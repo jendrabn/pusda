@@ -8,13 +8,16 @@
           <h3 class="card-title">Tambah {{ $title }}</h3>
         </div>
         <div class="card-body">
-          <form
-            action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}" method="POST">
+          <form action="{{ route('admin.treeview.' . $crudRoutePart . '.store') }}"
+            method="POST">
             @csrf
+
             <div class="form-group">
-              <label class="required" for="parent_id">Kategori</label>
-              <select
-                class="form-control select2 @error('parent_id') is-invalid @enderror" id="category" name="parent_id">
+              <label class="required"
+                for="parent_id">Kategori</label>
+              <select class="form-control select2 @error('parent_id') is-invalid @enderror"
+                id="category"
+                name="parent_id">
                 @foreach ($categories as $item)
                   <option value="{{ $item->id }}">{{ $item->nama_menu }}</option>
                 @endforeach
@@ -23,18 +26,23 @@
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
-              <label class="required" for="nama_menu">Nama Menu</label>
-              <input
-                class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" type="text"
+              <label class="required"
+                for="nama_menu">Nama Menu</label>
+              <input class="form-control @error('nama_menu') is-invalid @enderror"
+                name="nama_menu"
+                type="text"
                 value="{{ old('nama_menu') }}" />
               @error('nama_menu')
                 <span class="error invalid-feedback">{{ $message }}</span>
               @enderror
             </div>
+
             <div class="form-group">
-              <button class="btn btn-primary" type="submit">
-                <i class="fas fa-save"></i> Simpan
+              <button class="btn btn-primary btn-flat"
+                type="submit">
+                <i class="fas fa-save mr-1"></i> Simpan
               </button>
             </div>
           </form>
@@ -97,15 +105,14 @@
       <h3 class="card-title">Daftar {{ $title }}</h3>
     </div>
     <div class="card-body">
-      <table
-        class="table-bordered table-striped table-hover datatable datatable-MenuTreeview table">
+      <table class="table-bordered table-striped table-hover datatable datatable-MenuTreeview table table-sm">
         <thead>
           <tr>
             <th width="10"></th>
-            <th>&nbsp;</th>
             <th>ID</th>
             <th>Nama Menu</th>
             <th>Parent</th>
+            <th style="min-width: 65px;">&nbsp;</th>
           </tr>
         </thead>
       </table>
@@ -117,13 +124,13 @@
   <script>
     $(function() {
       let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
-      let deleteButtonText = "Delete selected";
+
       let deleteButton = {
-        text: deleteButtonText,
+        text: 'Delete selected',
         url: "{{ route('admin.treeview.' . $crudRoutePart . '.massDestroy') }}",
         className: "btn-danger",
         action: function(e, dt, node, config) {
-          var ids = $.map(
+          const ids = $.map(
             dt
             .rows({
               selected: true,
@@ -156,6 +163,7 @@
           }
         },
       };
+
       dtButtons.push(deleteButton);
 
       let dtOverrideGlobals = {
@@ -170,10 +178,6 @@
             name: "placeholder",
           },
           {
-            data: "actions",
-            name: "actions",
-          },
-          {
             data: "id",
             name: "id",
           },
@@ -184,20 +188,25 @@
           {
             data: "parent",
             name: "parent.nama_menu",
+            orderable: false
+          },
+          {
+            data: "actions",
+            name: "actions",
           },
         ],
         orderCellsTop: true,
         order: [
-          [1, "desc"]
+          [1, "asc"]
         ],
-        pageLength: 100,
+        pageLength: 50,
       };
 
       let table = $(".datatable-MenuTreeview").DataTable(dtOverrideGlobals);
+
       $('a[data-toggle="tab"]').on("shown.bs.tab click", function(e) {
         $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
       });
-
     });
   </script>
 @endsection

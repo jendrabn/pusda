@@ -31,7 +31,7 @@ class BpsController extends Controller
   {
     $categories = $this->service->getCategories();
 
-    return view('admin.isi-uraian.index', compact('categories'));
+    return view('admin.isiUraian.index', compact('categories'));
   }
 
   public function input(TabelBps $tabel)
@@ -42,7 +42,7 @@ class BpsController extends Controller
     $fitur = $tabel->fiturBps;
     $files = $tabel->fileBps;
 
-    return view('admin.isi-uraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isiUraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 
   public function edit(Request $request, UraianBps $uraian)
@@ -51,7 +51,7 @@ class BpsController extends Controller
     $tahuns = $isi->map(fn ($item) => $item->tahun);
     $tabelId = $uraian->tabel_bps_id;
 
-    return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
   public function update(Request $request, UraianBps $uraian)
@@ -86,12 +86,16 @@ class BpsController extends Controller
       throw new \Exception($e->getMessage());
     }
 
+    toastr()->addSuccess();
+
     return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianBps $uraian)
   {
     $uraian->delete();
+
+    toastr()->addSuccess();
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
@@ -107,6 +111,8 @@ class BpsController extends Controller
     ]);
 
     $tabel->fiturBps()->updateOrCreate([], $request->all());
+
+    toastr()->addSuccess();
 
     return back()->with('success-message', 'Updated.');
   }
@@ -125,6 +131,8 @@ class BpsController extends Controller
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
+    toastr()->addSuccess();
+
     return back()->with('success-message', 'Saved.');
   }
 
@@ -133,6 +141,8 @@ class BpsController extends Controller
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
+
+    toastr()->addSuccess();
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
@@ -167,7 +177,9 @@ class BpsController extends Controller
       throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Successfully Saved.');
+    toastr()->addSuccess('Successfully Saved.');
+
+    return back();
   }
 
   public function destroyTahun(TabelBps $tabel, int $tahun)
@@ -183,7 +195,9 @@ class BpsController extends Controller
       throw new \Exception($e->getMessage());
     }
 
-    return back()->with('success-message', 'Successfully Deleted.');
+    toastr()->addSuccess('Successfully Deleted.');
+
+    return back();
   }
 
   public function chart(UraianBps $uraian)

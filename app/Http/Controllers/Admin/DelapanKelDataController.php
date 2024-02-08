@@ -38,12 +38,12 @@ class DelapanKelDataController extends Controller
       ->groupBy('tabel_id')
       ->get();
 
-    return view('admin.isi-uraian.index', compact('categories', 'skpd', 'tabelIds'));
+    return view('admin.isiUraian.index', compact('categories', 'skpd', 'tabelIds'));
   }
 
   public function category(KategoriSkpd $category)
   {
-    return view('admin.isi-uraian.category', compact('category'));
+    return view('admin.isiUraian.category', compact('category'));
   }
 
   public function input(Request $request,  Tabel8KelData $tabel)
@@ -61,7 +61,7 @@ class DelapanKelDataController extends Controller
     $fitur = $tabel->fitur8KelData;
     $files = $tabel->file8KelData;
 
-    return view('admin.isi-uraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
+    return view('admin.isiUraian.input', compact('categories', 'skpd', 'tabel', 'uraians',  'fitur', 'files', 'tahuns', 'skpds', 'tabelIds'));
   }
 
   public function storeTahun(Request $request, Tabel8KelData $tabel)
@@ -89,6 +89,8 @@ class DelapanKelDataController extends Controller
       throw new \Exception($e->getMessage());
     }
 
+    toastr()->addSuccess('');
+
     return back()->with('success-message', 'Successfully Saved.');
   }
 
@@ -104,6 +106,8 @@ class DelapanKelDataController extends Controller
 
       throw new \Exception($e->getMessage());
     }
+
+    toastr()->addSuccess('');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }

@@ -96,7 +96,7 @@ Route::middleware(['auth'])
   ->controller(App\Http\Controllers\ProfileController::class)
   ->group(function () {
     Route::get('/profile', 'index')->name('profile');
-    Route::put('/profile/profile-information', 'updateProfileInformation')->name('update_profile_information');
+    Route::put('/profile/profile', 'updateProfile')->name('update_profile');
     Route::put('/profile/password', 'updatePassword')->name('update_password');
   });
 
@@ -115,7 +115,7 @@ Route::middleware(['auth', 'role:' . User::ROLE_ADMIN])
       ->name('dashboard');
 
     // Audit Log
-    Route::resource('audit-logs', \App\Http\Controllers\Admin\AuditLogsController::class, [
+    Route::resource('audit-logs', \App\Http\Controllers\Admin\AuditLogController::class, [
       'except' => ['create', 'store', 'edit', 'update', 'destroy']
     ]);
 

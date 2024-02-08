@@ -1,46 +1,12 @@
-$(function () {
+$(document).ready(function () {
   window._token = $('meta[name="csrf-token"]').attr("content");
-
-  bsCustomFileInput.init();
-
-  $(".menu__treeview").jstree({
-    core: {
-      themes: {
-        responsive: false,
-      },
-    },
-    types: {
-      default: {
-        icon: "fa fa-folder text-warning",
-      },
-      file: {
-        icon: "fa fa-file text-warning",
-      },
-    },
-    plugins: ["types"],
-  });
-
-  $(".menu__treeview").on("select_node.jstree", function (e, data) {
-    var link = $("#" + data.selected).find("a");
-    if (
-      link.attr("href") != "#" &&
-      link.attr("href") != "javascript:;" &&
-      link.attr("href") != ""
-    ) {
-      if (link.attr("target") == "_blank") {
-        link.attr("href").target = "_blank";
-      }
-      document.location.href = link.attr("href");
-      return false;
-    }
-  });
 
   moment.updateLocale("en", {
     week: { dow: 1 }, // Monday is the first day of the week
   });
 
   $(".date").datetimepicker({
-    format: "DD-MM-YYYY",
+    format: "YYYY-MM-DD",
     locale: "en",
     icons: {
       up: "fas fa-chevron-up",
@@ -51,7 +17,7 @@ $(function () {
   });
 
   $(".datetime").datetimepicker({
-    format: "DD-MM-YYYY HH:mm:ss",
+    format: "YYYY-MM-DD HH:mm:ss",
     locale: "en",
     sideBySide: true,
     icons: {
@@ -105,124 +71,37 @@ $(function () {
     }, 350);
   });
 
-  let copyButton = "Copy";
-  let csvButton = "CSV";
-  let excelButton = "Excel";
-  let pdfButton = "PDF";
-  let printButton = "Print";
-  let colvisButton = "Columns";
-  let selectAllButton = "Select all";
-  let selectNoneButton = "Deselect all";
+  bsCustomFileInput.init();
 
-  let languages = {
-    en: "https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json",
-  };
-
-  $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
-    className: "btn",
-  });
-  $.extend(true, $.fn.dataTable.defaults, {
-    language: {
-      url: languages["en"],
+  $(".jstree").jstree({
+    core: {
+      themes: {
+        responsive: false,
+      },
     },
-    columnDefs: [
-      {
-        orderable: false,
-        className: "select-checkbox",
-        targets: 0,
+    types: {
+      default: {
+        icon: "fa fa-folder text-warning",
       },
-      {
-        orderable: false,
-        searchable: false,
-        targets: -1,
+      file: {
+        icon: "fa fa-file text-warning",
       },
-    ],
-    select: {
-      style: "multi+shift",
-      selector: "td:first-child",
     },
-    order: [],
-    scrollX: true,
-    pageLength: 50,
-    lengthMenu: [
-      [10, 25, 50, 100, -1],
-      [10, 25, 50, 100, "All"],
-    ],
-    dom: 'lBfrtip<"actions">',
-    buttons: [
-      {
-        extend: "selectAll",
-        className: "btn-primary",
-        text: selectAllButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-        action: function (e, dt) {
-          e.preventDefault();
-          dt.rows().deselect();
-          dt.rows({
-            search: "applied",
-          }).select();
-        },
-      },
-      {
-        extend: "selectNone",
-        className: "btn-primary",
-        text: selectNoneButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "copy",
-        className: "btn-default",
-        text: copyButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "csv",
-        className: "btn-default",
-        text: csvButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "excel",
-        className: "btn-default",
-        text: excelButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "pdf",
-        className: "btn-default",
-        text: pdfButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "print",
-        className: "btn-default",
-        text: printButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-      {
-        extend: "colvis",
-        className: "btn-default",
-        text: colvisButton,
-        exportOptions: {
-          columns: ":visible",
-        },
-      },
-    ],
+    plugins: ["types"],
   });
 
-  $.fn.dataTable.ext.classes.sPageButton = "";
+  $(".jstree").on("select_node.jstree", function (e, data) {
+    var link = $("#" + data.selected).find("a");
+    if (
+      link.attr("href") != "#" &&
+      link.attr("href") != "javascript:;" &&
+      link.attr("href") != ""
+    ) {
+      if (link.attr("target") == "_blank") {
+        link.attr("href").target = "_blank";
+      }
+      document.location.href = link.attr("href");
+      return false;
+    }
+  });
 });

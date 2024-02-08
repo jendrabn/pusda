@@ -9,11 +9,12 @@
     <div class="card-body">
       <div class="form-group">
         <div class="form-group">
-          <a class="btn btn-default" href="{{ route('admin.audit-logs.index') }}">
+          <a class="btn btn-default btn-flat"
+            href="{{ route('admin.audit-logs.index') }}">
             Back to list
           </a>
         </div>
-        <table class="table-bordered table-striped table">
+        <table class="table-bordered table-striped table table-sm">
           <tbody>
             <tr>
               <th>
@@ -82,7 +83,8 @@
           </tbody>
         </table>
         <div class="form-group">
-          <a class="btn btn-default" href="{{ route('admin.audit-logs.index') }}">
+          <a class="btn btn-default btn-flat"
+            href="{{ route('admin.audit-logs.index') }}">
             Back to list
           </a>
         </div>

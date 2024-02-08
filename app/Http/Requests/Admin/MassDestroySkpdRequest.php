@@ -9,7 +9,7 @@ class MassDestroySkpdRequest extends FormRequest
 {
   public function authorize()
   {
-    return auth()->role === User::ROLE_ADMIN;
+    return auth()->user()->role === User::ROLE_ADMIN;
   }
 
   public function rules()

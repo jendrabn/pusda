@@ -4,18 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-  public function index()
+  /**
+   * Undocumented function
+   *
+   * @return View
+   */
+  public function index(): View
   {
-    $user = auth()->user();
-
-    return view('profile', compact('user'));
+    return view('profile', ['user' => auth()->user()]);
   }
 
-  public function updateProfileInformation(UpdateProfileRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param UpdateProfileRequest $request
+   * @return RedirectResponse
+   */
+  public function updateProfile(UpdateProfileRequest $request): RedirectResponse
   {
     $user = auth()->user();
 
@@ -24,18 +35,28 @@ class ProfileController extends Controller
     if ($request->hasFile('photo')) {
       Storage::disk('public')->delete($user->photo);
 
-      $user->photo = $request->file('photo')->storePublicly('user_photos', 'public');
+      $user->photo = $request->file('photo')->store('images/users', 'public');
     }
 
     $user->save();
 
-    return back()->with('success-message', 'Profile successfully updated.');
+    toastr()->addSuccess('Profile successfully updated.');
+
+    return to_route('profile');
   }
 
-  public function updatePassword(UpdatePasswordRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param UpdatePasswordRequest $request
+   * @return RedirectResponse
+   */
+  public function updatePassword(UpdatePasswordRequest $request): RedirectResponse
   {
     auth()->user()->update($request->validated());
 
-    return back()->with('success-message', 'Password successfully updated.');
+    toastr()->addSuccess('Password successfully updated.');
+
+    return to_route('profile');
   }
 }

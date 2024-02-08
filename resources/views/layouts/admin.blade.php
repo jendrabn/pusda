@@ -10,7 +10,7 @@
   <meta name="csrf-token"
     content="{{ csrf_token() }}">
 
-  <title>{{ config('app.name') }}</title>
+  <title>{{ $title ? $title . ' | ' : '' }} {{ config('app.name') }}</title>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css"
     rel="stylesheet" />
@@ -37,6 +37,11 @@
     rel="stylesheet">
   <link href="{{ asset('css/custom.css') }}"
     rel="stylesheet" />
+  <style>
+    .select2 {
+      width: 100% !important;
+    }
+  </style>
   @yield('styles')
 </head>
 
@@ -115,21 +120,16 @@
 
     <footer class="main-footer">
       <div class="float-right d-none d-sm-block">
-        <b>Version</b> 3.0.0-alpha
+        <b>Version</b> 1.0.0
       </div>
-      <strong> &copy;</strong> {{ trans('global.allRightsReserved') }}
+      <strong> &copy;</strong> {{ config('app.name') }}
     </footer>
-    <form id="logoutform"
-      style="display: none;"
-      action="{{ route('logout') }}"
-      method="POST">
-      {{ csrf_field() }}
-    </form>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
@@ -141,6 +141,7 @@
   <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
   <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+
   <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
@@ -155,6 +156,7 @@
       $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
         className: 'btn'
       })
+
       $.extend(true, $.fn.dataTable.defaults, {
         language: {
           url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json'

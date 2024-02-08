@@ -7,19 +7,22 @@
     </div>
     <div class="card-body">
       <div class="form-group">
-        <a class="btn btn-default" href="{{ route('admin.users.index') }}">
-          <i class="fas fa-backward"></i> Back to list
+        <a class="btn btn-default btn-flat"
+          href="{{ route('admin.users.index') }}">
+          Back to list
         </a>
       </div>
-      <table class="table-bordered table-striped table">
+      <table class="table-bordered table-striped table table-sm">
         <tbody>
           <tr>
             <th>
-              Foto Profil
+              Foto
             </th>
             <td>
-              <img class="profile-user-img img-fluid img-circle" src="{{ $user->photo }}" alt="{{ $user->name }}"
-                width="75" height="75">
+              <img class="img-fluid"
+                src="{{ $user->photo }}"
+                alt="User Photo"
+                style="max-width: 100px;" />
             </td>
           </tr>
           <tr>
@@ -64,7 +67,7 @@
           </tr>
           <tr>
             <th>
-              No. HP/WhatsApp
+              No. Handphone
             </th>
             <td>
               <a href="https://api.whatsapp.com/send?phone={{ $user->phone }}">{{ $user->phone }}</a>
@@ -94,7 +97,6 @@
               {{ $user->created_at }}
             </td>
           </tr>
-
         </tbody>
       </table>
     </div>

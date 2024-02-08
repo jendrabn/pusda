@@ -33,8 +33,8 @@
                                           @endif
                                         @endrole
                                         @role(App\Models\User::ROLE_SKPD)
-                                        <a
-                                        href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
+                                          <a
+                                            href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $child->id) }}">{{ $child->nama_menu }}</a>
                                         @endrole
                                       </li>
                                     @endif

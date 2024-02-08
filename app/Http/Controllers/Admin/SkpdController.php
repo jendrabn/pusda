@@ -9,15 +9,25 @@ use App\Http\Requests\Admin\UpdateSkpdRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class SkpdController extends Controller
 {
-  public function index(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return JsonResponse|View
+   */
+  public function index(Request $request): JsonResponse|View
   {
     if ($request->ajax()) {
-      $model = Skpd::query()->with('kategori')->select(sprintf('%s.*', (new Skpd())->getTable()));
+      $model = Skpd::with(['kategori'])->select(sprintf('%s.*', (new Skpd())->getTable()));
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -26,13 +36,11 @@ class SkpdController extends Controller
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'skpd';
 
-        return view('partials.datatablesActions', compact(
-          'crudRoutePart',
-          'row'
-        ));
+        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
       });
 
       $table->editColumn('kategori', fn ($row) => $row->kategori ? $row->kategori->nama : '');
+
       $table->rawColumns(['actions', 'placeholder']);
 
       return $table->toJson();
@@ -41,46 +49,84 @@ class SkpdController extends Controller
     return view('admin.skpd.index');
   }
 
-  public function create()
+  /**
+   * Undocumented function
+   *
+   * @return View
+   */
+  public function create(): View
   {
     $categories = KategoriSkpd::pluck('nama', 'id');
 
     return view('admin.skpd.create', compact('categories'));
   }
 
-  public function store(StoreSkpdRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param StoreSkpdRequest $request
+   * @return RedirectResponse
+   */
+  public function store(StoreSkpdRequest $request): RedirectResponse
   {
     Skpd::create($request->validated());
 
-    return back()->with('success-message', 'SKPD successfully saved.');
+    toastr()->addSuccess('SKPD successfully saved.');
+
+    return to_route('admin.skpd.index');
   }
 
-  public function edit(Skpd $skpd)
+  /**
+   * Undocumented function
+   *
+   * @param Skpd $skpd
+   * @return View
+   */
+  public function edit(Skpd $skpd): View
   {
     $categories = KategoriSkpd::pluck('nama', 'id');
 
     return view('admin.skpd.edit', compact('skpd', 'categories'));
   }
 
-  public function update(UpdateSkpdRequest $request, Skpd $skpd)
+  /**
+   * Undocumented function
+   *
+   * @param UpdateSkpdRequest $request
+   * @param Skpd $skpd
+   * @return RedirectResponse
+   */
+  public function update(UpdateSkpdRequest $request, Skpd $skpd): RedirectResponse
   {
-    if ($skpd->id !== 1) {
-      $skpd->update($request->validated());
-    }
+    if ($skpd->id !== 1) $skpd->update($request->validated());
 
-    return back()->with('success-message', 'SKPD successfully updated.');
+    toastr()->addSuccess('SKPD successfully updated.');
+
+    return back();
   }
 
-  public function destroy(Skpd $skpd)
+  /**
+   * Undocumented function
+   *
+   * @param Skpd $skpd
+   * @return RedirectResponse
+   */
+  public function destroy(Skpd $skpd): RedirectResponse
   {
-    if ($skpd->id !== 1) {
-      $skpd->delete();
-    }
+    if ($skpd->id !== 1) $skpd->delete();
 
-    return back()->with('success-message', 'SKPD successfully deleted.');
+    toastr()->addSuccess('SKPD successfully deleted.');
+
+    return back();
   }
 
-  public function massDestroy(MassDestroySkpdRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param MassDestroySkpdRequest $request
+   * @return HttpResponse
+   */
+  public function massDestroy(MassDestroySkpdRequest $request): HttpResponse
   {
     $ids = collect($request->ids)->filter(fn ($id) => intval($id) !== 1)->toArray();
 

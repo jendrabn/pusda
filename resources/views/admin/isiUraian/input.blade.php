@@ -4,40 +4,59 @@
   @include('partials.menuTreeIsiUraian')
 
   <div class="card card-outline card-tabs">
-    <div class="card-header">
-      <ul class="nav nav-tabs" id="tab">
+    <div class="card-body">
+
+      <ul class="nav nav-tabs mb-3"
+        id="tab">
         <li class="nav-item">
-          <a class="nav-link active" id="tabel-tab" data-toggle="pill" href="#tabel" role="tab" aria-controls="tabel"
+          <a class="nav-link active"
+            id="tabel-tab"
+            data-toggle="pill"
+            href="#tabel"
+            role="tab"
+            aria-controls="tabel"
             aria-selected="true">Tabel {{ $title }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="fitur-tab" data-toggle="pill" href="#fitur" role="tab" aria-controls="fitur"
+          <a class="nav-link"
+            id="fitur-tab"
+            data-toggle="pill"
+            href="#fitur"
+            role="tab"
+            aria-controls="fitur"
             aria-selected="false">Fitur {{ $title }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="file-tab" data-toggle="pill" href="#file" role="tab" aria-controls="file"
+          <a class="nav-link"
+            id="file-tab"
+            data-toggle="pill"
+            href="#file"
+            role="tab"
+            aria-controls="file"
             aria-selected="false">File Pendukung
             {{ $title }}</a>
         </li>
       </ul>
-    </div>
 
-    <div class="card-body">
-      <div class="tab-content" id="tabContent">
-        <div class="tab-pane fade active show" id="tabel">
-          @include('admin.isi-uraian.tabel')
+      <div class="tab-content"
+        id="tabContent">
+        <div class="tab-pane fade active show"
+          id="tabel">
+          @include('admin.isiUraian.tabel')
         </div>
-        <div class="tab-pane fade" id="fitur">
-          @include('admin.isi-uraian.fitur-form')
+        <div class="tab-pane fade"
+          id="fitur">
+          @include('admin.isiUraian.fitur_form')
         </div>
-        <div class="tab-pane fade" id="file">
-          @include('admin.isi-uraian.file-pendukung')
+        <div class="tab-pane fade"
+          id="file">
+          @include('admin.isiUraian.file_pendukung')
         </div>
       </div>
     </div>
   </div>
-  @include('admin.isi-uraian.tahun-modal')
-  @include('admin.isi-uraian.chart-modal')
+  @include('admin.isiUraian.tahun_modal')
+  @include('admin.isiUraian.chart_modal')
 @endsection
 
 @section('scripts')
@@ -45,11 +64,14 @@
     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
 
     $.extend(true, $.fn.dataTable.defaults, {
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/id.json'
+      },
       orderCellsTop: true,
       order: [
         [1, 'desc']
       ],
-      pageLength: 100,
+      pageLength: 50,
     });
 
     let table = $('.datatable-isiuraian:not(.ajaxTable)').DataTable({

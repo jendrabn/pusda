@@ -4,18 +4,26 @@ namespace App\Http\Controllers\Admin\TreeView;
 
 use App\Http\Controllers\Controller;
 use App\Models\TabelRpjmd;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class RpjmdController extends Controller
 {
-
-  public function index(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return JsonResponse|View
+   */
+  public function index(Request $request): JsonResponse|View
   {
     if ($request->ajax()) {
-      $model = TabelRpjmd::query()->with('parent')->select(sprintf('%s.*', (new TabelRpjmd())->getTable()));
+      $model = TabelRpjmd::with('parent')->select('tabel_rpjmd.*');
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -23,80 +31,149 @@ class RpjmdController extends Controller
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'treeview.rpjmd';
 
-        return view('partials.datatablesActions', compact(
-          'crudRoutePart',
-          'row'
-        ));
+        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
       });
       $table->editColumn('parent', fn ($row) => $row->parent ? $row->parent->nama_menu : '');
+
       $table->rawColumns(['actions', 'placeholder']);
 
       return $table->toJson();
     }
 
-
     $categories = TabelRpjmd::with(['parent', 'childs.childs.childs'])->get();
     $title = 'Menu Treeview RPJMD';
     $crudRoutePart = 'rpjmd';
 
-    return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
+    return view('admin.treeview.index', compact(
+      'categories',
+      'title',
+      'crudRoutePart'
+    ));
   }
 
-  public function store(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function store(Request $request): RedirectResponse
   {
     $request->merge(['skpd_id' => auth()->user()->skpd_id]);
 
-    $request->validate([
-      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelRpjmd())->getTable())],
-      'nama_menu' => ['required', 'string', 'max:255'],
-      'skpd_id' => ['required', 'integer', 'exists:skpd,id']
+    $validatedData = $request->validate([
+      'parent_id' =>  [
+        'required',
+        'integer',
+        'exists:tabel_rpjmd,id'
+      ],
+      'nama_menu' => [
+        'required',
+        'string',
+        'min:1',
+        'max:200'
+      ],
+      'skpd_id' => [
+        'required',
+        'integer',
+        'exists:skpd,id'
+      ]
     ]);
 
-    TabelRpjmd::create($request->all());
+    TabelRpjmd::create($validatedData);
 
-    return back()->with('success-message', 'Saved.');
+    toastr()->addSuccess('Saved.');
+
+    return to_route('admin.treeview.rpjmd.index');
   }
 
-  public function edit(TabelRpjmd $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelRpjmd $tabel
+   * @return View
+   */
+  public function edit(TabelRpjmd $tabel): View
   {
     $categories = TabelRpjmd::with('parent')->get();
     $title = 'Menu Treeview RPJMD';
     $crudRoutePart = 'rpjmd';
 
-    return view('admin.treeview.edit', compact('categories', 'tabel', 'crudRoutePart', 'title'));
+    return view('admin.treeview.edit', compact(
+      'categories',
+      'tabel',
+      'crudRoutePart',
+      'title'
+    ));
   }
 
-  public function update(Request $request, TabelRpjmd $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @param TabelRpjmd $tabel
+   * @return RedirectResponse
+   */
+  public function update(Request $request, TabelRpjmd $tabel): RedirectResponse
   {
-    $request->validate([
-      'parent_id' =>  ['required', 'integer',     sprintf('exists:%s,id', (new TabelRpjmd())->getTable())],
-      'nama_menu' => ['required', 'string', 'max:255']
+    $validatedData = $request->validate([
+      'parent_id' =>  [
+        'required',
+        'integer',
+        'exists:tabel_rpjmd,id'
+      ],
+      'nama_menu' => [
+        'required',
+        'string',
+        'min:1',
+        'max:200'
+      ]
     ]);
 
-    if ($tabel->id !== 1) {
-      $tabel->update($request->all());
-    }
+    if ($tabel->id !== 1) $tabel->update($validatedData);
 
-    return back()->with('success-message', 'Updated.');
+    toastr()->addSuccess('Updated.');
+
+    return back();
   }
 
-  public function destroy(TabelRpjmd $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelRpjmd $tabel
+   * @return RedirectResponse
+   */
+  public function destroy(TabelRpjmd $tabel): RedirectResponse
   {
-    if ($tabel->id !== 1) {
-      $tabel->delete();
-    }
+    if ($tabel->id !== 1) $tabel->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    toastr()->addSuccess('Deleted.');
+
+    return to_route('admin.treeview.rpjmd.index');
   }
 
-  public function massDestroy(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return HttpResponse
+   */
+  public function massDestroy(Request $request): HttpResponse
   {
-    $request->validate([
-      'ids' => ['required', 'array'],
-      'ids.*', ['integer',     sprintf('exists:%s,id', (new TabelRpjmd())->getTable())]
+    $validatedData = $request->validate([
+      'ids' => [
+        'required',
+        'array'
+      ],
+      'ids.*', [
+        'integer',
+        'exists:tabel_rpjmd,id'
+      ]
     ]);
 
-    $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();
+    $ids = collect($validatedData['ids'])
+      ->filter(fn ($val, $key) => (int) $val !== 1)
+      ->toArray();
 
     TabelRpjmd::whereIn('id', $ids)->delete();
 

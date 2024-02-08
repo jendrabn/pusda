@@ -72,14 +72,14 @@ trait RpjmdTrait
 
       throw new \Exception($e->getMessage());
     }
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(UraianRpjmd $uraian)
   {
     $uraian->delete();
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
@@ -94,7 +94,7 @@ trait RpjmdTrait
     ]);
 
     $tabel->fiturRpjmd()->updateOrCreate([], $request->all());
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Updated');
   }
 
@@ -110,7 +110,7 @@ trait RpjmdTrait
       'nama' => $file->getClientOriginalName(),
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Saved.');
   }
 
@@ -119,7 +119,7 @@ trait RpjmdTrait
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 

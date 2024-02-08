@@ -212,7 +212,7 @@
       <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}"
         href="{{ route('profile') }}">
         <i class="fas fa-user nav-icon"></i>
-        <p>Profile</p>
+        <p>Profil</p>
       </a>
     </li>
 

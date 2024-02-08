@@ -9,16 +9,26 @@ use App\Http\Requests\Admin\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-  public function index(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return JsonResponse|View
+   */
+  public function index(Request $request): JsonResponse|View
   {
     if ($request->ajax()) {
-      $model = User::query()->with('skpd')->select(sprintf('%s.*', (new User())->getTable()));
+      $model = User::with(['skpd'])->select(sprintf('%s.*', (new User())->getTable()));
       $table = Datatables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -27,70 +37,113 @@ class UserController extends Controller
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'users';
 
-        return view('partials.datatablesActions', compact(
-          'crudRoutePart',
-          'row'
-        ));
+        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
       });
 
-      $table->editColumn('email', fn ($row) => $row->email
-        ? sprintf('<a href="mailto:%s">%s</a>', $row->email, $row->email)
-        : '');
-      $table->editColumn('role', fn ($row) => $row->role
-        ? sprintf('<span class="badge badge-info">%s</span>', $row->role)
-        : '');
+      $table->editColumn('role', fn ($row) => sprintf(
+        '<span class="badge badge-info rounded-0">%s</span>',
+        $row->role
+      ));
 
-      $table->rawColumns(['actions', 'placeholder', 'email', 'role']);
+      $table->rawColumns(['actions', 'placeholder', 'role']);
 
       return $table->toJson();
     }
 
-    return view('admin.user.index');
+    return view('admin.users.index');
   }
 
-  public function show(User $user)
+  /**
+   * Undocumented function
+   *
+   * @param User $user
+   * @return View
+   */
+  public function show(User $user): View
   {
-    return view('admin.user.show', compact('user'));
+    return view('admin.users.show', compact('user'));
   }
 
-  public function create()
+  /**
+   * Undocumented function
+   *
+   * @return View
+   */
+  public function create(): View
   {
     $skpd = Skpd::pluck('nama', 'id');
 
-    return view('admin.user.create', compact('skpd'));
+    return view('admin.users.create', compact('skpd'));
   }
 
-  public function store(StoreUserRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param StoreUserRequest $request
+   * @return RedirectResponse
+   */
+  public function store(StoreUserRequest $request): RedirectResponse
   {
     User::create($request->validated());
 
-    return back()->with('success-message', 'User successfully saved.');
+    toastr()->addSuccess('User successfully saved.');
+
+    return back();
   }
 
-  public function edit(User $user)
+  /**
+   * Undocumented function
+   *
+   * @param User $user
+   * @return View
+   */
+  public function edit(User $user): View
   {
     $skpd = Skpd::pluck('nama', 'id');
 
-    return view('admin.user.edit', compact('skpd', 'user'));
+    return view('admin.users.edit', compact('skpd', 'user'));
   }
 
-  public function update(UpdateUserRequest $request, User $user)
+  /**
+   * Undocumented function
+   *
+   * @param UpdateUserRequest $request
+   * @param User $user
+   * @return RedirectResponse
+   */
+  public function update(UpdateUserRequest $request, User $user): RedirectResponse
   {
     $user->update($request->validated());
 
-    return back()->with('success-message', 'User successfully updated.');
+    toastr()->addSuccess('User successfully updated.');
+
+    return back();
   }
 
-  public function destroy(User $user)
+  /**
+   * Undocumented function
+   *
+   * @param User $user
+   * @return RedirectResponse
+   */
+  public function destroy(User $user): RedirectResponse
   {
     Storage::disk('public')->delete($user->photo);
 
     $user->delete();
 
-    return back()->with('success-message', 'User successfully deleted.');
+    toastr()->addSuccess('User successfully deleted.');
+
+    return back();
   }
 
-  public function massDestroy(MassDestroyUserRequest $request)
+  /**
+   * Undocumented function
+   *
+   * @param MassDestroyUserRequest $request
+   * @return void
+   */
+  public function massDestroy(MassDestroyUserRequest $request): HttpResponse
   {
     User::whereIn('id', $request->ids)->delete();
 

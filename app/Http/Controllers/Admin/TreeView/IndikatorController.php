@@ -4,17 +4,26 @@ namespace App\Http\Controllers\Admin\TreeView;
 
 use App\Http\Controllers\Controller;
 use App\Models\TabelIndikator;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class IndikatorController extends Controller
 {
-
-  public function index(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return JsonResponse|View
+   */
+  public function index(Request $request): JsonResponse|View
   {
     if ($request->ajax()) {
-      $model = TabelIndikator::query()->with('parent')->select(sprintf('%s.*', (new TabelIndikator())->getTable()));
+      $model = TabelIndikator::with('parent')->select('tabel_indikator.*');
       $table = DataTables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -22,12 +31,10 @@ class IndikatorController extends Controller
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'treeview.indikator';
 
-        return view('partials.datatablesActions', compact(
-          'crudRoutePart',
-          'row'
-        ));
+        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
       });
       $table->editColumn('parent', fn ($row) =>  $row->parent ? $row->parent->nama_menu : '');
+
       $table->rawColumns(['actions', 'placeholder']);
 
       return $table->toJson();
@@ -37,61 +44,129 @@ class IndikatorController extends Controller
     $title = 'Menu Treeview Indikator';
     $crudRoutePart = 'indikator';
 
-    return view('admin.treeview.index', compact('categories', 'title', 'crudRoutePart'));
+    return view('admin.treeview.index', compact(
+      'categories',
+      'title',
+      'crudRoutePart'
+    ));
   }
 
-  public function store(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return RedirectResponse
+   */
+  public function store(Request $request): RedirectResponse
   {
-    $request->validate([
-      'parent_id' =>  ['required', 'integer',  sprintf('exists:%s,id', (new TabelIndikator())->getTable())],
-      'nama_menu' => ['required', 'string', 'max:255']
+    $validatedData = $request->validate([
+      'parent_id' =>  [
+        'required',
+        'integer',
+        'exists:tabel_indikator,id'
+      ],
+      'nama_menu' => [
+        'required',
+        'string',
+        'min:1',
+        'max:200'
+      ]
     ]);
 
-    TabelIndikator::create($request->all());
+    TabelIndikator::create($validatedData);
 
-    return back()->with('success-message', 'Saved.');
+    toastr()->addSuccess('Saved.');
+
+    return to_route('admin.treeview.indikator.index');
   }
 
-  public function edit(TabelIndikator $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelIndikator $tabel
+   * @return View
+   */
+  public function edit(TabelIndikator $tabel): View
   {
     $categories = TabelIndikator::with('parent')->get();
     $title = 'Menu Treeview Indikator';
     $crudRoutePart = 'indikator';
 
-    return view('admin.treeview.edit', compact('categories', 'tabel', 'title', 'crudRoutePart'));
+    return view('admin.treeview.edit', compact(
+      'categories',
+      'tabel',
+      'title',
+      'crudRoutePart'
+    ));
   }
 
-  public function update(Request $request, TabelIndikator $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @param TabelIndikator $tabel
+   * @return RedirectResponse
+   */
+  public function update(Request $request, TabelIndikator $tabel): RedirectResponse
   {
-    $request->validate([
-      'parent_id' =>  ['required', 'integer', sprintf('exists:%s,id', (new TabelIndikator())->getTable())],
-      'nama_menu' => ['required', 'string', 'max:255']
+    $validatedData = $request->validate([
+      'parent_id' =>  [
+        'required',
+        'integer',
+        'exists:tabel_indikator,id'
+      ],
+      'nama_menu' => [
+        'required',
+        'string',
+        'min:1',
+        'max:200'
+      ]
     ]);
 
-    if ($tabel->id !== 1) {
-      $tabel->update($request->all());
-    }
+    if ($tabel->id !== 1) $tabel->update($validatedData);
 
-    return back()->with('success-message', 'Updated.');
+    toastr()->addSuccess('Updated.');
+
+    return back();
   }
 
-  public function destroy(TabelIndikator $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelIndikator $tabel
+   * @return RedirectResponse
+   */
+  public function destroy(TabelIndikator $tabel): RedirectResponse
   {
-    if ($tabel->id !== 1) {
-      $tabel->delete();
-    }
+    if ($tabel->id !== 1) $tabel->delete();
 
-    return back()->with('success-message', 'Deleted.');
+    toastr()->addSuccess('Deleted.');
+
+    return to_route('admin.treeview.indikator.index');
   }
 
-  public function massDestroy(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return HttpResponse
+   */
+  public function massDestroy(Request $request): HttpResponse
   {
-    $request->validate([
-      'ids' => ['required', 'array'],
-      'ids.*', ['integer',  sprintf('exists:%s,id', (new TabelIndikator())->getTable())]
+    $validatedData = $request->validate([
+      'ids' => [
+        'required',
+        'array'
+      ],
+      'ids.*', [
+        'integer',
+        'exists:tabel_indikator,id'
+      ]
     ]);
 
-    $ids = collect($request->ids)->filter(fn ($val, $key) => intval($val) !== 1)->toArray();
+    $ids = collect($validatedData['ids'])
+      ->filter(fn ($val, $key) => (int) $val !== 1)
+      ->toArray();
 
     TabelIndikator::whereIn('id', $ids)->delete();
 

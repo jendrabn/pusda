@@ -4,16 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class AuditLogsController extends Controller
+class AuditLogController extends Controller
 {
-  public function index(Request $request)
+  /**
+   * Undocumented function
+   *
+   * @param Request $request
+   * @return JsonResponse|View
+   */
+  public function index(Request $request): JsonResponse|View
   {
-
     if ($request->ajax()) {
-      $model = AuditLog::query()->select(sprintf('%s.*', (new AuditLog())->getTable()));
+      $model = AuditLog::select(sprintf('%s.*', (new AuditLog())->getTable()));
       $table = Datatables::eloquent($model);
 
       $table->addColumn('placeholder', '&nbsp;');
@@ -22,10 +29,7 @@ class AuditLogsController extends Controller
       $table->editColumn('actions', function ($row) {
         $crudRoutePart = 'audit-logs';
 
-        return view('partials.datatablesActions', compact(
-          'crudRoutePart',
-          'row'
-        ));
+        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
       });
 
       $table->editColumn('id', fn ($row) => $row->id ? $row->id : '');
@@ -40,11 +44,17 @@ class AuditLogsController extends Controller
       return $table->toJson();
     }
 
-    return view('admin.audit-logs.index');
+    return view('admin.auditLogs.index');
   }
 
-  public function show(AuditLog $auditLog)
+  /**
+   * Undocumented function
+   *
+   * @param AuditLog $auditLog
+   * @return View
+   */
+  public function show(AuditLog $auditLog): View
   {
-    return view('admin.audit-logs.show', compact('auditLog'));
+    return view('admin.auditLogs.show', compact('auditLog'));
   }
 }

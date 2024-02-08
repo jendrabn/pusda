@@ -72,13 +72,14 @@ trait DelapanKelDataTrait
       throw new \Exception($e->getMessage());
     }
 
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Updated.');
   }
 
   public function destroy(Uraian8KelData $uraian)
   {
     $uraian->delete();
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
@@ -94,7 +95,7 @@ trait DelapanKelDataTrait
     ]);
 
     $tabel->fitur8KelData()->updateOrCreate([], $request->all());
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Updated');
   }
 
@@ -110,7 +111,7 @@ trait DelapanKelDataTrait
       'nama' => $file->getClientOriginalName(),
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Saved.');
   }
 
@@ -119,7 +120,7 @@ trait DelapanKelDataTrait
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
-
+    toastr()->addSuccess('');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 

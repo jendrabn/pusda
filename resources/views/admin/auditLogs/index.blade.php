@@ -7,11 +7,10 @@
     </div>
 
     <div class="card-body">
-      <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog table">
+      <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog table table-sm">
         <thead>
           <tr>
             <th width="10"></th>
-            <th>&nbsp;</th>
             <th>ID</th>
             <th>Description</th>
             <th>Subject ID</th>
@@ -19,6 +18,7 @@
             <th>User ID</th>
             <th>Host</th>
             <th>Created at</th>
+            <th>&nbsp;</th>
           </tr>
         </thead>
       </table>
@@ -41,10 +41,6 @@
         columns: [{
             data: 'placeholder',
             name: 'placeholder'
-          },
-          {
-            data: 'actions',
-            name: 'actions'
           },
           {
             data: 'id',
@@ -74,7 +70,10 @@
             data: 'created_at',
             name: 'created_at'
           },
-
+          {
+            data: 'actions',
+            name: 'actions'
+          }
         ],
         orderCellsTop: true,
         order: [
