@@ -7,7 +7,7 @@
   </button>
 
   <a class="btn btn-success btn-flat"
-    href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xlsx']) }}">
+    href="{{ route('exports.' . $crudRoutePart, $tabel->id) }}">
     <i class="fas fa-file-excel mr-1"></i>
     Excel
   </a>

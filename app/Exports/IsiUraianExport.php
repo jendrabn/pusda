@@ -3,8 +3,6 @@
 namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class IsiUraianExport implements FromView
@@ -27,7 +25,7 @@ class IsiUraianExport implements FromView
 
   public function view(): View
   {
-    return view('excel-export', [
+    return view('isi_uraian_export', [
       'crudRoutePart' => $this->crudRoutePart,
       'fitur' => $this->fitur,
       'uraians' => $this->uraians,

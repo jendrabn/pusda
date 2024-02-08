@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Exports\IsiUraianExport;
-use App\Http\Requests\ExportRequest;
 use App\Models\Tabel8KelData;
 use App\Models\TabelBps;
 use App\Models\TabelIndikator;
@@ -12,16 +11,32 @@ use App\Services\BpsService;
 use App\Services\DelapanKelDataService;
 use App\Services\IndikatorService;
 use App\Services\RpjmdService;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExportsController extends Controller
+class ExportController extends Controller
 {
-
-  public function export8KelData(ExportRequest $request, Tabel8KelData $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param string $namaTabel
+   * @param string $namaMenu
+   * @return string
+   */
+  private function formatFileName(string $namaTabel, string $namaMenu): string
   {
-    $service = new DelapanKelDataService();
+    return strtolower(implode('-', explode(' ', implode(' ', [$namaTabel, $namaMenu, date('ymd')]))) . '.xlsx');
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @param Tabel8KelData $tabel
+   * @param DelapanKelDataService $service
+   * @return BinaryFileResponse
+   */
+  public function export8KelData(Tabel8KelData $tabel, DelapanKelDataService $service): BinaryFileResponse
+  {
     $uraians = $service->getAllUraianByTabelId($tabel);
     $tahuns = $service->getAllTahun($tabel);
     $fitur = $tabel->fitur8KelData->first();
@@ -31,9 +46,15 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportRpjmd(ExportRequest $request, TabelRpjmd $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelRpjmd $tabel
+   * @param RpjmdService $service
+   * @return BinaryFileResponse
+   */
+  public function exportRpjmd(TabelRpjmd $tabel, RpjmdService $service): BinaryFileResponse
   {
-    $service = new RpjmdService();
     $uraians = $service->getAllUraianByTabelId($tabel);
     $tahuns = $service->getAllTahun($tabel);
     $fitur = $tabel->fiturRpjmd->first();
@@ -43,9 +64,15 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportBps(ExportRequest $request, TabelBps $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelBps $tabel
+   * @param BpsService $service
+   * @return BinaryFileResponse
+   */
+  public function exportBps(TabelBps $tabel, BpsService $service): BinaryFileResponse
   {
-    $service = new BpsService();
     $uraians = $service->getAllUraianByTabelId($tabel);
     $tahuns = $service->getAllTahun($tabel);
     $fitur = $tabel->fiturBps->first();
@@ -55,9 +82,15 @@ class ExportsController extends Controller
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
   }
 
-  public function exportIndikator(ExportRequest $request, TabelIndikator $tabel)
+  /**
+   * Undocumented function
+   *
+   * @param TabelIndikator $tabel
+   * @param IndikatorService $service
+   * @return BinaryFileResponse
+   */
+  public function exportIndikator(TabelIndikator $tabel, IndikatorService $service): BinaryFileResponse
   {
-    $service = new IndikatorService();
     $uraians = $service->getAllUraianByTabelId($tabel);
     $tahuns = $service->getAllTahun($tabel);
     $fitur = $tabel->fiturIndikator->first();
@@ -65,10 +98,5 @@ class ExportsController extends Controller
     $fileName = $this->formatFileName($tabel->nama_menu, 'Indikator');
 
     return Excel::download(new IsiUraianExport($crudRoutePart, $fitur, $uraians, $tahuns), $fileName);
-  }
-
-  private function formatFileName(string $namaTabel, string $namaMenu)
-  {
-    return sprintf('%s.%s', Str::snake(sprintf('tabel %s_%s', $namaTabel, $namaMenu), '_'), request('format'));
   }
 }

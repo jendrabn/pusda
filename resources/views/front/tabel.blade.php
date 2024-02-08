@@ -8,20 +8,13 @@
       </div>
       <div class="card-body">
         <div class="action">
-          <div class="btn-group">
-            <button class="btn btn-success btn-flat dropdown-toggle" data-bs-toggle="dropdown" type="button"
-              aria-expanded="false">
-              <i class="fas fa-file-export"></i> Export
-            </button>
-            <ul class="dropdown-menu">
-              <a class="dropdown-item"
-                href="{{ route('exports.' . $routePart, [$tabel->id, 'format' => 'csv']) }}">csv</a>
-              <a class="dropdown-item"
-                href="{{ route('exports.' . $routePart, [$tabel->id, 'format' => 'xls']) }}">xls</a>
-              <a class="dropdown-item"
-                href="{{ route('exports.' . $routePart, [$tabel->id, 'format' => 'xlsx']) }}">xlsx</a>
-            </ul>
-          </div>
+
+          <a class="btn btn-success btn-flat"
+            href="{{ route('exports.' . $routePart, $tabel->id) }}">
+            <i class="fas fa-file-excel mr-1"></i>
+            Excel
+          </a>
+
         </div>
         <div class="table-responsive">
           <table class="table-bordered table-hover table-isiuraian table">
@@ -63,7 +56,8 @@
                 @foreach ($uraian->childs as $child)
                   <tr>
                     <td>&nbsp;</td>
-                    <td class="text-danger" style="text-indent: 1rem;">{{ $child->uraian }}</td>
+                    <td class="text-danger"
+                      style="text-indent: 1rem;">{{ $child->uraian }}</td>
                     <td>{{ $child->satuan }}</td>
                     @if (in_array($routePart, ['delapankeldata', 'rpjmd']))
                       <td>{{ $child->ketersediaan_data_text }}</td>
@@ -81,7 +75,8 @@
                     @endforeach
                     <td class="text-center">
                       <button class="btn btn-primary btn-sm btn-show-chart"
-                        data-url="{{ route($routePart . '.chart', $child->id) }}" type="button">Grafik</button>
+                        data-url="{{ route($routePart . '.chart', $child->id) }}"
+                        type="button">Grafik</button>
                     </td>
                     @if (in_array($routePart, ['delapankeldata', 'rpjmd']))
                       <td>{{ $child->skpd?->nama }}</td>

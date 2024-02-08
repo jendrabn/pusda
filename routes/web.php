@@ -81,7 +81,7 @@ Route::middleware('visitor')->group(function () {
 });
 
 // Export isi uraian
-Route::controller(\App\Http\Controllers\ExportsController::class)
+Route::controller(\App\Http\Controllers\ExportController::class)
   ->prefix('exports')
   ->name('exports.')
   ->group(function () {

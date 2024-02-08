@@ -1,15 +1,9 @@
 <div class="d-flex mb-3">
-  <div class="btn-group">
-    <button class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown" type="button">
-      <i class="fas fa-file-export"></i> Export
-    </button>
-    <ul class="dropdown-menu">
-      <a class="dropdown-item" href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'csv']) }}">csv</a>
-      <a class="dropdown-item" href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xls']) }}">xls</a>
-      <a class="dropdown-item"
-        href="{{ route('exports.' . $crudRoutePart, [$tabel->id, 'format' => 'xlsx']) }}">xlsx</a>
-    </ul>
-  </div>
+  <a class="btn btn-success btn-flat"
+    href="{{ route('exports.' . $crudRoutePart, $tabel->id) }}">
+    <i class="fas fa-file-excel mr-1"></i>
+    Excel
+  </a>
 </div>
 
 <table class="table-bordered table-striped table-hover datatable datatable-isiuraian table">
@@ -54,7 +48,8 @@
       @foreach ($uraian->childs as $child)
         <tr>
           <td>&nbsp;</td>
-          <td><span class="text-danger d-block" style="text-indent: 1.5rem;">{{ $child->uraian }}</span></td>
+          <td><span class="text-danger d-block"
+              style="text-indent: 1.5rem;">{{ $child->uraian }}</span></td>
           <td>{{ $child->satuan }}</td>
           @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
             <td>{{ $child->label_ketersediaan_data }}</td>
@@ -72,11 +67,15 @@
           @endforeach
           @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
             <td>
-              <select class="form-control sumber-data select2" name="sumber_data"
+              <select class="form-control sumber-data select2"
+                name="sumber_data"
                 data-url="{{ route('admin_skpd.' . $crudRoutePart . '.update_sumber_data', $child->id) }}">
-                <option selected disabled hidden></option>
+                <option selected
+                  disabled
+                  hidden></option>
                 @foreach ($skpds as $id => $nama)
-                  <option value="{{ $id }}" {{ $id === $child->skpd_id ? 'selected' : '' }}>
+                  <option value="{{ $id }}"
+                    {{ $id === $child->skpd_id ? 'selected' : '' }}>
                     {{ $nama }}
                   </option>
                 @endforeach
@@ -88,15 +87,19 @@
               data-url="{{ route('admin_skpd.' . $crudRoutePart . '.chart', $child->id) }}">
               Grafik
             </button>
-            <a class="btn btn-xs btn-info" href="{{ route('admin_skpd.' . $crudRoutePart . '.edit', $child->id) }}">
+            <a class="btn btn-xs btn-info"
+              href="{{ route('admin_skpd.' . $crudRoutePart . '.edit', $child->id) }}">
               Edit
             </a>
             <form style="display: inline-block;"
-              action="{{ route('admin_skpd.' . $crudRoutePart . '.destroy', $child->id) }}" method="POST"
+              action="{{ route('admin_skpd.' . $crudRoutePart . '.destroy', $child->id) }}"
+              method="POST"
               onsubmit="return confirm('Are You Sure?');">
               @method('DELETE')
               @csrf
-              <input class="btn btn-xs btn-danger" type="submit" value="Delete">
+              <input class="btn btn-xs btn-danger"
+                type="submit"
+                value="Delete">
             </form>
           </td>
         </tr>
