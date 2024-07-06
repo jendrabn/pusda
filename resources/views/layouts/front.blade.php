@@ -3,20 +3,27 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible"
+    content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
   <title>{{ $title ?? 'Home' }} &mdash; Pusat Data Kabupaten Situbondo</title>
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
     integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com"
+    rel="preconnect">
+  <link href="https://fonts.gstatic.com"
+    rel="preconnect"
+    crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
+    rel="stylesheet">
 
   @vite(['resources/sass/front/style.scss'])
 
-  <link href="{{ asset('css/front.min.css') }}" rel="stylesheet">
   @yield('styles')
   @stack('styles')
 </head>
@@ -25,7 +32,8 @@
   <header>
     <div class="header__top d-none d-lg-block">
       <div class="container">
-        <div class="logo"><a href="{{ route('home') }}"><img class="img-fluid" src="{{ asset('img/logo.png') }}"
+        <div class="logo"><a href="{{ route('home') }}"><img class="img-fluid"
+              src="{{ asset('img/logo.png') }}"
               alt="Logo"></a>
         </div>
       </div>
@@ -33,17 +41,26 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <a class="navbar-brand d-lg-none" href="{{ route('home') }}">
+        <a class="navbar-brand d-lg-none"
+          href="{{ route('home') }}">
           <div class="logo">
-            <img class="h-100 w-auto" src="{{ asset('img/logo.png') }}" alt="Logo">
+            <img class="h-100 w-auto"
+              src="{{ asset('img/logo.png') }}"
+              alt="Logo">
           </div>
         </a>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" type="button"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          type="button"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse" id="navbarNav">
+        <div class="navbar-collapse collapse"
+          id="navbarNav">
           <ul class="navbar-nav m-lg-auto">
             <li class="nav-item">
               <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
@@ -62,7 +79,8 @@
                 href="{{ route('delapankeldata.index') }}">8 Kelompok Data</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ request()->routeIs('skpd') ? 'active' : '' }}" href="{{ route('skpd') }}">SKPD</a>
+              <a class="nav-link {{ request()->routeIs('skpd') ? 'active' : '' }}"
+                href="{{ route('skpd') }}">SKPD</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {{ request()->routeIs('indikator.index') || request()->is('guest/indikator/*') ? 'active' : '' }}"
@@ -72,17 +90,23 @@
             <li class="nav-item">
               @if (auth()->check())
                 @role('Administrator')
-                  <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                  <a class="nav-link"
+                    href="{{ route('admin.dashboard') }}">Dashboard</a>
                 @endrole
                 @role('SKPD')
-                  <a class="nav-link" href="{{ route('admin_skpd.dashboard') }}">Dashboard</a>
+                  <a class="nav-link"
+                    href="{{ route('admin_skpd.dashboard') }}">Dashboard</a>
                 @endrole
               @else
-                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                <a class="nav-link"
+                  href="{{ route('login') }}">Login</a>
               @endif
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://tawk.to/pusdasitubondo" target="_blank" rel=noreferrer>Live Chat</a>
+              <a class="nav-link"
+                href="https://tawk.to/pusdasitubondo"
+                target="_blank"
+                rel=noreferrer>Live Chat</a>
             </li>
           </ul>
         </div>
@@ -95,7 +119,9 @@
   </main>
 
   <div class="scroll-top">
-    <button class="btn btn-dark" type="button" aria-label="Scroll to top">
+    <button class="btn btn-dark"
+      type="button"
+      aria-label="Scroll to top">
       <i class="fas fa-arrow-up"></i>
     </button>
   </div>
@@ -108,10 +134,16 @@
             <h5>Pengembang</h5>
             <ul>
               <li> <a href="mailto:jendra455@gmail.com">Jendra Bayu Nugraha</a> <a class="text-decoration-none"
-                  href="https://ilkom.unej.ac.id" target="_blank" rel=noreferrer>Fakultas Ilmu Komputer
+                  href="https://ilkom.unej.ac.id"
+                  target="_blank"
+                  rel=noreferrer>Fakultas Ilmu Komputer
                   Universitas Jember</a></li>
-              <li><a class="logo" href="https://unej.ac.id/id" target="_blank" rel=noreferrer><img class="img-fluid"
-                    src="{{ asset('img/logo-unej.png') }}" alt="Logo Universitas Jember"></a></li>
+              <li><a class="logo"
+                  href="https://unej.ac.id/id"
+                  target="_blank"
+                  rel=noreferrer><img class="img-fluid"
+                    src="{{ asset('img/logo-unej.png') }}"
+                    alt="Logo Universitas Jember"></a></li>
             </ul>
           </div>
           <div class="col-lg-4 footer__item">
@@ -135,7 +167,8 @@
     </div>
     <div class="footer__bottom">
       <div class="container"><span>2021 © PUSDA Situbondo</span> | <a href="http://kominfo.situbondokab.go.id"
-          target="_blank" rel=noreferrer>Dinas Kominfo dan
+          target="_blank"
+          rel=noreferrer>Dinas Kominfo dan
           Persandian Pemkab Situbondo</a></div>
     </div>
   </footer>

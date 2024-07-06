@@ -47,8 +47,9 @@ class AuditLogController extends Controller
     return view('admin.auditLogs.index');
   }
 
+
   /**
-   * Undocumented function
+   * Display the specified resource.
    *
    * @param AuditLog $auditLog
    * @return View
