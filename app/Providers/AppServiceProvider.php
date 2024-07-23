@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::if('role', fn ($value) => auth()->user()->role === $value);
-        Blade::if('admin', fn () => auth()->user()->role === User::ROLE_ADMIN);
-        Blade::if('skpd', fn () => auth()->user()->role === User::ROLE_SKPD);
+      Blade::if('role', fn ($value) => auth()->user()->role === $value);
+      Blade::if('admin', fn () => auth()->user()->role === User::ROLE_ADMIN);
+      Blade::if('skpd', fn () => auth()->user()->role === User::ROLE_SKPD);
     }
 }

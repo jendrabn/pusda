@@ -26,7 +26,7 @@ Auth::routes([
  * FRONT
  *
  */
-Route::middleware('visitor')->group(function () {
+Route::middleware([])->group(function () {
 
   // Home
   Route::get('/', \App\Http\Controllers\Front\HomeController::class)

@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
     rel="stylesheet">
 
-  @vite(['resources/sass/front/style.scss'])
+  @vite(['resources/scss/front/style.scss'])
 
   @yield('styles')
   @stack('styles')
