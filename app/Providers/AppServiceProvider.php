@@ -22,10 +22,6 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	public function boot(): void
 	{
-		Blade::if('role', fn($value) => auth()->user()->role === $value);
-		Blade::if('admin', fn() => auth()->user()->role === User::ROLE_ADMIN);
-		Blade::if('skpd', fn() => auth()->user()->role === User::ROLE_SKPD);
-
 		ResetPassword::createUrlUsing(function (User $user, string $token) {
 			return route('auth.reset-password', ['token' => $token, 'email' => $user->email]);
 		});

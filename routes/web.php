@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 // Auth
 Route::middleware('guest')->prefix('auth')->name('auth.')->group(function () {
 	Route::get('login', [AuthController::class, 'login'])->name('login');
@@ -26,7 +25,7 @@ Route::middleware('guest')->prefix('auth')->name('auth.')->group(function () {
 	Route::get('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 	Route::put('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password.put');
 });
-Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::middleware('auth')->post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 /**
  *
@@ -127,9 +126,8 @@ Route::middleware(['auth', 'role:' . User::ROLE_ADMIN])
 		]);
 
 		// User
-		Route::delete('/users/massDestroy', [\App\Http\Controllers\Admin\UserController::class, 'massDestroy'])
-			->name('users.massDestroy');
-		Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+		Route::delete('users/massDestroy', [\App\Http\Controllers\Admin\UserController::class, 'massDestroy'])->name('users.massDestroy');
+		Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->except(['show']);
 
 		// SKPD
 		Route::delete('/skpd/massDestroy', [\App\Http\Controllers\Admin\SkpdController::class, 'massDestroy'])
@@ -141,184 +139,184 @@ Route::middleware(['auth', 'role:' . User::ROLE_ADMIN])
 		Route::prefix('treeview')
 			->name('treeview.')
 			->group(function () {
-			Route::delete('/delapankeldata/massDestroy', [\App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class, 'massDestroy'])
-				->name('delapankeldata.massDestroy');
-			Route::delete('/rpjmd/massDestroy', [\App\Http\Controllers\Admin\TreeView\RpjmdController::class, 'massDestroy'])
-				->name('rpjmd.massDestroy');
-			Route::delete('/bps/massDestroy', [\App\Http\Controllers\Admin\TreeView\BpsController::class, 'massDestroy'])
-				->name('bps.massDestroy');
-			Route::delete('/indikator/massDestroy', [\App\Http\Controllers\Admin\TreeView\IndikatorController::class, 'massDestroy'])
-				->name('indikator.massDestroy');
+				Route::delete('/delapankeldata/massDestroy', [\App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class, 'massDestroy'])
+					->name('delapankeldata.massDestroy');
+				Route::delete('/rpjmd/massDestroy', [\App\Http\Controllers\Admin\TreeView\RpjmdController::class, 'massDestroy'])
+					->name('rpjmd.massDestroy');
+				Route::delete('/bps/massDestroy', [\App\Http\Controllers\Admin\TreeView\BpsController::class, 'massDestroy'])
+					->name('bps.massDestroy');
+				Route::delete('/indikator/massDestroy', [\App\Http\Controllers\Admin\TreeView\IndikatorController::class, 'massDestroy'])
+					->name('indikator.massDestroy');
 
-			Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)
-				->parameter('delapankeldata', 'tabel')
-				->except(['create', 'show']);
-			Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)
-				->parameter('rpjmd', 'tabel')
-				->except(['create', 'show']);
-			Route::resource('indikator', \App\Http\Controllers\Admin\TreeView\IndikatorController::class)
-				->parameter('indikator', 'tabel')
-				->except(['create', 'show']);
-			Route::resource('bps', \App\Http\Controllers\Admin\TreeView\BpsController::class)
-				->parameter('bps', 'tabel')
-				->except(['create', 'show']);
-		});
+				Route::resource('delapankeldata', \App\Http\Controllers\Admin\TreeView\DelapanKelDataController::class)
+					->parameter('delapankeldata', 'tabel')
+					->except(['create', 'show']);
+				Route::resource('rpjmd', \App\Http\Controllers\Admin\TreeView\RpjmdController::class)
+					->parameter('rpjmd', 'tabel')
+					->except(['create', 'show']);
+				Route::resource('indikator', \App\Http\Controllers\Admin\TreeView\IndikatorController::class)
+					->parameter('indikator', 'tabel')
+					->except(['create', 'show']);
+				Route::resource('bps', \App\Http\Controllers\Admin\TreeView\BpsController::class)
+					->parameter('bps', 'tabel')
+					->except(['create', 'show']);
+			});
 
 		// Menu Form Uraian
 		Route::prefix('uraian')
 			->name('uraian.')
 			->group(function () {
 
-			// Menu Form Uraian RPJMD
-			Route::controller(\App\Http\Controllers\Admin\Uraian\RpjmdController::class)
-				->prefix('rpjmd')
-				->name('rpjmd.')
-				->group(function () {
-				Route::get('/{tabel?}', 'index')->name('index');
-				Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
-				Route::post('/{tabel}', 'store')->name('store');
-				Route::put('/{uraian}', 'update')->name('update');
-				Route::delete('/{uraian}', 'destroy')->name('destroy');
-				Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
-			});
+				// Menu Form Uraian RPJMD
+				Route::controller(\App\Http\Controllers\Admin\Uraian\RpjmdController::class)
+					->prefix('rpjmd')
+					->name('rpjmd.')
+					->group(function () {
+						Route::get('/{tabel?}', 'index')->name('index');
+						Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
+						Route::post('/{tabel}', 'store')->name('store');
+						Route::put('/{uraian}', 'update')->name('update');
+						Route::delete('/{uraian}', 'destroy')->name('destroy');
+						Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
+					});
 
-			// Menu Form Uraian 8 Kel. Data
-			Route::controller(\App\Http\Controllers\Admin\Uraian\DelapanKelDataController::class)
-				->prefix('delapankeldata')
-				->name('delapankeldata.')
-				->group(function () {
-				Route::get('/{tabel?}', 'index')->name('index');
-				Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
-				Route::post('/{tabel}', 'store')->name('store');
-				Route::put('/{uraian}', 'update')->name('update');
-				Route::delete('/{uraian}', 'destroy')->name('destroy');
-				Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
-			});
+				// Menu Form Uraian 8 Kel. Data
+				Route::controller(\App\Http\Controllers\Admin\Uraian\DelapanKelDataController::class)
+					->prefix('delapankeldata')
+					->name('delapankeldata.')
+					->group(function () {
+						Route::get('/{tabel?}', 'index')->name('index');
+						Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
+						Route::post('/{tabel}', 'store')->name('store');
+						Route::put('/{uraian}', 'update')->name('update');
+						Route::delete('/{uraian}', 'destroy')->name('destroy');
+						Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
+					});
 
-			// Menu Form Uraian BPS
-			Route::controller(\App\Http\Controllers\Admin\Uraian\BpsController::class)
-				->prefix('bps')
-				->name('bps.')
-				->group(function () {
-				Route::get('/{tabel?}', 'index')->name('index');
-				Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
-				Route::post('/{tabel}', 'store')->name('store');
-				Route::put('/{uraian}', 'update')->name('update');
-				Route::delete('/{uraian}', 'destroy')->name('destroy');
-				Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
-			});
+				// Menu Form Uraian BPS
+				Route::controller(\App\Http\Controllers\Admin\Uraian\BpsController::class)
+					->prefix('bps')
+					->name('bps.')
+					->group(function () {
+						Route::get('/{tabel?}', 'index')->name('index');
+						Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
+						Route::post('/{tabel}', 'store')->name('store');
+						Route::put('/{uraian}', 'update')->name('update');
+						Route::delete('/{uraian}', 'destroy')->name('destroy');
+						Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
+					});
 
-			// Menu Form Uraian Indikator
-			Route::controller(\App\Http\Controllers\Admin\Uraian\IndikatorController::class)
-				->prefix('indikator')
-				->name('indikator.')
-				->group(function () {
-				Route::get('/{tabel?}', 'index')->name('index');
-				Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
-				Route::post('/{tabel}', 'store')->name('store');
-				Route::put('/{uraian}', 'update')->name('update');
-				Route::delete('/{uraian}', 'destroy')->name('destroy');
-				Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
+				// Menu Form Uraian Indikator
+				Route::controller(\App\Http\Controllers\Admin\Uraian\IndikatorController::class)
+					->prefix('indikator')
+					->name('indikator.')
+					->group(function () {
+						Route::get('/{tabel?}', 'index')->name('index');
+						Route::get('/{tabel}/{uraian}/edit', 'edit')->name('edit');
+						Route::post('/{tabel}', 'store')->name('store');
+						Route::put('/{uraian}', 'update')->name('update');
+						Route::delete('/{uraian}', 'destroy')->name('destroy');
+						Route::delete('/delete/massDestroy', 'massDestroy')->name('massDestroy');
+					});
 			});
-		});
 
 		// 8 Kel. Data
 		Route::controller(App\Http\Controllers\Admin\DelapanKelDataController::class)
 			->prefix('delapankeldata')
 			->name('delapankeldata.')
 			->group(function () {
-			Route::get('/{category?}', 'index')->name('index');
-			Route::get('/category/{category}', 'category')->name('category');
-			Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			// Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Sumber data
-			Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
-			// Tahun
-			Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
-			Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/{category?}', 'index')->name('index');
+				Route::get('/category/{category}', 'category')->name('category');
+				Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				// Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Sumber data
+				Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+				// Tahun
+				Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
+				Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 
 		// RPJMD
 		Route::controller(App\Http\Controllers\Admin\RpjmdController::class)
 			->prefix('rpjmd')
 			->name('rpjmd.')
 			->group(function () {
-			Route::get('/{category?}', 'index')->name('index');
-			Route::get('/category/{category?}', 'category')->name('category');
-			Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			// Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Sumber data
-			Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
-			// Tahun
-			Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
-			Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/{category?}', 'index')->name('index');
+				Route::get('/category/{category?}', 'category')->name('category');
+				Route::get('/input/{tabel}/{skpd?}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				// Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Sumber data
+				Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+				// Tahun
+				Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
+				Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 
 		// Indikator
 		Route::controller(App\Http\Controllers\Admin\IndikatorController::class)
 			->prefix('indikator')
 			->name('indikator.')
 			->group(function () {
-			Route::get('/', 'index')->name('index');
-			Route::get('/{tabel}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			//Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Tahun
-			Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
-			Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/', 'index')->name('index');
+				Route::get('/{tabel}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				//Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Tahun
+				Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
+				Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 
 		// BPS
 		Route::controller(App\Http\Controllers\Admin\BpsController::class)
 			->prefix('bps')
 			->name('bps.')
 			->group(function () {
-			Route::get('/', 'index')->name('index');
-			Route::get('/{tabel}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			// Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Tahun
-			Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
-			Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/', 'index')->name('index');
+				Route::get('/{tabel}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				// Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Tahun
+				Route::post('/tahun/{tabel}', 'storeTahun')->name('store_tahun');
+				Route::delete('/tahun/{tabel}/{tahun}', 'destroyTahun')->name('destroy_tahun');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 	});
 
 /**
@@ -339,44 +337,48 @@ Route::middleware(['auth', 'role:' . User::ROLE_SKPD])
 			->prefix('delapankeldata')
 			->name('delapankeldata.')
 			->group(function () {
-			Route::get('/{category?}', 'index')->name('index');
-			Route::get('/category/{category}', 'category')->name('category');
-			Route::get('/input/{tabel}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			// Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Sumber data
-			Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/{category?}', 'index')->name('index');
+				Route::get('/category/{category}', 'category')->name('category');
+				Route::get('/input/{tabel}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				// Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Sumber data
+				Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 
 		// RPJMD
 		Route::controller(App\Http\Controllers\Skpd\RpjmdController::class)
 			->prefix('rpjmd')
 			->name('rpjmd.')
 			->group(function () {
-			Route::get('/{category?}', 'index')->name('index');
-			Route::get('/category/{category?}', 'category')->name('category');
-			Route::get('/input/{tabel}', 'input')->name('input');
-			Route::get('/{uraian}/edit', 'edit')->name('edit');
-			Route::put('/{uraian}', 'update')->name('update');
-			Route::delete('/{uraian}', 'destroy')->name('destroy');
-			// Fitur
-			Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
-			// File pendukung
-			Route::get('/files/{file}', 'downloadFile')->name('files.download');
-			Route::post('/files/{tabel}', 'storeFile')->name('files.store');
-			Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
-			// Sumber data
-			Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
-			// Chart
-			Route::get('/chart/{uraian}', 'chart')->name('chart');
-		});
+				Route::get('/{category?}', 'index')->name('index');
+				Route::get('/category/{category?}', 'category')->name('category');
+				Route::get('/input/{tabel}', 'input')->name('input');
+				Route::get('/{uraian}/edit', 'edit')->name('edit');
+				Route::put('/{uraian}', 'update')->name('update');
+				Route::delete('/{uraian}', 'destroy')->name('destroy');
+				// Fitur
+				Route::put('/fitur/{tabel}', 'updateFitur')->name('update_fitur');
+				// File pendukung
+				Route::get('/files/{file}', 'downloadFile')->name('files.download');
+				Route::post('/files/{tabel}', 'storeFile')->name('files.store');
+				Route::delete('/files/{file}', 'destroyFile')->name('files.destroy');
+				// Sumber data
+				Route::put('/sumber_data/{uraian}', 'updateSumberData')->name('update_sumber_data');
+				// Chart
+				Route::get('/chart/{uraian}', 'chart')->name('chart');
+			});
 	});
+
+Route::fallback(function () {
+	return abort(404);
+});

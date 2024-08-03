@@ -24,6 +24,9 @@
 @import "parts/plugins";
 @import "parts/miscellaneous";
 
+.btn{
+	border-radius: 0 !important;
+}
 
 // Custom
 .ck-editor__editable,
@@ -54,6 +57,7 @@ table.dataTable tbody th.select-checkbox::after {
 
 .dt-buttons .btn {
     margin-left: 0.333em !important;
+    margin-bottom: 0.333em !important;
     border-radius: 0;
 }
 

@@ -10,13 +10,13 @@ use App\Models\UraianRpjmd;
 
 class DashboardController extends Controller
 {
-  public function __invoke()
-  {
-    return view('admin.dashboard', [
-      'total_8keldata' => Uraian8KelData::count(),
-      'total_rpjmd' =>  UraianRpjmd::count(),
-      'total_indikator' => UraianIndikator::count(),
-      'total_bps' =>  UraianBps::count()
-    ]);
-  }
+	public function __invoke()
+	{
+		return view('admin.dashboard', [
+			'total_8keldata' => Uraian8KelData::count(),
+			'total_rpjmd' =>  UraianRpjmd::count(),
+			'total_indikator' => UraianIndikator::count(),
+			'total_bps' =>  UraianBps::count()
+		]);
+	}
 }

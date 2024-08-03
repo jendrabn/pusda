@@ -88,6 +88,11 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link"
+                               href="#">Data Statistik Sektoral</a>
+                        </li>
+
+                        <li class="nav-item">
                             @if (auth()->check())
                                 @role('Administrator')
                                     <a class="nav-link"

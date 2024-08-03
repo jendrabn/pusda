@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Flasher\Prime\Notification\Type;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Profile\ProfileRequest;
+use App\Services\UserService;
 
 class ProfileController extends Controller
 {
+
+	public function __construct(private UserService $service)
+	{
+	}
 
 	/**
 	 * Retrieves the profile view with the authenticated user.
@@ -35,12 +39,10 @@ class ProfileController extends Controller
 
 		$user = $request->user();
 
-		if ($request->hasFile('photo')) {
-			$validatedData['photo'] = $request->file('photo')->store('images/users', 'public');
+		if ($request->hasFile('avatar')) {
+			$validatedData['avatar'] = $request->file('avatar')->store('images/users', 'public');
 
-			if (Storage::disk('public')->exists($user->photo)) {
-				Storage::disk('public')->delete($user->photo);
-			}
+			$this->service->deleteAvatar($user->avatar);
 		}
 
 		$user->update($validatedData);

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\UserRole;
 use App\Traits\Auditable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -10,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -31,11 +29,11 @@ class User extends Authenticatable
 		'name',
 		'username',
 		'email',
+		'role',
 		'phone',
 		'address',
-		'photo',
+		'avatar',
 		'birth_date',
-		'role',
 		'password',
 	];
 
@@ -51,12 +49,14 @@ class User extends Authenticatable
 
 	public function skpd(): BelongsTo
 	{
-		return $this->belongsTo(Skpd::class, 'skpd_id');
+		return $this->belongsTo(Skpd::class, 'skpd_id', 'id',);
 	}
 
-	public function photo(): Attribute
+	public function avatarUrl(): Attribute
 	{
-		return Attribute::get(fn($value) => $value && Storage::disk('public')->exists($value) ? Storage::url($value) : '/img/default-avatar.jpg');
+		return Attribute::get(fn () => $this->attributes['avatar'] && Storage::disk('public')->exists($this->attributes['avatar'])
+			? Storage::url($this->attributes['avatar'])
+			: 'https://ui-avatars.com/api/?name=' . urlencode($this->attributes['name']));
 	}
 
 	public function isAdministrator(): bool

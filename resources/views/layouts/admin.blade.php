@@ -1,255 +1,193 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-          name="viewport">
-    <meta content="ie=edge"
-          http-equiv="X-UA-Compatible">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1"
+          name="viewport" />
     <meta content="{{ csrf_token() }}"
-          name="csrf-token">
+          name="csrf-token" />
 
-    <title>{{ $title ? $title . ' | ' : '' }} {{ config('app.name') }}</title>
+    <title>
+        {{ isset($title) ? $title : 'Home' }} | {{ config('app.name') }}
+    </title>
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
-          rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-          rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css"
-          rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
-          rel="stylesheet">
-    <link href="https://cdn.datatables.net/v/bs4-4.6.0/jszip-3.10.1/dt-2.1.0/b-3.1.0/b-colvis-3.1.0/b-html5-3.1.0/b-print-3.1.0/r-3.0.2/sl-2.0.3/datatables.min.css"
-          rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css"
           rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          rel="stylesheet" />
+
+    <link href="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.1.2/b-3.1.0/b-colvis-3.1.0/b-html5-3.1.0/b-print-3.1.0/r-3.0.2/sl-2.0.3/datatables.min.css"
+          rel="stylesheet" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+          rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"
+          rel="stylesheet" />
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
           rel="stylesheet" />
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css"
           rel="stylesheet" />
-    <link href="{{ asset('plugins/jstree/themes/default/style.css') }}"
-          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css"
+          rel="stylesheet" />
+
     @vite('resources/scss/adminlte/adminlte.scss')
 
-    <style>
-        .select2 {
-            width: 100% !important;
-        }
-    </style>
     @yield('styles')
+    @stack('styles')
 </head>
 
-<body class="sidebar-mini layout-fixed"
-      style="height: auto;">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-            <!-- Left navbar links -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link"
                        data-widget="pushmenu"
-                       href="#"><i class="fa fa-bars"></i></a>
+                       href="#"
+                       role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link d-flex align-items-center"
+                       data-toggle="dropdown"
+                       href="#">
+                        <img alt="User Image"
+                             class="img-circle elevation-2 mr-2"
+                             data-toggle="dropdown"
+                             height="33"
+                             src="{{ Auth::user()->avatar_url }}"
+                             width="33" />
+
+                        <span class="font-weight-bold">{{ Auth::user()->name }}</span>
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           href="{{ route('profile') }}">Pengaturan Akun</a>
+                        <a class="dropdown-item"
+                           href="#"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Log out
+                            <form action="{{ route('auth.logout') }}"
+                                  class="d-none"
+                                  id="logout-form"
+                                  method="POST">
+                                @csrf
+                            </form>
+                        </a>
+                    </div>
                 </li>
             </ul>
         </nav>
 
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a class="brand-link"
-               href="javascript:;">
-                <img alt="Logo"
-                     class="brand-text img-fluid"
-                     src="{{ asset('img/logo.png') }}" />
-            </a>
+        @include('partials.sidebar')
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel d-flex mt-3 mb-3 pb-3">
-                    <div class="image">
-                        <img alt="User Image"
-                             class="img-circle elevation-2"
-                             src="{{ auth()->user()->photo }}" />
-                    </div>
-                    <div class="info">
-                        <a class="d-block"
-                           href="{{ route('profile') }}">{{ Str::limit(Str::words(auth()->user()->name, 2, ''), 15, '.') }}</a>
-                    </div>
-                </div>
-
-                <!-- Sidebar Menu -->
-                @include('partials.menu')
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <div class="content-wrapper"
-             style="min-height: 917px;">
-            <!-- Main content -->
-            <section class="content"
-                     style="padding-top: 20px">
-                @if (session('message'))
-                    <div class="row mb-2">
-                        <div class="col-lg-12">
-                            <div class="alert alert-success"
-                                 role="alert">{{ session('message') }}</div>
-                        </div>
-                    </div>
-                @endif
-                @if ($errors->count() > 0)
-                    <div class="alert alert-danger">
-                        <ul class="list-unstyled">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+        <div class="content-wrapper">
+            <div class="content"
+                 style="padding-top: 20px">
                 @yield('content')
-            </section>
-            <!-- /.content -->
+            </div>
         </div>
 
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 1.0.0
+            <div class="float-right d-none d-sm-inline">
+                Versi 2.0
             </div>
-            <strong> &copy;</strong> {{ config('app.name') }}
+            <strong>Copyright &copy; 2017-{{ date('Y') }}
+                <a href="https://satudata.situbondokab.go.id">Pusat Data Situbondo</a>.</strong>
+            All rights reserved.
         </footer>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script
-            src="https://cdn.datatables.net/v/bs4-4.6.0/jszip-3.10.1/dt-2.1.0/b-3.1.0/b-colvis-3.1.0/b-html5-3.1.0/b-print-3.1.0/r-3.0.2/sl-2.0.3/datatables.min.js">
+            src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.1.2/b-3.1.0/b-colvis-3.1.0/b-html5-3.1.0/b-print-3.1.0/r-3.0.2/sl-2.0.3/datatables.min.js">
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="	https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    <script src="{{ asset('plugins/jstree/jstree.min.js') }}"></script>
+
+    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(function() {
+            toastr.options = {
+                closeButton: false,
+                debug: false,
+                newestOnTop: false,
+                progressBar: true,
+                positionClass: "toast-top-right",
+                preventDuplicates: false,
+                onclick: null,
+                showDuration: 300,
+                hideDuration: 1000,
+                timeOut: 5000,
+                extendedTimeOut: 1000,
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+            };
+
+            $.ajaxSetup({
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error(errorThrown, "Error");
+                },
+            });
+
             $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
-                className: 'btn'
-            })
+                className: "btn",
+            });
 
             $.extend(true, $.fn.dataTable.defaults, {
                 language: {
-                    url: 'https://cdn.datatables.net/plug-ins/2.1.2/i18n/en-GB.json'
+                    url: "https://cdn.datatables.net/plug-ins/2.1.3/i18n/id.json",
                 },
-                columnDefs: [{
-                    orderable: false,
-                    className: 'select-checkbox',
-                    targets: 0
-                }, {
-                    orderable: false,
-                    searchable: false,
-                    targets: -1
-                }],
-                select: {
-                    style: 'multi+shift',
-                    selector: 'td:first-child'
-                },
-                order: [],
+                order: [
+                    [1, "desc"]
+                ],
                 scrollX: true,
-                pageLength: 100,
+                pageLength: 10,
                 dom: 'lBfrtip<"actions">',
-                buttons: [{
-                        extend: 'selectAll',
-                        className: 'btn-primary',
-                        text: 'Select all',
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                        action: function(e, dt) {
-                            e.preventDefault()
-                            dt.rows().deselect();
-                            dt.rows({
-                                search: 'applied'
-                            }).select();
-                        }
-                    },
-                    {
-                        extend: 'selectNone',
-                        className: 'btn-primary',
-                        text: 'Deselect all',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'copy',
-                        className: 'btn-default',
-                        text: 'Copy',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'csv',
-                        className: 'btn-default',
-                        text: 'CSV',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        className: 'btn-default',
-                        text: 'Excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        className: 'btn-default',
-                        text: 'PDF',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        className: 'btn-default',
-                        text: 'Print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'colvis',
-                        className: 'btn-default',
-                        text: 'Columns',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    }
-                ]
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"],
+                ],
             });
 
-            $.fn.dataTable.ext.classes.sPageButton = '';
+            $.fn.dataTable.ext.classes.sPageButton = "";
         });
     </script>
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

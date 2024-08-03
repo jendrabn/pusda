@@ -13,7 +13,7 @@ class RoleAndPermissionSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		Role::create(['name' => \App\Enums\Role::ADMIN->value]);
-		Role::create(['name' => \App\Enums\Role::SKPD->value]);
+		Role::create(['name' => 'Administrator']);
+		Role::create(['name' => 'SKPD']);
 	}
 }

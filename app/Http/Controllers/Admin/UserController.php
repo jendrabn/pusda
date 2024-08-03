@@ -2,151 +2,145 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\MassDestroyUserRequest;
-use App\Http\Requests\Admin\StoreUserRequest;
-use App\Http\Requests\Admin\UpdateUserRequest;
-use Illuminate\Http\Request;
+use App\DataTables\UsersDataTable;
 use App\Models\Skpd;
 use App\Models\User;
-use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use Flasher\Prime\Notification\Type;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Admin\UserRequest;
+use App\Services\UserService;
+use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return JsonResponse|View
-   */
-  public function index(Request $request): JsonResponse|View
-  {
-    if ($request->ajax()) {
-      $model = User::with(['skpd'])->select(sprintf('%s.*', (new User())->getTable()));
-      $table = Datatables::eloquent($model);
+	public function __construct(private UserService $service)
+	{
+	}
 
-      $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
+	/**
+	 * Display a listing of the users.
+	 *
+	 * @param UsersDataTable $dataTable
+	 * @return View
+	 */
+	public function index(UsersDataTable $dataTable)
+	{
+		return $dataTable->render('admin.users.index');
+	}
 
-      $table->editColumn('actions', function ($row) {
-        $crudRoutePart = 'users';
+	/**
+	 * Creates a new view for creating a user.
+	 *
+	 * @return View
+	 */
+	public function create(): View
+	{
+		$skpds = Skpd::pluck('nama', 'id');
+		$roles = Role::pluck('name', 'id');
 
-        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
-      });
+		return view('admin.users.create', compact('skpds', 'roles'));
+	}
 
-      $table->editColumn('role', fn ($row) => sprintf(
-        '<span class="badge badge-info rounded-0">%s</span>',
-        $row->role
-      ));
+	/**
+	 * Store a newly created user in the database.
+	 *
+	 * @param UserRequest $request
+	 * @return RedirectResponse
+	 */
+	public function store(UserRequest $request): RedirectResponse
+	{
+		$validatedData = $request->validated();
 
-      $table->rawColumns(['actions', 'placeholder', 'role']);
+		User::create($validatedData)?->assignRole($validatedData['role']);
 
-      return $table->toJson();
-    }
+		toastr('User successfully created.', Type::SUCCESS);
 
-    return view('admin.users.index');
-  }
+		return to_route('admin.users.index');
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return View
-   */
-  public function show(User $user): View
-  {
-    return view('admin.users.show', compact('user'));
-  }
+	/**
+	 * Edit the details of a user.
+	 *
+	 * @param User $user
+	 * @return View
+	 */
+	public function edit(User $user): View
+	{
+		$skpds = Skpd::pluck('nama', 'id');
+		$roles = Role::pluck('name', 'id');
 
-  /**
-   * Undocumented function
-   *
-   * @return View
-   */
-  public function create(): View
-  {
-    $skpd = Skpd::pluck('nama', 'id');
+		return view('admin.users.edit', compact('skpds', 'roles', 'user'));
+	}
 
-    return view('admin.users.create', compact('skpd'));
-  }
+	/**
+	 * Update the specified user with the given request data.
+	 *
+	 * @param UserRequest $request
+	 * @param User $user
+	 * @return RedirectResponse
+	 */
+	public function update(UserRequest $request, User $user): RedirectResponse
+	{
+		$validatedData = $request->validated();
 
-  /**
-   * Undocumented function
-   *
-   * @param StoreUserRequest $request
-   * @return RedirectResponse
-   */
-  public function store(StoreUserRequest $request): RedirectResponse
-  {
-    User::create($request->validated());
+		if (!$validatedData['password']) unset($validatedData['password']);
 
-    toastr()->addSuccess('User successfully saved.');
+		$user->update($validatedData);
+		$user->syncRoles($validatedData['role']);
 
-    return back();
-  }
+		toastr('User successfully updated.', Type::SUCCESS);
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return View
-   */
-  public function edit(User $user): View
-  {
-    $skpd = Skpd::pluck('nama', 'id');
+		return back();
+	}
 
-    return view('admin.users.edit', compact('skpd', 'user'));
-  }
+	/**
+	 * Delete a user and their associated photo.
+	 *
+	 * @param User $user
+	 * @return JsonResponse
+	 */
+	public function destroy(User $user): JsonResponse
+	{
+		$this->service->deleteAvatar($user->photo);
 
-  /**
-   * Undocumented function
-   *
-   * @param UpdateUserRequest $request
-   * @param User $user
-   * @return RedirectResponse
-   */
-  public function update(UpdateUserRequest $request, User $user): RedirectResponse
-  {
-    $user->update($request->validated());
+		$user->delete();
 
-    toastr()->addSuccess('User successfully updated.');
+		return response()->json(['message' => 'User successfully deleted.']);
+	}
 
-    return back();
-  }
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return RedirectResponse
-   */
-  public function destroy(User $user): RedirectResponse
-  {
-    Storage::disk('public')->delete($user->photo);
+	/**
+	 * Delete multiple users and their associated photos.
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 * @throws ValidationException
+	 */
+	public function massDestroy(Request $request): JsonResponse
+	{
+		$request->validate([
+			'ids' => [
+				'required',
+				'array'
+			],
+			'ids.*' => [
+				'integer',
+				'exists:users,id'
+			]
+		]);
 
-    $user->delete();
+		$users = User::whereIn('id', $request->ids)->get();
 
-    toastr()->addSuccess('User successfully deleted.');
+		$users->each(function ($user) {
+			$this->service->deleteAvatar($user->photo);
+			$user->delete();
+		});
 
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param MassDestroyUserRequest $request
-   * @return void
-   */
-  public function massDestroy(MassDestroyUserRequest $request): HttpResponse
-  {
-    User::whereIn('id', $request->ids)->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'User successfully deleted.']);
+	}
 }
