@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
+use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,5 +68,10 @@ class User extends Authenticatable
 	public function isSkpd(): bool
 	{
 		return $this->attributes['role'] === self::ROLE_SKPD;
+	}
+
+	protected function serializeDate(DateTimeInterface $date)
+	{
+		return $date->format('Y-m-d H:i:s');
 	}
 }

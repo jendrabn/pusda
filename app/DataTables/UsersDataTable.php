@@ -41,9 +41,6 @@ class UsersDataTable extends DataTable
 
 				return implode('<br>', $roles);
 			})
-			->editColumn('created_at', function ($row): string {
-				return $row->created_at->format('Y-m-d H:i:s');
-			})
 			->editColumn('avatar', function ($row): string {
 				return sprintf('<a href="%s" target="_blank"><img src="%s" width="30"></a>', $row->avatar_url, $row->avatar_url);
 			})
@@ -89,12 +86,12 @@ class UsersDataTable extends DataTable
 				Button::make([
 					'extend' => 'excel',
 					'text' => 'Excel',
-					'className' => 'btn-default',
+					'className' => 'btn-secondary',
 				]),
 				Button::make([
 					'extend' => 'colvis',
 					'text' => 'Columns',
-					'className' => 'btn-default',
+					'className' => 'btn-secondary',
 				]),
 				Button::make([
 					'extend' => 'deleteSelected',
