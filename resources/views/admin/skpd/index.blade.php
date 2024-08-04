@@ -1,125 +1,138 @@
-@extends('layouts.admin', ['title' => 'Daftar SKPD'])
+@extends('layouts.admin', ['title' => 'SKPD List'])
 
 @section('content')
-  <div class="row"
-    style="margin-bottom: 10px">
-    <div class="col-lg-12">
-      <a class="btn btn-success btn-flat"
-        href="{{ route('admin.skpd.create') }}">
-        <i class="fas fa-plus mr-1"></i> Tambah SKPD
-      </a>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">SKPD List</h3>
+        </div>
+        <div class="card-body">
+            {{ $dataTable->table(['class' => 'table-bordered table-striped table-hover ajaxTable datatable datatable-skpd table table-sm']) }}
+        </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Daftar SKPD</h3>
-    </div>
-    <div class="card-body">
-      <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-skpd table table-sm">
-        <thead>
-          <tr>
-            <th width="10"></th>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Singkatan</th>
-            <th>Kategori</th>
-            <th style="min-width: 65px;">&nbsp;</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
 @endsection
 
 @section('scripts')
-  <script>
-    $(function() {
-      let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);
-      let deleteButtonText = "Delete selected";
-      let deleteButton = {
-        text: deleteButtonText,
-        url: "{{ route('admin.skpd.massDestroy') }}",
-        className: "btn-danger",
-        action: function(e, dt, node, config) {
-          var ids = $.map(
-            dt
-            .rows({
-              selected: true,
-            })
-            .data(),
-            function(entry) {
-              return entry.id;
-            }
-          );
+    {{ $dataTable->scripts(attributes: ['type' => 'text/javascript']) }}
+    <script>
+        $(function() {
+            $.fn.dataTable.ext.buttons.deleteSelected = {
+                action: function(e, dt, node, config) {
+                    let ids = $.map(
+                        dt
+                        .rows({
+                            selected: true,
+                        })
+                        .data(),
+                        function(entry) {
+                            return entry.id;
+                        }
+                    );
 
-          if (ids.length === 0) {
-            alert("No rows selected");
+                    if (ids.length === 0) {
+                        toastr.error("No rows selected", "Error");
+                        return;
+                    }
 
-            return;
-          }
+                    Swal.fire({
+                        title: "Are you sure?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        customClass: {
+                            confirmButton: "btn btn-danger",
+                            cancelButton: "btn btn-outline-secondary",
+                        },
+                        confirmButtonText: "Delete",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const btn = this;
 
-          if (confirm("Are You Sure ?")) {
-            $.ajax({
-              headers: {
-                "x-csrf-token": _token,
-              },
-              method: "POST",
-              url: config.url,
-              data: {
-                ids: ids,
-                _method: "DELETE",
-              },
-            }).done(function() {
-              location.reload();
+                            $.ajax({
+                                headers: {
+                                    "x-csrf-token": _token,
+                                },
+                                method: "POST",
+                                url: "{{ route('admin.skpd.massDestroy') }}",
+                                data: {
+                                    ids: ids,
+                                    _method: "DELETE",
+                                },
+                                beforeSend: function() {
+                                    btn.disable();
+                                },
+                                success: function(data, textStatus, jqXHR) {
+                                    toastr.success(data.message, "Success");
+                                    dt.ajax.reload();
+                                },
+                                complete: function() {
+                                    btn.enable();
+                                },
+                            });
+                        }
+                    });
+                },
+            };
+
+            let table = window.LaravelDataTables["skpd-table"];
+
+            $('a[data-toggle="tab"]').on("shown.bs.tab click", function(e) {
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
             });
-          }
-        },
-      };
-      dtButtons.push(deleteButton);
 
-      let dtOverrideGlobals = {
-        buttons: dtButtons,
-        processing: true,
-        serverSide: true,
-        retrieve: true,
-        aaSorting: [],
-        ajax: "{{ route('admin.skpd.index') }}",
-        columns: [{
-            data: "placeholder",
-            name: "placeholder"
-          },
-          {
-            data: "id",
-            name: "id",
-          },
-          {
-            data: "nama",
-            name: "nama",
-          },
-          {
-            data: "singkatan",
-            name: "singkatan",
-          },
-          {
-            data: "kategori",
-            name: "kategori.nama",
-          },
-          {
-            data: "actions",
-            name: "actions",
-          }
-        ],
-        orderCellsTop: true,
-        order: [
-          [1, "desc"]
-        ],
-        pageLength: 50,
-      };
+            let visibleColumnsIndexes = null;
 
-      let table = $(".datatable-skpd").DataTable(dtOverrideGlobals);
-      $('a[data-toggle="tab"]').on("shown.bs.tab click", function(e) {
-        $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-      });
-    });
-  </script>
+            $(".datatable thead").on("input", ".search", function() {
+                let strict = $(this).attr("strict") || false;
+                let value =
+                    strict && this.value ? "^" + this.value + "$" : this.value;
+
+                let index = $(this).parent().index();
+                if (visibleColumnsIndexes !== null) {
+                    index = visibleColumnsIndexes[index];
+                }
+
+                table.column(index).search(value, strict).draw();
+            });
+
+            table.on("column-visibility.dt", function(e, settings, column, state) {
+                visibleColumnsIndexes = [];
+
+                table.columns(":visible").every(function(colIdx) {
+                    visibleColumnsIndexes.push(colIdx);
+                });
+            });
+
+            table.on("click", ".btn-delete", function() {
+                const url = $(this).data("url");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    customClass: {
+                        confirmButton: "btn btn-danger",
+                        cancelButton: "btn btn-outline-secondary",
+                    },
+                    confirmButtonText: "Delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: "POST",
+                            headers: {
+                                "x-csrf-token": _token,
+                            },
+                            data: {
+                                _method: "DELETE",
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                toastr.success(data.message, "Success");
+
+                                table.ajax.reload();
+                            },
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

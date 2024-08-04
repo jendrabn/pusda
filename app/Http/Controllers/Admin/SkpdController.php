@@ -2,136 +2,121 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\SkpdsDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\MassDestroySkpdRequest;
-use App\Http\Requests\Admin\StoreSkpdRequest;
-use App\Http\Requests\Admin\UpdateSkpdRequest;
+use App\Http\Requests\Admin\SkpdRequest;
 use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
+use Flasher\Prime\Notification\Type;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SkpdController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return JsonResponse|View
-   */
-  public function index(Request $request): JsonResponse|View
-  {
-    if ($request->ajax()) {
-      $model = Skpd::with(['kategori'])->select(sprintf('%s.*', (new Skpd())->getTable()));
-      $table = DataTables::eloquent($model);
+	/**
+	 * Render the index view for the SkpdsDataTable.
+	 *
+	 * @param SkpdsDataTable $dataTable
+	 * @return JsonResponse|View|BinaryFileResponse
+	 */
+	public function index(SkpdsDataTable $dataTable): JsonResponse|View|BinaryFileResponse
+	{
+		return $dataTable->render('admin.skpd.index');
+	}
 
-      $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
+	/**
+	 * Renders the view for creating a new SKPD
+	 *
+	 * @return \Illuminate\Contracts\View\View
+	 */
+	public function create(): View
+	{
+		$kategori = KategoriSkpd::pluck('nama', 'id');
 
-      $table->editColumn('actions', function ($row) {
-        $crudRoutePart = 'skpd';
+		return view('admin.skpd.create', compact('kategori'));
+	}
 
-        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
-      });
+	/**
+	 * Store a new SKPD.
+	 *
+	 * @param SkpdRequest $request
+	 * @return RedirectResponse
+	 */
+	public function store(SkpdRequest $request): RedirectResponse
+	{
+		Skpd::create($request->validated());
 
-      $table->editColumn('kategori', fn ($row) => $row->kategori ? $row->kategori->nama : '');
+		toastr('SKPD successfully created.', Type::SUCCESS);
 
-      $table->rawColumns(['actions', 'placeholder']);
+		return to_route('admin.skpd.index');
+	}
 
-      return $table->toJson();
-    }
+	/**
+	 * Render the view for editing a specific SKPD.
+	 *
+	 * @param Skpd $skpd
+	 * @return View
+	 */
+	public function edit(Skpd $skpd): View
+	{
+		$kategori = KategoriSkpd::pluck('nama', 'id');
 
-    return view('admin.skpd.index');
-  }
+		return view('admin.skpd.edit', compact('skpd', 'kategori'));
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @return View
-   */
-  public function create(): View
-  {
-    $categories = KategoriSkpd::pluck('nama', 'id');
+	/**
+	 * Update an existing SKPD.
+	 *
+	 * @param SkpdRequest $request
+	 * @param Skpd $skpd
+	 * @return RedirectResponse
+	 */
+	public function update(SkpdRequest $request, Skpd $skpd): RedirectResponse
+	{
+		$skpd->update($request->validated());
 
-    return view('admin.skpd.create', compact('categories'));
-  }
+		toastr('SKPD successfully updated.', Type::SUCCESS);
 
-  /**
-   * Undocumented function
-   *
-   * @param StoreSkpdRequest $request
-   * @return RedirectResponse
-   */
-  public function store(StoreSkpdRequest $request): RedirectResponse
-  {
-    Skpd::create($request->validated());
+		return back();
+	}
 
-    toastr()->addSuccess('SKPD successfully saved.');
+	/**
+	 * Delete an SKPD if its ID is not 1.
+	 *
+	 * @param Skpd $skpd
+	 * @return JsonResponse
+	 */
+	public function destroy(Skpd $skpd): JsonResponse
+	{
+		$skpd->delete();
 
-    return to_route('admin.skpd.index');
-  }
+		return response()->json(['message' => 'SKPD successfully deleted.']);
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Skpd $skpd
-   * @return View
-   */
-  public function edit(Skpd $skpd): View
-  {
-    $categories = KategoriSkpd::pluck('nama', 'id');
+	/**
+	 * Mass delete SKPDs based on the provided IDs.
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function massDestroy(Request $request): JsonResponse
+	{
+		$validatedData = $request->validate([
+			'ids' => [
+				'required',
+				'array'
+			],
+			'ids.*' => [
+				'integer',
+				'exists:skpd,id'
+			]
+		]);
 
-    return view('admin.skpd.edit', compact('skpd', 'categories'));
-  }
+		Skpd::whereIn('id', $validatedData['ids'])->delete();
 
-  /**
-   * Undocumented function
-   *
-   * @param UpdateSkpdRequest $request
-   * @param Skpd $skpd
-   * @return RedirectResponse
-   */
-  public function update(UpdateSkpdRequest $request, Skpd $skpd): RedirectResponse
-  {
-    if ($skpd->id !== 1) $skpd->update($request->validated());
-
-    toastr()->addSuccess('SKPD successfully updated.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Skpd $skpd
-   * @return RedirectResponse
-   */
-  public function destroy(Skpd $skpd): RedirectResponse
-  {
-    if ($skpd->id !== 1) $skpd->delete();
-
-    toastr()->addSuccess('SKPD successfully deleted.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param MassDestroySkpdRequest $request
-   * @return HttpResponse
-   */
-  public function massDestroy(MassDestroySkpdRequest $request): HttpResponse
-  {
-    $ids = collect($request->ids)->filter(fn ($id) => intval($id) !== 1)->toArray();
-
-    Skpd::whereIn('id', $ids)->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'SKPD successfully deleted.']);
+	}
 }

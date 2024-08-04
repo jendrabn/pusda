@@ -26,16 +26,17 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
           rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"
-          rel="stylesheet" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-          rel="stylesheet" />
+    <link href="https://preview.keenthemes.com/html/keen/docs/assets/plugins/custom/jstree/jstree.bundle.css"
+          rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css"
           rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css"
           rel="stylesheet" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css"
+          rel="stylesheet">
     @vite('resources/scss/adminlte/adminlte.scss')
 
     @yield('styles')
@@ -117,7 +118,7 @@
             src="https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.1.2/b-3.1.0/b-colvis-3.1.0/b-html5-3.1.0/b-print-3.1.0/r-3.0.2/sl-2.0.3/datatables.min.js">
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.16/jstree.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -126,9 +127,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/id.min.js"></script>
     <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
+            src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js">
     </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
@@ -136,9 +139,11 @@
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 
     <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(function() {
+            window._token = $('meta[name="csrf-token"]').attr("content");
+
+            // Toastr
             toastr.options = {
                 closeButton: false,
                 debug: false,
@@ -159,17 +164,18 @@
 
             $.ajaxSetup({
                 error: function(jqXHR, textStatus, errorThrown) {
-                    toastr.error(errorThrown, "Error");
+                    toastr.error(jqXHR.responseJSON.message || errorThrown, "Error");
                 },
             });
 
+            // DataTable
             $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
                 className: "btn",
             });
 
             $.extend(true, $.fn.dataTable.defaults, {
                 language: {
-                    url: "https://cdn.datatables.net/plug-ins/2.1.3/i18n/id.json",
+                    url: "https://cdn.datatables.net/plug-ins/2.1.3/i18n/en-GB.json",
                 },
                 order: [
                     [1, "desc"]
@@ -184,6 +190,98 @@
             });
 
             $.fn.dataTable.ext.classes.sPageButton = "";
+
+            $('a[data-widget^="pushmenu"]').click(function() {
+                setTimeout(function() {
+                    $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+                }, 350);
+            });
+
+            // Moment
+            moment.updateLocale("id", {
+                week: {
+                    dow: 1
+                },
+            });
+
+            // Datetimepicker
+            $(".date").datetimepicker({
+                format: "DD-MM-YYYY",
+                viewMode: "years",
+            });
+
+
+            $(".datetime").datetimepicker({
+                format: "DD-MM-YYYY HH:mm:ss",
+                locale: "id",
+                sideBySide: true,
+            });
+
+            $(".timepicker").datetimepicker({
+                format: "HH:mm:ss",
+            });
+
+            // Select2
+            $(".select2").select2();
+
+            $(".select-all").click(function() {
+                let $select2 = $(this).parent().siblings(".select2");
+                $select2.find("option").prop("selected", "selected");
+                $select2.trigger("change");
+            });
+            $(".deselect-all").click(function() {
+                let $select2 = $(this).parent().siblings(".select2");
+                $select2.find("option").prop("selected", "");
+                $select2.trigger("change");
+            });
+
+            // Treeview
+            $(".treeview").each(function() {
+                var shouldExpand = false;
+                $(this)
+                    .find("li")
+                    .each(function() {
+                        if ($(this).hasClass("active")) {
+                            shouldExpand = true;
+                        }
+                    });
+                if (shouldExpand) {
+                    $(this).addClass("active");
+                }
+            });
+
+            // Jstree
+            $(".jstree").jstree({
+                core: {
+                    themes: {
+                        responsive: false
+                    }
+                },
+                types: {
+                    default: {
+                        icon: "fas fa-folder text-warning"
+                    },
+                    file: {
+                        icon: "fas fa-file text-warning"
+                    },
+                },
+                plugins: ["types"]
+            });
+
+            $(".jstree").on("select_node.jstree", function(e, data) {
+                var link = $("#" + data.selected).find("a");
+                if (
+                    link.attr("href") != "#" &&
+                    link.attr("href") != "javascript:;" &&
+                    link.attr("href") != ""
+                ) {
+                    if (link.attr("target") == "_blank") {
+                        link.attr("href").target = "_blank";
+                    }
+                    document.location.href = link.attr("href");
+                    return false;
+                }
+            });
         });
     </script>
     @yield('scripts')

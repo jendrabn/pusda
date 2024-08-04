@@ -11,9 +11,6 @@
     {{ $dataTable->scripts(attributes: ['type' => 'text/javascript']) }}
     <script>
         $(function() {
-
-            console.log($.fn.dataTable.initComplete);
-
             $.fn.dataTable.ext.buttons.deleteSelected = {
                 action: function(e, dt, node, config) {
                     let ids = $.map(

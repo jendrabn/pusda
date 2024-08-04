@@ -132,18 +132,12 @@
 
                     <div class="form-group col-md-6">
                         <label>Tgl. Lahir</label>
-                        <div class="input-group">
-                            <input class="form-control date @error('birth_date') is-invalid @enderror"
-                                   name="birth_date"
-                                   placeholder="yyyy-mm-dd"
-                                   type="text"
-                                   value="{{ $user->birth_date }}" />
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="far fa-calendar-alt"></i>
-                                </span>
-                            </div>
-                        </div>
+                        <input class="form-control datetimepicker-input date @error('birth_date') is-invalid @enderror"
+                               data-toggle="datetimepicker"
+                               name="birth_date"
+                               placeholder="DD-MM-YYYY"
+                               type="text"
+                               value="{{ $user->birth_date }}" />
                         @error('birth_date')
                             <span class="error invalid-feedback">{{ $message }}</span>
                         @enderror
