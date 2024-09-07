@@ -2,145 +2,197 @@
 
 namespace App\Http\Traits;
 
+use App\Models\User;
 use App\Models\File8KelData;
-use App\Models\Fitur8KelData;
+use App\Repositories\DelapanKelDataRepository;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
-use App\Models\User;
-use App\Services\DelapanKelDataService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 trait DelapanKelDataTrait
 {
-  private DelapanKelDataService $service;
+	public function __construct(private DelapanKelDataRepository $repository)
+	{
+	}
 
-  public function __construct(DelapanKelDataService $service)
-  {
-    $this->service = $service;
-  }
+	public function edit(Request $request, Uraian8KelData $uraian)
+	{
+		$isi = $this->repository->all_isi_uraian($uraian->id);
+		$tahuns = $isi->map(fn($item) => $item->tahun);
+		$tabelId = $uraian->tabel_8keldata_id;
 
-  public function edit(Request $request, Uraian8KelData $uraian)
-  {
-    $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
-    $tabelId = $uraian->tabel_8keldata_id;
+		$viewPath = match (request()->user()->role) {
+			User::ROLE_ADMIN => 'admin.isiUraian.edit',
+			User::ROLE_SKPD => 'skpd.isiUraian.edit',
+			default => null
+		};
 
-    $viewPath = match (request()->user()->role) {
-      User::ROLE_ADMIN => 'admin.isi-uraian.edit',
-      User::ROLE_SKPD => 'skpd.isi-uraian.edit',
-      default => null
-    };
+		abort_if(!$viewPath, Response::HTTP_NOT_FOUND);
 
-    abort_if(!$viewPath, Response::HTTP_NOT_FOUND);
+		return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
+	}
 
-    return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
-  }
+	public function update(Request $request, Uraian8KelData $uraian)
+	{
+		$isi = $this->repository->all_isi_uraian($uraian->id);
+		$tahuns = $isi->map(fn($item) => $item->tahun);
 
-  public function update(Request $request, Uraian8KelData $uraian)
-  {
-    $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+		$rules = [
+			'uraian' => ['required', 'string'],
+			'satuan' => ['required', 'string'],
+			'ketersediaan_data' => ['required', 'boolean'],
+		];
 
-    $rules = [
-      'uraian' => ['required', 'string'],
-      'satuan' => ['required', 'string'],
-      'ketersediaan_data' => ['required', 'boolean'],
-    ];
+		foreach ($tahuns as $tahun) {
+			$rules['tahun_' . $tahun] = ['required', 'integer'];
+		}
 
-    foreach ($tahuns as $tahun) {
-      $rules['tahun_' . $tahun] = ['required', 'integer'];
-    }
+		request()->validate($rules);
 
-    $this->validate($request, $rules);
+		DB::beginTransaction();
+		try {
+			$uraian->update($request->all());
 
-    DB::beginTransaction();
-    try {
-      $uraian->update($request->all());
+			$isi->each(function ($item) use ($request) {
+				$item->isi = $request->get('tahun_' . $item->tahun);
+				$item->save();
+			});
 
-      $isi->each(function ($item) use ($request) {
-        $item->isi = $request->get('tahun_' . $item->tahun);
-        $item->save();
-      });
+			DB::commit();
+		} catch (\Exception $e) {
+			DB::rollBack();
 
-      DB::commit();
-    } catch (\Exception $e) {
-      DB::rollBack();
+			throw new \Exception($e->getMessage());
+		}
 
-      throw new \Exception($e->getMessage());
-    }
+		toastr('Isi uraian successfully updated', 'success');
 
-    toastr()->addSuccess('');
-    return back()->with('success-message', 'Successfully Updated.');
-  }
+		return back();
+	}
 
-  public function destroy(Uraian8KelData $uraian)
-  {
-    $uraian->delete();
-    toastr()->addSuccess('');
-    return back()->with('success-message', 'Successfully Deleted.');
-  }
+	public function destroy(Request $request, Uraian8KelData $uraian)
+	{
+		$uraian->delete();
 
-  public function updateFitur(Request $request, Tabel8KelData $tabel)
-  {
+		toastr('Isi uraian successfully deleted', 'success');
 
-    $request->validate([
-      'deskripsi' => ['nullable', 'string', 'max:255'],
-      'analisis'  => ['nullable', 'string', 'max:255'],
-      'permasalahan'  => ['nullable', 'string', 'max:255'],
-      'solusi'  => ['nullable', 'string', 'max:255'],
-      'saran'  => ['nullable', 'string', 'max:255']
-    ]);
+		return to_route('admin.delapankeldata.input', [$uraian->tabel_8keldata_id, 'tab' => $request->input('tab')]);
+	}
 
-    $tabel->fitur8KelData()->updateOrCreate([], $request->all());
-    toastr()->addSuccess('');
-    return back()->with('success-message', 'Successfully Updated');
-  }
+	/**
+	 * Updates the fitur of a Tabel8KelData instance.
+	 *
+	 * @param Request $request
+	 * @param Tabel8KelData $tabel
+	 * @throws ValidationException
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function updateFitur(Request $request, Tabel8KelData $tabel)
+	{
+		$request->validate([
+			'deskripsi' => ['nullable', 'string', 'max:255'],
+			'analisis' => ['nullable', 'string', 'max:255'],
+			'permasalahan' => ['nullable', 'string', 'max:255'],
+			'solusi' => ['nullable', 'string', 'max:255'],
+			'saran' => ['nullable', 'string', 'max:255']
+		]);
 
-  public function storeFile(Request $request, Tabel8KelData $tabel)
-  {
-    $request->validate([
-      'document' => ['required', 'max:10240'],
-    ]);
+		$tabel->fitur8KelData()->updateOrCreate([], $request->all());
 
-    $file = $request->file('document');
+		toastr('Fitur 8 kelompok data successfully updated', 'success');
 
-    $tabel->file8KelData()->create([
-      'nama' => $file->getClientOriginalName(),
-      'path' => $file->storePublicly('file_pendukung', 'public')
-    ]);
-    toastr()->addSuccess('');
-    return back()->with('success-message', 'Successfully Saved.');
-  }
+		return to_route('admin.delapankeldata.input', [$tabel->id, 'tab' => $request->input('tab')]);
+	}
 
-  public function destroyFile(File8KelData $file)
-  {
-    Storage::disk('public')->delete($file->path);
+	/**
+	 * Stores a file associated with a Tabel8KelData instance.
+	 *
+	 * @param Request $request
+	 * @param Tabel8KelData $tabel
+	 * @throws ValidationException
+	 * @return RedirectResponse
+	 */
+	public function storeFile(Request $request, Tabel8KelData $tabel): RedirectResponse
+	{
+		$request->validate([
+			'file_pendukung' => [
+				'required',
+				'max:25600',
+				'mimes:jpeg,png,gif,bmp,svg,webp,mp4,avi,mov,wmv,flv,mkv,webm,3gp,pdf,doc,docx,xls,xlsx,txt,rtf,csv,ppt,pptx,odp'
+			],
+		]);
 
-    $file->delete();
-    toastr()->addSuccess('');
-    return back()->with('success-message', 'Successfully Deleted.');
-  }
+		$file = $request->file('file_pendukung');
 
-  public function downloadFile(File8KelData $file)
-  {
-    return Storage::disk('public')->download($file->path, $file->nama);
-  }
+		$fileName = sprintf('%s_%s.%s', $file->getClientOriginalName(), time(), $file->getClientOriginalExtension());
 
-  public function updateSumberData(Request $request, Uraian8KelData $uraian)
-  {
-    $request->validate(['skpd_id' => ['required', 'integer', 'exists:skpd,id']]);
+		$tabel->file8KelData()->create([
+			'nama' => str_replace('file_pendukung/', '', $file->storeAs('file_pendukung', $fileName, 'public')),
+		]);
 
-    $uraian->skpd_id = $request->skpd_id;
-    $uraian->save();
+		toastr('File successfully uploaded', 'success');
 
-    return response()->json(status: Response::HTTP_NO_CONTENT);
-  }
+		return to_route('admin.delapankeldata.input', [$tabel->id, 'tab' => $request->input('tab')]);
+	}
 
-  public function chart(Uraian8KelData $uraian)
-  {
-    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
-  }
+	/**
+	 * Deletes a file from the public disk and removes the corresponding File8KelData record.
+	 *
+	 * @param File8KelData $file The file to be deleted.
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function destroyFile(Request $request, File8KelData $file)
+	{
+		Storage::disk('public')->delete('file_pendukung/' . $file->nama);
+
+		$file->delete();
+
+		toastr('File successfully deleted', 'success');
+
+		return to_route('admin.delapankeldata.input', [$file->tabel_8keldata_id, 'tab' => $request->input('tab')]);
+	}
+
+	/**
+	 * Downloads a file from the public disk.
+	 *
+	 * @param File8KelData $file
+	 * @return StreamedResponse
+	 */
+	public function downloadFile(File8KelData $file): StreamedResponse
+	{
+		return Storage::disk('public')->download('file_pendukung/' . $file->nama, $file->nama);
+	}
+
+	/**
+	 * Updates the sumber data of a Uraian8KelData instance.
+	 *
+	 * @param Request $request The incoming HTTP request.
+	 * @param Uraian8KelData $uraian The Uraian8KelData instance to be updated.
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function updateSumberData(Request $request, Uraian8KelData $uraian)
+	{
+		$request->validate(['skpd_id' => ['required', 'integer', 'exists:skpd,id']]);
+
+		$uraian->skpd_id = $request->skpd_id;
+		$uraian->save();
+
+		toastr('Sumber data successfully updated', 'success');
+
+		return to_route('admin.delapankeldata.input', [$uraian->tabel_8keldata_id, 'tab' => $request->input('tab')]);
+	}
+
+	public function chart(Uraian8KelData $uraian)
+	{
+		$uraian = $this->repository->grafik($uraian->id);
+
+		return response()->json($uraian, 200);
+	}
+
 }

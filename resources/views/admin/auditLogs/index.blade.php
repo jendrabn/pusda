@@ -7,7 +7,9 @@
         </div>
 
         <div class="card-body">
-            {{ $dataTable->table(['class' => 'table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog table table-sm']) }}
+            <div class="table-responsive">
+                {{ $dataTable->table(['class' => 'table-bordered table-striped table-hover ajaxTable datatable datatable-AuditLog table table-sm']) }}
+            </div>
         </div>
     </div>
 @endsection

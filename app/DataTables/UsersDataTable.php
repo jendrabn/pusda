@@ -23,7 +23,6 @@ class UsersDataTable extends DataTable
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
 		return (new EloquentDataTable($query))
-			->addColumn('checkbox', '')
 			->addColumn('action', 'admin.users.action')
 			->editColumn('email', function ($row): string {
 				return sprintf('<a href="mailto:%s">%s</a>', $row->email, $row->email);
@@ -36,13 +35,13 @@ class UsersDataTable extends DataTable
 			->editColumn('roles', function ($row): string {
 				$roles = [];
 				foreach ($row->roles as $role) {
-					$roles[] = sprintf('<span class="badge badge-info">%s</span>', $role->name);
+					$roles[] = sprintf('<span class="badge badge-info rounded-0">%s</span>', $role->name);
 				}
 
-				return implode('<br>', $roles);
+				return implode(' ', $roles);
 			})
 			->editColumn('avatar', function ($row): string {
-				return sprintf('<a href="%s" target="_blank"><img src="%s" width="30"></a>', $row->avatar_url, $row->avatar_url);
+				return sprintf('<a href="%s" target="_blank"><img src="%s" width="35"></a>', $row->avatar_url, $row->avatar_url);
 			})
 			->setRowId('id')
 			->rawColumns(['action', 'email', 'phone', 'roles', 'avatar']);
@@ -53,7 +52,7 @@ class UsersDataTable extends DataTable
 	 */
 	public function query(User $model): QueryBuilder
 	{
-		return $model->newQuery()->with(['skpd', 'roles'])->select($model->getTable() . '.*');
+		return $model->newQuery()->with(['skpd', 'roles'])->select('users.*');
 	}
 
 	/**
@@ -62,42 +61,20 @@ class UsersDataTable extends DataTable
 	public function html(): HtmlBuilder
 	{
 		return $this->builder()
-			->setTableId('users-table')
+			->setTableId('dataTable-users')
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->selectStyleMultiShift()
 			->selectSelector('td:first-child')
 			->buttons([
-				Button::make([
-					'extend' => 'create',
-					'text' => 'Create',
-					'className' => 'btn-success',
-				]),
-				Button::make([
-					'extend' => 'selectAll',
-					'text' => 'Select all',
-					'className' => 'btn-primary',
-				]),
-				Button::make([
-					'extend' => 'selectNone',
-					'text' => 'Deselect all',
-					'className' => 'btn-primary',
-				]),
-				Button::make([
-					'extend' => 'excel',
-					'text' => 'Excel',
-					'className' => 'btn-secondary',
-				]),
-				Button::make([
-					'extend' => 'colvis',
-					'text' => 'Columns',
-					'className' => 'btn-secondary',
-				]),
-				Button::make([
-					'extend' => 'deleteSelected',
-					'text' => 'Delete selected',
-					'className' => 'btn-danger',
-				]),
+				Button::make('create'),
+				Button::make('selectAll'),
+				Button::make('selectNone'),
+				Button::make('excel'),
+				Button::make('reset'),
+				Button::make('reload'),
+				Button::make('colvis'),
+				Button::make('bulkDelete'),
 			])
 			// ->initComplete(
 			// 	"function () {
@@ -130,9 +107,9 @@ class UsersDataTable extends DataTable
 	public function getColumns(): array
 	{
 		return [
-			Column::checkbox('&nbsp;')->width(25),
-			Column::make('id')->title('ID')->searchPanes(true),
-			Column::computed('avatar')->visible(false)->exportable(false),
+			Column::checkbox('&nbsp;')->printable(false)->exportable(false)->width(35),
+			Column::make('id')->title('ID'),
+			Column::computed('avatar')->visible(false)->exportable(false)->addClass('text-center'),
 			Column::make('name')->title('Nama Lengkap'),
 			Column::make('username'),
 			Column::make('email'),
@@ -141,9 +118,10 @@ class UsersDataTable extends DataTable
 			Column::make('address')->title('Alamat')->visible(false),
 			Column::make('birth_date')->title('Tgl. Lahir')->visible(false),
 			Column::make('skpd.nama', 'skpd.nama')->title('SKPD'),
-			Column::make('roles', 'roles.name'),
+			Column::make('roles', 'roles.name')->orderable(false),
 			Column::make('created_at')->visible(false),
-			Column::computed('action', '&nbsp;')->exportable(false)->printable(false),
+			Column::make('updated_at')->visible(false),
+			Column::computed('action', '&nbsp;')->exportable(false)->printable(false)->addClass('text-center'),
 		];
 	}
 
@@ -152,6 +130,6 @@ class UsersDataTable extends DataTable
 	 */
 	protected function filename(): string
 	{
-		return 'Users_' . date('Ymd');
+		return 'Users_' . date('dmY');
 	}
 }

@@ -2,173 +2,103 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\DataTables\Uraian\UraianBpsDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\Uraian\UraianBpsRequest;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class BpsController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param TabelBps|null $tabel
-   * @return View
-   */
-  public function index(TabelBps $tabel = null): View
-  {
-    $uraian = null;
 
-    $categories = TabelBps::with('childs.childs.childs')->get();
-    $title = 'Uraian Form Menu BPS';
-    $crudRoutePart = 'bps';
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @param TabelBps|null $tabel
+	 * @return mixed
+	 */
+	public function index(UraianBpsDataTable $dataTable, TabelBps $tabel = null): mixed
+	{
+		$categories = TabelBps::with('childs.childs.childs')->get();
+		$title = 'Uraian Form Menu BPS';
+		$routePart = 'bps';
 
-    if ($tabel) {
-      $uraian = UraianBps::with('childs')
-        ->where('tabel_bps_id', $tabel->id)
-        ->whereNull('parent_id')
-        ->orderBy('id')
-        ->get();
-    }
+		return $dataTable->render('admin.uraian.index', compact(
+			'tabel',
+			'categories',
+			'title',
+			'routePart'
+		));
+	}
 
-    return view('admin.uraian.index', compact(
-      'tabel',
-      'categories',
-      'title',
-      'crudRoutePart',
-      'uraian'
-    ));
-  }
+	/**
+	 * Retrieves a collection of uraians for the given tabel.
+	 *
+	 * @param TabelBps $tabel
+	 * @return JsonResponse
+	 */
+	public function uraians(TabelBps $tabel): JsonResponse
+	{
+		$uraian = UraianBps::where('tabel_bps_id', $tabel->id)
+			->whereNull('parent_id')
+			->orderBy('id')
+			->get();
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param TabelBps $tabel
-   * @return RedirectResponse
-   */
-  public function store(Request $request, TabelBps $tabel): RedirectResponse
-  {
-    // Kebanyakan ID SKPD null
-    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+		return response()->json($uraian);
+	}
 
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
+	/**
+	 * Store a new uraian BPS in the database.
+	 *
+	 * @param UraianBpsRequest $request
+	 * @param TabelBps $tabel
+	 * @return JsonResponse
+	 */
+	public function store(UraianBpsRequest $request, TabelBps $tabel): JsonResponse
+	{
+		$tabel->uraianBps()->create($request->validated());
 
-    $tabel->uraianBps()->create($validatedData);
+		return response()->json(['message' => 'Uraian BPS successfully created.']);
+	}
 
-    toastr()->addSuccess('Saved.');
+	/**
+	 * Updates an existing uraian BPS in the database.
+	 *
+	 * @param UraianBpsRequest $request
+	 * @param UraianBps $uraian
+	 * @return JsonResponse
+	 */
+	public function update(UraianBpsRequest $request, UraianBps $uraian): JsonResponse
+	{
+		$uraian->update($request->validated());
 
-    return back();
-  }
+		return response()->json(['message' => 'Uraian BPS successfully updated.']);
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param TabelBps $tabel
-   * @param UraianBps $uraian
-   * @return View
-   */
-  public function edit(TabelBps $tabel, UraianBps $uraian): View
-  {
-    $categories = TabelBps::all();
-    $uraians = UraianBps::with('childs')
-      ->where('tabel_Bps_id', $tabel->id)
-      ->whereNull('parent_id')
-      ->orderBy('id')
-      ->get();
-    $title = 'Uraian Form Menu BPS';
-    $crudRoutePart = 'bps';
+	/**
+	 * Deletes an existing uraian BPS from the database.
+	 *
+	 * @param UraianBps $uraian
+	 * @return JsonResponse
+	 */
+	public function destroy(UraianBps $uraian): JsonResponse
+	{
+		$uraian->delete();
 
-    return view('admin.uraian.edit', compact(
-      'tabel',
-      'uraian',
-      'categories',
-      'uraians',
-      'title',
-      'crudRoutePart'
-    ));
-  }
+		return response()->json(['message' => 'Uraian BPS successfully deleted.']);
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param UraianBps $uraian
-   * @return RedirectResponse
-   */
-  public function update(Request $request, UraianBps $uraian): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
+	/**
+	 * Deletes multiple uraian BPS from the database.
+	 *
+	 * @param UraianBpsRequest $request
+	 * @return JsonResponse
+	 */
+	public function massDestroy(UraianBpsRequest $request): JsonResponse
+	{
+		UraianBps::whereIn('id', $request->validated('ids'))->delete();
 
-    $uraian->update($validatedData);
-
-    toastr()->addSuccess('Updated.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param UraianBps $uraian
-   * @return RedirectResponse
-   */
-  public function destroy(UraianBps $uraian): RedirectResponse
-  {
-    $uraian->delete();
-
-    toastr()->addSuccess('Deleted.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return HttpResponse
-   */
-  public function massDestroy(Request $request): HttpResponse
-  {
-    $validatedData = $request->validate([
-      'ids' => [
-        'required',
-        'array'
-      ],
-      'ids.*' => [
-        'integer',
-        'exists:uraian_bps,id'
-      ]
-    ]);
-
-    UraianBps::whereIn('id', $validatedData['ids'])->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'Uraian BPS successfully deleted.']);
+	}
 }

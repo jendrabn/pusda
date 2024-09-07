@@ -18,9 +18,9 @@ class AuditLogController extends Controller
 	 * Render the index view for the AuditLogsDataTable.
 	 *
 	 * @param AuditLogsDataTable $dataTable
-	 * @return JsonResponse|View|BinaryFileResponse
+	 * @return mixed
 	 */
-	public function index(AuditLogsDataTable $dataTable): JsonResponse|View|BinaryFileResponse
+	public function index(AuditLogsDataTable $dataTable): mixed
 	{
 		return $dataTable->render('admin.auditLogs.index');
 	}
@@ -29,7 +29,7 @@ class AuditLogController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param AuditLog $auditLog
+	 * @param AuditLog $auditLog -
 	 * @return View
 	 */
 	public function show(AuditLog $auditLog): View

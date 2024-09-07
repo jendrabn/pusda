@@ -34,6 +34,17 @@ class UserController extends Controller
 	}
 
 	/**
+	 * Display the specified user.
+	 *
+	 * @param User $user The user to be displayed.
+	 * @return View
+	 */
+	public function show(User $user)
+	{
+		return view('admin.users.show', compact('user'));
+	}
+
+	/**
 	 * Creates a new view for creating a user.
 	 *
 	 * @return View
@@ -88,7 +99,8 @@ class UserController extends Controller
 	{
 		$validatedData = $request->validated();
 
-		if (!$validatedData['password']) unset($validatedData['password']);
+		if (!$validatedData['password'])
+			unset($validatedData['password']);
 
 		$user->update($validatedData);
 		$user->syncRoles($validatedData['role']);

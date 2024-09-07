@@ -2,174 +2,87 @@
 
 namespace App\Http\Controllers\Admin\TreeView;
 
+use App\DataTables\TreeView\TabelBpsDataTable;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TreeView\TabelBpsRequest;
 use App\Models\TabelBps;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class BpsController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return JsonResponse|View
-   */
-  public function index(Request $request): JsonResponse|View
-  {
-    if ($request->ajax()) {
-      $model = TabelBps::with('parent')->select('tabel_bps.*');
-      $table = DataTables::eloquent($model);
+	/**
+	 * Handles the index action for the BPS treeview.
+	 *
+	 * @param TabelBpsDataTable $dataTable
+	 * @return mixed
+	 */
+	public function index(TabelBpsDataTable $dataTable): mixed
+	{
+		$categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
+		$title = 'Menu Treeview BPS';
+		$routePart = 'bps';
 
-      $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
-      $table->editColumn('actions', function ($row) {
-        $crudRoutePart = 'treeview.bps';
+		return $dataTable->render('admin.treeview.index', compact(
+			'categories',
+			'routePart',
+			'title'
+		));
+	}
 
-        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
-      });
-      $table->editColumn('parent', fn ($row) => $row->parent ? $row->parent->nama_menu : '');
+	/**
+	 * Creates a new TabelBps record.
+	 *
+	 * @param TabelBpsRequest $request
+	 * @return JsonResponse
+	 */
+	public function store(TabelBpsRequest $request): JsonResponse
+	{
+		TabelBps::create($request->validated());
 
-      $table->rawColumns(['actions', 'placeholder']);
+		return response()->json(['message' => 'Tabel BPS successfully created.']);
+	}
 
-      return $table->toJson();
-    }
+	/**
+	 * Updates an existing TabelBps record.
+	 *
+	 * @param TabelBpsRequest $request
+	 * @param TabelBps $tabel
+	 * @return JsonResponse
+	 */
+	public function update(TabelBpsRequest $request, TabelBps $tabel): JsonResponse
+	{
+		$tabel->update($request->validated());
 
-    $categories = TabelBps::with(['parent', 'childs.childs.childs'])->get();
-    $title = 'Menu Treeview BPS';
-    $crudRoutePart = 'bps';
+		return response()->json(['message' => 'Tabel BPS successfully updated.']);
+	}
 
-    return view('admin.treeview.index', compact(
-      'categories',
-      'crudRoutePart',
-      'title'
-    ));
-  }
+	/**
+	 * Deletes a single TabelBps record based on the provided TabelBps instance.
+	 *
+	 * @param TabelBps $tabel
+	 * @return JsonResponse
+	 */
+	public function destroy(TabelBps $tabel): JsonResponse
+	{
+		$tabel->delete();
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return RedirectResponse
-   */
-  public function store(Request $request): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' =>  [
-        'required',
-        'integer',
-        'exists:tabel_bps,id'
-      ],
-      'nama_menu' => [
-        'required',
-        'string',
-        'min:1',
-        'max:255'
-      ]
-    ]);
+		return response()->json(['message' => 'Tabel BPS successfully deleted.']);
+	}
 
-    TabelBps::create($validatedData);
+	/**
+	 * Deletes multiple TabelBps records based on the provided IDs.
+	 *
+	 * @param TabelBpsRequest $request
+	 * @return JsonResponse
+	 */
+	public function massDestroy(TabelBpsRequest $request): JsonResponse
+	{
+		$tabel = TabelBps::whereIn('id', $request->validated('ids'))->get();
 
-    toastr()->addSuccess('Saved.');
+		$tabel->each(function ($tabel) {
+			$tabel->delete();
+		});
 
-    return to_route('admin.treeview.bps.index');
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param TabelBps $tabel
-   * @return View
-   */
-  public function edit(TabelBps $tabel): View
-  {
-    $categories = TabelBps::with('parent')->get();
-    $title = 'Menu Treeview BPS';
-    $crudRoutePart = 'bps';
-
-    return view('admin.treeview.edit', compact(
-      'tabel',
-      'categories',
-      'crudRoutePart',
-      'title'
-    ));
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param TabelBps $tabel
-   * @return RedirectResponse
-   */
-  public function update(Request $request, TabelBps $tabel): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' =>  [
-        'required',
-        'integer',
-        'exists:tabel_bps,id'
-      ],
-      'nama_menu' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ]
-    ]);
-
-    if ($tabel->id !== 1) $tabel->update($validatedData);
-
-    toastr()->addSuccess('Updated.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param TabelBps $tabel
-   * @return RedirectResponse
-   */
-  public function destroy(TabelBps $tabel): RedirectResponse
-  {
-    if ($tabel->id !== 1) $tabel->delete();
-
-    toastr()->addSuccess('Deleted.');
-
-    return to_route('admin.treeview.bps.index');
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return HttpResponse
-   */
-  public function massDestroy(Request $request): HttpResponse
-  {
-    $validatedData = $request->validate([
-      'ids' => [
-        'required',
-        'array'
-      ],
-      'ids.*', [
-        'integer',
-        'exists:tabel_bps,id'
-      ]
-    ]);
-
-    $ids = collect($validatedData['ids'])
-      ->filter(fn ($val, $key) => (int) $val !== 1)
-      ->toArray();
-
-    TabelBps::whereIn('id', $ids)->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'Tabel BPS successfully deleted.']);
+	}
 }

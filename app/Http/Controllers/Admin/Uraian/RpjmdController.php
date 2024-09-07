@@ -2,174 +2,102 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\DataTables\Uraian\UraianRpjmdDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\Uraian\UraianRpjmdRequest;
 use App\Models\TabelRpjmd;
 use App\Models\UraianRpjmd;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class RpjmdController extends Controller
 {
+	/**
+	 * Handles the index request for the RPJMD controller.
+	 *
+	 * @param TabelRpjmd|null $tabel
+	 * @return mixed
+	 */
+	public function index(UraianRpjmdDataTable $dataTable, TabelRpjmd $tabel = null): mixed
+	{
+		$categories = TabelRpjmd::with('childs.childs.childs')->get();
+		$title = 'Uraian Form Menu RPJMD';
+		$routePart = 'rpjmd';
 
-  /**
-   * Undocumented function
-   *
-   * @param TabelRpjmd|null $tabel
-   * @return View
-   */
-  public function index(TabelRpjmd $tabel = null): View
-  {
-    $uraian = null;
-    $categories = TabelRpjmd::with('childs.childs.childs')->get();
-    $title = 'Uraian Form Menu RPJMD';
-    $crudRoutePart = 'rpjmd';
+		return $dataTable->render('admin.uraian.index', compact(
+			'tabel',
+			'categories',
+			'title',
+			'routePart'
+		));
+	}
 
-    if ($tabel) {
-      $uraian = UraianRpjmd::with('childs')
-        ->where('tabel_rpjmd_id', $tabel->id)
-        ->whereNull('parent_id')
-        ->orderBy('id')
-        ->get();
-    }
+	/**
+	 * Retrieves a collection of uraians for the given tabel.
+	 *
+	 * @param TabelRpjmd $tabel
+	 * @return JsonResponse
+	 */
+	public function uraians(TabelRpjmd $tabel): JsonResponse
+	{
+		$uraian = UraianRpjmd::where('tabel_rpjmd_id', $tabel->id)
+			->whereNull('parent_id')
+			->orderBy('id')
+			->get();
 
-    return view('admin.uraian.index', compact(
-      'tabel',
-      'categories',
-      'title',
-      'crudRoutePart',
-      'uraian'
-    ));
-  }
+		return response()->json($uraian);
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param TabelRpjmd $tabel
-   * @return RedirectResponse
-   */
-  public function store(Request $request, TabelRpjmd $tabel): RedirectResponse
-  {
-    // Kebanyakan ID SKPD  null
-    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+	/**
+	 * Store a new UraianRpjmd resource.
+	 *
+	 * @param UraianRpjmdRequest $request
+	 * @param TabelRpjmd $tabel
+	 * @return JsonResponse
+	 */
+	public function store(UraianRpjmdRequest $request, TabelRpjmd $tabel): JsonResponse
+	{
+		$tabel->uraianRpjmd()->create($request->validated());
 
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
+		return response()->json(['message' => 'Uraian RPJMD successfully created.']);
+	}
 
-    $tabel->uraianRpjmd()->create($validatedData);
+	/**
+	 * Updates an existing UraianRpjmd resource.
+	 *
+	 * @param UraianRpjmdRequest $request -
+	 * @param UraianRpjmd $uraian
+	 * @return JsonResponse
+	 */
+	public function update(UraianRpjmdRequest $request, UraianRpjmd $uraian): JsonResponse
+	{
+		$uraian->update($request->validated());
 
-    toastr()->addSuccess('Saved.');
+		return response()->json(['message' => 'Uraian RPJMD successfully updated.']);
+	}
 
-    return back();
-  }
+	/**
+	 * Deletes an existing UraianRpjmd resource.
+	 *
+	 * @param UraianRpjmd $uraian
+	 * @return JsonResponse
+	 */
+	public function destroy(UraianRpjmd $uraian): JsonResponse
+	{
+		$uraian->delete();
 
-  /**
-   * Undocumented function
-   *
-   * @param TabelRpjmd $tabel
-   * @param UraianRpjmd $uraian
-   * @return View
-   */
-  public function edit(TabelRpjmd $tabel, UraianRpjmd $uraian): View
-  {
-    $categories = TabelRpjmd::where('skpd_id', auth()->user()->skpd_id)->get();
-    $uraians = UraianRpjmd::with('childs')
-      ->where('tabel_rpjmd_id', $tabel->id)
-      ->whereNull('parent_id')
-      ->orderBy('id')
-      ->get();
-    $title = 'Uraian Form Menu RPJMD';
-    $crudRoutePart = 'rpjmd';
+		return response()->json(['message' => 'Uraian RPJMD successfully deleted.']);
+	}
 
+	/**
+	 * Deletes multiple UraianRpjmd resources.
+	 *
+	 * @param UraianRpjmdRequest $request
+	 * @return JsonResponse
+	 */
+	public function massDestroy(UraianRpjmdRequest $request): JsonResponse
+	{
+		UraianRpjmd::whereIn('id', $request->validated('ids'))->delete();
 
-    return view('admin.uraian.edit', compact(
-      'tabel',
-      'uraian',
-      'categories',
-      'uraians',
-      'title',
-      'crudRoutePart'
-    ));
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param UraianRpjmd $uraian
-   * @return RedirectResponse
-   */
-  public function update(Request $request, UraianRpjmd $uraian): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
-
-    $uraian->update($validatedData);
-
-    toastr()->addSuccess('Updated.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param UraianRpjmd $uraian
-   * @return RedirectResponse
-   */
-  public function destroy(UraianRpjmd $uraian): RedirectResponse
-  {
-    $uraian->delete();
-
-    toastr()->addSuccess('Deleted.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return HttpResponse
-   */
-  public function massDestroy(Request $request): HttpResponse
-  {
-    $validatedData = $request->validate([
-      'ids' => [
-        'required',
-        'array'
-      ],
-      'ids.*' => [
-        'integer',
-        'exists:uraian_rpjmd,id'
-      ]
-    ]);
-
-    UraianRpjmd::whereIn('id', $validatedData['ids'])->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'Uraian RPJMD successfully deleted.']);
+	}
 }

@@ -1,284 +1,337 @@
 (function ($, DataTable) {
-    "use strict";
+	"use strict";
 
-    var _buildParams = function (dt, action, onlyVisibles) {
-        var params = dt.ajax.params();
-        params.action = action;
-        params._token = $('meta[name="csrf-token"]').attr('content');
+	var _buildParams = function (dt, action, onlyVisibles) {
+		var params = dt.ajax.params();
+		params.action = action;
+		params._token = $('meta[name="csrf-token"]').attr("content");
 
-        if (onlyVisibles) {
-            params.visible_columns = _getVisibleColumns();
-        } else {
-            params.visible_columns = null;
-        }
-        
-        return params;
-    };
-    
-    var _getVisibleColumns = function () {
+		if (onlyVisibles) {
+			params.visible_columns = _getVisibleColumns();
+		} else {
+			params.visible_columns = null;
+		}
 
-        var visible_columns = [];
-        $.each(DataTable.settings[0].aoColumns, function (key, col) {
-            if (col.bVisible) {
-                visible_columns.push(col.name);
-            }
-        });
+		return params;
+	};
 
-        return visible_columns;
-    };
+	var _getVisibleColumns = function () {
+		var visible_columns = [];
+		$.each(DataTable.settings[0].aoColumns, function (key, col) {
+			if (col.bVisible) {
+				visible_columns.push(col.name);
+			}
+		});
 
-    var _downloadFromUrl = function (url, params) {
-        var postUrl = url + '/export';
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', postUrl, true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = function () {
-            if (this.status === 200) {
-                var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-                var type = xhr.getResponseHeader('Content-Type');
+		return visible_columns;
+	};
 
-                var blob = new Blob([this.response], {type: type});
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    var URL = window.URL || window.webkitURL;
-                    var downloadUrl = URL.createObjectURL(blob);
+	var _downloadFromUrl = function (url, params) {
+		var postUrl = url + "/export";
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", postUrl, true);
+		xhr.responseType = "arraybuffer";
+		xhr.onload = function () {
+			if (this.status === 200) {
+				var filename = "";
+				var disposition = xhr.getResponseHeader("Content-Disposition");
+				if (disposition && disposition.indexOf("attachment") !== -1) {
+					var filenameRegex =
+						/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+					var matches = filenameRegex.exec(disposition);
+					if (matches != null && matches[1])
+						filename = matches[1].replace(/['"]/g, "");
+				}
+				var type = xhr.getResponseHeader("Content-Type");
 
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        var a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            window.location = downloadUrl;
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                    } else {
-                        window.location = downloadUrl;
-                    }
+				var blob = new Blob([this.response], {
+					type: type,
+				});
+				if (typeof window.navigator.msSaveBlob !== "undefined") {
+					// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+					window.navigator.msSaveBlob(blob, filename);
+				} else {
+					var URL = window.URL || window.webkitURL;
+					var downloadUrl = URL.createObjectURL(blob);
 
-                    setTimeout(function () {
-                        URL.revokeObjectURL(downloadUrl);
-                    }, 100); // cleanup
-                }
-            }
-        };
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.send($.param(params));
-    };
+					if (filename) {
+						// use HTML5 a[download] attribute to specify filename
+						var a = document.createElement("a");
+						// safari doesn't support this yet
+						if (typeof a.download === "undefined") {
+							window.location = downloadUrl;
+						} else {
+							a.href = downloadUrl;
+							a.download = filename;
+							document.body.appendChild(a);
+							a.click();
+						}
+					} else {
+						window.location = downloadUrl;
+					}
 
-    var _buildUrl = function(dt, action) {
-        var url = dt.ajax.url() || '';
-        var params = dt.ajax.params();
-        params.action = action;
+					setTimeout(function () {
+						URL.revokeObjectURL(downloadUrl);
+					}, 100); // cleanup
+				}
+			}
+		};
+		xhr.setRequestHeader(
+			"Content-type",
+			"application/x-www-form-urlencoded"
+		);
+		xhr.send($.param(params));
+	};
 
-        if (url.indexOf('?') > -1) {
-            return url + '&' + $.param(params);
-        }
-        
-        return url + '?' + $.param(params);
-    };
+	var _buildUrl = function (dt, action) {
+		var url = dt.ajax.url() || "";
+		var params = dt.ajax.params();
+		params.action = action;
 
-    DataTable.ext.buttons.excel = {
-        className: 'buttons-excel',
+		if (url.indexOf("?") > -1) {
+			return url + "&" + $.param(params);
+		}
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.excel', 'Excel');
-        },
+		return url + "?" + $.param(params);
+	};
 
-        action: function (e, dt, button, config) {
-            var url = _buildUrl(dt, 'excel');
-            window.location = url;
-        }
-    };
+	DataTable.ext.buttons.excel = {
+		className: "buttons-excel",
 
-    DataTable.ext.buttons.postExcel = {
-        className: 'buttons-excel',
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.excel", "Excel")
+			);
+		},
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.excel', 'Excel');
-        },
+		action: function (e, dt, button, config) {
+			var url = _buildUrl(dt, "excel");
+			window.location = url;
+		},
+	};
 
-        action: function (e, dt, button, config) {
-            var url = dt.ajax.url() || window.location.href;
-            var params = _buildParams(dt, 'excel');
+	DataTable.ext.buttons.postExcel = {
+		className: "buttons-excel",
 
-            _downloadFromUrl(url, params);
-        }
-    };
-    
-    DataTable.ext.buttons.postExcelVisibleColumns = {
-        className: 'buttons-excel',
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.excel", "Excel")
+			);
+		},
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.excel', 'Excel (only visible columns)');
-        },
+		action: function (e, dt, button, config) {
+			var url = dt.ajax.url() || window.location.href;
+			var params = _buildParams(dt, "excel");
 
-        action: function (e, dt, button, config) {
-            var url = dt.ajax.url() || window.location.href;
-            var params = _buildParams(dt, 'excel', true);
+			_downloadFromUrl(url, params);
+		},
+	};
 
-            _downloadFromUrl(url, params);
-        }
-    };
+	DataTable.ext.buttons.postExcelVisibleColumns = {
+		className: "buttons-excel",
 
-    DataTable.ext.buttons.export = {
-        extend: 'collection',
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.excel", "Excel (only visible columns)")
+			);
+		},
 
-        className: 'buttons-export',
+		action: function (e, dt, button, config) {
+			var url = dt.ajax.url() || window.location.href;
+			var params = _buildParams(dt, "excel", true);
 
-        text: function (dt) {
-            return '<i class="fa fa-download"></i> ' + dt.i18n('buttons.export', 'Export') + '&nbsp;<span class="caret"/>';
-        },
+			_downloadFromUrl(url, params);
+		},
+	};
 
-        buttons: ['csv', 'excel', 'pdf']
-    };
+	DataTable.ext.buttons.export = {
+		extend: "collection",
 
-    DataTable.ext.buttons.csv = {
-        className: 'buttons-csv',
+		className: "buttons-export",
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.csv', 'CSV');
-        },
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-download"></i> ' +
+				dt.i18n("buttons.export", "Export") +
+				'&nbsp;<span class="caret"/>'
+			);
+		},
 
-        action: function (e, dt, button, config) {
-            var url = _buildUrl(dt, 'csv');
-            window.location = url;
-        }
-    };
+		buttons: ["csv", "excel", "pdf"],
+	};
 
-    DataTable.ext.buttons.postCsvVisibleColumns = {
-        className: 'buttons-csv',
+	DataTable.ext.buttons.csv = {
+		className: "buttons-csv",
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.csv', 'CSV (only visible columns)');
-        },
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.csv", "CSV")
+			);
+		},
 
-        action: function (e, dt, button, config) {
-            var url = dt.ajax.url() || window.location.href;
-            var params = _buildParams(dt, 'csv', true);
+		action: function (e, dt, button, config) {
+			var url = _buildUrl(dt, "csv");
+			window.location = url;
+		},
+	};
 
-            _downloadFromUrl(url, params);
-        }
-    };
-    
-    DataTable.ext.buttons.postCsv = {
-        className: 'buttons-csv',
+	DataTable.ext.buttons.postCsvVisibleColumns = {
+		className: "buttons-csv",
 
-        text: function (dt) {
-            return '<i class="fa fa-file-excel-o"></i> ' + dt.i18n('buttons.csv', 'CSV');
-        },
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.csv", "CSV (only visible columns)")
+			);
+		},
 
-        action: function (e, dt, button, config) {
-            var url = dt.ajax.url() || window.location.href;
-            var params = _buildParams(dt, 'csv');
+		action: function (e, dt, button, config) {
+			var url = dt.ajax.url() || window.location.href;
+			var params = _buildParams(dt, "csv", true);
 
-            _downloadFromUrl(url, params);
-        }
-    };
+			_downloadFromUrl(url, params);
+		},
+	};
 
-    DataTable.ext.buttons.pdf = {
-        className: 'buttons-pdf',
+	DataTable.ext.buttons.postCsv = {
+		className: "buttons-csv",
 
-        text: function (dt) {
-            return '<i class="fa fa-file-pdf-o"></i> ' + dt.i18n('buttons.pdf', 'PDF');
-        },
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-excel"></i> ' +
+				dt.i18n("buttons.csv", "CSV")
+			);
+		},
 
-        action: function (e, dt, button, config) {
-            var url = _buildUrl(dt, 'pdf');
-            window.location = url;
-        }
-    };
+		action: function (e, dt, button, config) {
+			var url = dt.ajax.url() || window.location.href;
+			var params = _buildParams(dt, "csv");
 
-    DataTable.ext.buttons.postPdf = {
-        className: 'buttons-pdf',
+			_downloadFromUrl(url, params);
+		},
+	};
 
-        text: function (dt) {
-            return '<i class="fa fa-file-pdf-o"></i> ' + dt.i18n('buttons.pdf', 'PDF');
-        },
+	DataTable.ext.buttons.pdf = {
+		className: "buttons-pdf",
 
-        action: function (e, dt, button, config) {
-            var url = dt.ajax.url() || window.location.href;
-            var params = _buildParams(dt, 'pdf');
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-pdf"></i> ' +
+				dt.i18n("buttons.pdf", "PDF")
+			);
+		},
 
-            _downloadFromUrl(url, params);
-        }
-    };
+		action: function (e, dt, button, config) {
+			var url = _buildUrl(dt, "pdf");
+			window.location = url;
+		},
+	};
 
-    DataTable.ext.buttons.print = {
-        className: 'buttons-print',
+	DataTable.ext.buttons.postPdf = {
+		className: "buttons-pdf",
 
-        text: function (dt) {
-            return  '<i class="fa fa-print"></i> ' + dt.i18n('buttons.print', 'Print');
-        },
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-file-pdf"></i> ' +
+				dt.i18n("buttons.pdf", "PDF")
+			);
+		},
 
-        action: function (e, dt, button, config) {
-            var url = _buildUrl(dt, 'print');
-            window.location = url;
-        }
-    };
+		action: function (e, dt, button, config) {
+			var url = dt.ajax.url() || window.location.href;
+			var params = _buildParams(dt, "pdf");
 
-    DataTable.ext.buttons.reset = {
-        className: 'buttons-reset',
+			_downloadFromUrl(url, params);
+		},
+	};
 
-        text: function (dt) {
-            return '<i class="fa fa-undo"></i> ' + dt.i18n('buttons.reset', 'Reset');
-        },
+	DataTable.ext.buttons.print = {
+		className: "buttons-print",
 
-        action: function (e, dt, button, config) {
-            dt.search('');
-            dt.columns().search('');
-            dt.draw();
-        }
-    };
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-print"></i> ' +
+				dt.i18n("buttons.print", "Print")
+			);
+		},
 
-    DataTable.ext.buttons.reload = {
-        className: 'buttons-reload',
+		action: function (e, dt, button, config) {
+			var url = _buildUrl(dt, "print");
+			window.location = url;
+		},
+	};
 
-        text: function (dt) {
-            return '<i class="fa fa-refresh"></i> ' + dt.i18n('buttons.reload', 'Reload');
-        },
+	DataTable.ext.buttons.reset = {
+		className: "buttons-reset",
 
-        action: function (e, dt, button, config) {
-            dt.draw(false);
-        }
-    };
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-undo"></i> ' +
+				dt.i18n("buttons.reset", "Reset")
+			);
+		},
 
-    DataTable.ext.buttons.create = {
-        className: 'buttons-create',
+		action: function (e, dt, button, config) {
+			dt.search("");
+			dt.columns().search("");
+			dt.draw();
+		},
+	};
 
-        text: function (dt) {
-            return '<i class="fa fa-plus"></i> ' + dt.i18n('buttons.create', 'Create');
-        },
+	DataTable.ext.buttons.reload = {
+		className: "buttons-reload",
 
-        action: function (e, dt, button, config) {
-            window.location = window.location.href.replace(/\/+$/, "") + '/create';
-        }
-    };
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-sync"></i> ' +
+				dt.i18n("buttons.reload", "Reload")
+			);
+		},
 
-    if (typeof DataTable.ext.buttons.copyHtml5 !== 'undefined') {
-        $.extend(DataTable.ext.buttons.copyHtml5, {
-            text: function (dt) {
-                return '<i class="fa fa-copy"></i> ' + dt.i18n('buttons.copy', 'Copy');
-            }
-        });
-    }
+		action: function (e, dt, button, config) {
+			dt.draw(false);
+		},
+	};
 
-    if (typeof DataTable.ext.buttons.colvis !== 'undefined') {
-        $.extend(DataTable.ext.buttons.colvis, {
-            text: function (dt) {
-                return '<i class="fa fa-eye"></i> ' + dt.i18n('buttons.colvis', 'Column visibility');
-            }
-        });
-    }
+	DataTable.ext.buttons.create = {
+		className: "buttons-create",
+
+		text: function (dt) {
+			return (
+				'<i class="fa-solid fa-plus"></i> ' +
+				dt.i18n("buttons.create", "Create")
+			);
+		},
+
+		action: function (e, dt, button, config) {
+			window.location =
+				window.location.href.replace(/\/+$/, "") + "/create";
+		},
+	};
+
+	if (typeof DataTable.ext.buttons.copyHtml5 !== "undefined") {
+		$.extend(DataTable.ext.buttons.copyHtml5, {
+			text: function (dt) {
+				return (
+					'<i class="fa-solid fa-copy"></i> ' +
+					dt.i18n("buttons.copy", "Copy")
+				);
+			},
+		});
+	}
+
+	if (typeof DataTable.ext.buttons.colvis !== "undefined") {
+		$.extend(DataTable.ext.buttons.colvis, {
+			text: function (dt) {
+				return (
+					'<i class="fa-solid fa-eye"></i> ' +
+					dt.i18n("buttons.colvis", "Column visibility")
+				);
+			},
+		});
+	}
 })(jQuery, jQuery.fn.dataTable);

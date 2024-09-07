@@ -22,17 +22,28 @@ class SkpdRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
-		if ($this->isMethod('POST')) {
+		if ($this->routeIs('admin.skpd.store')) {
 			return [
 				'nama' => ['required', 'string', 'min:3', 'max:255', 'unique:skpd,nama'],
 				'singkatan' => ['required', 'string', 'min:3', 'max:255', 'unique:skpd,singkatan'],
 				'kategori_skpd_id' => ['required', 'integer', 'exists:kategori_skpd,id']
 			];
-		} else if ($this->isMethod('PUT')) {
+		} else if ($this->routeIs('admin.skpd.update')) {
 			return [
 				'nama' => ['required', 'string', 'min:3', 'max:255', 'unique:skpd,nama,' . $this->skpd->id],
 				'singkatan' => ['required', 'string', 'min:3', 'max:255', 'unique:skpd,singkatan,' . $this->skpd->id],
 				'kategori_skpd_id' => ['required', 'integer', 'exists:kategori_skpd,id']
+			];
+		} else if ($this->routeIs('admin.skpd.massDestroy')) {
+			return [
+				'ids' => [
+					'required',
+					'array'
+				],
+				'ids.*' => [
+					'integer',
+					'exists:skpd,id'
+				]
 			];
 		} else {
 			return [];

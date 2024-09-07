@@ -9,29 +9,11 @@ use Illuminate\Support\Carbon;
 
 class Visitor extends Model
 {
-  use HasFactory;
+	use HasFactory;
 
-  protected $fillable = ['date', 'ip'];
-
-  public $timestamps = false;
-
-  public function dayCount(): Attribute
-  {
-    return Attribute::get(fn () => $this->whereDay('date', Carbon::today())->count());
-  }
-
-  public function monthCount(): Attribute
-  {
-    return Attribute::get(fn () => $this->whereMonth('date', Carbon::now()->month)->count());
-  }
-
-  public function yearCount(): Attribute
-  {
-    return Attribute::get(fn () => $this->whereYear('date', Carbon::now()->year)->count());
-  }
-
-  public function allCount(): Attribute
-  {
-    return Attribute::get(fn () =>  $this->count());
-  }
+	protected $fillable = [
+		'path',
+		'ip',
+		'user_agent',
+	];
 }

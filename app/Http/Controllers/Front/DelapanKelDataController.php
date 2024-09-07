@@ -3,47 +3,39 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Fitur8KelData;
-use App\Models\Isi8KelData;
 use App\Models\Tabel8KelData;
 use App\Models\Uraian8KelData;
-use App\Services\DelapanKelDataService;
+use App\Repositories\DelapanKelDataRepository;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class DelapanKelDataController extends Controller
 {
+	public function __construct(private DelapanKelDataRepository $repository)
+	{
+		View::share([
+			'routePart' => 'delapankeldata',
+			'title' => '8 Kelompok Data'
+		]);
+	}
 
-  private DelapanKelDataService $service;
+	public function index()
+	{
+		$categories = Tabel8KelData::with('childs.childs.childs')->where('parent_id', 1)->get();
 
-  public function __construct(DelapanKelDataService $service)
-  {
-    $this->service = $service;
+		return view('front.index', compact('categories'));
+	}
 
-    View::share([
-      'routePart' => 'delapankeldata',
-      'title' => '8 Kelompok Data'
-    ]);
-  }
+	public function tabel(Tabel8KelData $tabel)
+	{
+		$uraians = $this->repository->all_uraian($tabel->id);
+		$fitur = $tabel->fitur8KelData;
+		$tahuns = $this->repository->all_tahun($tabel->id);
 
-  public function index()
-  {
-    $categories = Tabel8KelData::with('childs.childs.childs')->where('parent_id', 1)->get();
+		return view('front.tabel', compact('tabel', 'uraians', 'fitur', 'tahuns'));
+	}
 
-    return view('front.index', compact('categories'));
-  }
-
-  public function tabel(Tabel8KelData $tabel)
-  {
-    $uraians = $this->service->getAllUraianByTabelId($tabel);
-    $fitur = $tabel->fitur8KelData;
-    $tahuns = $this->service->getAllTahun($tabel);
-
-    return view('front.tabel', compact('tabel',  'uraians',  'fitur',  'tahuns'));
-  }
-
-  public function chart(Uraian8KelData $uraian)
-  {
-    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
-  }
+	public function chart(Uraian8KelData $uraian)
+	{
+		return response()->json($this->repository->grafik($uraian->id));
+	}
 }

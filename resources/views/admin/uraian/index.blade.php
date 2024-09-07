@@ -1,236 +1,260 @@
-@extends('layouts.admin')
+@extends('layouts.admin', ['title' => $title])
 
 @section('content')
-  <div class="row">
-    <div class="col-lg-6">
-      @if ($tabel)
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              Tambah {{ $tabel->nama_menu }}
-            </h3>
-          </div>
-          <div class="card-body">
-            <form action="{{ route('admin.uraian.' . $crudRoutePart . '.store', $tabel->id) }}"
-              method="POST">
-              @csrf
-              <div class="form-group">
-                <label class="required"
-                  for="parent_id">Kategori</label>
-                <select class="form-control select2 @error('parent_id') is-invalid @enderror"
-                  id="parent_id"
-                  name="parent_id"
-                  style="width: 100%">
-                  <option value="">Parent</option>
-                  @foreach ($uraian as $item)
-                    <option value="{{ $item->id }}">{{ $item->uraian }}</option>
-                  @endforeach
-                </select>
-                @error('parent_id')
-                  <span class="error invalid-feedback">{{ $message }}</span>
-                @enderror
-              </div>
-              <div class="form-group">
-                <label class="required"
-                  for="uraian">Uraian</label>
-                <input class="form-control @error('uraian') is-invalid @enderror"
-                  name="uraian"
-                  type="text"
-                  value="{{ old('uraian') }}">
-                @error('uraian')
-                  <span class="error invalid-feedback">{{ $message }}</span>
-                @enderror
-              </div>
-              <div class="form-group">
-                <button class="btn btn-primary btn-flat"
-                  type="submit">
-                  <i class="fas fa-save mr-1"></i> Simpan
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      @endif
-    </div>
-    <div class="col-lg-6">
-      <div class="card">
+    <div class="card">
         <div class="card-header">
-          <h3 class="card-title">
-            Pilih Menu Treeview {{ $title }}
-          </h3>
+            <h3 class="card-title">Pilih Menu Treeview {{ $title }}</h3>
         </div>
         <div class="card-body jstree overflow-auto">
-          <ul>
-            <li data-jstree='{"opened":true}'>
-              @if ($crudRoutePart === 'delapankeldata')
-                8 Kelompok Data
-              @elseif ($crudRoutePart === 'rpjmd')
-                RPJMD
-              @elseif ($crudRoutePart === 'indikator')
-                Indikator
-              @elseif ($crudRoutePart === 'bps')
-                BPS
-              @endif
-
-              @foreach ($categories as $category)
-                @if ($category->childs->count())
-                  <ul>
-                    @foreach ($category->childs as $child)
-                      <li>
-                        {{ $child->nama_menu }}
-                        @if ($child->childs->count())
-                          <ul>
-                            @foreach ($child->childs as $child)
-                              <li> {{ $child->nama_menu }}
-                                <ul>
-                                  @if ($child->childs->count())
-                                    @foreach ($child->childs as $child)
-                                      <li @if (isset($tabel) && $tabel->id === $child->id) data-jstree='{ "selected" : true }' @endif>
-                                        <a
-                                          href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $child->id) }}">{{ $child->nama_menu }}</a>
-                                      </li>
-                                    @endforeach
-                                  @endif
-                                </ul>
-                              </li>
-                            @endforeach
-                          </ul>
-                        @endif
-                      </li>
-                    @endforeach
-                  </ul>
-                @endif
-            </li>
-            @endforeach
-          </ul>
+            <ul>
+                <li data-jstree='{"opened":true}'>
+                    @if ($routePart === 'delapankeldata')
+                        8 Kelompok Data
+                    @elseif($routePart === 'rpjmd')
+                        RPJMD
+                    @elseif ($routePart === 'indikator')
+                        Indikator
+                    @elseif ($routePart === 'bps')
+                        BPS
+                    @endif
+                    @foreach ($categories as $category)
+                        @include('admin.uraian.partials.menu', ['child' => $category, 'level' => 1])
+                </li>
+                @endforeach
+            </ul>
         </div>
-      </div>
     </div>
-  </div>
 
-  @if ($tabel)
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">
-          Daftar Uraian Form {{ $tabel->nama_menu }}
-        </h3>
-      </div>
-      <div class="card-body">
-        <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-uraian table table-sm">
-          <thead>
-            <tr>
-              <th width="10"></th>
-              <th>ID</th>
-              <th>Uraian</th>
-              <th style="min-width: 65px;">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($uraian as $item)
-              <tr>
-                <td></td>
-                <td>{{ $item->id }}</td>
-                <td>{{ $item->uraian }}</td>
-                <td>
-                  <a class="btn btn-xs btn-info"
-                    href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
-                    Edit
-                  </a>
-                  <form style="display: inline-block;"
-                    action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
-                    method="POST"
-                    onsubmit="return confirm('Are You Sure?');">
-                    @method('DELETE')
-                    @csrf
-                    <input class="btn btn-xs btn-danger"
-                      type="submit"
-                      value="Delete">
-                  </form>
-                </td>
-              </tr>
-              @foreach ($item->childs as $item)
-                <tr>
-                  <td></td>
-                  <td>{{ $item->id }}</td>
-                  <td style="text-indent: 2rem;">{{ $item->uraian }}</td>
-                  <td>
-                    <a class="btn btn-xs btn-info"
-                      href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
-                      Edit
-                    </a>
-                    <form style="display: inline-block;"
-                      action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
-                      method="POST"
-                      onsubmit="return confirm('Are You Sure?');">
-                      @method('DELETE')
-                      @csrf
-                      <input class="btn btn-xs btn-danger"
-                        type="submit"
-                        value="Delete">
-                    </form>
-                  </td>
-                </tr>
-              @endforeach
-            @endforeach
-          </tbody>
-        </table>
-      </div>
-    </div>
-  @endif
+    @if ($tabel)
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Daftar Uraian Form {{ $tabel->nama_menu }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {{ $dataTable->table(['class' => 'table-bordered table-striped table-hover ajaxTable datatable datatable-Uraian table table-sm']) }}
+                </div>
+            </div>
+        </div>
+
+        @include('admin.uraian.partials.modal-create')
+        @include('admin.uraian.partials.modal-edit')
+    @endif
 @endsection
 
 @section('scripts')
-  <script>
-    $(function() {
-      let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+    @if ($tabel)
+        {{ $dataTable->scripts(attributes: ['type' => 'text/javascript']) }}
 
-      let deleteButton = {
-        text: "Delete selected",
-        url: "{{ route('admin.uraian.' . $crudRoutePart . '.massDestroy') }}",
-        className: 'btn-danger',
-        action: function(e, dt, node, config) {
-          const ids = $.map(dt.rows({
-            selected: true
-          }).data(), function(entry) {
-            return entry[1]
-          });
+        <script>
+            $(function() {
+                async function fetchKategoriOptions(selectedId = null) {
+                    await $.ajax({
+                        url: "{{ route('admin.uraian.' . $routePart . '.uraians', $tabel->id) }}",
+                        type: "GET",
+                        beforeSend: function() {
+                            $("form select[name=parent_id]").attr(
+                                "disabled",
+                                "disabled"
+                            );
 
-          if (ids.length === 0) {
-            alert('No rows selected')
-            return
-          }
+                            $("form select[name=parent_id]").html(
+                                "<option>Loading...</option>"
+                            );
+                        },
+                        success: function(data) {
+                            let options = `<option value="" ${
+						!selectedId ? "selected" : ""
+					}>Parent</option>`;
 
-          if (confirm('Are You Sure?')) {
-            $.ajax({
-                headers: {
-                  'x-csrf-token': _token
-                },
-                method: 'POST',
-                url: config.url,
-                data: {
-                  ids: ids,
-                  _method: 'DELETE'
+                            data.forEach((item) => {
+                                options += `<option value="${item.id}" ${
+							selectedId === item.id ? "selected" : ""
+						}>${item.uraian}</option>`;
+                            });
+
+                            $("form select[name=parent_id]").html(options);
+                        },
+                        complete: function() {
+                            $("form select[name=parent_id]").removeAttr("disabled");
+                        },
+                    });
                 }
-              })
-              .done(function() {
-                location.reload()
-              })
-          }
-        }
-      }
 
-      dtButtons.push(deleteButton)
+                $.fn.dataTable.ext.buttons.create = {
+                    text: '<i class="fa-solid fa-plus"></i> Create',
+                    attr: {
+                        "data-toggle": "modal",
+                        "data-target": "#modal-create",
+                    },
+                    action: function(e) {
+                        e.preventDefault();
 
-      let dtOverrideGlobals = {
-        buttons: dtButtons,
-        ordering: false
-      };
+                        fetchKategoriOptions();
+                    },
+                };
 
-      let table = $('.datatable-uraian').DataTable(dtOverrideGlobals);
-      $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-        $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-      });
-    });
-  </script>
+                $.fn.dataTable.ext.buttons.bulkDelete = {
+                    text: "Delete selected",
+                    url: "{{ route('admin.uraian.' . $routePart . '.massDestroy') }}",
+                    action: function(e, dt, node, config) {
+                        let ids = $.map(
+                            dt
+                            .rows({
+                                selected: true,
+                            })
+                            .data(),
+                            function(entry) {
+                                return entry.id;
+                            }
+                        );
+
+                        if (ids.length === 0) {
+                            toastr.error("No rows selected", "Error");
+
+                            return;
+                        }
+
+                        Swal.fire({
+                            title: "Apakah anda yakin?",
+                            text: "Anda tidak akan dapat mengembalikan ini!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Ya, hapus!",
+                            cancelButtonText: "Batal",
+                        }).then(function(result) {
+                            if (result.value) {
+                                $.ajax({
+                                    headers: {
+                                        "x-csrf-token": _token,
+                                    },
+                                    method: "POST",
+                                    url: config.url,
+                                    data: {
+                                        ids: ids,
+                                        _method: "DELETE",
+                                    },
+                                    success: function(data) {
+                                        toastr.success(data.message, "Success");
+
+                                        dt.ajax.reload();
+                                    },
+                                });
+                            }
+                        });
+                    },
+                };
+
+                const table = LaravelDataTables["dataTable-Uraian"];
+
+                table.on("click", ".btn-delete", function(e) {
+                    const url = $(this).data("url");
+
+                    Swal.fire({
+                        title: "Apakah anda yakin?",
+                        text: "Anda tidak akan dapat mengembalikan ini!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya, hapus!",
+                        cancelButtonText: "Batal",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: url,
+                                type: "POST",
+                                headers: {
+                                    "x-csrf-token": _token,
+                                },
+                                data: {
+                                    _method: "DELETE",
+                                },
+                                success: function(data, textStatus, jqXHR) {
+                                    toastr.success(data.message, "Success");
+
+                                    table.ajax.reload();
+                                },
+                            });
+                        }
+                    });
+                });
+
+                $("#modal-create form").on("submit", function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: "{{ route('admin.uraian.' . $routePart . '.store', $tabel->id) }}",
+                        headers: {
+                            "x-csrf-token": _token,
+                        },
+                        method: "POST",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            $("#modal-create").modal("hide");
+
+                            toastr.success(data.message, "Success");
+
+                            table.ajax.reload();
+                        },
+                        beforeSend: function() {
+                            $("#modal-create form fieldset").attr(
+                                "disabled",
+                                "disabled"
+                            );
+                        },
+                        complete: function() {
+                            $("#modal-create form fieldset").removeAttr("disabled");
+                        },
+                    });
+                });
+
+                table.on("click", ".btn-edit", function(e) {
+                    e.preventDefault();
+
+                    const data = table.row($(this).closest("tr")).data();
+
+                    $("#modal-edit form").attr("action", $(this).data("url"));
+                    $("#modal-edit form input[name=uraian]").val(data.uraian);
+                    $("#modal-edit").modal("show");
+
+                    fetchKategoriOptions(data.parent_id);
+                });
+
+                $("#modal-edit form").on("submit", function(e) {
+                    e.preventDefault();
+
+                    const url = $(this).attr("action");
+
+                    $.ajax({
+                        url: url,
+                        headers: {
+                            "x-csrf-token": _token,
+                        },
+                        method: "PUT",
+                        data: $(this).serializeArray(),
+                        success: function(data) {
+                            $("#modal-edit").modal("hide");
+
+                            toastr.success(data.message, "Success");
+
+                            table.ajax.reload();
+                        },
+                        beforeSend: function() {
+                            $("#modal-edit form fieldset").attr("disabled", "disabled");
+                        },
+                        complete: function() {
+                            $("#modal-edit form fieldset").removeAttr("disabled");
+                        },
+                    });
+                });
+
+                $("#modal-create").on("hidden.bs.modal", function(e) {
+                    $(this).find("form").trigger("reset");
+                });
+
+                $('a[data-toggle="tab"]').on("shown.bs.tab click", function(e) {
+                    $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+                });
+            });
+        </script>
+    @endif
 @endsection

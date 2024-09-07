@@ -1,4 +1,6 @@
-@extends('layouts.admin', ['title' => 'Users']) @section('content')
+@extends('layouts.admin', ['title' => 'Users'])
+
+@section('content')
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">User List</h3>
@@ -11,7 +13,8 @@
     {{ $dataTable->scripts(attributes: ['type' => 'text/javascript']) }}
     <script>
         $(function() {
-            $.fn.dataTable.ext.buttons.deleteSelected = {
+            $.fn.dataTable.ext.buttons.bulkDelete = {
+                text: 'Delete Selected',
                 action: function(e, dt, node, config) {
                     let ids = $.map(
                         dt
@@ -26,18 +29,17 @@
 
                     if (ids.length === 0) {
                         toastr.error("No rows selected", "Error");
+
                         return;
                     }
 
                     Swal.fire({
-                        title: "Are you sure?",
+                        title: "Apakah anda yakin?",
+                        text: 'Anda tidak akan dapat mengembalikan ini!',
                         icon: "warning",
                         showCancelButton: true,
-                        customClass: {
-                            confirmButton: "btn btn-danger",
-                            cancelButton: "btn btn-outline-secondary",
-                        },
-                        confirmButtonText: "Delete",
+                        confirmButtonText: "Ya, hapus!",
+                        cancelButtonText: "Batal",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const btn = this;
@@ -52,26 +54,22 @@
                                     ids: ids,
                                     _method: "DELETE",
                                 },
-                                beforeSend: function() {
-                                    btn.disable();
-                                },
                                 success: function(data, textStatus, jqXHR) {
                                     toastr.success(data.message, "Success");
+
                                     dt.ajax.reload();
-                                },
-                                complete: function() {
-                                    btn.enable();
-                                },
+                                }
                             });
                         }
                     });
                 },
             };
 
-            let table = window.LaravelDataTables["users-table"];
+            const table = window.LaravelDataTables["dataTable-users"];
 
-            $('a[data-toggle="tab"]').on("shown.bs.tab click", function(e) {
-                $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
             });
 
             let visibleColumnsIndexes = null;
@@ -101,14 +99,12 @@
                 const url = $(this).data("url");
 
                 Swal.fire({
-                    title: "Are you sure?",
+                    title: "Apakah anda yakin?",
+                    text: 'Anda tidak akan dapat mengembalikan ini!',
                     icon: "warning",
                     showCancelButton: true,
-                    customClass: {
-                        confirmButton: "btn btn-danger",
-                        cancelButton: "btn btn-outline-secondary",
-                    },
-                    confirmButtonText: "Delete",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -129,6 +125,8 @@
                     }
                 });
             });
+
+
         });
     </script>
 @endsection

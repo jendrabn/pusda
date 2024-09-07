@@ -5,42 +5,37 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\TabelBps;
 use App\Models\UraianBps;
-use App\Services\BpsService;
+use App\Repositories\BpsRepository;
 use Illuminate\Support\Facades\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class BpsController extends Controller
 {
-  private BpsService $service;
+	public function __construct(private BpsRepository $repository)
+	{
+		View::share([
+			'routePart' => 'bps',
+			'title' => 'BPS'
+		]);
+	}
 
-  public function __construct(BpsService $service)
-  {
-    $this->service = $service;
+	public function index()
+	{
+		$categories = TabelBps::with('childs.childs.childs')->where('parent_id', 1)->get();
 
-    View::share([
-      'routePart' => 'bps',
-      'title' => 'BPS'
-    ]);
-  }
+		return view('front.index', compact('categories'));
+	}
 
-  public function index()
-  {
-    $categories = TabelBps::with('childs.childs.childs')->where('parent_id', 1)->get();
+	public function tabel(TabelBps $tabel)
+	{
+		$uraians = $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
+		$fitur = $tabel->fiturBps;
+		$tahuns = $this->repository->all_tahun($tabel->id);
 
-    return view('front.index', compact('categories'));
-  }
+		return view('front.tabel', compact('tabel', 'uraians', 'fitur', 'tahuns'));
+	}
 
-  public function tabel(TabelBps $tabel)
-  {
-    $uraians = $tabel->uraianBps()->with('childs.isiBps')->whereNull('parent_id')->get();
-    $fitur = $tabel->fiturBps;
-    $tahuns =  $this->service->getAllTahun($tabel);
-
-    return view('front.tabel', compact('tabel', 'uraians',  'fitur',  'tahuns'));
-  }
-
-  public function chart(UraianBps $uraian)
-  {
-    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
-  }
+	public function chart(UraianBps $uraian)
+	{
+		return response()->json($this->repository->grafik($uraian->id));
+	}
 }

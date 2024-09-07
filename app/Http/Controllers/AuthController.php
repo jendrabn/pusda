@@ -38,13 +38,7 @@ class AuthController extends Controller
 			return redirect()->back();
 		}
 
-		$routeName = match (auth()->user()->role) {
-			User::ROLE_ADMIN => 'admin.dashboard',
-			User::ROLE_SKPD => 'admin_skpd.dashboard',
-			default => 'home'
-		};
-
-		return redirect()->intended(route($routeName, absolute: false));
+		return redirect()->intended(route('admin.dashboard', absolute: false));
 	}
 
 	/**

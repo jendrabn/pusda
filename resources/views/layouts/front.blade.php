@@ -9,10 +9,7 @@
           name="viewport">
     <title>{{ $title ?? 'Home' }} &mdash; Pusat Data Kabupaten Situbondo</title>
 
-    <link crossorigin="anonymous"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          referrerpolicy="no-referrer"
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           rel="stylesheet" />
     <link href="https://fonts.googleapis.com"
           rel="preconnect">
@@ -94,17 +91,13 @@
 
                         <li class="nav-item">
                             @if (auth()->check())
-                                @role('Administrator')
-                                    <a class="nav-link"
-                                       href="{{ route('admin.dashboard') }}">Dashboard</a>
-                                @endrole
-                                @role('SKPD')
-                                    <a class="nav-link"
-                                       href="{{ route('admin_skpd.dashboard') }}">Dashboard</a>
-                                @endrole
+                                <a class="nav-link"
+                                   href="{{ route('admin.dashboard') }}"
+                                   target="_blank">Dashboard</a>
                             @else
                                 <a class="nav-link"
-                                   href="{{ route('auth.login') }}">Login</a>
+                                   href="{{ route('auth.login') }}"
+                                   target="_blank">Login</a>
                             @endif
                         </li>
                         <li class="nav-item">
@@ -127,7 +120,7 @@
         <button aria-label="Scroll to top"
                 class="btn btn-dark"
                 type="button">
-            <i class="fas fa-arrow-up"></i>
+            <i class="fa-solid fa-arrow-up"></i>
         </button>
     </div>
 

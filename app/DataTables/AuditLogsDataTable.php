@@ -22,13 +22,11 @@ class AuditLogsDataTable extends DataTable
 	public function dataTable(QueryBuilder $query): EloquentDataTable
 	{
 		return (new EloquentDataTable($query))
-			->addColumn('action', function ($row) {
-				return sprintf('<a class="btn btn-xs btn-primary" href="%s">%s</a>', route('admin.audit-logs.show', $row->id), 'View');
-			})
-			->editColumn('user_id', function ($row): string {
+			->addColumn('action', 'admin.auditLogs.action')
+			->editColumn('user_id', function ($row) {
 				return $row->user_id
-					? sprintf('<a href="%s" target="_blank">%s</a>', route('admin.users.edit', $row->user_id), $row->user_id)
-					: '';
+					? sprintf('<a href="%s" target="_blank">%s</a>', route('admin.users.show', $row->user_id), $row->user_id)
+					: null;
 			})
 			->setRowId('id')
 			->rawColumns(['action', 'user_id']);
@@ -39,7 +37,7 @@ class AuditLogsDataTable extends DataTable
 	 */
 	public function query(AuditLog $model): QueryBuilder
 	{
-		return $model->newQuery();
+		return $model->newQuery()->select('audit_logs.*');
 	}
 
 	/**
@@ -52,17 +50,10 @@ class AuditLogsDataTable extends DataTable
 			->columns($this->getColumns())
 			->minifiedAjax()
 			->orderBy(0, 'desc')
+			->pageLength(50)
 			->buttons([
-				Button::make([
-					'extend' => 'excel',
-					'text' => 'Excel',
-					'className' => 'btn-secondary',
-				]),
-				Button::make([
-					'extend' => 'colvis',
-					'text' => 'Columns',
-					'className' => 'btn-secondary',
-				]),
+				Button::make('excel'),
+				Button::make('colvis'),
 			]);
 	}
 
@@ -78,8 +69,9 @@ class AuditLogsDataTable extends DataTable
 			Column::make('subject_type'),
 			Column::make('user_id')->title('User ID'),
 			Column::make('host'),
-			Column::make('created_at'),
-			Column::computed('action', '&nbsp;')->exportable(false),
+			Column::make('created_at')->visible(false),
+			Column::make('updated_at')->visible(false),
+			Column::computed('action', '&nbsp;')->exportable(false)->addClass('text-center'),
 		];
 	}
 
@@ -88,6 +80,6 @@ class AuditLogsDataTable extends DataTable
 	 */
 	protected function filename(): string
 	{
-		return 'AuditLogs_' . date('Ymd');
+		return 'AuditLogs_' . date('dmY');
 	}
 }

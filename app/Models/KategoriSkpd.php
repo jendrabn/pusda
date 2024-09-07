@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class KategoriSkpd extends Model
 {
@@ -14,8 +15,8 @@ class KategoriSkpd extends Model
 
 	protected $fillable = ['nama'];
 
-	public function skpd()
+	public function skpd(): HasMany
 	{
-		return $this->hasMany(Skpd::class, 'kategori_skpd_id');
+		return $this->hasMany(Skpd::class, 'kategori_skpd_id', 'id');
 	}
 }

@@ -2,172 +2,104 @@
 
 namespace App\Http\Controllers\Admin\Uraian;
 
+use App\DataTables\Uraian\UraianIndikatorDataTable;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\Uraian\UraianIndikatorRequest;
 use App\Models\TabelIndikator;
 use App\Models\UraianIndikator;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\JsonResponse;
 
 class IndikatorController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param TabelIndikator|null $tabel
-   * @return View
-   */
-  public function index(TabelIndikator $tabel = null): View
-  {
-    $uraian = null;
-    $categories = TabelIndikator::with('childs.childs.childs')->get();
-    $title = 'Uraian Form Menu Indikator';
-    $crudRoutePart = 'indikator';
 
-    if ($tabel) {
-      $uraian = UraianIndikator::with('childs')
-        ->where('tabel_indikator_id', $tabel->id)
-        ->whereNull('parent_id')
-        ->orderBy('id')
-        ->get();
-    }
+	/**
+	 * Handles the index action for the IndikatorController.
+	 *
+	 * @param TabelIndikator|null $tabel
+	 * @return mixed
+	 */
+	public function index(UraianIndikatorDataTable $dataTable, TabelIndikator $tabel = null): mixed
+	{
+		$categories = TabelIndikator::with('childs.childs.childs')->get();
+		$title = 'Uraian Form Menu Indikator';
+		$routePart = 'indikator';
 
-    return view('admin.uraian.index', compact(
-      'tabel',
-      'categories',
-      'title',
-      'crudRoutePart',
-      'uraian'
-    ));
-  }
+		return $dataTable->render('admin.uraian.index', compact(
+			'tabel',
+			'categories',
+			'title',
+			'routePart'
+		));
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param TabelIndikator $tabel
-   * @return RedirectResponse
-   */
-  public function store(Request $request, TabelIndikator $tabel): RedirectResponse
-  {
-    // Kebanyakan ID SKPD null
-    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+	/**
+	 * Retrieves a collection of uraians for the given tabel.
+	 *
+	 * @param TabelIndikator $tabel
+	 * @return JsonResponse
+	 */
+	public function uraians(TabelIndikator $tabel): JsonResponse
+	{
+		$uraian = UraianIndikator::where('tabel_indikator_id', $tabel->id)
+			->whereNull('parent_id')
+			->orderBy('id')
+			->get();
 
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
+		return response()->json($uraian);
+	}
 
-    $tabel->uraianIndikator()->create($validatedData);
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param UraianIndikatorRequest $request
+	 * @param TabelIndikator $tabel
+	 * @return JsonResponse
+	 */
+	public function store(UraianIndikatorRequest $request, TabelIndikator $tabel): JsonResponse
+	{
+		$tabel->uraianIndikator()->create($request->validated());
 
-    toastr()->addSuccess('Saved.');
+		return response()->json(['message' => 'Uraian Indikator successfully created.']);
+	}
 
-    return back();
-  }
+	/**
+	 * Updates an existing Uraian Indikator resource in storage.
+	 *
+	 * @param UraianIndikatorRequest $request
+	 * @param UraianIndikator $uraian
+	 * @return JsonResponse
+	 */
+	public function update(UraianIndikatorRequest $request, UraianIndikator $uraian): JsonResponse
+	{
+		$uraian->update($request->validated());
 
-  /**
-   * Undocumented function
-   *
-   * @param TabelIndikator $tabel
-   * @param UraianIndikator $uraian
-   * @return View
-   */
-  public function edit(TabelIndikator $tabel, UraianIndikator $uraian): View
-  {
-    $categories = TabelIndikator::all();
-    $uraians = UraianIndikator::with('childs')
-      ->where('tabel_indikator_id', $tabel->id)
-      ->whereNull('parent_id')
-      ->orderBy('id')
-      ->get();
-    $title = 'Uraian Form Menu Indikator';
-    $crudRoutePart = 'indikator';
+		return response()->json(['message' => 'Uraian Indikator successfully updated.']);
+	}
 
-    return view('admin.uraian.edit', compact(
-      'tabel',
-      'uraian',
-      'categories',
-      'uraians',
-      'title',
-      'crudRoutePart'
-    ));
-  }
+	/**
+	 * Deletes an UraianIndikator resource and redirects back.
+	 *
+	 * @param UraianIndikator $uraian
+	 * @return JsonResponse
+	 */
+	public function destroy(UraianIndikator $uraian): JsonResponse
+	{
+		$uraian->delete();
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param UraianIndikator $uraian
-   * @return RedirectResponse
-   */
-  public function update(Request $request, UraianIndikator $uraian): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' => [
-        'nullable',
-        'integer'
-      ],
-      'uraian' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-    ]);
+		return response()->json(['message' => 'Uraian Indikator successfully deleted.']);
+	}
 
-    $uraian->update($validatedData);
+	/**
+	 * Deletes multiple UraianIndikator resources and redirects back.
+	 *
+	 * @param UraianIndikatorRequest $request
+	 * @return JsonResponse
+	 */
+	public function massDestroy(UraianIndikatorRequest $request): JsonResponse
+	{
+		UraianIndikator::whereIn('id', $request->validated('ids'))->delete();
 
-    toastr()->addSuccess('Updated.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param UraianIndikator $uraian
-   * @return RedirectResponse
-   */
-  public function destroy(UraianIndikator $uraian): RedirectResponse
-  {
-    $uraian->delete();
-
-    toastr()->addSuccess('Deleted.');
-
-    return back();
-  }
-
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return HttpResponse
-   */
-  public function massDestroy(Request $request): HttpResponse
-  {
-    $validatedData = $request->validate([
-      'ids' => [
-        'required',
-        'array'
-      ],
-      'ids.*' => [
-        'integer',
-        'exists:uraian_indikator,id'
-      ]
-    ]);
-
-    UraianIndikator::whereIn('id', $validatedData['ids'])->delete();
-
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response()->json(['message' => 'Uraian Indikator successfully deleted.']);
+	}
 }

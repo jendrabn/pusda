@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\Auditable;
-use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -50,28 +50,30 @@ class User extends Authenticatable
 
 	public function skpd(): BelongsTo
 	{
-		return $this->belongsTo(Skpd::class, 'skpd_id', 'id',);
+		return $this->belongsTo(Skpd::class, 'skpd_id', 'id');
 	}
 
 	public function avatarUrl(): Attribute
 	{
-		return Attribute::get(fn () => $this->attributes['avatar'] && Storage::disk('public')->exists($this->attributes['avatar'])
-			? Storage::url($this->attributes['avatar'])
-			: 'https://ui-avatars.com/api/?name=' . urlencode($this->attributes['name']));
+		return Attribute::get(function () {
+			$avatar = $this->attributes['avatar'];
+
+			return $avatar && Storage::disk('public')->exists($avatar)
+				? Storage::url($avatar)
+				: 'https://ui-avatars.com/api/?name=' . urlencode($this->attributes['name']);
+		});
 	}
 
-	public function isAdministrator(): bool
+	protected function serializeDate(\DateTimeInterface $date): string
 	{
-		return $this->attributes['role'] === self::ROLE_ADMIN;
+		return $date->format('d-m-Y H:i:s');
 	}
 
-	public function isSkpd(): bool
+	public function birthDate(): Attribute
 	{
-		return $this->attributes['role'] === self::ROLE_SKPD;
-	}
-
-	protected function serializeDate(DateTimeInterface $date)
-	{
-		return $date->format('Y-m-d H:i:s');
+		return Attribute::make(
+			set: fn($value) => $value ? Carbon::parse($value)->format('Y-m-d') : null,
+			get: fn($value) => $value ? Carbon::parse($value)->format('d-m-Y') : null
+		);
 	}
 }

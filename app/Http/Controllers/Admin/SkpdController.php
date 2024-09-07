@@ -5,86 +5,54 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\SkpdsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SkpdRequest;
-use Illuminate\Http\Request;
 use App\Models\Skpd;
 use App\Models\KategoriSkpd;
-use Flasher\Prime\Notification\Type;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SkpdController extends Controller
 {
 	/**
-	 * Render the index view for the SkpdsDataTable.
+	 * Displays the index page for SKPD.
 	 *
 	 * @param SkpdsDataTable $dataTable
-	 * @return JsonResponse|View|BinaryFileResponse
+	 * @return mixed
 	 */
-	public function index(SkpdsDataTable $dataTable): JsonResponse|View|BinaryFileResponse
+	public function index(SkpdsDataTable $dataTable): mixed
 	{
-		return $dataTable->render('admin.skpd.index');
+		$kategori = KategoriSkpd::pluck('nama', 'id')->prepend('---', null);
+
+		return $dataTable->render('admin.skpd.index', compact('kategori'));
 	}
 
 	/**
-	 * Renders the view for creating a new SKPD
-	 *
-	 * @return \Illuminate\Contracts\View\View
-	 */
-	public function create(): View
-	{
-		$kategori = KategoriSkpd::pluck('nama', 'id');
-
-		return view('admin.skpd.create', compact('kategori'));
-	}
-
-	/**
-	 * Store a new SKPD.
+	 * Handles the creation of a new SKPD instance.
 	 *
 	 * @param SkpdRequest $request
-	 * @return RedirectResponse
+	 * @return JsonResponse
 	 */
-	public function store(SkpdRequest $request): RedirectResponse
+	public function store(SkpdRequest $request): JsonResponse
 	{
 		Skpd::create($request->validated());
 
-		toastr('SKPD successfully created.', Type::SUCCESS);
-
-		return to_route('admin.skpd.index');
+		return response()->json(['message' => 'SKPD successfully created.']);
 	}
 
 	/**
-	 * Render the view for editing a specific SKPD.
-	 *
-	 * @param Skpd $skpd
-	 * @return View
-	 */
-	public function edit(Skpd $skpd): View
-	{
-		$kategori = KategoriSkpd::pluck('nama', 'id');
-
-		return view('admin.skpd.edit', compact('skpd', 'kategori'));
-	}
-
-	/**
-	 * Update an existing SKPD.
+	 * Handles the update of an existing SKPD instance.
 	 *
 	 * @param SkpdRequest $request
 	 * @param Skpd $skpd
-	 * @return RedirectResponse
+	 * @return JsonResponse
 	 */
-	public function update(SkpdRequest $request, Skpd $skpd): RedirectResponse
+	public function update(SkpdRequest $request, Skpd $skpd): JsonResponse
 	{
 		$skpd->update($request->validated());
 
-		toastr('SKPD successfully updated.', Type::SUCCESS);
-
-		return back();
+		return response()->json(['message' => 'SKPD successfully updated.']);
 	}
 
 	/**
-	 * Delete an SKPD if its ID is not 1.
+	 * Handles the deletion of an existing SKPD instance.
 	 *
 	 * @param Skpd $skpd
 	 * @return JsonResponse
@@ -97,25 +65,18 @@ class SkpdController extends Controller
 	}
 
 	/**
-	 * Mass delete SKPDs based on the provided IDs.
+	 * Handles the mass deletion of existing SKPD instances.
 	 *
-	 * @param Request $request
+	 * @param SkpdRequest $request
 	 * @return JsonResponse
 	 */
-	public function massDestroy(Request $request): JsonResponse
+	public function massDestroy(SkpdRequest $request): JsonResponse
 	{
-		$validatedData = $request->validate([
-			'ids' => [
-				'required',
-				'array'
-			],
-			'ids.*' => [
-				'integer',
-				'exists:skpd,id'
-			]
-		]);
+		$skpds = Skpd::whereIn('id', $request->validated('ids'))->get();
 
-		Skpd::whereIn('id', $validatedData['ids'])->delete();
+		$skpds->each(function ($skpd) {
+			$skpd->delete();
+		});
 
 		return response()->json(['message' => 'SKPD successfully deleted.']);
 	}
