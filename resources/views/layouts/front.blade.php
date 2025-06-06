@@ -7,7 +7,11 @@
           http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0"
           name="viewport">
-    <title>{{ $title ?? 'Home' }} &mdash; Pusat Data Kabupaten Situbondo</title>
+    <title>{{ $title ?? 'Home' }} &mdash; Pusat Data Situbondo</title>
+
+    <link href="{{ asset('favicon.ico') }}"
+          rel="icon"
+          type="image/x-icon">
 
     <link crossorigin="anonymous"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"

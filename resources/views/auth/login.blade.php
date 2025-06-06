@@ -12,8 +12,13 @@
                            class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}"
                            name="username"
                            placeholder="Email / Username"
-                           type="text">
-                    <div class="input-group-text"> <span class="bi bi-person"></span> </div>
+                           type="text"
+                           value="{{ config('app.debug') ? 'nur' : '' }}">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
                     @error('username')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -24,8 +29,13 @@
                     <input class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}"
                            name="password"
                            placeholder="Password"
-                           type="password">
-                    <div class="input-group-text"> <span class="bi bi-lock-fill"></span> </div>
+                           type="password"
+                           value="{{ config('app.debug') ? 'terserah' : '' }}">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -34,26 +44,25 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <div class="form-check">
-                            <input class="form-check-input"
-                                   id="flexCheckDefault"
+                        <div class="icheck-primary">
+                            <input {{ old('remember') ? 'checked' : '' }}
+                                   id="remember"
                                    name="remember"
-                                   type="checkbox"> <label class="form-check-label"
-                                   for="flexCheckDefault">
+                                   type="checkbox">
+                            <label for="remember">
                                 Remember Me
                             </label>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary"
-                                    type="submit">Log In
-                            </button>
-                        </div>
+                        <button class="btn btn-primary btn-block"
+                                type="submit">Log In
+                        </button>
                     </div>
                 </div>
             </form>
-            <p class="mb-0"> <a href="{{ route('auth.forgot-password') }}">Lupa Password?</a> </p>
+
+            <p class="mb-0 mt-3"> <a href="{{ route('auth.forgot-password') }}">Lupa Password?</a> </p>
         </div>
     </div>
 @endsection
