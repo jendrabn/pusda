@@ -11,14 +11,18 @@ table.dataTable tbody th.select-checkbox::after {
     top: 50%;
 }
 
-.dataTables_length,
-.dataTables_filter,
+.dt-length,
+.dt-search,
 .dt-buttons {
     margin-bottom: 0.333em;
 }
 
-.dataTables_length{
+.dt-length{
   float: left !important;
+}
+
+.dt-search{
+  float: right !important;
 }
 
 .dt-buttons .btn {
@@ -88,7 +92,7 @@ table.dataTable thead .sorting_desc {
     display: block;
 }
 
-.dataTables_length label select {
+.dt-length label select {
     width: 65px!important;
 }
 

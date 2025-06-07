@@ -94,7 +94,7 @@ class AuthController extends Controller
 			return redirect()->back();
 		}
 
-		toastr('We have emailed your password reset link.', Type::SUCCESS);
+		toastr(__('passwords.sent'), Type::SUCCESS);
 
 		return redirect()->back();
 	}

@@ -32,7 +32,7 @@ class AuthService
 			$seconds = RateLimiter::availableIn($throttleKey);
 
 			throw ValidationException::withMessages([
-				'username' => 'Too many login attempts. Please try again in ' . $seconds . ' seconds.',
+				'username' => __('auth.throttle', ['seconds' => $seconds]),
 			]);
 		}
 
