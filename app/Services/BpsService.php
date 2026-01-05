@@ -20,15 +20,19 @@ class BpsService
       ->whereHas('uraianBps', fn ($q) => $q->where('tabel_Bps_id', $tabel->id))
       ->groupBy('tahun')
       ->orderBy('tahun', 'asc')
-      ->get()
-      ->map(fn ($item) => $item->tahun);
+      ->pluck('tahun');
   }
 
   public function getChartData(UraianBps $uraian)
   {
     return [
       'uraian' => $uraian->uraian,
-      'isi' => $uraian->isiBps()->whereNotNull('tahun')->groupBy('tahun')->orderBy('tahun', 'asc')->get()
+      'isi' => $uraian->isiBps()
+        ->select('id', 'tahun', 'isi', 'uraian_bps_id')
+        ->whereNotNull('tahun')
+        ->groupBy('tahun', 'id', 'isi', 'uraian_bps_id')
+        ->orderBy('tahun', 'asc')
+        ->get()
     ];
   }
 

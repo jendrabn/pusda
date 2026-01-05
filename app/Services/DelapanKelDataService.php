@@ -20,15 +20,19 @@ class DelapanKelDataService
       ->whereHas('uraian8KelData', fn ($q) => $q->where('tabel_8keldata_id', $tabel->id))
       ->groupBy('tahun')
       ->orderBy('tahun', 'asc')
-      ->get()
-      ->map(fn ($item) => $item->tahun);
+      ->pluck('tahun');
   }
 
   public function getChartData(Uraian8KelData $uraian)
   {
     return   [
       'uraian' => $uraian->uraian,
-      'isi' => $uraian->isi8KelData()->whereNotNull('tahun')->groupBy('tahun')->orderBy('tahun', 'asc')->get()
+      'isi' => $uraian->isi8KelData()
+        ->select('id', 'tahun', 'isi', 'uraian_8keldata_id')
+        ->whereNotNull('tahun')
+        ->groupBy('tahun', 'id', 'isi', 'uraian_8keldata_id')
+        ->orderBy('tahun', 'asc')
+        ->get()
     ];
   }
 

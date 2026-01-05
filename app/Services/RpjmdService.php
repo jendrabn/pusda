@@ -20,15 +20,19 @@ class RpjmdService
       ->whereHas('uraianRpjmd', fn ($q) => $q->where('tabel_rpjmd_id', $tabel->id))
       ->groupBy('tahun')
       ->orderBy('tahun', 'asc')
-      ->get()
-      ->map(fn ($item) => $item->tahun);
+      ->pluck('tahun');
   }
 
   public function getChartData(UraianRpjmd $uraian)
   {
     return  [
       'uraian' => $uraian->uraian,
-      'isi' => $uraian->isiRpjmd()->whereNotNull('tahun')->groupBy('tahun')->orderBy('tahun', 'asc')->get()
+      'isi' => $uraian->isiRpjmd()
+        ->select('id', 'tahun', 'isi', 'uraian_rpjmd_id')
+        ->whereNotNull('tahun')
+        ->groupBy('tahun', 'id', 'isi', 'uraian_rpjmd_id')
+        ->orderBy('tahun', 'asc')
+        ->get()
     ];
   }
 

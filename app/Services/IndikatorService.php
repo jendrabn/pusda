@@ -20,15 +20,19 @@ namespace App\Services {
         ->whereHas('uraianIndikator', fn ($q) => $q->where('tabel_indikator_id', $tabel->id))
         ->groupBy('tahun')
         ->orderBy('tahun', 'asc')
-        ->get()
-        ->map(fn ($item) => $item->tahun);
+        ->pluck('tahun');
     }
 
     public function getChartData(UraianIndikator $uraian)
     {
       return [
         'uraian' => $uraian->uraian,
-        'isi' => $uraian->isiIndikator()->whereNotNull('tahun')->groupBy('tahun')->orderBy('tahun', 'asc')->get()
+        'isi' => $uraian->isiIndikator()
+          ->select('id', 'tahun', 'isi', 'uraian_indikator_id')
+          ->whereNotNull('tahun')
+          ->groupBy('tahun', 'id', 'isi', 'uraian_indikator_id')
+          ->orderBy('tahun', 'asc')
+          ->get()
       ];
     }
 
