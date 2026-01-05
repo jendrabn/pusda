@@ -13,7 +13,7 @@
                            name="username"
                            placeholder="Email / Username"
                            type="text"
-                           value="{{ env('DEMO_MODE') ? env('DEMO_MODE_USERNAME') : '' }}">
+                           value="{{ config('app.demo_mode') ? config('app.demo_username') : '' }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="fas fa-user"></i>
@@ -30,7 +30,7 @@
                            name="password"
                            placeholder="Password"
                            type="password"
-                           value="{{ env('DEMO_MODE') ? env('DEMO_MODE_PASSWORD') : '' }}">
+                           value="{{ config('app.demo_mode') ? config('app.demo_password') : '' }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="fas fa-lock"></i>
