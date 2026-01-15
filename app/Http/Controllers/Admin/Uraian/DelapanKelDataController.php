@@ -76,7 +76,7 @@ class DelapanKelDataController extends Controller
 
     $tabel->uraian8KelData()->create($validatedData);
 
-    toastr()->addSuccess('Saved.');
+    toastr()->addSuccess('Uraian berhasil disimpan.');
 
     return back();
   }
@@ -133,7 +133,7 @@ class DelapanKelDataController extends Controller
 
     $uraian->update($validatedData);
 
-    toastr()->addSuccess('Updated.');
+    toastr()->addSuccess('Uraian berhasil diperbarui.');
 
     return back();
   }
@@ -148,7 +148,7 @@ class DelapanKelDataController extends Controller
   {
     $uraian->delete();
 
-    toastr()->addSuccess('Deleted.');
+    toastr()->addSuccess('Uraian berhasil dihapus.');
 
     return back();
   }

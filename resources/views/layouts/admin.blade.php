@@ -105,7 +105,14 @@
                 @endif
                 @if ($errors->count() > 0)
                     <div class="alert alert-danger">
-                        <ul class="list-unstyled">
+                        <button aria-hidden="true"
+                                class="close"
+                                data-dismiss="alert"
+                                type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h5><i class="icon fas fa-ban"></i> Error!</h5>
+                        <ul class="list-unstyled mb-0">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach

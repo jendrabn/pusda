@@ -40,7 +40,7 @@ class ProfileController extends Controller
 
     $user->save();
 
-    toastr()->addSuccess('Profile successfully updated.');
+    toastr()->addSuccess('Profil berhasil diperbarui.');
 
     return to_route('profile');
   }
@@ -55,7 +55,7 @@ class ProfileController extends Controller
   {
     auth()->user()->update($request->validated());
 
-    toastr()->addSuccess('Password successfully updated.');
+    toastr()->addSuccess('Kata sandi berhasil diperbarui.');
 
     return to_route('profile');
   }

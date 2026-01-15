@@ -9,9 +9,9 @@
     </div>
     <div class="card-body">
       <div class="form-group">
-        <a class="btn btn-default btn-flat"
+        <a class="btn btn-default"
           href="{{ route('admin.uraian.' . $crudRoutePart . '.index', $tabel->id) }}">
-          Back to list
+          <i class="fas fa-arrow-left mr-1"></i> Kembali
         </a>
       </div>
       <form action="{{ route('admin.uraian.' . $crudRoutePart . '.update', $uraian->id) }}"
@@ -53,9 +53,9 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-primary btn-flat"
+          <button class="btn btn-primary"
             type="submit">
-            <i class="fas fa-save mr-1"></i> Update
+            <i class="fas fa-save mr-1"></i> Simpan Perubahan
           </button>
         </div>
       </form>

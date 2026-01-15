@@ -9,9 +9,9 @@
     </div>
     <div class="card-body">
       <div class="form-group">
-        <a class="btn btn-default btn-flat"
+        <a class="btn btn-default"
           href="{{ route('admin.users.index') }}">
-          Back to list
+          <i class="fas fa-arrow-left mr-1"></i> Kembali
         </a>
       </div>
       <form method="POST"
@@ -143,7 +143,7 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-primary btn-flat"
+          <button class="btn btn-primary"
             type="submit">
             <i class="fas fa-save mr-1"></i> Simpan
           </button>

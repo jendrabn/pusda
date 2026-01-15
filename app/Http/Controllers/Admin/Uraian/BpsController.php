@@ -71,7 +71,7 @@ class BpsController extends Controller
 
     $tabel->uraianBps()->create($validatedData);
 
-    toastr()->addSuccess('Saved.');
+    toastr()->addSuccess('Uraian berhasil disimpan.');
 
     return back();
   }
@@ -128,7 +128,7 @@ class BpsController extends Controller
 
     $uraian->update($validatedData);
 
-    toastr()->addSuccess('Updated.');
+    toastr()->addSuccess('Uraian berhasil diperbarui.');
 
     return back();
   }
@@ -143,7 +143,7 @@ class BpsController extends Controller
   {
     $uraian->delete();
 
-    toastr()->addSuccess('Deleted.');
+    toastr()->addSuccess('Uraian berhasil dihapus.');
 
     return back();
   }

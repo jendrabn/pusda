@@ -210,14 +210,6 @@
         @endrole
 
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}"
-               href="{{ route('profile') }}">
-                <i class="fas fa-user nav-icon"></i>
-                <p>Profil</p>
-            </a>
-        </li>
-
-        <li class="nav-item">
             <a class="nav-link"
                href="#"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

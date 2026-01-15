@@ -11,6 +11,7 @@ use App\Services\DelapanKelDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 trait DelapanKelDataTrait
@@ -25,7 +26,7 @@ trait DelapanKelDataTrait
   public function edit(Request $request, Uraian8KelData $uraian)
   {
     $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
     $tabelId = $uraian->tabel_8keldata_id;
 
     $viewPath = match (request()->user()->role) {
@@ -39,10 +40,10 @@ trait DelapanKelDataTrait
     return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
-  public function update(Request $request, Uraian8KelData $uraian)
+  public function update(Request $request, Uraian8KelData $uraian): RedirectResponse
   {
     $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
 
     $rules = [
       'uraian' => ['required', 'string'],
@@ -54,7 +55,7 @@ trait DelapanKelDataTrait
       $rules['tahun_' . $tahun] = ['required', 'integer'];
     }
 
-    $this->validate($request, $rules);
+    $request->validate($rules);
 
     DB::beginTransaction();
     try {
@@ -72,18 +73,18 @@ trait DelapanKelDataTrait
       throw new \Exception($e->getMessage());
     }
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil diperbarui.');
     return back()->with('success-message', 'Successfully Updated.');
   }
 
-  public function destroy(Uraian8KelData $uraian)
+  public function destroy(Uraian8KelData $uraian): RedirectResponse
   {
     $uraian->delete();
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil dihapus.');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, Tabel8KelData $tabel)
+  public function updateFitur(Request $request, Tabel8KelData $tabel): RedirectResponse
   {
 
     $request->validate([
@@ -95,11 +96,11 @@ trait DelapanKelDataTrait
     ]);
 
     $tabel->fitur8KelData()->updateOrCreate([], $request->all());
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Fitur tabel berhasil diperbarui.');
     return back()->with('success-message', 'Successfully Updated');
   }
 
-  public function storeFile(Request $request, Tabel8KelData $tabel)
+  public function storeFile(Request $request, Tabel8KelData $tabel): RedirectResponse
   {
     $request->validate([
       'document' => ['required', 'max:10240'],
@@ -111,16 +112,16 @@ trait DelapanKelDataTrait
       'nama' => $file->getClientOriginalName(),
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil disimpan.');
     return back()->with('success-message', 'Successfully Saved.');
   }
 
-  public function destroyFile(File8KelData $file)
+  public function destroyFile(File8KelData $file): RedirectResponse
   {
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil dihapus.');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 

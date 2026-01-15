@@ -48,8 +48,8 @@
     @enderror
   </div>
   <div class="form-group">
-    <button class="btn btn-primary btn-flat"
+    <button class="btn btn-primary"
       id="submit"
-      type="submit"><i class="fas fa-save mr-1"></i> Update</button>
+      type="submit"><i class="fas fa-save mr-1"></i> Simpan Perubahan</button>
   </div>
 </form>

@@ -8,7 +8,7 @@
         <div class="card-body">
           <div class="form-group">
             <a class="btn btn-default" href="{{ route('admin_skpd.' . $crudRoutePart . '.input', $tabelId) }}">
-              <i class="fas fa-backward"></i> Back to list
+              <i class="fas fa-arrow-left mr-1"></i> Kembali
             </a>
           </div>
 
@@ -66,7 +66,7 @@
 
             <div class="form-group">
               <button class="btn btn-primary" type="submit">
-                <i class="fas fa-save"></i> Update
+                <i class="fas fa-save"></i> Simpan Perubahan
               </button>
             </div>
           </form>

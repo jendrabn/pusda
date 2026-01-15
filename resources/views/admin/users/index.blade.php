@@ -4,7 +4,7 @@
     <div class="row"
          style="margin-bottom: 10px">
         <div class="col-lg-12">
-            <a class="btn btn-success btn-flat"
+            <a class="btn btn-success"
                href="{{ route('admin.users.create') }}">
                 <i class="fas fa-plus mr-1"></i> Tambah User
             </a>
@@ -16,7 +16,7 @@
             <h3 class="card-title">Daftar User</h3>
         </div>
         <div class="card-body">
-            <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-User table table-sm">
+            <table class="table-bordered table-striped table-hover ajaxTable datatable datatable-User table ">
                 <thead>
                     <tr>
                         <th width="10">&nbsp;</th>

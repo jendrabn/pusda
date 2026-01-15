@@ -71,7 +71,7 @@ class SkpdController extends Controller
   {
     Skpd::create($request->validated());
 
-    toastr()->addSuccess('SKPD successfully saved.');
+    toastr()->addSuccess('SKPD berhasil disimpan.');
 
     return to_route('admin.skpd.index');
   }
@@ -100,7 +100,7 @@ class SkpdController extends Controller
   {
     if ($skpd->id !== 1) $skpd->update($request->validated());
 
-    toastr()->addSuccess('SKPD successfully updated.');
+    toastr()->addSuccess('SKPD berhasil diperbarui.');
 
     return back();
   }
@@ -115,7 +115,7 @@ class SkpdController extends Controller
   {
     if ($skpd->id !== 1) $skpd->delete();
 
-    toastr()->addSuccess('SKPD successfully deleted.');
+    toastr()->addSuccess('SKPD berhasil dihapus.');
 
     return back();
   }

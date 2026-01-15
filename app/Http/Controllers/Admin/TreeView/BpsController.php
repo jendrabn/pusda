@@ -75,7 +75,7 @@ class BpsController extends Controller
 
     TabelBps::create($validatedData);
 
-    toastr()->addSuccess('Saved.');
+    toastr()->addSuccess('Tabel BPS berhasil disimpan.');
 
     return to_route('admin.treeview.bps.index');
   }
@@ -125,7 +125,7 @@ class BpsController extends Controller
 
     if ($tabel->id !== 1) $tabel->update($validatedData);
 
-    toastr()->addSuccess('Updated.');
+    toastr()->addSuccess('Tabel BPS berhasil diperbarui.');
 
     return back();
   }
@@ -140,7 +140,7 @@ class BpsController extends Controller
   {
     if ($tabel->id !== 1) $tabel->delete();
 
-    toastr()->addSuccess('Deleted.');
+    toastr()->addSuccess('Tabel BPS berhasil dihapus.');
 
     return to_route('admin.treeview.bps.index');
   }

@@ -10,198 +10,199 @@ use App\Services\BpsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class BpsController extends Controller
 {
-  private BpsService $service;
+	private BpsService $service;
 
-  public function __construct(BpsService $service)
-  {
-    View::share([
-      'crudRoutePart' => 'bps',
-      'title' => 'BPS'
-    ]);
+	public function __construct(BpsService $service)
+	{
+		View::share([
+			'crudRoutePart' => 'bps',
+			'title' => 'BPS'
+		]);
 
-    $this->service = $service;
-  }
+		$this->service = $service;
+	}
 
-  public function index()
-  {
-    $categories = $this->service->getCategories();
+	public function index()
+	{
+		$categories = $this->service->getCategories();
 
-    return view('admin.isiUraian.index', compact('categories'));
-  }
+		return view('admin.isi-uraian.index', compact('categories'));
+	}
 
-  public function input(TabelBps $tabel)
-  {
-    $tahuns = $this->service->getAllTahun($tabel);
-    $uraians = $this->service->getAllUraianByTabelId($tabel);
-    $categories = $this->service->getCategories();
-    $fitur = $tabel->fiturBps;
-    $files = $tabel->fileBps;
+	public function input(TabelBps $tabel)
+	{
+		$tahuns = $this->service->getAllTahun($tabel);
+		$uraians = $this->service->getAllUraianByTabelId($tabel);
+		$categories = $this->service->getCategories();
+		$fitur = $tabel->fiturBps;
+		$files = $tabel->fileBps;
 
-    return view('admin.isiUraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
-  }
+		return view('admin.isi-uraian.input', compact('categories',  'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+	}
 
-  public function edit(Request $request, UraianBps $uraian)
-  {
-    $isi = $this->service->getIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
-    $tabelId = $uraian->tabel_bps_id;
+	public function edit(Request $request, UraianBps $uraian)
+	{
+		$isi = $this->service->getIsiByUraianId($uraian);
+		$tahuns = $isi->map(fn($item) => $item->tahun);
+		$tabelId = $uraian->tabel_bps_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
-  }
+		return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+	}
 
-  public function update(Request $request, UraianBps $uraian)
-  {
-    $isi = $this->service->getIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+	public function update(Request $request, UraianBps $uraian): RedirectResponse
+	{
+		$isi = $this->service->getIsiByUraianId($uraian);
+		$tahuns = $isi->map(fn($item) => $item->tahun);
 
-    $rules = [
-      'uraian' => ['required', 'string'],
-      'satuan' => ['required', 'string'],
-    ];
+		$rules = [
+			'uraian' => ['required', 'string'],
+			'satuan' => ['required', 'string'],
+		];
 
-    foreach ($tahuns as $tahun) {
-      $rules['tahun_' . $tahun] = ['required', 'integer'];
-    }
+		foreach ($tahuns as $tahun) {
+			$rules['tahun_' . $tahun] = ['required', 'integer'];
+		}
 
-    $this->validate($request, $rules);
+		$request->validate($rules);
 
-    DB::beginTransaction();
-    try {
-      $uraian->update($request->all());
+		DB::beginTransaction();
+		try {
+			$uraian->update($request->all());
 
-      $isi->each(function ($item) use ($request) {
-        $item->isi = $request->get('tahun_' . $item->tahun);
-        $item->save();
-      });
+			$isi->each(function ($item) use ($request) {
+				$item->isi = $request->get('tahun_' . $item->tahun);
+				$item->save();
+			});
 
-      DB::commit();
-    } catch (\Exception $e) {
-      DB::rollBack();
+			DB::commit();
+		} catch (\Exception $e) {
+			DB::rollBack();
 
-      throw new \Exception($e->getMessage());
-    }
+			throw new \Exception($e->getMessage());
+		}
 
-    toastr()->addSuccess();
+		toastr()->addSuccess('Isi uraian berhasil diperbarui.');
 
-    return back()->with('success-message', 'Successfully Updated.');
-  }
+		return back()->with('success-message', 'Successfully Updated.');
+	}
 
-  public function destroy(UraianBps $uraian)
-  {
-    $uraian->delete();
+	public function destroy(UraianBps $uraian): RedirectResponse
+	{
+		$uraian->delete();
 
-    toastr()->addSuccess();
+		toastr()->addSuccess('Isi uraian berhasil dihapus.');
 
-    return back()->with('success-message', 'Successfully Deleted.');
-  }
+		return back()->with('success-message', 'Successfully Deleted.');
+	}
 
-  public function updateFitur(Request $request, TabelBps $tabel)
-  {
-    $request->validate([
-      'deskripsi' => ['nullable', 'string', 'max:255'],
-      'analisis'  => ['nullable', 'string', 'max:255'],
-      'permasalahan'  => ['nullable', 'string', 'max:255'],
-      'solusi'  => ['nullable', 'string', 'max:255'],
-      'saran'  => ['nullable', 'string', 'max:255']
-    ]);
+	public function updateFitur(Request $request, TabelBps $tabel): RedirectResponse
+	{
+		$request->validate([
+			'deskripsi' => ['nullable', 'string', 'max:255'],
+			'analisis'  => ['nullable', 'string', 'max:255'],
+			'permasalahan'  => ['nullable', 'string', 'max:255'],
+			'solusi'  => ['nullable', 'string', 'max:255'],
+			'saran'  => ['nullable', 'string', 'max:255']
+		]);
 
-    $tabel->fiturBps()->updateOrCreate([], $request->all());
+		$tabel->fiturBps()->updateOrCreate([], $request->all());
 
-    toastr()->addSuccess();
+		toastr()->addSuccess('Fitur tabel berhasil diperbarui.');
 
-    return back()->with('success-message', 'Updated.');
-  }
+		return back()->with('success-message', 'Updated.');
+	}
 
 
-  public function storeFile(Request $request, TabelBps $tabel)
-  {
-    $request->validate([
-      'document' => ['required', 'max:10240'],
-    ]);
+	public function storeFile(Request $request, TabelBps $tabel): RedirectResponse
+	{
+		$request->validate([
+			'document' => ['required', 'max:10240'],
+		]);
 
-    $file = $request->file('document');
+		$file = $request->file('document');
 
-    $tabel->fileBps()->create([
-      'nama' => $file->getClientOriginalName(),
-      'path' => $file->storePublicly('file_pendukung', 'public')
-    ]);
+		$tabel->fileBps()->create([
+			'nama' => $file->getClientOriginalName(),
+			'path' => $file->storePublicly('file_pendukung', 'public')
+		]);
 
-    toastr()->addSuccess();
+		toastr()->addSuccess('File pendukung berhasil disimpan.');
 
-    return back()->with('success-message', 'Saved.');
-  }
+		return back()->with('success-message', 'Saved.');
+	}
 
-  public function destroyFile(FileBps $file)
-  {
-    Storage::disk('public')->delete($file->path);
+	public function destroyFile(FileBps $file): RedirectResponse
+	{
+		Storage::disk('public')->delete($file->path);
 
-    $file->delete();
+		$file->delete();
 
-    toastr()->addSuccess();
+		toastr()->addSuccess('File pendukung berhasil dihapus.');
 
-    return back()->with('success-message', 'Successfully Deleted.');
-  }
+		return back()->with('success-message', 'Successfully Deleted.');
+	}
 
-  public function downloadFile(FileBps $file)
-  {
-    return Storage::disk('public')->download($file->path, $file->nama);
-  }
+	public function downloadFile(FileBps $file)
+	{
+		return Storage::disk('public')->download($file->path, $file->nama);
+	}
 
-  public function storeTahun(Request $request, TabelBps $tabel)
-  {
-    $request->validate([
-      'tahun' => ['required', 'integer', 'min:2010', 'max:2030'],
-    ]);
+	public function storeTahun(Request $request, TabelBps $tabel): RedirectResponse
+	{
+		$request->validate([
+			'tahun' => ['required', 'integer', 'min:2010', 'max:2030'],
+		]);
 
-    DB::beginTransaction();
-    try {
-      $tabel->uraianBps()->with('isiBps')->get()
-        ->each(function ($uraian) use ($request) {
-          if ($uraian->parent_id) {
-            $uraian->isiBps()->where('tahun', $request->tahun)->firstOrCreate([
-              'tahun' => $request->tahun,
-              'isi' => 0
-            ]);
-          }
-        });
+		DB::beginTransaction();
+		try {
+			$tabel->uraianBps()->with('isiBps')->get()
+				->each(function ($uraian) use ($request) {
+					if ($uraian->parent_id) {
+						$uraian->isiBps()->where('tahun', $request->tahun)->firstOrCreate([
+							'tahun' => $request->tahun,
+							'isi' => 0
+						]);
+					}
+				});
 
-      DB::commit();
-    } catch (\Exception $e) {
-      DB::rollBack();
+			DB::commit();
+		} catch (\Exception $e) {
+			DB::rollBack();
 
-      throw new \Exception($e->getMessage());
-    }
+			throw new \Exception($e->getMessage());
+		}
 
-    toastr()->addSuccess('Successfully Saved.');
+		toastr()->addSuccess('Berhasil disimpan.');
 
-    return back();
-  }
+		return back();
+	}
 
-  public function destroyTahun(TabelBps $tabel, int $tahun)
-  {
-    DB::beginTransaction();
-    try {
-      $tabel->uraianBps->each(fn ($uraian) => $uraian->isiBps()->where('tahun', $tahun)->delete());
+	public function destroyTahun(TabelBps $tabel, int $tahun): RedirectResponse
+	{
+		DB::beginTransaction();
+		try {
+			$tabel->uraianBps->each(fn($uraian) => $uraian->isiBps()->where('tahun', $tahun)->delete());
 
-      DB::commit();
-    } catch (\Exception $e) {
-      DB::rollBack();
+			DB::commit();
+		} catch (\Exception $e) {
+			DB::rollBack();
 
-      throw new \Exception($e->getMessage());
-    }
+			throw new \Exception($e->getMessage());
+		}
 
-    toastr()->addSuccess('Successfully Deleted.');
+		toastr()->addSuccess('Berhasil dihapus.');
 
-    return back();
-  }
+		return back();
+	}
 
-  public function chart(UraianBps $uraian)
-  {
-    return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
-  }
+	public function chart(UraianBps $uraian)
+	{
+		return response()->json($this->service->getChartData($uraian), Response::HTTP_OK);
+	}
 }

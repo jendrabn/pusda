@@ -51,6 +51,6 @@ class RpjmdController extends Controller
     $files = $tabel->fileRpjmd;
     $tahuns = $this->rpjmdService->getAllTahun($tabel);
 
-    return view('admin.isiUraian.input', compact('tabel', 'skpd', 'skpds',  'categories', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isi-uraian.input', compact('tabel', 'skpd', 'skpds',  'categories', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 }

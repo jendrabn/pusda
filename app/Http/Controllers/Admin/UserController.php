@@ -19,134 +19,139 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return JsonResponse|View
-   */
-  public function index(Request $request): JsonResponse|View
-  {
-    if ($request->ajax()) {
-      $model = User::with(['skpd'])->select(sprintf('%s.*', (new User())->getTable()));
-      $table = Datatables::eloquent($model);
 
-      $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
+	/**
+	 * Return view for index, given as follows:
+	 *
+	 * @param Request $request
+	 * @return JsonResponse theView
+	 */
+	public function index(Request $request): JsonResponse|View
+	{
+		if ($request->ajax()) {
+			$model = User::with(['skpd'])->select(sprintf('%s.*', (new User())->getTable()));
+			$table = Datatables::eloquent($model);
 
-      $table->editColumn('actions', function ($row) {
-        $crudRoutePart = 'users';
+			$table->addColumn('placeholder', '&nbsp;');
+			$table->addColumn('actions', '&nbsp;');
 
-        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
-      });
+			$table->editColumn('actions', function ($row) {
+				$crudRoutePart = 'users';
 
-      $table->editColumn('role', fn ($row) => sprintf(
-        '<span class="badge badge-info rounded-0">%s</span>',
-        $row->role
-      ));
+				return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
+			});
 
-      $table->rawColumns(['actions', 'placeholder', 'role']);
+			$table->editColumn('role', fn($row) => sprintf(
+				'<span class="badge badge-info rounded-0">%s</span>',
+				$row->role
+			));
 
-      return $table->toJson();
-    }
+			$table->rawColumns(['actions', 'placeholder', 'role']);
 
-    return view('admin.users.index');
-  }
+			return $table->toJson();
+		}
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return View
-   */
-  public function show(User $user): View
-  {
-    return view('admin.users.show', compact('user'));
-  }
+		return view('admin.users.index');
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @return View
-   */
-  public function create(): View
-  {
-    $skpd = Skpd::pluck('nama', 'id');
+	/**
+	 * Show the specified user.
+	 *
+	 * @param User $user
+	 * @return View
+	 */
+	public function show(User $user): View
+	{
+		return view('admin.users.show', compact('user'));
+	}
 
-    return view('admin.users.create', compact('skpd'));
-  }
+	/**
+	 * Create a new user instance after a valid request.
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function create(): View
+	{
+		$skpd = Skpd::pluck('nama', 'id');
 
-  /**
-   * Undocumented function
-   *
-   * @param StoreUserRequest $request
-   * @return RedirectResponse
-   */
-  public function store(StoreUserRequest $request): RedirectResponse
-  {
-    User::create($request->validated());
+		return view('admin.users.create', compact('skpd'));
+	}
 
-    toastr()->addSuccess('User successfully saved.');
 
-    return back();
-  }
+	/**
+	 * Create a new user instance after a valid request.
+	 *
+	 * @param StoreUserRequest $request
+	 * @return RedirectResponse
+	 */
+	public function store(StoreUserRequest $request): RedirectResponse
+	{
+		User::create($request->validated());
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return View
-   */
-  public function edit(User $user): View
-  {
-    $skpd = Skpd::pluck('nama', 'id');
+		toastr()->addSuccess('Pengguna berhasil disimpan.');
 
-    return view('admin.users.edit', compact('skpd', 'user'));
-  }
+		return back();
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param UpdateUserRequest $request
-   * @param User $user
-   * @return RedirectResponse
-   */
-  public function update(UpdateUserRequest $request, User $user): RedirectResponse
-  {
-    $user->update($request->validated());
+	/**
+	 * Edit the specified user.
+	 *
+	 * @param User $user
+	 * @return View
+	 */
+	public function edit(User $user): View
+	{
+		$skpd = Skpd::pluck('nama', 'id');
 
-    toastr()->addSuccess('User successfully updated.');
+		return view('admin.users.edit', compact('skpd', 'user'));
+	}
 
-    return back();
-  }
+	/**
+	 * Update the specified user in storage.
+	 *
+	 * @param UpdateUserRequest $request
+	 * @param User $user
+	 * @return RedirectResponse
+	 */
+	public function update(UpdateUserRequest $request, User $user): RedirectResponse
+	{
+		$user->update($request->validated());
 
-  /**
-   * Undocumented function
-   *
-   * @param User $user
-   * @return RedirectResponse
-   */
-  public function destroy(User $user): RedirectResponse
-  {
-    Storage::disk('public')->delete($user->photo);
+		toastr()->addSuccess('Pengguna berhasil diperbarui.');
 
-    $user->delete();
+		return back();
+	}
 
-    toastr()->addSuccess('User successfully deleted.');
 
-    return back();
-  }
+	/**
+	 * Hapus pengguna yang spes the user.
 
-  /**
-   * Undocumented function
-   *
-   * @param MassDestroyUserRequest $request
-   * @return void
-   */
-  public function massDestroy(MassDestroyUserRequest $request): HttpResponse
-  {
-    User::whereIn('id', $request->ids)->delete();
+	 *
+	 * @param User $user
+	 * @return RedirectResponse
+	 */
+	public function destroy(User $user): RedirectResponse
+	{
+		Storage::disk('public')->delete($user->photo);
 
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		$user->delete();
+
+		toastr()->addSuccess('Pengguna berhasil dihapus.');
+
+		return back();
+	}
+
+
+	/**
+	 * Mass delete users
+	 *
+	 * @param MassDestroyUserRequest $request
+	 * @return HttpResponse
+	 */
+	public function massDestroy(MassDestroyUserRequest $request)
+	{
+		User::whereIn('id', $request->ids)->delete();
+
+		return response(null, Response::HTTP_NO_CONTENT);
+	}
 }

@@ -71,7 +71,7 @@ class RpjmdController extends Controller
 
     $tabel->uraianRpjmd()->create($validatedData);
 
-    toastr()->addSuccess('Saved.');
+    toastr()->addSuccess('Uraian berhasil disimpan.');
 
     return back();
   }
@@ -129,7 +129,7 @@ class RpjmdController extends Controller
 
     $uraian->update($validatedData);
 
-    toastr()->addSuccess('Updated.');
+    toastr()->addSuccess('Uraian berhasil diperbarui.');
 
     return back();
   }
@@ -144,7 +144,7 @@ class RpjmdController extends Controller
   {
     $uraian->delete();
 
-    toastr()->addSuccess('Deleted.');
+    toastr()->addSuccess('Uraian berhasil dihapus.');
 
     return back();
   }

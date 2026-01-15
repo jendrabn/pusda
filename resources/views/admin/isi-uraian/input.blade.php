@@ -42,21 +42,21 @@
         id="tabContent">
         <div class="tab-pane fade active show"
           id="tabel">
-          @include('admin.isiUraian.tabel')
+          @include('admin.isi-uraian.tabel')
         </div>
         <div class="tab-pane fade"
           id="fitur">
-          @include('admin.isiUraian.fitur_form')
+          @include('admin.isi-uraian.fitur_form')
         </div>
         <div class="tab-pane fade"
           id="file">
-          @include('admin.isiUraian.file_pendukung')
+          @include('admin.isi-uraian.file_pendukung')
         </div>
       </div>
     </div>
   </div>
-  @include('admin.isiUraian.tahun_modal')
-  @include('admin.isiUraian.chart_modal')
+  @include('admin.isi-uraian.tahun_modal')
+  @include('admin.isi-uraian.chart_modal')
 @endsection
 
 @section('scripts')

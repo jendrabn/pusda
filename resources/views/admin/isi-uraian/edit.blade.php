@@ -5,9 +5,9 @@
     <div class="card-header">Edit {{ $title }}</div>
     <div class="card-body">
       <div class="form-group">
-        <a class="btn btn-default btn-flat"
+        <a class="btn btn-default"
           href="{{ route('admin.' . $crudRoutePart . '.input', $tabelId) }}">
-          Back to list
+          <i class="fas fa-arrow-left mr-1"></i> Kembali
         </a>
       </div>
 
@@ -87,9 +87,9 @@
         <p class="text-danger">(*) : Isi hanya dengan angka, isi angka 0 jika tidak ada isinya!</p>
 
         <div class="form-group">
-          <button class="btn btn-primary btn-flat"
+          <button class="btn btn-primary"
             type="submit">
-            <i class="fas fa-save mr-1"></i> Update
+            <i class="fas fa-save mr-1"></i> Simpan Perubahan
           </button>
         </div>
       </form>

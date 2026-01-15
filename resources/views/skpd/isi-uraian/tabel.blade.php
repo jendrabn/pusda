@@ -1,5 +1,5 @@
 <div class="d-flex mb-3">
-  <a class="btn btn-success btn-flat"
+  <a class="btn btn-success"
     href="{{ route('exports.' . $crudRoutePart, $tabel->id) }}">
     <i class="fas fa-file-excel mr-1"></i>
     Excel

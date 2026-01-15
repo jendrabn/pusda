@@ -10,6 +10,7 @@ use App\Services\IndikatorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,7 +33,7 @@ class IndikatorController extends Controller
   {
     $categories = $this->service->getCategories();
 
-    return view('admin.isiUraian.index', compact('categories'));
+    return view('admin.isi-uraian.index', compact('categories'));
   }
 
   public function input(TabelIndikator $tabel)
@@ -43,22 +44,22 @@ class IndikatorController extends Controller
     $fitur = $tabel->fiturIndikator;
     $files = $tabel->fileIndikator;
 
-    return view('admin.isiUraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
+    return view('admin.isi-uraian.input', compact('categories', 'tabel', 'uraians',  'fitur', 'files', 'tahuns'));
   }
 
   public function edit(Request $request, UraianIndikator $uraian)
   {
     $isi = $this->service->getIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
     $tabelId = $uraian->tabel_indikator_id;
 
-    return view('admin.isiUraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
+    return view('admin.isi-uraian.edit', compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
-  public function update(Request $request, UraianIndikator $uraian)
+  public function update(Request $request, UraianIndikator $uraian): RedirectResponse
   {
     $isi = $this->service->getIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
 
     $rules = [
       'uraian' => ['required', 'string'],
@@ -69,7 +70,7 @@ class IndikatorController extends Controller
       $rules['tahun_' . $tahun] = ['required', 'integer'];
     }
 
-    $this->validate($request, $rules);
+    $request->validate($rules);
 
     DB::beginTransaction();
 
@@ -88,21 +89,21 @@ class IndikatorController extends Controller
       throw new \Exception($e->getMessage());
     }
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil diperbarui.');
 
     return back()->with('success-message', 'Successfully Updated.');
   }
 
-  public function destroy(UraianIndikator $uraian)
+  public function destroy(UraianIndikator $uraian): RedirectResponse
   {
     $uraian->delete();
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil dihapus.');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, TabelIndikator $tabel)
+  public function updateFitur(Request $request, TabelIndikator $tabel): RedirectResponse
   {
     $request->validate([
       [
@@ -116,12 +117,12 @@ class IndikatorController extends Controller
 
     $tabel->fiturIndikator()->updateOrCreate([], $request->all());
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Fitur tabel berhasil diperbarui.');
 
     return back()->with('success-message', 'Successfully Updated.');
   }
 
-  public function storeFile(Request $request, TabelIndikator $tabel)
+  public function storeFile(Request $request, TabelIndikator $tabel): RedirectResponse
   {
     $request->validate([
       'document' => ['required', 'max:10240'],
@@ -134,18 +135,18 @@ class IndikatorController extends Controller
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil disimpan.');
 
     return back()->with('success-message', 'Successfully Saved.');
   }
 
-  public function destroyFile(FileIndikator $file)
+  public function destroyFile(FileIndikator $file): RedirectResponse
   {
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil dihapus.');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }
@@ -155,7 +156,7 @@ class IndikatorController extends Controller
     return Storage::disk('public')->download($file->path, $file->nama);
   }
 
-  public function storeTahun(Request $request, TabelIndikator $tabel)
+  public function storeTahun(Request $request, TabelIndikator $tabel): RedirectResponse
   {
     $request->validate([
       'tahun' => ['required', 'integer', 'min:2010', 'max:2030'],
@@ -180,16 +181,16 @@ class IndikatorController extends Controller
       throw new \Exception($e->getMessage());
     }
 
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Tahun berhasil ditambahkan.');
 
     return back()->with('success-message', 'Successfully Saved.');
   }
 
-  public function destroyTahun(TabelIndikator $tabel, int $tahun)
+  public function destroyTahun(TabelIndikator $tabel, int $tahun): RedirectResponse
   {
     DB::beginTransaction();
     try {
-      $tabel->uraianIndikator->each(fn ($uraian) => $uraian->isiIndikator()->where('tahun', $tahun)->delete());
+      $tabel->uraianIndikator->each(fn($uraian) => $uraian->isiIndikator()->where('tahun', $tahun)->delete());
 
       DB::commit();
     } catch (\Exception $e) {
@@ -197,7 +198,7 @@ class IndikatorController extends Controller
 
       throw new \Exception($e->getMessage());
     }
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Tahun berhasil dihapus.');
 
     return back()->with('success-message', 'Successfully Deleted.');
   }

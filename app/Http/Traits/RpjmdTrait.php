@@ -11,6 +11,7 @@ use App\Services\RpjmdService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 trait RpjmdTrait
@@ -26,7 +27,7 @@ trait RpjmdTrait
   public function edit(Request $request, UraianRpjmd $uraian)
   {
     $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
     $tabelId = $uraian->tabel_rpjmd_id;
 
     $viewPath = match (request()->user()->role) {
@@ -40,10 +41,10 @@ trait RpjmdTrait
     return view($viewPath, compact('uraian', 'isi', 'tahuns', 'tabelId'));
   }
 
-  public function update(Request $request, UraianRpjmd $uraian)
+  public function update(Request $request, UraianRpjmd $uraian): RedirectResponse
   {
     $isi = $this->service->getAllIsiByUraianId($uraian);
-    $tahuns = $isi->map(fn ($item) => $item->tahun);
+    $tahuns = $isi->map(fn($item) => $item->tahun);
 
     $rules = [
       'uraian' => ['required', 'string'],
@@ -55,7 +56,7 @@ trait RpjmdTrait
       $rules['tahun_' . $tahun] = ['required', 'integer'];
     }
 
-    $this->validate($request, $rules);
+    $request->validate($rules);
 
     DB::beginTransaction();
     try {
@@ -72,18 +73,18 @@ trait RpjmdTrait
 
       throw new \Exception($e->getMessage());
     }
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil diperbarui.');
     return back()->with('success-message', 'Successfully Updated.');
   }
 
-  public function destroy(UraianRpjmd $uraian)
+  public function destroy(UraianRpjmd $uraian): RedirectResponse
   {
     $uraian->delete();
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Isi uraian berhasil dihapus.');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
-  public function updateFitur(Request $request, TabelRpjmd $tabel)
+  public function updateFitur(Request $request, TabelRpjmd $tabel): RedirectResponse
   {
     $request->validate([
       'deskripsi' => ['nullable', 'string', 'max:255'],
@@ -94,11 +95,11 @@ trait RpjmdTrait
     ]);
 
     $tabel->fiturRpjmd()->updateOrCreate([], $request->all());
-    toastr()->addSuccess('');
+    toastr()->addSuccess('Fitur tabel berhasil diperbarui.');
     return back()->with('success-message', 'Successfully Updated');
   }
 
-  public function storeFile(Request $request, TabelRpjmd $tabel)
+  public function storeFile(Request $request, TabelRpjmd $tabel): RedirectResponse
   {
     $request->validate([
       'document' => ['required', 'max:10240'],
@@ -110,16 +111,16 @@ trait RpjmdTrait
       'nama' => $file->getClientOriginalName(),
       'path' => $file->storePublicly('file_pendukung', 'public')
     ]);
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil disimpan.');
     return back()->with('success-message', 'Successfully Saved.');
   }
 
-  public function destroyFile(FileRpjmd $file)
+  public function destroyFile(FileRpjmd $file): RedirectResponse
   {
     Storage::disk('public')->delete($file->path);
 
     $file->delete();
-    toastr()->addSuccess('');
+    toastr()->addSuccess('File pendukung berhasil dihapus.');
     return back()->with('success-message', 'Successfully Deleted.');
   }
 
