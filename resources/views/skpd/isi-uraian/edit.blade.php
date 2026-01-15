@@ -66,7 +66,7 @@
 
             <div class="form-group">
               <button class="btn btn-primary" type="submit">
-                <i class="fas fa-save"></i> Simpan Perubahan
+                Simpan Perubahan
               </button>
             </div>
           </form>

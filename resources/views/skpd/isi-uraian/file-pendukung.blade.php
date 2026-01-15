@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="form-group">
-        <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Simpan</button>
+        <button class="btn btn-primary" type="submit">Simpan</button>
       </div>
     </form>
   </div>
@@ -28,8 +28,8 @@
     <tr>
       <th width="10"></th>
       <th>ID</th>
-      <th>Nama File</th>
-      <th>Created at</th>
+      <th>NAMA FILE</th>
+      <th>CREATED AT</th>
       <th>&nbsp;</th>
     </tr>
   </thead>

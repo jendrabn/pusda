@@ -82,12 +82,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="form-group">
-                    <a class="btn btn-default"
-                       href="{{ route('admin.audit-logs.index') }}">
-                        <i class="fas fa-arrow-left mr-1"></i> Kembali
-                    </a>
-                </div>
             </div>
         </div>
     </div>

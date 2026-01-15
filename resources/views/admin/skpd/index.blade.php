@@ -20,9 +20,9 @@
                     <tr>
                         <th width="10"></th>
                         <th>ID</th>
-                        <th>Nama</th>
-                        <th>Singkatan</th>
-                        <th>Kategori</th>
+                        <th>NAMA</th>
+                        <th>SINGKATAN</th>
+                        <th>KATEGORI</th>
                         <th style="min-width: 65px;">&nbsp;</th>
                     </tr>
                 </thead>

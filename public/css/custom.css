@@ -100,3 +100,25 @@ div.dt-button-collection {
     padding: 0;
 }
 
+
+.select-checkbox{
+	max-width: 40px !important;
+}
+
+.action-buttons{
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem; /* 6px, bisa .25rem (4px) atau .5rem (8px) */
+}
+.action-buttons form{
+  margin: 0; /* biar form nggak nambah space */
+}
+
+.action-buttons .btn{
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

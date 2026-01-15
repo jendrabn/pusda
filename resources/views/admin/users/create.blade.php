@@ -133,9 +133,11 @@
 
           <div class="form-group col-lg-6">
             <label for="address">Alamat</label>
-            <textarea class="form-control @error('address') is-invalid @enderror"
+            <input class="form-control @error('address') is-invalid @enderror"
               id="address"
-              name="address">{{ old('address') }}</textarea>
+              name="address"
+              type="text"
+              value="{{ old('address') }}">
             @error('address')
               <span class="error invalid-feedback">{{ $message }}</span>
             @enderror
@@ -145,7 +147,7 @@
         <div class="form-group">
           <button class="btn btn-primary"
             type="submit">
-            <i class="fas fa-save mr-1"></i> Simpan
+            Simpan
           </button>
         </div>
 

@@ -74,7 +74,7 @@
         <div class="form-group">
           <button class="btn btn-primary"
             type="submit">
-            <i class="fas fa-save mr-1"></i> Simpan
+            Simpan
           </button>
         </div>
 

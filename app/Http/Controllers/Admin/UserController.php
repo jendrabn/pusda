@@ -141,7 +141,6 @@ class UserController extends Controller
 		return back();
 	}
 
-
 	/**
 	 * Mass delete users
 	 *

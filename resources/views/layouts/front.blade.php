@@ -2,12 +2,16 @@
 <html>
 
 <head>
+    @php
+        use Artesaos\SEOTools\Facades\SEOTools;
+    @endphp
+
     <meta charset="UTF-8">
     <meta content="IE=edge"
           http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0"
           name="viewport">
-    <title>{{ $title ?? 'Home' }} &mdash; Pusat Data Situbondo</title>
+    {!! SEOTools::generate() !!}
 
     <link href="{{ asset('favicon.ico') }}"
           rel="icon"

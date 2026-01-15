@@ -3,15 +3,15 @@
 <table>
   <thead>
     <tr>
-      <th>No.</th>
-      <th>Uraian</th>
-      <th>Satuan</th>
+      <th>NO.</th>
+      <th>URAIAN</th>
+      <th>SATUAN</th>
       @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
-        <th>Ketersedian Data</th>
+        <th>KETERSEDIAN DATA</th>
         @endif @foreach ($tahuns as $tahun)
           <th>{{ $tahun }}</th>
           @endforeach @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
-            <th>Sumber Data</th>
+            <th>SUMBER DATA</th>
           @endif
     </tr>
   </thead>

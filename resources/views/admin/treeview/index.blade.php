@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <button class="btn btn-primary"
                                     type="submit">
-                                <i class="fas fa-save mr-1"></i> Simpan
+                                Simpan
                             </button>
                         </div>
                     </form>
@@ -110,8 +110,8 @@
                     <tr>
                         <th width="10"></th>
                         <th>ID</th>
-                        <th>Nama Menu</th>
-                        <th>Parent</th>
+                        <th>NAMA MENU</th>
+                        <th>PARENT</th>
                         <th style="min-width: 65px;">&nbsp;</th>
                     </tr>
                 </thead>

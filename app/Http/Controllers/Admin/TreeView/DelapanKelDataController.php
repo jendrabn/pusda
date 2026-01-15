@@ -14,169 +14,170 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DelapanKelDataController extends Controller
 {
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return JsonResponse|View
-   */
-  public function index(Request $request): JsonResponse|View
-  {
-    if ($request->ajax()) {
-      $model = Tabel8KelData::with('parent')->select('tabel_8keldata.*');
-      $table = DataTables::eloquent($model);
+	/**
+	 * Undocumented function
+	 *
+	 * @param Request $request
+	 * @return JsonResponse|View
+	 */
+	public function index(Request $request): JsonResponse|View
+	{
+		if ($request->ajax()) {
+			$model = Tabel8KelData::with('parent')->select('tabel_8keldata.*');
+			$table = DataTables::eloquent($model);
 
-      $table->addColumn('placeholder', '&nbsp;');
-      $table->addColumn('actions', '&nbsp;');
-      $table->editColumn('actions', function ($row) {
-        $crudRoutePart = 'treeview.delapankeldata';
+			$table->addColumn('placeholder', '&nbsp;');
+			$table->addColumn('actions', '&nbsp;');
+			$table->editColumn('actions', function ($row) {
+				$crudRoutePart = 'treeview.delapankeldata';
 
-        return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
-      });
-      $table->editColumn('parent', fn ($row) =>   $row->parent ? $row->parent->nama_menu : '');
+				return view('partials.datatablesActions', compact('crudRoutePart', 'row'));
+			});
+			$table->editColumn('parent', fn($row) =>   $row->parent ? $row->parent->nama_menu : '');
 
-      $table->rawColumns(['actions', 'placeholder']);
+			$table->rawColumns(['actions', 'placeholder']);
 
-      return $table->toJson();
-    }
+			return $table->toJson();
+		}
 
-    $categories = Tabel8KelData::with(['parent', 'childs.childs'])->get();
-    $title = 'Menu Treeview 8 Kel. Data';
-    $crudRoutePart = 'delapankeldata';
+		$categories = Tabel8KelData::with(['parent', 'childs.childs'])->get();
+		$title = 'Menu Treeview 8 Kel. Data';
+		$crudRoutePart = 'delapankeldata';
 
-    return view('admin.treeview.index', compact(
-      'categories',
-      'title',
-      'crudRoutePart'
-    ));
-  }
+		return view('admin.treeview.index', compact(
+			'categories',
+			'title',
+			'crudRoutePart'
+		));
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return RedirectResponse
-   */
-  public function store(Request $request): RedirectResponse
-  {
-    $request->merge(['skpd_id' => auth()->user()->skpd_id]);
+	/**
+	 * Undocumented function
+	 *
+	 * @param Request $request
+	 * @return RedirectResponse
+	 */
+	public function store(Request $request): RedirectResponse
+	{
+		$request->merge(['skpd_id' => auth()->user()->skpd_id]);
 
-    $validatedData = $request->validate([
-      'parent_id' =>  [
-        'required',
-        'integer',
-        'exists:tabel_8keldata,id'
-      ],
-      'nama_menu' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ],
-      'skpd_id' => [
-        'required',
-        'integer',
-        'exists:skpd,id'
-      ]
-    ]);
+		$validatedData = $request->validate([
+			'parent_id' =>  [
+				'required',
+				'integer',
+				'exists:tabel_8keldata,id'
+			],
+			'nama_menu' => [
+				'required',
+				'string',
+				'min:1',
+				'max:200'
+			],
+			'skpd_id' => [
+				'required',
+				'integer',
+				'exists:skpd,id'
+			]
+		]);
 
-    Tabel8KelData::create($validatedData);
+		Tabel8KelData::create($validatedData);
 
-    toastr()->addSuccess('Tabel 8 Kel Data berhasil disimpan.');
+		toastr()->addSuccess('Tabel 8 Kel Data berhasil disimpan.');
 
-    return to_route('admin.treeview.delapankeldata.index');
-  }
+		return to_route('admin.treeview.delapankeldata.index');
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Tabel8KelData $tabel
-   * @return View
-   */
-  public function edit(Tabel8KelData $tabel): View
-  {
-    $categories = Tabel8KelData::with('parent')->get();
-    $title = 'Menu Treeview 8 Kel. Data';
-    $crudRoutePart = 'delapankeldata';
+	/**
+	 * Undocumented function
+	 *
+	 * @param Tabel8KelData $tabel
+	 * @return View
+	 */
+	public function edit(Tabel8KelData $tabel): View
+	{
+		$categories = Tabel8KelData::with('parent')->get();
+		$title = 'Menu Treeview 8 Kel. Data';
+		$crudRoutePart = 'delapankeldata';
 
-    return view('admin.treeview.edit', compact(
-      'categories',
-      'tabel',
-      'title',
-      'crudRoutePart'
-    ));
-  }
+		return view('admin.treeview.edit', compact(
+			'categories',
+			'tabel',
+			'title',
+			'crudRoutePart'
+		));
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @param Tabel8KelData $tabel
-   * @return RedirectResponse
-   */
-  public function update(Request $request, Tabel8KelData $tabel): RedirectResponse
-  {
-    $validatedData = $request->validate([
-      'parent_id' =>  [
-        'required',
-        'integer',
-        'exists:tabel_8keldata,id'
-      ],
-      'nama_menu' => [
-        'required',
-        'string',
-        'min:1',
-        'max:200'
-      ]
-    ]);
+	/**
+	 * Undocumented function
+	 *
+	 * @param Request $request
+	 * @param Tabel8KelData $tabel
+	 * @return RedirectResponse
+	 */
+	public function update(Request $request, Tabel8KelData $tabel): RedirectResponse
+	{
+		$validatedData = $request->validate([
+			'parent_id' =>  [
+				'required',
+				'integer',
+				'exists:tabel_8keldata,id'
+			],
+			'nama_menu' => [
+				'required',
+				'string',
+				'min:1',
+				'max:200'
+			]
+		]);
 
-    if ($tabel->id !== 1) $tabel->update($validatedData);
+		if ($tabel->id !== 1) $tabel->update($validatedData);
 
-    toastr()->addSuccess('Tabel 8 Kel Data berhasil diperbarui.');
+		toastr()->addSuccess('Tabel 8 Kel Data berhasil diperbarui.');
 
-    return back();
-  }
+		return back();
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Tabel8KelData $tabel
-   * @return RedirectResponse
-   */
-  public function destroy(Tabel8KelData $tabel): RedirectResponse
-  {
-    if ($tabel->id !== 1) $tabel->delete();
+	/**
+	 * Undocumented function
+	 *
+	 * @param Tabel8KelData $tabel
+	 * @return RedirectResponse
+	 */
+	public function destroy(Tabel8KelData $tabel): RedirectResponse
+	{
+		if ($tabel->id !== 1) $tabel->delete();
 
-    toastr()->addSuccess('Tabel 8 Kel Data berhasil dihapus.');
+		toastr()->addSuccess('Tabel 8 Kel Data berhasil dihapus.');
 
-    return to_route('admin.treeview.delapankeldata.index');
-  }
+		return to_route('admin.treeview.delapankeldata.index');
+	}
 
-  /**
-   * Undocumented function
-   *
-   * @param Request $request
-   * @return HttpResponse
-   */
-  public function massDestroy(Request $request): HttpResponse
-  {
-    $validatedData = $request->validate([
-      'ids' => [
-        'required',
-        'array'
-      ],
-      'ids.*', [
-        'integer',
-        'exists:tabel_8keldata,id'
-      ]
-    ]);
+	/**
+	 * Undocumented function
+	 *
+	 * @param Request $request
+	 * @return HttpResponse
+	 */
+	public function massDestroy(Request $request)
+	{
+		$validatedData = $request->validate([
+			'ids' => [
+				'required',
+				'array'
+			],
+			'ids.*',
+			[
+				'integer',
+				'exists:tabel_8keldata,id'
+			]
+		]);
 
-    $ids = collect($validatedData['ids'])
-      ->filter(fn ($val, $key) => (int) $val !== 1)
-      ->toArray();
+		$ids = collect($validatedData['ids'])
+			->filter(fn($val, $key) => (int) $val !== 1)
+			->toArray();
 
-    Tabel8KelData::whereIn('id', $ids)->delete();
+		Tabel8KelData::whereIn('id', $ids)->delete();
 
-    return response(null, Response::HTTP_NO_CONTENT);
-  }
+		return response(null, Response::HTTP_NO_CONTENT);
+	}
 }

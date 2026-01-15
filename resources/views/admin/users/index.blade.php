@@ -21,11 +21,11 @@
                     <tr>
                         <th width="10">&nbsp;</th>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
+                        <th>NAME</th>
+                        <th>USERNAME</th>
+                        <th>EMAIL</th>
                         <th>SKPD</th>
-                        <th>Role</th>
+                        <th>ROLE</th>
                         <th style="min-width: 100px;">&nbsp;</th>
                     </tr>
                 </thead>

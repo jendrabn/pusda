@@ -12,12 +12,12 @@
                     <tr>
                         <th width="10">&nbsp;</th>
                         <th>ID</th>
-                        <th>Description</th>
-                        <th>Subject ID</th>
-                        <th>Subject Type</th>
-                        <th>User ID</th>
-                        <th>Host</th>
-                        <th>Created at</th>
+                        <th>DESCRIPTION</th>
+                        <th>SUBJECT ID</th>
+                        <th>SUBJECT TYPE</th>
+                        <th>USER ID</th>
+                        <th>HOST</th>
+                        <th>CREATED AT</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>

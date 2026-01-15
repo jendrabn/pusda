@@ -8,7 +8,7 @@
 
     <a class="btn btn-success"
        href="{{ route('exports.' . $crudRoutePart, $tabel->id) }}">
-        <i class="fas fa-file-excel mr-1"></i>
+        <i class="fas fa-file-export mr-1"></i>
         Excel
     </a>
 </div>
@@ -21,14 +21,14 @@
                     &nbsp;
                 </th>
                 <th class="text-danger">
-                    Uraian
+                    URAIAN
                 </th>
                 <th>
-                    Satuan
+                    SATUAN
                 </th>
                 @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
                     <th>
-                        Ketersedian Data
+                        KETERSEDIAN DATA
                     </th>
                 @endif
                 @foreach ($tahuns as $tahun)
@@ -38,7 +38,7 @@
                 @endforeach
                 @if (in_array($crudRoutePart, ['delapankeldata', 'rpjmd']))
                     <th>
-                        Sumber Data
+                        SUMBER DATA
                     </th>
                 @endif
                 <th style="min-width: 110px;">
@@ -131,24 +131,33 @@
                             </td>
                         @endif
                         <td>
-                            <button class="btn btn-primary btn-xs btn-show-chart"
-                                    data-url="{{ route('admin.' . $crudRoutePart . '.chart', $child->id) }}">
-                                Grafik
-                            </button>
-                            <a class="btn btn-xs btn-info"
-                               href="{{ route('admin.' . $crudRoutePart . '.edit', $child->id) }}">
-                                Edit
-                            </a>
-                            <form action="{{ route('admin.' . $crudRoutePart . '.destroy', $child->id) }}"
-                                  method="POST"
-                                  onsubmit="return confirm('Are You Sure?');"
-                                  style="display: inline-block;">
-                                @method('DELETE')
-                                @csrf
-                                <input class="btn btn-xs btn-danger"
-                                       type="submit"
-                                       value="Delete">
-                            </form>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary btn-show-chart"
+                                        data-url="{{ route('admin.' . $crudRoutePart . '.chart', $child->id) }}"
+                                        title="Grafik"
+                                        type="button">
+                                    <i class="fas fa-chart-bar"></i>
+                                </button>
+
+                                <a class="btn btn-sm btn-warning"
+                                   href="{{ route('admin.' . $crudRoutePart . '.edit', $child->id) }}"
+                                   title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                <form action="{{ route('admin.' . $crudRoutePart . '.destroy', $child->id) }}"
+                                      class="action-form"
+                                      method="POST"
+                                      onsubmit="return confirm('Are you sure?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger"
+                                            title="Delete"
+                                            type="submit">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

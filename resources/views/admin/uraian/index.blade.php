@@ -44,7 +44,7 @@
                             <div class="form-group">
                                 <button class="btn btn-primary"
                                         type="submit">
-                                    <i class="fas fa-save mr-1"></i> Simpan
+                                    Simpan
                                 </button>
                             </div>
                         </form>
@@ -122,7 +122,7 @@
                         <tr>
                             <th width="10"></th>
                             <th>ID</th>
-                            <th>Uraian</th>
+                            <th>URAIAN</th>
                             <th style="min-width: 65px;">&nbsp;</th>
                         </tr>
                     </thead>
@@ -133,20 +133,26 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->uraian }}</td>
                                 <td>
-                                    <a class="btn btn-xs btn-info"
-                                       href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Are You Sure?');"
-                                          style="display: inline-block;">
-                                        @method('DELETE')
-                                        @csrf
-                                        <input class="btn btn-xs btn-danger"
-                                               type="submit"
-                                               value="Delete">
-                                    </form>
+                                    <div class="action-buttons">
+                                        <a class="btn btn-sm btn-warning"
+                                           href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}"
+                                           title="Edit">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+
+                                        <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
+                                              class="action-form"
+                                              method="POST"
+                                              onsubmit="return confirm('Are you sure?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger"
+                                                    title="Delete"
+                                                    type="submit">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @foreach ($item->childs as $item)
@@ -155,20 +161,26 @@
                                     <td>{{ $item->id }}</td>
                                     <td style="text-indent: 2rem;">{{ $item->uraian }}</td>
                                     <td>
-                                        <a class="btn btn-xs btn-info"
-                                           href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}">
-                                            Edit
-                                        </a>
-                                        <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Are You Sure?');"
-                                              style="display: inline-block;">
-                                            @method('DELETE')
-                                            @csrf
-                                            <input class="btn btn-xs btn-danger"
-                                                   type="submit"
-                                                   value="Delete">
-                                        </form>
+                                        <div class="action-buttons">
+                                            <a class="btn btn-sm btn-warning"
+                                               href="{{ route('admin.uraian.' . $crudRoutePart . '.edit', [$tabel->id, $item->id]) }}"
+                                               title="Edit">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+
+                                            <form action="{{ route('admin.uraian.' . $crudRoutePart . '.destroy', $item->id) }}"
+                                                  class="action-form"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Are you sure?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger"
+                                                        title="Delete"
+                                                        type="submit">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

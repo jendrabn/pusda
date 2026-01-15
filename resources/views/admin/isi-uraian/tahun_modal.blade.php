@@ -33,13 +33,13 @@
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary"
-                                type="submit"> <i class="fas fa-save"></i> Simpan</button>
+                                type="submit"> Simpan</button>
                     </div>
                 </form>
                 <table class="table-bordered table-striped table-hover  table">
                     <thead>
                         <tr>
-                            <th>Tahun</th>
+                            <th>TAHUN</th>
                             <th>&nbsp;</th>
                         </tr>
                     </thead>

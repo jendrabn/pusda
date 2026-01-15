@@ -29,16 +29,31 @@ class AuditLogController extends Controller
 			$table->editColumn('actions', function ($row) {
 				$crudRoutePart = 'audit-logs';
 
-				$view = '';
-				$view .= '<a class="btn btn-xs btn-primary mr-1" href="' . route('admin.' . $crudRoutePart . '.show', $row->id) . '">View</a>';
+				// Check if routes exist (similar to the partial logic)
+				$viewBtn = '';
+				$editBtn = '';
+				$deleteBtn = '';
 
-				$view .= '<form style="display: inline-block;" action="' . route('admin.' . $crudRoutePart . '.destroy', $row->id) . '" method="POST">';
-				$view .= csrf_field();
-				$view .= method_field('DELETE');
-				$view .= '<input class="btn btn-xs btn-danger" type="submit" value="Delete" onclick="return confirm(\'Are You Sure?\');">';
-				$view .= '</form>';
+				// Check if show route exists
+				if (\Illuminate\Support\Facades\Route::has('admin.' . $crudRoutePart . '.show')) {
+					$viewBtn = '<a class="btn btn-sm btn-primary" href="' . route('admin.' . $crudRoutePart . '.show', $row->id) . '" title="View"><i class="fas fa-eye"></i></a>';
+				}
 
-				return $view;
+				// Check if edit route exists (for audit logs it doesn't based on routes)
+				if (\Illuminate\Support\Facades\Route::has('admin.' . $crudRoutePart . '.edit')) {
+					$editBtn = '<a class="btn btn-sm btn-warning" href="' . route('admin.' . $crudRoutePart . '.edit', $row->id) . '" title="Edit"><i class="fas fa-pencil-alt"></i></a>';
+				}
+
+				// Check if destroy route exists
+				if (\Illuminate\Support\Facades\Route::has('admin.' . $crudRoutePart . '.destroy')) {
+					$deleteBtn = '<form action="' . route('admin.' . $crudRoutePart . '.destroy', $row->id) . '" class="m-0 p-0" method="POST" onsubmit="return confirm(\'Are you sure?\');">' .
+						'<input type="hidden" name="_token" value="' . csrf_token() . '">' .
+						'<input type="hidden" name="_method" value="DELETE">' .
+						'<button class="btn btn-sm btn-danger" title="Delete" type="submit"><i class="fas fa-trash-alt"></i></button>' .
+						'</form>';
+				}
+
+				return '<div class="action-buttons">' . $viewBtn . $editBtn . $deleteBtn . '</div>';
 			});
 
 			$table->editColumn('id', fn($row) => $row->id ? $row->id : '');

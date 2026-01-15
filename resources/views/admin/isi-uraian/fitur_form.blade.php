@@ -50,6 +50,6 @@
   <div class="form-group">
     <button class="btn btn-primary"
       id="submit"
-      type="submit"><i class="fas fa-save mr-1"></i> Simpan Perubahan</button>
+      type="submit">Simpan Perubahan</button>
   </div>
 </form>

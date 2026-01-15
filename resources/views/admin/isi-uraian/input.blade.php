@@ -76,7 +76,9 @@
 
     let table = $('.datatable-isiuraian:not(.ajaxTable)').DataTable({
       buttons: dtButtons,
-      ordering: false
+      ordering: false,
+      scrollX: false,
+      autoWidth: false
     })
 
     $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {

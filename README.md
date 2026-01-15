@@ -124,3 +124,24 @@ systemctl restart nginx
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d pusda.zenby.my.id
 ```
+
+## SEO (Front Pages)
+
+### Fitur yang sudah aktif
+- Meta SEO dinamis untuk halaman Front (title, description, canonical, robots, OG, Twitter Cards, JSON-LD).
+- Robots.txt dinamis (blok non-prod, blok area sensitif di production).
+- Sitemap XML dinamis dengan cache + generator harian.
+- Force HTTPS canonical di production.
+
+### Endpoint
+- `GET /robots.txt`
+- `GET /sitemap.xml`
+
+### Command manual
+```
+php artisan sitemap:generate
+```
+
+### Catatan deployment
+- Pastikan scheduler aktif agar sitemap ter-regenerate harian.
+- Jika staging/dev, halaman otomatis `noindex,nofollow` via header `X-Robots-Tag`.

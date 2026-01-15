@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('/robots.txt', \App\Http\Controllers\RobotsController::class)
+	->name('robots');
+Route::get('/sitemap.xml', \App\Http\Controllers\SitemapController::class)
+	->name('sitemap');
+
 // Auth
 Route::middleware('guest')->prefix('auth')->name('auth.')->group(function () {
 	Route::get('login', [AuthController::class, 'login'])->name('login');
