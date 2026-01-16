@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="card mb-4 shadow-lg">
-                    <div class="card-header card-header__lg bg-white">
-                        <h4 class="card-header__title">Kepala Daerah</h4>
+                    <div class="card-header bg-white">
+                        Kepala Daerah
                     </div>
                     <div class="card-body">
                         <figure class="img__wrapper border-bottom pb-3">
@@ -32,8 +32,8 @@
             </div>
             <div class="col-lg-9">
                 <div class="card mb-4">
-                    <div class="card-header card-header__lg bg-white">
-                        <h4 class="card-header__title">Sambutan Kepala Daerah</h4>
+                    <div class="card-header bg-white">
+                        Sambutan Kepala Daerah
                     </div>
                     <div class="card-body">
                         <div class="greeting__text">
@@ -81,8 +81,8 @@
                 </div>
 
                 <div class="card mb-4">
-                    <div class="card-header card-header__lg bg-white">
-                        <h4 class="card-header__title">Pusat Data Kabupaten Situbondo</h4>
+                    <div class="card-header bg-white">
+                        Pusat Data Kabupaten Situbondo
                     </div>
                     <div class="card-body">
                         <div class="about__app">
@@ -116,27 +116,47 @@
                 </div>
 
                 <div class="card mb-4">
-                    <div class="card-header card-header__lg bg-white">
-                        <h4 class="card-header__title">Statistik Pengunjung Website</h4>
+                    <div class="card-header bg-white">
+                        Statistik Pengunjung Website
                     </div>
                     <div class="card-body">
                         <div class="visitor__statistic">
-                            <div class="row">
-                                <div class="col-lg-3 count">
-                                    <h5>Hari ini</h5>
-                                    <p>{{ $visitor->day_count }}</p>
+                            <div class="row g-3">
+                                <div class="col-6 col-lg-3">
+                                    <div class="stat-card border rounded-3 p-3 h-100">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="stat-label text-uppercase small text-muted">Hari ini</div>
+                                            <span class="badge text-bg-primary">24H</span>
+                                        </div>
+                                        <div class="stat-value">{{ $visitor->day_count }}</div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 count">
-                                    <h5>Bulan ini</h5>
-                                    <p>{{ $visitor->month_count }}</p>
+                                <div class="col-6 col-lg-3">
+                                    <div class="stat-card border rounded-3 p-3 h-100">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="stat-label text-uppercase small text-muted">Bulan ini</div>
+                                            <span class="badge text-bg-success">30D</span>
+                                        </div>
+                                        <div class="stat-value">{{ $visitor->month_count }}</div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 count">
-                                    <h5>Tahun ini</h5>
-                                    <p>{{ $visitor->year_count }}</p>
+                                <div class="col-6 col-lg-3">
+                                    <div class="stat-card border rounded-3 p-3 h-100">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="stat-label text-uppercase small text-muted">Tahun ini</div>
+                                            <span class="badge text-bg-warning">YTD</span>
+                                        </div>
+                                        <div class="stat-value">{{ $visitor->year_count }}</div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 count">
-                                    <h5>Semua</h5>
-                                    <p>{{ $visitor->all_count }}</p>
+                                <div class="col-6 col-lg-3">
+                                    <div class="stat-card border rounded-3 p-3 h-100">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="stat-label text-uppercase small text-muted">Semua</div>
+                                            <span class="badge text-bg-dark">ALL</span>
+                                        </div>
+                                        <div class="stat-value">{{ $visitor->all_count }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,43 +1,65 @@
 @extends('layouts.front')
 
 @section('content')
-  <div class="container">
-    <div class="card">
-      <div class="card-header card-header__lg bg-white">
-        <h4 class="card-header__title">{{ $title }}</h4>
-      </div>
-      <div class="card-body">
-        <ol>
-          @foreach ($categories as $category)
-            <li>
-              {{ $category->nama_menu }}
-              @if ($category->childs->count())
-                <ol style="list-style-type: lower-latin">
-                  @foreach ($category->childs as $child)
-                    <li>
-                      {{ $child->nama_menu }}
-                      @if ($child->childs->count())
-                        <ul>
-                          @foreach ($child->childs as $child)
-                            @foreach ($tabel8KelDataIds as $table)
-                              @if ($table->id == $child->id)
-                                <li @if (isset($tabel8KelData) && $tabel8KelData->id == $table->id) data-jstree='{ "selected" : true }' @endif>
-                                  <a class="text-decoration-none"
-                                    href="{{ route('delapankeldata.tabel', $child->id) }}">{{ $child->nama_menu }}</a>
-                                </li>
-                              @endif
-                            @endforeach
-                          @endforeach
-                        </ul>
-                      @endif
-                    </li>
-                  @endforeach
-                </ol>
-              @endif
-            </li>
-          @endforeach
-        </ol>
-      </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header card-header__lg bg-white">
+                <h4 class="card-header__title">{{ $title }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="accordion front-tree-accordion" id="frontSkpdTreeAccordion">
+                    @foreach ($categories as $category)
+                        @php
+                            $collapseId = 'frontSkpdTreeCollapse' . $loop->index;
+                            $headingId = 'frontSkpdTreeHeading' . $loop->index;
+                        @endphp
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="{{ $headingId }}">
+                                <button class="accordion-button {{ $loop->first ? '' : 'collapsed' }}" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}"
+                                    aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                    aria-controls="{{ $collapseId }}">
+                                    <span class="badge text-bg-primary me-2">{{ $loop->iteration }}</span>
+                                    <span class="fw-semibold">{{ $category->nama_menu }}</span>
+                                </button>
+                            </h2>
+                            <div id="{{ $collapseId }}"
+                                class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}"
+                                aria-labelledby="{{ $headingId }}" data-bs-parent="#frontSkpdTreeAccordion">
+                                <div class="accordion-body">
+                                    @if ($category->childs->count())
+                                        <div class="list-group list-group-flush">
+                                            @foreach ($category->childs as $child)
+                                                <div class="list-group-item">
+                                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                                        <div class="fw-semibold text-dark">{{ $child->nama_menu }}</div>
+                                                        <span class="badge text-bg-light text-secondary">Sub menu</span>
+                                                    </div>
+                                                    @if ($child->childs->count())
+                                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                                            @foreach ($child->childs as $grandchild)
+                                                                @foreach ($tabel8KelDataIds as $table)
+                                                                    @if ($table->id == $grandchild->id)
+                                                                        <a class="btn btn-outline-primary btn-sm"
+                                                                            @if (isset($tabel8KelData) && $tabel8KelData->id == $table->id) data-jstree='{ "selected" : true }' @endif
+                                                                            href="{{ route('delapankeldata.tabel', $grandchild->id) }}">{{ $grandchild->nama_menu }}</a>
+                                                                    @endif
+                                                                @endforeach
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-muted">Belum ada data.</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 @endsection

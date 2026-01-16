@@ -141,18 +141,15 @@
                     <div class="col-lg-4 footer__item">
                         <h5>Pengembang</h5>
                         <ul>
-                            <li> <a href="mailto:jendra455@gmail.com">Jendra Bayu Nugraha</a> <a
-                                   class="text-decoration-none"
-                                   href="https://ilkom.unej.ac.id"
+                            <li>Dinas Komunikasi dan Informatika Kabupaten Situbondo</li>
+                            <li>
+                                <a class="logo"
+                                   href="https://www.instagram.com/kominfositubondo/"
                                    rel=noreferrer
-                                   target="_blank">Fakultas Ilmu Komputer
-                                    Universitas Jember</a></li>
-                            <li><a class="logo"
-                                   href="https://unej.ac.id/id"
-                                   rel=noreferrer
-                                   target="_blank"><img alt="Logo Universitas Jember"
+                                   target="_blank"><img alt="Logo Kabupaten Situbondo"
                                          class="img-fluid"
-                                         src="{{ asset('img/logo-unej.png') }}"></a></li>
+                                         src="{{ asset('img/logo-situbondo.png') }}"></a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-lg-4 footer__item">

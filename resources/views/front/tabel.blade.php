@@ -3,8 +3,8 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header card-header__lg bg-white">
-                <h4 class="card-header__title">Tabel Uraian "{{ $tabel->nama_menu }}" {{ $title }}</h4>
+            <div class="card-header bg-white">
+                Tabel Uraian "{{ $tabel->nama_menu }}" {{ $title }}
             </div>
             <div class="card-body">
                 <div class="action">
