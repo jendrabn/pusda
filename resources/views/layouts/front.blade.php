@@ -38,7 +38,7 @@
 
 <body>
     <header>
-        <div class="header__top d-none d-lg-block">
+        <div class="header-top d-none d-lg-block">
             <div class="container">
                 <div class="logo"><a href="{{ route('home') }}"><img alt="Logo"
                              class="img-fluid"
@@ -135,10 +135,10 @@
     </div>
 
     <footer>
-        <div class="footer__top">
+        <div class="footer-top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 footer__item">
+                    <div class="col-lg-4 footer-item">
                         <h5>Pengembang</h5>
                         <ul>
                             <li>Dinas Komunikasi dan Informatika Kabupaten Situbondo</li>
@@ -152,7 +152,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-4 footer__item">
+                    <div class="col-lg-4 footer-item">
                         <h5>Alamat</h5>
                         <ul>
                             <li>Pemerintah Kabupaten Situbondo <br>
@@ -160,7 +160,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-lg-4 footer__item">
+                    <div class="col-lg-4 footer-item">
                         <h5>Kontak Kami</h5>
                         <ul>
                             <li>Telp : [0338] 674096, 671161 / [0338] 674222 ext 236</li>
@@ -171,7 +171,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer__bottom">
+        <div class="footer-bottom">
             <div class="container"><span>2021 © PUSDA Situbondo</span> | <a href="http://kominfo.situbondokab.go.id"
                    rel=noreferrer
                    target="_blank">Dinas Kominfo dan

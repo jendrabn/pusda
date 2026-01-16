@@ -9,10 +9,10 @@
             <div class="card-body">
                 <div class="action">
 
-                    <a class="btn btn-success "
+                    <a class="btn btn-success text-white"
                        href="{{ route('exports.' . $routePart, $tabel->id) }}">
-                        <i class="fas fa-file-export mr-1"></i>
-                        Excel
+                        <i class="fas fa-file-export me-1"></i>
+                        Download Data
                     </a>
 
                 </div>

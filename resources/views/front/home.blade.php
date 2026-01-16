@@ -9,7 +9,7 @@
                         Kepala Daerah
                     </div>
                     <div class="card-body">
-                        <figure class="img__wrapper border-bottom pb-3">
+                        <figure class="img-wrapper border-bottom pb-3">
                             <img alt="Bupati"
                                  class="img-fluid"
                                  src="{{ asset('img/bupati.jpg') }}">
@@ -18,7 +18,7 @@
                                 <p>Bupati Situbondo</p>
                             </figcaption>
                         </figure>
-                        <figure class="img__wrapper">
+                        <figure class="img-wrapper">
                             <img alt="Wakil Bupati"
                                  class="img-fluid"
                                  src="{{ asset('img/wakil-bupati.jpg') }}">
@@ -36,7 +36,7 @@
                         Sambutan Kepala Daerah
                     </div>
                     <div class="card-body">
-                        <div class="greeting__text">
+                        <div class="greeting-text">
                             <p>Perencanaan yang baik adalah perencanaan yang didukung dan berbasis pada data. Semakin
                                 lengkap dan
                                 akurat data yang
@@ -85,7 +85,7 @@
                         Pusat Data Kabupaten Situbondo
                     </div>
                     <div class="card-body">
-                        <div class="about__app">
+                        <div class="about-app">
                             <p>Aplikasi yang dibangun oleh TIM PKL Fakultas Ilmu Komputer Universitas Jember sebagai pusat
                                 data dan
                                 informasi pembangunan, serta
@@ -120,7 +120,7 @@
                         Statistik Pengunjung Website
                     </div>
                     <div class="card-body">
-                        <div class="visitor__statistic">
+                        <div class="visitor-statistic">
                             <div class="row g-3">
                                 <div class="col-6 col-lg-3">
                                     <div class="stat-card border rounded-3 p-3 h-100">
