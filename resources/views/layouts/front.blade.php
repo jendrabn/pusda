@@ -38,24 +38,13 @@
 
 <body>
     <header>
-        <div class="header-top d-none d-lg-block">
-            <div class="container">
-                <div class="logo"><a href="{{ route('home') }}"><img alt="Logo"
-                             class="img-fluid"
-                             src="{{ asset('img/logo.png') }}"></a>
-                </div>
-            </div>
-        </div>
-
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <a class="navbar-brand d-lg-none"
+                <a class="navbar-brand brand-logo"
                    href="{{ route('home') }}">
-                    <div class="logo">
-                        <img alt="Logo"
-                             class="h-100 w-auto"
-                             src="{{ asset('img/logo.png') }}">
-                    </div>
+                    <img alt="Logo"
+                         class="logo-mark"
+                         src="{{ asset('img/logo.png') }}">
                 </a>
 
                 <button aria-controls="navbarNav"

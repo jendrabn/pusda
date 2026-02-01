@@ -2,13 +2,49 @@
 @media (min-width: 576px) {
     header {
         .navbar {
-            background-color: #444D58;
+            background-color: #1e2735;
 
             .navbar-brand {
-                .logo {
+                .logo-mark {
                     height: 60px !important;
                 }
             }
+        }
+    }
+}
+
+@media (max-width: 767.98px) {
+    .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .leader-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 14px;
+    }
+
+    .leader-photo {
+        width: 150px;
+        height: 190px;
+    }
+
+    .leader-body {
+        width: 100%;
+    }
+
+    .role-pill {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .home-page {
+        .home-hero {
+            margin-top: -40px;
+            padding: 56px 0 48px;
         }
     }
 }
@@ -21,28 +57,6 @@
     header {
         .navbar {
             padding: 0;
-
-            .nav-item {
-                .nav-link {
-                    padding: 16px 18px 15px 18px !important;
-
-                    &:hover,
-                    &.active {
-                        position: relative;
-
-                        &::after {
-                            content: '';
-                            width: 100%;
-                            position: absolute;
-                            height: 3px;
-                            background-color: #f1f1f1;
-                            bottom: 0;
-                            left: 0;
-
-                        }
-                    }
-                }
-            }
 
             .navbar-collapse {
                 margin: 0 !important;
