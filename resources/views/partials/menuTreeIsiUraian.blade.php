@@ -3,7 +3,7 @@
     <h3 class="card-title">
       Menu Tree View {{ $title }}</h3>
   </div>
-  <div class="card-body jstree overflow-auto">
+  <div class="card-body jstree jstree-folder-toggle overflow-auto">
     <ul>
       <li data-jstree='{"opened":true}'>{{ $title }} {{ isset($skpd) && $skpd ? $skpd->singkatan : '' }}
         @foreach ($categories as $category)

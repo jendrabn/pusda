@@ -73,7 +73,25 @@ $(document).ready(function () {
 
   bsCustomFileInput.init();
 
-  $(".jstree").jstree({
+  const $jsTrees = $(".jstree");
+  const folderIcon = "fa fa-folder text-warning";
+  const folderOpenIcon = "fa fa-folder-open text-warning";
+
+  const syncJsTreeIcons = function (instance) {
+    const nodes = instance.get_json("#", { flat: true });
+
+    nodes.forEach(function (node) {
+      const hasChildren = Array.isArray(node.children) && node.children.length > 0;
+      if (!hasChildren) {
+        instance.set_icon(node.id, folderIcon);
+        return;
+      }
+
+      instance.set_icon(node.id, instance.is_open(node.id) ? folderOpenIcon : folderIcon);
+    });
+  };
+
+  $jsTrees.jstree({
     core: {
       themes: {
         responsive: false,
@@ -84,13 +102,36 @@ $(document).ready(function () {
         icon: "fa fa-folder text-warning",
       },
       file: {
-        icon: "fa fa-file text-warning",
+        icon: "fa fa-folder text-warning",
       },
     },
     plugins: ["types"],
   });
 
-  $(".jstree").on("select_node.jstree", function (e, data) {
+  $jsTrees.on("ready.jstree refresh.jstree", function (e, data) {
+    syncJsTreeIcons(data.instance);
+  });
+
+  $jsTrees.on("open_node.jstree", function (e, data) {
+    if (data.node.children.length > 0) {
+      data.instance.set_icon(data.node.id, folderOpenIcon);
+    }
+  });
+
+  $jsTrees.on("close_node.jstree", function (e, data) {
+    if (data.node.children.length > 0) {
+      data.instance.set_icon(data.node.id, folderIcon);
+    }
+  });
+
+  $jsTrees.each(function () {
+    const instance = $(this).jstree(true);
+    if (instance) {
+      syncJsTreeIcons(instance);
+    }
+  });
+
+  $jsTrees.on("select_node.jstree", function (e, data) {
     var link = $("#" + data.selected).find("a");
     if (
       link.attr("href") != "#" &&
