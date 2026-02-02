@@ -17,11 +17,6 @@
           rel="icon"
           type="image/x-icon">
 
-    <link crossorigin="anonymous"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          referrerpolicy="no-referrer"
-          rel="stylesheet" />
     <link href="https://fonts.googleapis.com"
           rel="preconnect">
     <link crossorigin
@@ -29,8 +24,11 @@
           rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap"
           rel="stylesheet">
+    <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          rel="stylesheet" />
 
-    @vite(['resources/scss/front/style.scss'])
+    @vite(['resources/scss/front.scss'])
 
     @yield('styles')
     @stack('styles')
@@ -103,7 +101,7 @@
                             <a class="nav-link"
                                href="https://tawk.to/pusdasitubondo"
                                rel=noreferrer
-                               target="_blank">Live Chat</a>
+                               target="_blank">Live Chat <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -119,7 +117,7 @@
         <button aria-label="Scroll to top"
                 class="btn btn-dark"
                 type="button">
-            <i class="fas fa-arrow-up"></i>
+            <i class="bi bi-arrow-up"></i>
         </button>
     </div>
 

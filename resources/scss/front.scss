@@ -1,3 +1,6 @@
+/* ========================================
+   Theme Tokens
+======================================== */
 $primary: #1f6f8b;
 $secondary: #4f5d75;
 $success: #2f9e64;
@@ -17,9 +20,14 @@ $card-border: rgba($border-soft, 0.9);
 $card-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
 $card-shadow-hover: 0 18px 34px rgba(15, 23, 42, 0.12);
 
+/* ========================================
+   Vendor
+======================================== */
 @import "/node_modules/bootstrap/scss/bootstrap.scss";
-@import "responsive";
 
+/* ========================================
+   Base
+======================================== */
 html {
 	scroll-behavior: smooth;
 }
@@ -59,6 +67,9 @@ body {
 	}
 }
 
+/* ========================================
+   Header / Navigation
+======================================== */
 header {
 	.navbar {
 		background-color: #1e2735;
@@ -102,9 +113,13 @@ header {
 	}
 }
 
+/* ========================================
+   Main Content Foundation
+======================================== */
 main {
 	padding: 50px 0;
 
+	/* --- Card Base --- */
 	.card {
 		border: none;
 		box-shadow: 1px 1px 10px rgba($color: #000000, $alpha: 0.15);
@@ -130,6 +145,7 @@ main {
 		}
 	}
 
+	/* --- Data List / Accordion --- */
 	.front-tree-accordion {
 		.accordion-button {
 			font-weight: 600;
@@ -162,6 +178,7 @@ main {
 		}
 	}
 
+	/* --- Content Text Blocks --- */
 	.greeting-text {
 		p {
 			text-indent: 0;
@@ -172,6 +189,7 @@ main {
 		}
 	}
 
+	/* --- About App --- */
 	.about-app {
 		p {
 			font-weight: 400;
@@ -221,6 +239,7 @@ main {
 		}
 	}
 
+	/* --- Visitor Statistics --- */
 	.visitor-statistic {
 		.stat-card {
 			background: #f8fbff;
@@ -239,6 +258,7 @@ main {
 		}
 	}
 
+	/* --- Figure / Image Card --- */
 	.img-wrapper {
 		text-align: center;
 
@@ -264,10 +284,13 @@ main {
 	}
 }
 
+/* ========================================
+   Home Hero
+======================================== */
 .home-page {
 	.home-hero {
 		margin-top: -50px;
-		padding: 64px 0 56px;
+		padding: 0;
 		background: #ffffff;
 		color: $ink;
 		position: relative;
@@ -275,17 +298,31 @@ main {
 		border-bottom: 1px solid $border-soft;
 	}
 
-	.home-hero::before,
-	.home-hero::after {
-		display: none;
+	.hero-copy {
+		padding: 76px 56px 64px 0;
+		max-width: 760px;
+		position: relative;
+		z-index: 2;
+	}
+
+	.hero-map-col {
+		display: flex;
+		position: relative;
+		z-index: 1;
+		min-height: 420px;
 	}
 
 	h1 {
-		font-size: clamp(2.2rem, 3.8vw, 3.4rem);
-		font-weight: 700;
+		font-size: clamp(2.2rem, 3.7vw, 3.5rem);
+		font-weight: 800;
 		letter-spacing: -0.01em;
 		margin: 12px 0 16px;
 		line-height: 1.2;
+	}
+
+	h1 strong {
+		font-weight: 900;
+		color: #071938;
 	}
 
 	.hero-lead {
@@ -308,8 +345,26 @@ main {
 		font-weight: 600;
 	}
 
-	.hero-actions .btn-primary {
-		box-shadow: 0 12px 24px rgba(15, 23, 42, 0.2);
+	.hero-actions .hero-cta-primary {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		box-shadow: 0 14px 28px rgba(15, 23, 42, 0.24);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.hero-actions .hero-cta-primary i {
+		font-size: 0.9rem;
+		transition: transform 0.25s ease;
+	}
+
+	.hero-actions .hero-cta-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 18px 32px rgba(15, 23, 42, 0.28);
+	}
+
+	.hero-actions .hero-cta-primary:hover i {
+		transform: translateX(4px);
 	}
 
 	.hero-actions .btn-outline-light {
@@ -328,6 +383,15 @@ main {
 		padding: 24px;
 		box-shadow: $card-shadow;
 		color: $ink;
+	}
+
+	.hero-panel--map {
+		border-radius: 0;
+		border: 0;
+		box-shadow: none;
+		background: transparent;
+		flex: 1;
+		width: 100%;
 	}
 
 	.hero-panel-head {
@@ -350,6 +414,89 @@ main {
 		font-size: 0.75rem;
 		padding: 4px 10px;
 		border-radius: 999px;
+	}
+
+	.hero-panel--map {
+		padding: 0;
+		height: 100%;
+		min-height: 420px;
+
+		.map-frame {
+			position: relative;
+			height: 100%;
+			width: 100%;
+			border-radius: 0;
+			border: 0;
+			overflow: hidden;
+		}
+
+		.map-frame::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 28%;
+			background: linear-gradient(
+				90deg,
+				rgba(244, 247, 251, 0.95) 0%,
+				rgba(244, 247, 251, 0.72) 25%,
+				rgba(244, 247, 251, 0.28) 60%,
+				rgba(244, 247, 251, 0) 100%
+			);
+			pointer-events: none;
+			z-index: 450;
+		}
+
+		.leaflet-container {
+			background: #eef3f8;
+			font: inherit;
+			height: 100%;
+			width: 100%;
+		}
+
+		.leaflet-control-container {
+			z-index: 900;
+		}
+
+		.leaflet-control-zoom {
+			box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+		}
+
+		.leaflet-control-attribution {
+			font-size: 10px;
+			opacity: 0.7;
+		}
+	}
+
+	.hero-map-badge {
+		position: absolute;
+		top: 22px;
+		left: 22px;
+		z-index: 920;
+		background: rgba(255, 255, 255, 0.95);
+		border: 1px solid rgba($primary, 0.22);
+		border-radius: 12px;
+		padding: 8px 12px;
+		box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+		display: inline-flex;
+		align-items: baseline;
+		gap: 6px;
+	}
+
+	.hero-map-badge__value {
+		font-size: 1.05rem;
+		font-weight: 800;
+		color: #103554;
+		line-height: 1;
+	}
+
+	.hero-map-badge__label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: $ink-muted;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
 	}
 
 	.mini-stats {
@@ -391,6 +538,9 @@ main {
 	}
 }
 
+/* ========================================
+   Home Sections
+======================================== */
 .home-section {
 	padding: 36px 0;
 }
@@ -744,6 +894,9 @@ main {
 	font-size: 0.9rem;
 }
 
+/* ========================================
+   Footer
+======================================== */
 footer {
 	margin-top: auto;
 
@@ -810,6 +963,9 @@ footer {
 	}
 }
 
+/* ========================================
+   Table / Utility
+======================================== */
 table thead tr th {
 	vertical-align: middle;
 }
@@ -823,4 +979,125 @@ table thead tr th {
 	display: flex;
 	justify-content: end;
 	align-items: center;
+}
+
+/* ========================================
+   Chart Modal
+======================================== */
+.chart-modal-body {
+	min-height: 360px;
+	position: relative;
+}
+
+#chart-isi-uraian {
+	height: 320px !important;
+}
+
+.chart-state {
+	min-height: 320px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: $ink-muted;
+	padding: 1rem;
+}
+
+.chart-state--error {
+	background: #fff5f5;
+	border: 1px solid #ffdede;
+	border-radius: 12px;
+	color: #9f2d2d;
+	font-weight: 600;
+}
+
+/* ========================================
+   Responsive
+======================================== */
+
+/* --- Down: <= 991.98px (tablet & mobile) --- */
+@media (max-width: 991.98px) {
+	.home-page {
+		.home-hero {
+			margin-top: -40px;
+			padding: 48px 0 40px;
+
+			.hero-copy {
+				padding: 0;
+			}
+
+			.hero-map-col {
+				display: none !important;
+			}
+		}
+	}
+}
+
+/* --- Down: <= 767.98px (mobile) --- */
+@media (max-width: 767.98px) {
+	.section-head {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.leader-card {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 14px;
+	}
+
+	.leader-photo {
+		width: 150px;
+		height: 190px;
+	}
+
+	.leader-body {
+		width: 100%;
+	}
+
+	.role-pill {
+		margin: 0 auto;
+	}
+}
+
+/* --- Up: >= 576px --- */
+@media (min-width: 576px) {
+	header {
+		.navbar {
+			background-color: #1e2735;
+
+			.navbar-brand {
+				.logo-mark {
+					height: 60px !important;
+				}
+			}
+		}
+	}
+}
+
+/* --- Up: >= 992px --- */
+@media (min-width: 992px) {
+	header {
+		.navbar {
+			padding: 0;
+
+			.navbar-collapse {
+				margin: 0 !important;
+			}
+		}
+	}
+
+	.home-page {
+		.home-hero {
+			.hero-copy {
+				margin-left: -8px;
+			}
+
+			.hero-map-col {
+				margin-right: calc((100vw - 100%) / -2);
+			}
+		}
+	}
 }

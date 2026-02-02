@@ -1,47 +1,41 @@
 @extends('layouts.front', ['title' => 'Home'])
 
+@push('styles')
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          rel="stylesheet" />
+@endpush
+
 @section('content')
     <div class="home-page">
         <section class="home-hero">
             <div class="container">
-                <div class="row align-items-center g-4">
+                <div class="row align-items-stretch g-0">
                     <div class="col-lg-7">
-                        <h1>Portal Data Terpadu Untuk Perencanaan Daerah Yang Lebih Baik</h1>
-                        <p class="hero-lead">Portal resmi untuk menyajikan data pembangunan secara ringkas, terbuka, dan
-                            mudah ditelusuri agar perencanaan serta evaluasi program lebih terarah.</p>
-                        <div class="hero-actions">
-                            <a class="btn btn-primary btn-lg"
-                               href="{{ route('delapankeldata.index') }}">Jelajahi Data</a>
-                            <a class="btn btn-outline-light btn-lg"
-                               href="{{ route('indikator.index') }}">Indikator Kinerja</a>
+                        <div class="hero-copy">
+                            <h1>Portal Data Terpadu Untuk <strong>Perencanaan Daerah</strong> Yang Lebih Baik</h1>
+                            <p class="hero-lead">Portal resmi untuk menyajikan data pembangunan secara ringkas, terbuka,
+                                dan mudah ditelusuri agar perencanaan serta evaluasi program lebih terarah.</p>
+                            <div class="hero-actions">
+                                <a class="btn btn-primary btn-lg hero-cta-primary"
+                                   href="{{ route('delapankeldata.index') }}">
+                                    <span>Jelajahi Data</span>
+                                   <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                                <a class="btn btn-outline-light btn-lg"
+                                   href="{{ route('indikator.index') }}">Indikator Kinerja</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
-                        <div class="hero-panel">
-                            <div class="hero-panel-head">
-                                <h6>Ringkasan Pengunjung</h6>
-                                <span class="status-pill">Realtime</span>
+                    <div class="col-lg-5 hero-map-col">
+                        <div class="hero-panel hero-panel--map">
+                            <div aria-label="Peta Kabupaten Situbondo"
+                                 class="map-frame"
+                                 id="situbondo-map"
+                                 role="img"></div>
+                            <div class="hero-map-badge">
+                                <span class="hero-map-badge__value">10K+</span>
+                                <span class="hero-map-badge__label">Dataset</span>
                             </div>
-                            <div class="mini-stats">
-                                <div class="mini-stat">
-                                    <span class="mini-label">24 Jam</span>
-                                    <span class="mini-value">{{ $visitor->day_count }}</span>
-                                </div>
-                                <div class="mini-stat">
-                                    <span class="mini-label">30 Hari</span>
-                                    <span class="mini-value">{{ $visitor->month_count }}</span>
-                                </div>
-                                <div class="mini-stat">
-                                    <span class="mini-label">Tahun Berjalan</span>
-                                    <span class="mini-value">{{ $visitor->year_count }}</span>
-                                </div>
-                                <div class="mini-stat">
-                                    <span class="mini-label">Semua Waktu</span>
-                                    <span class="mini-value">{{ $visitor->all_count }}</span>
-                                </div>
-                            </div>
-                            <a class="hero-panel-link"
-                               href="#statistik">Lihat detail statistik</a>
                         </div>
                     </div>
                 </div>
@@ -61,7 +55,7 @@
                     <div class="col-6 col-lg-3">
                         <a class="quick-card"
                            href="{{ route('bps.index') }}">
-                            <span class="quick-icon"><i class="fas fa-chart-line"></i></span>
+                            <span class="quick-icon"><i class="fa-solid fa-chart-line"></i></span>
                             <h3>BPS</h3>
                             <p>Statistik resmi daerah dan indikator makro.</p>
                         </a>
@@ -69,7 +63,7 @@
                     <div class="col-6 col-lg-3">
                         <a class="quick-card"
                            href="{{ route('rpjmd.index') }}">
-                            <span class="quick-icon"><i class="fas fa-road"></i></span>
+                            <span class="quick-icon"><i class="fa-solid fa-road"></i></span>
                             <h3>RPJMD</h3>
                             <p>Rencana pembangunan dan target kinerja.</p>
                         </a>
@@ -77,7 +71,7 @@
                     <div class="col-6 col-lg-3">
                         <a class="quick-card"
                            href="{{ route('delapankeldata.index') }}">
-                            <span class="quick-icon"><i class="fas fa-layer-group"></i></span>
+                            <span class="quick-icon"><i class="fa-solid fa-layer-group"></i></span>
                             <h3>8 Kelompok Data</h3>
                             <p>Kelompok data sektoral yang terstruktur.</p>
                         </a>
@@ -85,7 +79,7 @@
                     <div class="col-6 col-lg-3">
                         <a class="quick-card"
                            href="{{ route('skpd') }}">
-                            <span class="quick-icon"><i class="fas fa-building"></i></span>
+                            <span class="quick-icon"><i class="fa-solid fa-building-columns"></i></span>
                             <h3>SKPD</h3>
                             <p>Data per perangkat daerah dan unit kerja.</p>
                         </a>
@@ -179,19 +173,19 @@
                                     Kabupaten Situbondo.</p>
                                 <ul class="icon-list">
                                     <li>
-                                        <span class="icon-circle"><i class="fas fa-globe"></i></span>
+                                        <span class="icon-circle"><i class="fa-solid fa-globe"></i></span>
                                         <span><a href="http://www.situbondokab.go.id"
                                                rel=noreferrer
                                                target="_blank">www.situbondokab.go.id</a></span>
                                     </li>
                                     <li>
-                                        <span class="icon-circle"><i class="fab fa-twitter"></i></span>
+                                        <span class="icon-circle"><i class="fa-brands fa-x-twitter"></i></span>
                                         <span><a href="https://twitter.com/kominfo_sit"
                                                rel=noreferrer
                                                target="_blank">@kominfo_sit</a></span>
                                     </li>
                                     <li>
-                                        <span class="icon-circle"><i class="fab fa-facebook-f"></i></span>
+                                        <span class="icon-circle"><i class="fa-brands fa-facebook-f"></i></span>
                                         <span><a href="https://www.facebook.com/Diskominfosit/"
                                                rel=noreferrer
                                                target="_blank">Kominfo Situbondo</a></span>
@@ -268,7 +262,7 @@
                     <div class="col-md-4">
                         <a class="data-card"
                            href="{{ route('indikator.index') }}">
-                            <span class="data-card-icon"><i class="fas fa-bullseye"></i></span>
+                            <span class="data-card-icon"><i class="fa-solid fa-bullseye"></i></span>
                             <h3>Indikator Kinerja</h3>
                             <p>Indikator utama yang dipantau secara berkala.</p>
                             <span class="data-card-link">Lihat indikator</span>
@@ -277,7 +271,7 @@
                     <div class="col-md-4">
                         <a class="data-card"
                            href="{{ route('bps.index') }}">
-                            <span class="data-card-icon"><i class="fas fa-chart-pie"></i></span>
+                            <span class="data-card-icon"><i class="fa-solid fa-chart-pie"></i></span>
                             <h3>Statistik BPS</h3>
                             <p>Data statistik resmi untuk kebutuhan analisis.</p>
                             <span class="data-card-link">Lihat statistik</span>
@@ -286,7 +280,7 @@
                     <div class="col-md-4">
                         <a class="data-card"
                            href="{{ route('delapankeldata.index') }}">
-                            <span class="data-card-icon"><i class="fas fa-th-large"></i></span>
+                            <span class="data-card-icon"><i class="fa-solid fa-table-cells-large"></i></span>
                             <h3>Kelompok Data</h3>
                             <p>Kumpulan data sektoral yang terstruktur.</p>
                             <span class="data-card-link">Jelajahi data</span>
@@ -297,3 +291,57 @@
         </section>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mapEl = document.getElementById('situbondo-map');
+            if (!mapEl || typeof L === 'undefined') {
+                return;
+            }
+
+            const center = [-7.784472396665788, 113.70986938476562];
+            const map = L.map(mapEl, {
+                scrollWheelZoom: false,
+                zoomControl: false,
+                attributionControl: true,
+                dragging: true
+            }).setView(center, 9);
+
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            map.options.zoomSnap = 0.5;
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18
+            }).addTo(map);
+
+            map.whenReady(() => {
+                setTimeout(() => map.invalidateSize(), 0);
+            });
+
+            fetch("{{ asset('geojson/situbondo.geojson') }}")
+                .then((response) => response.json())
+                .then((data) => {
+                    const boundary = L.geoJSON(data, {
+                        style: {
+                            color: '#1f6f8b',
+                            weight: 2,
+                            fillColor: '#1f6f8b',
+                            fillOpacity: 0.08
+                        }
+                    }).addTo(map);
+                    map.fitBounds(boundary.getBounds(), { padding: [6, 6] });
+                    map.panBy([90, 0], { animate: false });
+                    map.setZoom(map.getZoom() + 0.3);
+                    map.invalidateSize();
+                })
+                .catch(() => {});
+
+            L.marker(center).addTo(map);
+            setTimeout(() => map.invalidateSize(), 300);
+            window.addEventListener('resize', () => map.invalidateSize());
+        });
+    </script>
+@endpush
