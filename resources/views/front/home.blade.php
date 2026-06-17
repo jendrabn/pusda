@@ -10,7 +10,7 @@
         <section class="home-hero">
             <div class="container">
                 <div class="row align-items-stretch g-0">
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="hero-copy">
                             <h1 class="hero-title">Portal Data Terpadu Untuk <strong>Perencanaan Daerah</strong> Yang Lebih Tepat</h1>
                             <p class="hero-lead">Menyatukan data pembangunan, indikator, dan informasi sektoral dalam satu tampilan yang ringkas, terbuka,
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 hero-map-col">
+                    <div class="col-lg-6 hero-map-col">
                         <div class="hero-panel hero-panel--map">
                             <div aria-label="Peta Kabupaten Situbondo"
                                  class="map-frame"
