@@ -4,7 +4,6 @@
     <div class="container">
         <div class="surface">
             <div class="surface-head">
-                <span class="section-eyebrow">Data</span>
                 <h2>{{ $title }}</h2>
             </div>
             <div class="surface-body">

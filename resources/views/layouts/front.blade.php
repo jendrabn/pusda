@@ -56,13 +56,13 @@
                 </button>
                 <div class="navbar-collapse collapse"
                      id="navbarNav">
-                    <ul class="navbar-nav m-lg-auto">
+                    <ul class="navbar-nav ms-lg-auto align-items-lg-center">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
                                href="{{ route('home') }}">Beranda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('bps.index') | request()->is('guest/bps/*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('bps.index') || request()->is('guest/bps/*') ? 'active' : '' }}"
                                href="{{ route('bps.index') }}">BPS</a>
                         </li>
                         <li class="nav-item">
@@ -92,9 +92,9 @@
                                     <a class="nav-link"
                                        href="{{ route('admin_skpd.dashboard') }}">Dashboard</a>
                                 @endrole
-                            @else
+                                @else
                                 <a class="nav-link"
-                                   href="{{ route('auth.login') }}">Login</a>
+                                   href="{{ route('auth.login') }}">Masuk</a>
                             @endif
                         </li>
                         <li class="nav-item">

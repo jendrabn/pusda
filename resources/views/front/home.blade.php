@@ -12,16 +12,16 @@
                 <div class="row align-items-stretch g-0">
                     <div class="col-lg-7">
                         <div class="hero-copy">
-                            <h1>Portal Data Terpadu Untuk <strong>Perencanaan Daerah</strong> Yang Lebih Baik</h1>
-                            <p class="hero-lead">Portal resmi untuk menyajikan data pembangunan secara ringkas, terbuka,
-                                dan mudah ditelusuri agar perencanaan serta evaluasi program lebih terarah.</p>
+                            <h1 class="hero-title">Portal Data Terpadu Untuk <strong>Perencanaan Daerah</strong> Yang Lebih Tepat</h1>
+                            <p class="hero-lead">Menyatukan data pembangunan, indikator, dan informasi sektoral dalam satu tampilan yang ringkas, terbuka,
+                                dan mudah ditelusuri untuk kebutuhan kerja sehari-hari.</p>
                             <div class="hero-actions">
-                                <a class="btn btn-primary btn-lg hero-cta-primary"
+                                <a class="btn btn-primary hero-cta-primary"
                                    href="{{ route('delapankeldata.index') }}">
                                     <span>Jelajahi Data</span>
-                                   <i class="fa-solid fa-arrow-right"></i>
+                                    <i class="fa-solid fa-arrow-right"></i>
                                 </a>
-                                <a class="btn btn-outline-light btn-lg"
+                                <a class="btn btn-outline-primary hero-cta-secondary"
                                    href="{{ route('indikator.index') }}">Indikator Kinerja</a>
                             </div>
                         </div>
@@ -44,13 +44,6 @@
 
         <section class="home-section">
             <div class="container">
-                <div class="section-head">
-                    <div>
-                        <span class="section-eyebrow">Akses Cepat</span>
-                        <h2>Mulai dari data yang kamu butuhkan</h2>
-                        <p>Gunakan pintasan berikut untuk menemukan data utama dengan lebih cepat.</p>
-                    </div>
-                </div>
                 <div class="row g-3">
                     <div class="col-6 col-lg-3">
                         <a class="quick-card"
