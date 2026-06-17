@@ -101,7 +101,7 @@
                             <a class="nav-link"
                                href="https://tawk.to/pusdasitubondo"
                                rel=noreferrer
-                               target="_blank">Live Chat <i class="fa-solid fa-arrow-up-right-from-square ms-1"></i></a>
+                               target="_blank">Live Chat</a>
                         </li>
                     </ul>
                 </div>

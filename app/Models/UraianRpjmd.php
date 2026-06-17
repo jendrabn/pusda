@@ -45,7 +45,7 @@ class UraianRpjmd extends Model
 
   public function tabelRpjmd()
   {
-    return $this->belongsTo(TabelRpjmd::class, 'tabel_8keldata');
+    return $this->belongsTo(TabelRpjmd::class, 'tabel_rpjmd_id');
   }
 
   public function isiRpjmd()
