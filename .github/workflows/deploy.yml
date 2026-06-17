@@ -41,9 +41,9 @@ jobs:
               composer install --no-interaction --prefer-dist --optimize-autoloader
             fi
 
-            if [ -f package-lock.json ] && command -v npm >/dev/null 2>&1; then
-              npm update
-              npm run build
+            if [ -f package.json ] && command -v bun >/dev/null 2>&1; then
+              bun install
+              bun run build
             fi
 
             php artisan down || true

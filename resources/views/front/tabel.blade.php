@@ -11,7 +11,7 @@
 
                     <a class="btn btn-success text-white"
                        href="{{ route('exports.' . $routePart, $tabel->id) }}">
-					   Download Data
+					   Unduh Data
                        <i class="fa-solid fa-download ms-1"></i>
                     </a>
 
@@ -74,7 +74,7 @@
                                             @endif
                                         @endforeach
                                         <td class="text-center">
-                                            <button class="btn btn-primary btn-show-chart"
+                                            <button class="btn btn-sm btn-outline-primary btn-show-chart"
                                                     data-url="{{ route($routePart . '.chart', $child->id) }}"
                                                     type="button">
                                               <i class="fa-solid fa-chart-column"></i>

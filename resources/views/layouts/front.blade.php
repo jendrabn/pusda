@@ -115,9 +115,9 @@
 
     <div class="scroll-top">
         <button aria-label="Scroll to top"
-                class="btn btn-dark"
+                class="btn btn-primary"
                 type="button">
-            <i class="bi bi-arrow-up"></i>
+         <i class="fa-solid fa-arrow-up"></i>
         </button>
     </div>
 
