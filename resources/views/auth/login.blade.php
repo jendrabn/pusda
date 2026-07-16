@@ -12,8 +12,7 @@
                            class="form-control {{ $errors->has('username') ? ' is-invalid' : '' }}"
                            name="username"
                            placeholder="Email / Username"
-                           type="text"
-                           value="{{ config('app.demo_mode') ? config('app.demo_username') : '' }}">
+                           type="text">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="fas fa-user"></i>
@@ -29,8 +28,7 @@
                     <input class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}"
                            name="password"
                            placeholder="Password"
-                           type="password"
-                           value="{{ config('app.demo_mode') ? config('app.demo_password') : '' }}">
+                           type="password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="fas fa-lock"></i>
