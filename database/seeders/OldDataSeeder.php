@@ -12,7 +12,6 @@ use App\Models\Uraian8KelData;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 
 class OldDataSeeder extends Seeder
 {
@@ -23,7 +22,7 @@ class OldDataSeeder extends Seeder
    */
   public function run()
   {
-    $data = collect(json_decode(Storage::get('seeds/pusda_lama.json')))->where('type', 'table');
+    $data = collect(json_decode(file_get_contents(storage_path('app/seeds/pusda_lama.json'))))->where('type', 'table');
 
     // Kategori SKPD
     $kategoriSkpd = collect([

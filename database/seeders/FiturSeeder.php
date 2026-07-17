@@ -103,7 +103,7 @@ class FiturSeeder extends Seeder
         //     }
         // });
 
-        $pusdaBaru = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
+        $pusdaBaru = collect(json_decode(file_get_contents(storage_path('app/seeds/pusda_baru.json')), true));
         $fitur8KelData = $pusdaBaru->where('type', 'table')->where('name', 'fitur_8keldata')->first()['data'];
         $fiturBps = $pusdaBaru->where('type', 'table')->where('name', 'fitur_bps')->first()['data'];
         $fiturIndikator = $pusdaBaru->where('type', 'table')->where('name', 'fitur_indikator')->first()['data'];

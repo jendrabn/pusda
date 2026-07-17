@@ -104,7 +104,7 @@ class UraianSeeder extends Seeder
         //     }
         // });
 
-        $pusdaBaru = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
+        $pusdaBaru = collect(json_decode(file_get_contents(storage_path('app/seeds/pusda_baru.json')), true));
 
         $uraian8KelData = $pusdaBaru->where('type', 'table')->where('name', 'uraian_8keldata')->first()['data'];
         $uraianRpjmd = $pusdaBaru->where('type', 'table')->where('name', 'uraian_rpjmd')->first()['data'];

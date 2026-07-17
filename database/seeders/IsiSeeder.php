@@ -11,7 +11,6 @@ use App\Models\TabelBps;
 use App\Models\TabelIndikator;
 use App\Models\TabelRpjmd;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 
 class IsiSeeder extends Seeder
 {
@@ -92,7 +91,7 @@ class IsiSeeder extends Seeder
         //     });
         // });
 
-        $pusdaBaru = collect(json_decode(Storage::get('seeds/pusda_baru.json'), true));
+        $pusdaBaru = collect(json_decode(file_get_contents(storage_path('app/seeds/pusda_baru.json')), true));
         
         $isi8KelData = $pusdaBaru->where('type', 'table')->where('name', 'isi_8keldata')->first()['data'];
         $isiRpjmd = $pusdaBaru->where('type', 'table')->where('name', 'isi_rpjmd')->first()['data'];
